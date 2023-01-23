@@ -1,0 +1,659 @@
+#set double_format=%+.12lg
+#set profiler=1
+#set randomseed=10
+#set relax_naming_rules=1
+#set savefile=test.xml
+#set minimum_timestep=15
+
+clock {
+	timezone PST+8PDT;
+	starttime '2013-08-04 00:00:00';
+	stoptime '2013-08-11 00:00:00';
+}
+
+module climate;
+module market;
+module connection;
+module powerflow {
+	solver_method NR;
+	NR_iteration_limit 100;
+}
+module residential {
+	implicit_enduses NONE;
+}
+module tape;
+module generators;
+
+#include "${SCHED_PATH}/appliance_schedules.glm"
+#include "${SCHED_PATH}/commercial_schedules.glm"
+
+#define FIXED_PRICE=0.500
+#define HUB_LOAD=50000.0
+#define LIGHTS_PER_PHASE=500000.0
+#define PLUGS_PER_PHASE=500000.0
+#define REFRIGERATOR_PER_PHASE=500000.0
+#define MICROWAVE_PER_PHASE=500000.0
+
+object metrics_collector_writer {
+  extension json;
+  alternate no;
+  interval 300;
+  interim 604800;
+  filename ${METRICS_FILE};
+};
+
+object climate {
+  name localWeather;
+// tmyfile "../../tesp/support/weather/TX-Houston_Bush_Intercontinental.tmy3";
+  interpolate QUADRATIC;
+	latitude 30.000;
+	longitude -95.367;
+  tz_meridian -90.0;
+  solar_direct 92.9; // for some steady-state PV output in testing
+  solar_diffuse 0.0;
+};
+
+////////////////////////////////////////
+// transformer and line configurations
+////////////////////////////////////////
+
+object transformer_configuration {
+	name substation_config;
+	connect_type WYE_WYE;
+	install_type PADMOUNT;
+	power_rating 5001;
+	powerA_rating 1667;
+	powerB_rating 1667;
+	powerC_rating 1667;
+	primary_voltage 34500;
+	secondary_voltage 12470;
+	impedance 0.01+0.10j;
+}
+
+object transformer_configuration {
+	name transformer_A_config;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type PADMOUNT;
+	power_rating 1500;
+	powerA_rating 1500;
+	powerB_rating 0;
+	powerC_rating 0;
+	primary_voltage 7200;
+	secondary_voltage 120;
+	impedance 0.015+0.020j;
+}
+
+object transformer_configuration {
+	name transformer_B_config;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type PADMOUNT;
+	power_rating 1500;
+	powerA_rating 0;
+	powerB_rating 1500;
+	powerC_rating 0;
+	primary_voltage 7200;
+	secondary_voltage 120;
+	impedance 0.015+0.020j;
+}
+
+object transformer_configuration {
+	name transformer_C_config;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type PADMOUNT;
+	power_rating 1500;
+	powerA_rating 0;
+	powerB_rating 0;
+	powerC_rating 1500;
+	primary_voltage 7200;
+	secondary_voltage 120;
+	impedance 0.015+0.020j;
+}
+
+object transformer_configuration {
+	name hub_transformer_config;
+	connect_type WYE_WYE;
+	install_type PADMOUNT;
+	power_rating 1000 kVA;
+	primary_voltage 12470;
+	secondary_voltage 480;
+	impedance +0.015+0.0575j;
+}
+
+object overhead_line_conductor {
+	name acsr10;
+	geometric_mean_radius 0.004460;
+	diameter 0.4 in;
+	resistance 1.120000;
+}
+
+object line_spacing {
+	name overhead_3_phase;
+	distance_AB 2.5;
+	distance_AC 4.5;
+	distance_BC 7.0;
+	distance_BN 5.656854;
+	distance_AN 4.272002;
+	distance_CN 5.0;
+	distance_AE 28.0;
+	distance_BE 28.0;
+	distance_CE 28.0;
+	distance_NE 24.0;
+}
+
+object line_configuration {
+	name fdr_trunk_config;
+	conductor_A acsr10;
+	conductor_B acsr10;
+	conductor_C acsr10;
+	conductor_N acsr10;
+	spacing overhead_3_phase;
+}
+
+////////////////////////////////////////
+// utility system
+////////////////////////////////////////
+
+object substation {
+	name transmission_bus;
+	phases ABCN;
+	nominal_voltage 19920;
+	positive_sequence_voltage 19920;
+	bustype SWING;
+  base_power 5MVA;
+  power_convergence_value 100VA;
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+#ifdef USE_HELICS
+object helics_msg {
+  configure gldConfig.json;
+}
+#endif
+
+object transformer {
+	name substation_transformer;
+	phases ABCN;
+	from transmission_bus;
+	to distribution_bus;
+	configuration substation_config;
+}
+
+object overhead_line { 
+  phases ABCN;
+  name fdr_head_hub;
+  from fdr_head;
+  to fdr_hub;
+  length 20000;
+  configuration fdr_trunk_config;
+}
+
+object overhead_line { 
+  phases ABCN;
+  name fdr_hub_homes;
+  from fdr_hub;
+  to fdr_homes;
+  length 10000;
+  configuration fdr_trunk_config;
+}
+
+object switch {
+	phases ABCN;
+	name sw_utility;
+	from distribution_bus;
+	to fdr_head;
+  status CLOSED;
+}
+
+object switch {
+	phases ABCN;
+	name sw_hub;
+	from fdr_hub;
+	to hub_bus;
+  status CLOSED;
+}
+
+object switch {
+	phases ABCN;
+	name sw_homes;
+	from fdr_homes;
+	to homes_bus;
+  status CLOSED;
+}
+
+object fault_check {
+	name test_fault;
+	check_mode SWITCHING;
+	reliability_mode TRUE;
+  grid_association TRUE;
+}
+
+object node {
+	name distribution_bus;
+	phases ABCN;
+	nominal_voltage 7200;
+}
+
+object meter {
+	name fdr_head;
+	phases ABCN;
+	nominal_voltage 7200;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+object node {
+	name fdr_hub;
+	phases ABCN;
+	nominal_voltage 7200;
+}
+
+object node {
+	name hub_bus;
+	phases ABCN;
+	nominal_voltage 7200;
+}
+
+object transformer {
+	name hub_transformer;
+	phases ABCN;
+	from hub_bus;
+	to hub_mtr;
+	configuration hub_transformer_config;
+}
+
+object meter {
+  phases ABCN;
+  name hub_mtr;
+  nominal_voltage 277.00;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+object node {
+	name fdr_homes;
+	phases ABCN;
+	nominal_voltage 7200;
+}
+
+object node {
+	name homes_bus;
+	phases ABCN;
+	nominal_voltage 7200;
+}
+
+object transformer {
+	name homes_transformer_A;
+	phases AS;
+	from homes_bus;
+	to homes_mtr_A;
+	configuration transformer_A_config;
+}
+
+object transformer {
+	name homes_transformer_B;
+	phases BS;
+	from homes_bus;
+	to homes_mtr_B;
+	configuration transformer_B_config;
+}
+
+object transformer {
+	name homes_transformer_C;
+	phases CS;
+	from homes_bus;
+	to homes_mtr_C;
+	configuration transformer_C_config;
+}
+
+object triplex_meter {
+	name homes_mtr_A;
+	phases AS;
+	nominal_voltage 120;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+object triplex_meter {
+	name homes_mtr_B;
+	phases BS;
+	nominal_voltage 120;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+object triplex_meter {
+	name homes_mtr_C;
+	phases CS;
+	nominal_voltage 120;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+///////////////////////////////////////////////////////
+// loads
+///////////////////////////////////////////////////////
+
+object load {
+  name hub_load;
+  parent hub_mtr;
+  phases ABCN;
+  nominal_voltage 277.00;
+  power_fraction_A 1.0;
+  power_fraction_B 1.0;
+  power_fraction_C 1.0;
+  base_power_A office_plugs*${HUB_LOAD};
+  base_power_B office_plugs*${HUB_LOAD};
+  base_power_C office_plugs*${HUB_LOAD};
+}
+
+/////////////////// home lights
+object triplex_load {
+  name lights_A;
+  parent homes_mtr_A;
+  phases AS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 0;
+  base_power_12 LIGHTS*${LIGHTS_PER_PHASE};
+}
+
+object triplex_load {
+  name lights_B;
+  parent homes_mtr_B;
+  phases BS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 7200;
+  base_power_12 LIGHTS*${LIGHTS_PER_PHASE};
+}
+
+object triplex_load {
+  name lights_C;
+  parent homes_mtr_C;
+  phases CS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew -1800;
+  base_power_12 LIGHTS*${LIGHTS_PER_PHASE};
+}
+
+/////////////////// home plugs
+object triplex_load {
+  name plugs_A;
+  parent homes_mtr_A;
+  phases AS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 0;
+  base_power_12 PLUGS*${PLUGS_PER_PHASE};
+}
+
+object triplex_load {
+  name plugs_B;
+  parent homes_mtr_B;
+  phases BS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 7200;
+  base_power_12 PLUGS*${PLUGS_PER_PHASE};
+}
+
+object triplex_load {
+  name plugs_C;
+  parent homes_mtr_C;
+  phases CS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew -1800;
+  base_power_12 PLUGS*${PLUGS_PER_PHASE};
+}
+
+/////////////////// home refrigerators
+object triplex_load {
+  name refrigerators_A;
+  parent homes_mtr_A;
+  phases AS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 0;
+  base_power_12 REFRIGERATOR*${REFRIGERATOR_PER_PHASE};
+}
+
+object triplex_load {
+  name refrigerators_B;
+  parent homes_mtr_B;
+  phases BS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 7200;
+  base_power_12 REFRIGERATOR*${REFRIGERATOR_PER_PHASE};
+}
+
+object triplex_load {
+  name refrigerators_C;
+  parent homes_mtr_C;
+  phases CS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew -1800;
+  base_power_12 REFRIGERATOR*${REFRIGERATOR_PER_PHASE};
+}
+
+/////////////////// home microwaves
+object triplex_load {
+  name microwaves_A;
+  parent homes_mtr_A;
+  phases AS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 0;
+  base_power_12 MICROWAVE*${MICROWAVE_PER_PHASE};
+}
+
+object triplex_load {
+  name microwaves_B;
+  parent homes_mtr_B;
+  phases BS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew 7200;
+  base_power_12 MICROWAVE*${MICROWAVE_PER_PHASE};
+}
+
+object triplex_load {
+  name microwaves_C;
+  parent homes_mtr_C;
+  phases CS;
+  nominal_voltage 120.00;
+  impedance_fraction_12 1.0;
+  schedule_skew -1800;
+  base_power_12 MICROWAVE*${MICROWAVE_PER_PHASE};
+}
+
+////////////////////////////////////////////////////////
+// community DER; connected straight to the primary
+////////////////////////////////////////////////////////
+
+///////////////////////////////////// PV
+object switch {
+	phases ABCN;
+	name sw_pv;
+	from hub_bus;
+	to hub_pv_mtr;
+  status CLOSED;
+}
+object meter {
+  name hub_pv_mtr;
+  phases ABCN;
+  nominal_voltage 7200.0;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+object inverter {
+  name hub_pv_inv;
+  parent hub_pv_mtr;
+  phases ABCN;
+  generator_status ONLINE;
+  four_quadrant_control_mode CONSTANT_PQ;
+  inverter_type FOUR_QUADRANT;
+  inverter_efficiency 1.0;
+  power_factor 1.0;
+  V_base 12470.000;
+  rated_power 530000.00; // 106000.000;
+  P_Out 500000.0;
+  Q_Out 0.0;
+  I_In 773.0; // 154.6;
+  V_In 700.0;
+  object solar {
+    name hub_pv;
+    generator_mode SUPPLY_DRIVEN;
+    generator_status ONLINE;
+    panel_type SINGLE_CRYSTAL_SILICON;
+    efficiency 0.2;
+    rated_power 500000.0;
+  };
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+///////////////////////////////////// Battery
+object switch {
+	phases ABCN;
+	name sw_bess;
+	from hub_bus;
+	to hub_bess_mtr;
+  status CLOSED;
+}
+object meter {
+  name hub_bess_mtr;
+  phases ABCN;
+  nominal_voltage 7200.0;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+object inverter {
+  name hub_bess_inv;
+  parent hub_bess_mtr;
+  phases ABCN;
+  generator_status ONLINE;
+  generator_mode SUPPLY_DRIVEN;
+  inverter_type FOUR_QUADRANT;
+  four_quadrant_control_mode CONSTANT_PQ;
+  inverter_efficiency 0.975;
+  V_base 12470.0;
+  rated_power 167500.0;
+  V_In 890.6;
+  I_In 188.8;
+  P_Out 10.0;
+  object battery {
+    name hub_bess;
+    nominal_voltage 48;
+    battery_capacity 2640000; // 1340000.0;
+    state_of_charge 0.95;
+    use_internal_battery_model true;
+    generator_mode CONSTANT_PQ;
+    generator_status ONLINE;
+    battery_type LI_ION;
+    round_trip_efficiency 0.86;
+    rated_power 168145.0;
+  };
+  object metrics_collector {
+    interval 300;
+  };
+}
+
+///////////////////////////////////// Generator
+object switch {
+	phases ABCN;
+	name sw_dg;
+	from hub_bus;
+	to hub_dg_mtr;
+  status CLOSED;
+}
+object meter {
+  name hub_dg_mtr;
+	bustype SWING_PQ;
+  phases ABCN;
+  nominal_voltage 7200.0;
+	bill_mode UNIFORM;
+  price ${FIXED_PRICE};
+  monthly_fee 6;
+  object metrics_collector {
+    interval 300;
+  };
+}
+object diesel_dg {
+	name hub_dg;
+	parent hub_dg_mtr;
+	phases ABC;
+	Gen_type CONSTANT_PQ;
+	Rated_VA 650000.0;
+	real_power_out_A 60.0;
+	reactive_power_out_A 29.0;
+	real_power_out_B 60.0;
+	reactive_power_out_B 29.0;
+	real_power_out_C 60.0;
+	reactive_power_out_C 29.0;
+}
+
+#ifdef WANT_VI_DUMP
+object voltdump {
+  filename soco_test_volt.csv;
+  mode POLAR;
+};
+object currdump {
+  filename soco_test_curr.csv;
+  mode POLAR;
+};
+#endif
+
+object recorder {
+	parent transmission_bus;
+	property distribution_load,positive_sequence_voltage;
+	interval 3600;
+	file substation_load.csv;
+}
+object recorder {
+	parent hub_bess;
+	property battery_load,state_of_charge,rated_power,battery_capacity;
+	interval 60;
+	file bess.csv;
+}
+object multi_recorder {
+  file home_loads.csv;
+  interval 3600;
+  property plugs_A:base_power_12, plugs_B:base_power_12, plugs_C:base_power_12;
+}
+
+

@@ -1,0 +1,44 @@
+{
+  "name": "soco",
+  "coreType": "zmq",
+  "loglevel": 4,
+  "period" : 5,
+  "publications": [
+    {"global": false, "key": "sw_utility",     "type": "string", "unit": "kVA"},
+    {"global": false, "key": "lightsA",        "type": "double", "unit": "kVA"},
+    {"global": false, "key": "lightsB",        "type": "double", "unit": "kVA"},
+    {"global": false, "key": "lightsC",        "type": "double", "unit": "kVA"},
+    {"global": false, "key": "plugsA",         "type": "double", "unit": "kVA"},
+    {"global": false, "key": "plugsB",         "type": "double", "unit": "kVA"},
+    {"global": false, "key": "plugsC",         "type": "double", "unit": "kVA"},
+    {"global": false, "key": "refrigeratorsA", "type": "double", "unit": "kVA"},
+    {"global": false, "key": "refrigeratorsB", "type": "double", "unit": "kVA"},
+    {"global": false, "key": "refrigeratorsC", "type": "double", "unit": "kVA"},
+    {"global": false, "key": "microwavesA",    "type": "double", "unit": "kVA"},
+    {"global": false, "key": "microwavesB",    "type": "double", "unit": "kVA"},
+    {"global": false, "key": "microwavesC",    "type": "double", "unit": "kVA"},
+    {"global": false, "key": "dg/pA",          "type": "double", "unit": "kW"},
+    {"global": false, "key": "dg/pB",          "type": "double", "unit": "kW"},
+    {"global": false, "key": "dg/pC",          "type": "double", "unit": "kW"},
+    {"global": false, "key": "dg/qA",          "type": "double", "unit": "kvar"},
+    {"global": false, "key": "dg/qB",          "type": "double", "unit": "kvar"},
+    {"global": false, "key": "dg/qC",          "type": "double", "unit": "kvar"},
+    {"global": false, "key": "bess/power",     "type": "double", "unit": "kW"},
+    {"global": false, "key": "bess/price",     "type": "double", "unit": "$/kwh"}
+  ],
+  "subscriptions" : [
+    {"key": "gld1/bess/soc",       "type": "double", "required" : false},
+    {"key": "gld1/bess/power",     "type": "double", "required" : false},
+    {"key": "gld1/pv/power",       "type": "double", "required" : false},
+    {"key": "gld1/dg/power",       "type": "double", "required" : false},
+    {"key": "gld1/fdr/power",      "type": "double", "required" : false},
+    {"key": "gld1/hub/power",      "type": "double", "required" : false},
+    {"key": "gld1/homesA/power",   "type": "double", "required" : false},
+    {"key": "gld1/homesB/power",   "type": "double", "required" : false},
+    {"key": "gld1/homesC/power",   "type": "double", "required" : false},
+	{"key": "weather/temperature", "type": "double", "required" : true}
+  ],
+  "application" : {"Tmax": 604800, "StartTime": "2013-08-04 00:00:00", "LogInterval": 3600, "EventTime": 172800,
+                   "BESS_Max_Charging": 110000.0, "BESS_Max_Discharging": 110000.0, "Pswing_Cap": 40000.0, "BESSHubLogic": true}
+}
+
