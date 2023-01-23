@@ -80,9 +80,9 @@ Includes minimal 10 W battery, 50 kW PV, Refrigerators off during outage.
 It is assumed that loads outside the community resilience hub would
 be disconnected, as may be current practice.
 
-![Power and Voltage - Refrigerators Off](soco_.png)
+![Power and Voltage - Refrigerators Off](soco_utility.png)
 
-![Hub Power - Refrigerators Off](soco__hub.png)
+![Hub Power - Refrigerators Off](soco_utility_hub.png)
 
 ```
 Total meter bill = 79396.960
@@ -103,9 +103,9 @@ Includes minimal 10 W battery, 50 kW PV, Refrigerators on during outage.
 It is assumed that community members would voluntarily turn off all
 electric loads outside of the hub, except for refrigerators.
 
-![Power and Voltage - Refrigerators On](soco_.png)
+![Power and Voltage - Refrigerators On](soco_base.png)
 
-![Hub Power - Refrigerators On](soco__hub.png)
+![Hub Power - Refrigerators On](soco_base_hub.png)
 
 ```
 Total meter bill = 84573.247
