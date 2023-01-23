@@ -5,6 +5,8 @@ This repository contains OpenDSS files for the IEEE North American Low Voltage T
 * See [CIMHub](https://github.com/GRIDAPPSD/CIMHub/tree/feature/SETO/lv_network/LVTestCaseNorthAmerican) for updates to the base model.
 * See [Paper](https://doi.org/10.1109/PESGM.2014.6939794) for a description of the base model.
 
+Use the version in _SecPar.dss_ for i2x.
+
 ## Directory of Files
 
 * _buscoords.dat_ contains XY coordinates for the buses.

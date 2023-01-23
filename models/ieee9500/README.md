@@ -5,6 +5,8 @@ This repository contains OpenDSS files for the 9500 node test feeder.
 * See [CIMHub](https://github.com/GRIDAPPSD/CIMHub/tree/feature/SETO/ieee9500/base) for updates to the base model.
 * See [Report](PNNL-33471.pdf) for a description of the base model.
 
+Use the version in _protection.dss_ for i2x.
+
 ## Directory of Files
 
 * _BusCoords.dss_ gives XY coordinates for all 12.47kV nodes
@@ -39,3 +41,6 @@ This repository contains OpenDSS files for the 9500 node test feeder.
 
 * _master-bal-initial-config.dss_ master file for balanced load basecase with all N/O switch & DER setpoints
 * _master-unbal-initial-config.dss_ master file for unbalanced load basecase with all N/O switch & DER setpoints
+
+* _protection.dss_ a version of the balanced master file, adding reclosers and identifying substation transformers. Use this version for i2x.
+
