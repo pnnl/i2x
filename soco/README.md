@@ -123,6 +123,7 @@ Home kWH = 33014.74 over points 576 to 2016
 ### Increased Solar (Refrigerators On)
 
 Includes a minimal 10 W battery, 500 kW PV, Refrigerators on during outage.
+
 ![Power and Voltage - Solar](soco_pv.png)
 
 ![Hub Power - Solar](soco_pv_hub.png)
