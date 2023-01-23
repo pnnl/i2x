@@ -1,4 +1,4 @@
-Interconnection Innovation eXchange Test Systems (i2x)
+Interconnection Innovation e-Xchange(i2x) Test Systems
 
 Copyright © 2022-2023, Battelle Memorial Institute
 

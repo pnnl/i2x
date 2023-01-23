@@ -2,7 +2,7 @@
 
 This repository contains models and scripts for the roadmap analytics,
 i.e., sprint studies, and the interconnection study guides developed
-in the [i2x project](https://energy/gov/i2x).
+in the [i2x project](https://energy.gov/i2x).
 
 ## License
 
@@ -20,4 +20,4 @@ Reference herein to any specific commercial product, process, or service by trad
      UNITED STATES DEPARTMENT OF ENERGY
       under Contract DE-AC05-76RL01830
 
-Copyright 2021-2022, Battelle Memorial Institute
+Copyright 2022-2023, Battelle Memorial Institute
