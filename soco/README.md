@@ -38,6 +38,19 @@ The following scenarios compare metrics based on 7-day simulations. In the
 first "blue sky" case, the utility source is not interrupted. In the remaining
 five cases, the utility source interrupts two days into the simulation.
 
+The tabulated results include:
+
+- Total electric bill for the week, in dollars
+- Columns for each meter location:
+    - Electric bill, in dollars
+    - Energy delivered, in kwh
+    - Maximum voltage, in percent
+    - Minimum voltage, in percent
+    - Hours out of service
+    - Hours below the ANSI C84.1 B range, i.e., below 91.67% of normal voltage
+    - Hours below the ANSI C84.1 A range, i.e., below 95.00% of normal voltage
+- Energy delivered to homes outside the Hub, during the 5 outage days, in kwh
+
 ### Blue Sky Conditions
 
 Includes utility source, minimal 10 W battery, 50 kW PV at full irradiance, DG not running.
@@ -61,9 +74,15 @@ hub_pv_mtr     -3762.37   -7536.73 96.3557 92.9486   0.00   0.00 116.95
 Home kWH = 174626.54 over points 576 to 2016
 ```
 
-### Utility Outage
+### Utility Outage; Non-Hub Refrigerators Off During Outage
 
 Includes minimal 10 W battery, 50 kW PV, Refrigerators off during outage.
+It is assumed that loads outside the community resilience hub would
+be disconnected, as may be current practice.
+
+![Power and Voltage - Refrigerators Off](soco_.png)
+
+![Hub Power - Refrigerators Off](soco__hub.png)
 
 ```
 Total meter bill = 79396.960
@@ -78,9 +97,15 @@ hub_dg_mtr     -8493.88  -16999.81 96.2157 92.8012   0.00   0.00 153.00
 hub_pv_mtr     -1090.44   -2192.84 96.2157 92.8012   0.00   0.00 153.00
 Home kWH = 2924.22 over points 576 to 2016
 ```
-### Baseline Outage
+### Utility Outage; Non-Hub Refrigerators On During Outage
 
 Includes minimal 10 W battery, 50 kW PV, Refrigerators on during outage.
+It is assumed that community members would voluntarily turn off all
+electric loads outside of the hub, except for refrigerators.
+
+![Power and Voltage - Refrigerators On](soco_.png)
+
+![Hub Power - Refrigerators On](soco__hub.png)
 
 ```
 Total meter bill = 84573.247
@@ -95,9 +120,12 @@ hub_dg_mtr    -18362.85  -36737.88 96.2157 92.8012   0.00   0.00 153.00
 hub_pv_mtr     -1090.44   -2192.84 96.2157 92.8012   0.00   0.00 153.00
 Home kWH = 33014.74 over points 576 to 2016
 ```
-### Increased Solar 
+### Increased Solar (Refrigerators On)
 
 Includes a minimal 10 W battery, 500 kW PV, Refrigerators on during outage.
+![Power and Voltage - Solar](soco_pv.png)
+
+![Hub Power - Solar](soco_pv_hub.png)
 
 ```
 Total meter bill = 78249.405
@@ -112,9 +140,13 @@ hub_dg_mtr    -12053.00  -24118.18 96.2186 92.8012   0.00   0.00 136.83
 hub_pv_mtr    -10958.36  -21928.40 96.2186 92.8012   0.00   0.00 136.83
 Home kWH = 33014.74 over points 576 to 2016
 ```
-### Hybrid Solar plus Storage
+### Hybrid Solar plus Storage (Refrigerators On)
 
 Includes 110 kW battery, 500 kW PV, Refrigerators on during outage.
+
+![Power and Voltage - BESS](soco_bess.png)
+
+![Hub Power - BESS](soco_bess_hub.png)
 
 ```
 Total meter bill = 78571.028
@@ -129,9 +161,16 @@ hub_dg_mtr    -11754.63  -23521.36 96.2186 92.8012   0.00   0.00 136.83
 hub_pv_mtr    -10958.36  -21928.40 96.2186 92.8012   0.00   0.00 136.83
 Home kWH = 33014.74 over points 576 to 2016
 ```
-### Hub-Only Case with Small Diesel Generator.
+### Hub-Only Case with Small Diesel Generator and Refrigerators Off
 
 Includes a 110 kW battery, 500 kW PV, Refrigerators off during outage, smaller 30-kW DG.
+Although refrigerators outside the hub would lose service, this scenario
+shows how the community resiliance hub could be operated with a DG 20 times
+smaller than the existing DG.
+
+![Power and Voltage - Hub Only](soco_hub.png)
+
+![Hub Power - Hub Only](soco_hub_hub.png)
 
 ```
 Total meter bill = 73095.682
