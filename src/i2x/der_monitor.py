@@ -19,7 +19,7 @@ import tkinter.ttk as ttk
 from tkinter import filedialog
 from tkinter import messagebox
 
-from .helpers import parse_kw
+#from .helpers import parse_kw
 
 import matplotlib
 
@@ -624,7 +624,7 @@ class TespMonitorGUI:
     self.fig.canvas.draw()
 
 
-def show_tesp_monitor(HELICS=True):
+def show_der_monitor(HELICS=True):
   """Creates and displays the monitor GUI
   """
   global helics, fncs
