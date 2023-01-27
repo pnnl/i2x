@@ -40,13 +40,28 @@ solarChoices = {
   'pvduty':{'dt':1.0, 'file':'pvloadshape-1sec-2900pts.dat', 'npts':0, 'data':None}
   }
 
-loadChoices = ['default']
+loadChoices = {
+  'default':{'t':[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+             'p':[0.677,0.6256,0.6087,0.5833,0.58028,0.6025,0.657,0.7477,0.832,0.88,0.94,0.989,0.985,0.98,0.9898,0.999,1,0.958,0.936,0.913,0.876,0.876,0.828,0.756,0.677]}
+  }
 
-inverterChoices = ['CONSTANT_PF',
-                   'VOLT_WATT', 
-                   'VOLT_VAR',
-                   'VOLT_VAR_AVR', 
-                   'VOLT_VAR_VOLT_WATT']
+inverterChoices = {
+  'CONSTANT_PF':{'v':[0.90,1.10],
+                 'p':[1.00,1.00],
+                 'q':[0.00,0.00]},
+  'VOLT_WATT':{'v':[0.90,1.06,1.10],
+               'p':[1.00,1.00,0.20],
+               'q':[0.00,0.00,0.00]}, 
+  'VOLT_VAR':{'v':[0.90,0.92,0.98,1.02,1.08,1.10],
+              'p':[1.00,1.00,1.00,1.00,1.00,1.00],
+              'q':[0.44,0.44,0.00,0.00,-.44,-.44]},
+  'VOLT_VAR_AVR':{'v':[0.90,0.98,1.02,1.10],
+                  'p':[1.00,1.00,1.00,1.00],
+                  'q':[0.44,0.44,-.44,-.44]}, 
+  'VOLT_VAR_VOLT_WATT':{'v':[0.90,0.92,0.98,1.02,1.06,1.10],
+                        'p':[1.00,1.00,1.00,1.00,1.00,0.00],
+                        'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
+  }
 
 # var columns are label, value, hint, JSON class, JSON attribute
 # if there is a sixth column, that will be the name of a Choices tuple, to be edited via Combobox
@@ -139,6 +154,18 @@ class DERConfigGUI:
     self.cb_load.set(next(iter(loadChoices)))
     self.cb_load.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_load.bind('<<ComboboxSelected>>', self.UpdateLoadProfile)
+    self.f4.columnconfigure(0, weight=0)
+    self.f4.columnconfigure(1, weight=1)
+    self.f4.rowconfigure(0, weight=0)
+    self.f4.rowconfigure(1, weight=1)
+    self.fig_load = plt.figure(figsize=(5, 4), dpi=100)
+    self.ax_load = self.fig_load.add_subplot()
+    self.ax_load.set_xlabel('Time [hr]')
+    self.ax_load.set_ylabel('Power [pu]')
+    self.canvas_load = FigureCanvasTkAgg(self.fig_load, master=self.f4)
+    self.canvas_load.get_tk_widget().grid(row=1, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
+    self.canvas_load.draw()
+    self.UpdateLoadProfile(None)
 
     self.f5 = ttk.Frame(self.nb, name='varsInverter')
     lab = ttk.Label(self.f5, text='Inverter Mode: ', relief=tk.RIDGE)
@@ -147,6 +174,18 @@ class DERConfigGUI:
     self.cb_inverter.set(next(iter(inverterChoices)))
     self.cb_inverter.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_inverter.bind('<<ComboboxSelected>>', self.UpdateInverterMode)
+    self.f5.columnconfigure(0, weight=0)
+    self.f5.columnconfigure(1, weight=1)
+    self.f5.rowconfigure(0, weight=0)
+    self.f5.rowconfigure(1, weight=1)
+    self.fig_inverter = plt.figure(figsize=(5, 4), dpi=100)
+    self.ax_inverter = self.fig_inverter.add_subplot()
+    self.ax_inverter.set_xlabel('Voltage [pu]')
+    self.ax_inverter.set_ylabel('Power [pu]')
+    self.canvas_inverter = FigureCanvasTkAgg(self.fig_inverter, master=self.f5)
+    self.canvas_inverter.get_tk_widget().grid(row=1, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
+    self.canvas_inverter.draw()
+    self.UpdateInverterMode(None)
 
     self.f6 = ttk.Frame(self.nb, name='varsOutput')
 #
@@ -427,7 +466,7 @@ class DERConfigGUI:
     y = row['data']
     t = np.linspace (0.0, tmax, npts) / 3600.0
     self.ax_solar.cla()
-    self.ax_solar.plot(t, y)
+    self.ax_solar.plot(t, y, color='blue')
     self.ax_solar.set_xlabel('Time [hr]')
     self.ax_solar.set_ylabel('Power [pu]')
     self.ax_solar.grid()
@@ -437,12 +476,32 @@ class DERConfigGUI:
 #    messagebox.showinfo(title='Combobox', message=msg)
 
   def UpdateLoadProfile(self, event):
-    profile = self.cb_load.get()
-    messagebox.showinfo(title='Combobox', message='Load=' + profile)
+    ticks = [0, 4, 8, 12, 16, 20, 24]
+    key = self.cb_load.get()
+    row = loadChoices[key]
+    self.ax_load.cla()
+    self.ax_load.plot(row['t'], row['p'], color='blue')
+    self.ax_load.set_xlabel('Hour [pu]')
+    self.ax_load.set_ylabel('Power [pu]')
+    self.ax_load.set_xticks(ticks)
+    self.ax_load.set_xlim(ticks[0], ticks[-1])
+    self.ax_load.grid()
+    self.canvas_load.draw()
 
   def UpdateInverterMode(self, event):
-    profile = self.cb_inverter.get()
-    messagebox.showinfo(title='Combobox', message='Inverter=' + profile)
+    ticks = [0.90, 0.92, 0.94, 0.96, 0.98, 1.00, 1.02, 1.04, 1.06, 1.08, 1.10]
+    key = self.cb_inverter.get()
+    row = inverterChoices[key]
+    self.ax_inverter.cla()
+    self.ax_inverter.plot(row['v'], row['p'], label='Real', color='blue')
+    self.ax_inverter.plot(row['v'], row['q'], label='Reactive', color='red')
+    self.ax_inverter.set_xlabel('Voltage [pu]')
+    self.ax_inverter.set_ylabel('Power [pu]')
+    self.ax_inverter.set_xticks(ticks)
+    self.ax_inverter.set_xlim(ticks[0], ticks[-1])
+    self.ax_inverter.grid()
+    self.ax_inverter.legend()
+    self.canvas_inverter.draw()
 #
 # def update_entry(self, ctl, val):
 #   ctl.delete(0, tk.END)
