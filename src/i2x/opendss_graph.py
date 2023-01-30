@@ -24,24 +24,6 @@ def select_kvbase (val):
       kv = kvbases[i]
   return kv
 
-def is_node_class(cls):
-  if cls == 'load':
-    return True
-  if cls == 'capacitor':
-    return True
-  if cls == 'pvsystem':
-    return True
-  if cls == 'vsource':
-    return True
-  if cls == 'circuit':
-    return True
-  return False
-
-def get_nclass(nd):
-  if nd == '0':
-    return 'ground'
-  return 'bus'
-
 def letter_phases (dss_phases):
   phs = ''
   if '1' in dss_phases:
@@ -69,38 +51,6 @@ def dss_bus_phases (tok):
     bus, phs = parse_bus_phases (tok[5:])
   return bus, phs
 
-def dss_parm (tok):
-  idx = tok.find('=')
-  if idx >= 0:
-    tok = tok[idx+1:]
-  idx = tok.find('(')
-  if idx >= 0:
-    tok = tok[idx+1:]
-  idx = tok.find(')')
-  if idx >= 0:
-    tok = tok[:idx]
-  return tok.strip()
-
-def dss_transformer_bus_phases (tok1, tok2):
-  bus1, phs1 = parse_bus_phases (dss_parm(tok1))
-  bus2, phs2 = parse_bus_phases (dss_parm(tok2))
-  return bus1, bus2, phs1, phs2
-
-def dss_transformer_conns (tok1, tok2):
-  parm1 = dss_parm (tok1)
-  parm2 = dss_parm (tok2)
-  return parm1, parm2
-
-def dss_transformer_kvas (tok1, tok2):
-  parm1 = dss_parm (tok1)
-  parm2 = dss_parm (tok2)
-  return float (parm1), float (parm2)
-
-def dss_transformer_kvs (tok1, tok2):
-  parm1 = dss_parm (tok1)
-  parm2 = dss_parm (tok2)
-  return float (parm1), float (parm2)
-
 def dss_transformer_xhl (tok):
   return float (dss_parm(tok))
 
@@ -108,35 +58,6 @@ def adjust_nominal_kv (kv, nphs, bDelta):
   if (nphs == 1) and not bDelta:
     kv *= math.sqrt(3.0)
   return kv
-
-def merge_ndata(old, new): # not touching nomkv, x, y, busnum, dist, phases
-  if new['kw'] != 0.0:
-    old['kw'] += new['kw']
-  if new['kvar'] != 0.0:
-    old['kvar'] += new['kvar']
-  if new['capkvar'] != 0.0:
-    old['capkvar'] += new['capkvar']
-  if new['derkva'] != 0.0:
-    old['derkva'] += new['derkva']
-  if new['source']:
-    old['source'] = True
-  old['shunts'].append (new['shunts'][0])
-  return old
-
-def merge_busmap(dssdata, row):
-  dssdata['busnum'] = row['busnum']
-  dssdata['x'] = row['x']
-  dssdata['y'] = row['y']
-  dssdata['phases'] = row['phases']  # TODO - accumulate these from parsing individual model lines?
-  return dssdata
-
-def format_ndata(ndata):
-  ndata ['kw'] = float ('{:.3f}'.format (ndata['kw']))
-  ndata ['kvar'] = float ('{:.3f}'.format (ndata['kvar']))
-  ndata ['capkvar'] = float ('{:.3f}'.format (ndata['capkvar']))
-  ndata ['derkva'] = float ('{:.3f}'.format (ndata['derkva']))
-  ndata ['nomkv'] = select_kvbase (ndata['nomkv'])
-  return ndata
 
 def add_row_to_class (dict, row, toks, strtoks):
   name = row[1].split('.')[1]
@@ -225,6 +146,34 @@ def set_branch_phasing (dict):
     row['bus1'] = row['bus1'].partition('.')[0]
     row['bus2'] = row['bus2'].partition('.')[0]
 
+def phases_ndata (phases):
+  return {'phases':0, 'nomkv':0.0, 'loadkw': 0.0, 'genkva': 0.0, 'genkw': 0.0, 
+    'pvkva': 0.0, 'pvkw': 0.0, 'batkva': 0.0, 'batkw': 0.0, 'batkwh': 0.0, 'capkvar': 0.0, 
+    'shunts':[], 'source':False}
+
+def xy_ndata (x, y):
+  ndata = phases_ndata(0)
+  ndata['x'] = x
+  ndata['y'] = y
+  return ndata
+
+def update_node_phases (G, nd, phases):
+  if 'ndata' not in G.nodes()[nd]:
+    G.nodes()[nd]['ndata'] = phases_ndata(phases)
+  else:
+    oldphases = G.nodes()[nd]['ndata']['phases']
+    G.nodes()[nd]['ndata']['phases'] = max (oldphases, phases)
+
+def update_node_class (G, data, nclass):
+  if data['bus1'] not in G.nodes():
+    nph = 3
+    if 'phases' in data:
+      nph = data['phases']
+    G.add_node (data['bus1'], nclass=nclass, ndata=phases_ndata(nph))
+  else:
+    G.nodes()[data['bus1']]['nclass'] = nclass
+  return G.nodes()[data['bus1']]['ndata']
+
 def make_opendss_graph(saved_path, outfile):
   #-----------------------
   # Pull Model Into Memory
@@ -233,7 +182,7 @@ def make_opendss_graph(saved_path, outfile):
   fp = open (os.path.join (saved_path, 'BusCoords.dss'), 'r')
   rdr = csv.reader (fp)
   for row in rdr:
-    bus = row[0]
+    bus = row[0].lower()
     if bus not in busxy:
       busxy[bus] = {'x':float(row[1]),'y':float(row[2])}
   fp.close()
@@ -317,126 +266,85 @@ def make_opendss_graph(saved_path, outfile):
   print ('read {:4d} sources'.format (len(sources)))
   print ('read {:4d} busxy'.format (len(busxy)))
 
-  quit()
-
-  # construct a graph of the model, starting with known links
+  # construct a graph of the model, starting with all known buses that have XY coordinates
   G = nx.Graph()
-  for ln in lines:
-    if ln[0] == 'new':
-      toks = ln[1].split('.')
-      dssclass = toks[0]
-      dssname = toks[1]
-      phases = ''
-      n1 = '0'
-      n2 = '0'
-      dssdata = {}
-      if is_node_class (dssclass):
-        dssdata['shunts'] = ['{:s}.{:s}'.format (dssclass, dssname)]
-        dssdata['nomkv'] = 0.0
-        dssdata['kw'] = 0.0
-        dssdata['kvar'] = 0.0
-        dssdata['capkvar'] = 0.0
-        dssdata['derkva'] = 0.0
-        if (dssclass == 'vsource') or (dssclass == 'circuit'):
-          dssdata['source'] = True
-        else:
-          dssdata['source'] = False
-        bDelta = False
-        for i in range(2,len(ln)):
-          if ln[i].startswith('bus1='):
-            n1, phases = dss_bus_phases (ln[i])
-          elif ln[i].startswith('conn='):
-            if 'd' in dss_parm(ln[i]):
-              bDelta = True
-          elif ln[i].startswith('kv='):
-            dssdata['nomkv'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('kw=') and dssclass != 'storage':
-            dssdata['kw'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('kvar='):
-            if dssclass == 'capacitor':
-              dssdata['capkvar'] = float (dss_parm(ln[i]))
-            else:
-              dssdata['kvar'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('kva='):
-            dssdata['derkva'] = float (dss_parm(ln[i]))
-        dssdata['phases'] = phases
-        if 'nomkv' in dssdata:
-          dssdata['nomkv'] = adjust_nominal_kv (dssdata['nomkv'], len(phases), bDelta)
-        if n1 not in G.nodes():
-          if n1 in busmap:
-            dssdata = merge_busmap (dssdata, busmap[n1])
-          G.add_node (n1, nclass=get_nclass(n1), ndata=format_ndata(dssdata))
-        else:
-          if 'ndata' in G.nodes()[n1]:
-            dssdata = merge_ndata (G.nodes()[n1]['ndata'], dssdata)
-          elif n1 in busmap:
-            dssdata = merge_busmap (dssdata, busmap[n1])
-          G.nodes()[n1]['ndata'] = format_ndata(dssdata)
-      else:
-        for i in range(2,len(ln)):
-          if ln[i].startswith('bus1='):
-            n1, phases = dss_bus_phases (ln[i])
-          elif ln[i].startswith('bus2='):
-            n2, phases = dss_bus_phases (ln[i])
-          elif ln[i].startswith('buses='):  # TODO: handle transformers with more than 2 windings
-            n1, n2, phs1, phs2 = dss_transformer_bus_phases (ln[i], ln[i+1])
-            dssdata['phs1'] = phs1
-            dssdata['phs2'] = phs2
-            phases = phs1
-          elif ln[i].startswith('conns='):
-            conn1, conn2 = dss_transformer_conns (ln[i], ln[i+1])
-            dssdata['conn1'] = conn1
-            dssdata['conn2'] = conn2
-          elif ln[i].startswith('kvs='):
-            kv1, kv2 = dss_transformer_kvs (ln[i], ln[i+1])
-            dssdata['kv1'] = kv1
-            dssdata['kv2'] = kv2
-          elif ln[i].startswith('kvas='):
-            kva1, kva2 = dss_transformer_kvas (ln[i], ln[i+1])
-            dssdata['kva1'] = kva1
-            dssdata['kva2'] = kva2
-          elif ln[i].startswith('xhl='):
-            dssdata['xhl'] = dss_transformer_xhl (ln[i])
-          elif ln[i].startswith('kw='):
-            dssdata['kw'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('kvar='):
-            dssdata['kvar'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('len='):
-            dssdata['len'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('kv='):
-            dssdata['kv'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('r1='):
-            dssdata['r1'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('x1='):
-            dssdata['x1'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('c1='):
-            dssdata['c1'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('r0='):
-            dssdata['r0'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('x0='):
-            dssdata['x0'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('c0='):
-            dssdata['c0'] = float (dss_parm(ln[i]))
-          elif ln[i].startswith('conn='):
-            dssdata['conn'] = dss_parm(ln[i])
-        dssdata['phases'] = phases
-        G.add_edge(n1,n2,eclass=dssclass,ename=dssname,edata=dssdata)
+  for key, data in busxy.items():
+    G.add_node (key, nclass='bus', ndata=xy_ndata (data['x'], data['y']))
 
-  # backfill missing node attributes
-  # TODO: try to fill in the missing/zero nomkv values
-  for n in G.nodes():
-    if 'ndata' not in G.nodes()[n]:
-      if n in busmap:
-        row = busmap[n]
-        dssdata = {'shunts':[], 'nomkv':0.0, 'kw':0.0, 'kvar':0.0, 'capkvar':0.0, 'derkva':0.0, 'source':False,
-            'phases':row['phases'], 'busnum':row['busnum'], 'x':row['x'], 'y':row['y']}
-        G.nodes()[n]['ndata'] = dssdata
-      else:
-        print ('cannot find node', n, 'in the busmap')
+  # add series power delivery branches (not handling series capacitors)
+  for key, data in lines.items():
+    if data['Switch']:
+      eclass = 'switch'
+    else:
+      eclass = 'line'
+    G.add_edge(data['bus1'],data['bus2'],eclass=eclass,ename=key,edata=data)
+    update_node_phases (G, data['bus1'], data['phases'])
+    update_node_phases (G, data['bus2'], data['phases'])
+
+  for key, data in reactors.items():
+    G.add_edge(data['bus1'],data['bus2'],eclass='reactor',ename=key,edata=data)
+    update_node_phases (G, data['bus1'], data['phases'])
+    update_node_phases (G, data['bus2'], data['phases'])
+
+  for key, data in transformers.items():
+    eclass = 'transformer'
+    if 'regulator' in data:
+      if data['regulator']:
+        eclass = 'regulator'
+    G.add_edge(data['buses'][0],data['buses'][1],eclass=eclass,ename=key,edata=data)
+    update_node_phases (G, data['buses'][0], data['phases'])
+    update_node_phases (G, data['buses'][1], data['phases'])
+    if data['windings'] > 2:
+      G.add_edge(data['buses'][0],data['buses'][2],eclass=eclass,ename=key,edata=data)
+      update_node_phases (G, data['buses'][2], data['phases'])
+
+  # add the shunt elements
+  for key, data in sources.items():
+    old = update_node_class (G, data, 'source')
+    old['source'] = True
+    old['shunts'].append ('vsource.{:s}'.format(key))
+
+  for key, data in loads.items():
+    old = update_node_class (G, data, 'load')
+    old['phases'] = max (old['phases'], data['phases'])
+    old['nomkv'] = max (old['nomkv'], data['kV'])
+    old['loadkw'] += data['kW']
+    old['shunts'].append ('load.{:s}'.format(key))
+
+  for key, data in capacitors.items():
+    old = update_node_class (G, data, 'capacitor')
+    old['phases'] = max (old['phases'], data['phases'])
+    old['nomkv'] = max (old['nomkv'], data['kv'])
+    old['capkvar'] += data['kvar']
+    old['shunts'].append ('capacitor.{:s}'.format(key))
+
+  for key, data in generators.items():
+    old = update_node_class (G, data, 'generator')
+    old['phases'] = max (old['phases'], data['phases'])
+    old['nomkv'] = max (old['nomkv'], data['kv'])
+    old['genkw'] += data['kW']
+    old['genkva'] += data['kVA']
+    old['shunts'].append ('generator.{:s}'.format(key))
+
+  for key, data in solars.items():
+    old = update_node_class (G, data, 'solar')
+    old['phases'] = max (old['phases'], data['phases'])
+    old['nomkv'] = max (old['nomkv'], data['kv'])
+    old['pvkw'] += data['Pmpp']
+    old['pvkva'] += data['kVA']
+    old['shunts'].append ('pvsystem.{:s}'.format(key))
+
+  for key, data in batteries.items():
+    old = update_node_class (G, data, 'storage')
+    old['phases'] = max (old['phases'], data['phases'])
+    old['nomkv'] = max (old['nomkv'], data['kv'])
+    old['batkw'] += data['kWrated']
+    old['batkwh'] += data['kWhrated']
+    old['batkva'] += data['kVA']
+    old['shunts'].append ('storage.{:s}'.format(key))
 
   # save the graph
-  json_fp = open (root + '.json', 'w')
+  json_fp = open (outfile, 'w')
   json_data = nx.readwrite.json_graph.node_link_data(G)
   json.dump (json_data, json_fp, indent=2)
   json_fp.close()
-
