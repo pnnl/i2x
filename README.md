@@ -1,8 +1,11 @@
-# Interconnection Innovation e-Xchange (i2x) Test Systems 
+# Interconnection Innovation e-Xchange (i2x) Open Test Systems 
 
-This repository contains models and scripts for the roadmap analytics,
-i.e., sprint studies, and the interconnection study guides developed
-in the [i2x project](https://energy.gov/i2x).
+This repository contains open grid network models and modeling scripts to 
+test and compare different factors/measures (e.g., technoeconomic, social, 
+equity, and engineering) that examine practices and policies for 
+interconnection queue management and cost allocation.  This repository is 
+used for engineering training bootcamps, interconnection study guides, and 
+an interconnection roadmap for the i2x project [i2x project](https://energy.gov/i2x).  
 
 ## License
 
