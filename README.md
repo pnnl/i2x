@@ -5,7 +5,7 @@ test and compare different factors/measures (e.g., technoeconomic, social,
 equity, and engineering) that examine practices and policies for 
 interconnection queue management and cost allocation.  This repository is 
 used for engineering training bootcamps, interconnection study guides, and 
-an interconnection roadmap for the i2x project [i2x project](https://energy.gov/i2x).  
+an interconnection roadmap for the [i2x project](https://energy.gov/i2x).  
 
 ## License
 
