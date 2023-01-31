@@ -18,4 +18,5 @@ from .der_panel import show_der_config
 from .der_monitor import show_der_monitor
 from .opendss_graph import make_opendss_graph
 from .plot_opendss_feeder import plot_opendss_feeder
+from .plot_opendss_feeder import load_opendss_graph
 

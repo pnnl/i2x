@@ -11,6 +11,7 @@ References:
 import csv
 import json
 import os
+import i2x.api as i2x
 
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -30,8 +31,8 @@ import numpy as np
 support_dir = './support/'
 
 feederChoices = {
-  'ieee9500':{'path':'./ieee9500/', 'base':'Master-bal-initial-config.dss'},
-  'ieee_lvn':{'path':'./ieee_lvn/', 'base':'SecPar.dss'}
+  'ieee9500':{'path':'./ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
+  'ieee_lvn':{'path':'./ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
   }
 
 solarChoices = {
@@ -124,6 +125,7 @@ class DERConfigGUI:
     self.toolbar = NavigationToolbar2Tk(self.canvas_feeder, self.f1, pack_toolbar=False)
     self.toolbar.update()
     self.toolbar.grid(row=2, columnspan=2)
+    self.UpdateFeeder(None)
 
     self.f2 = ttk.Frame(self.nb, name='varsDER')
 
@@ -454,8 +456,17 @@ class DERConfigGUI:
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()
     row = feederChoices[key]
-    fname = os.path.join (row['path'], row['base'])
-    messagebox.showinfo(title='Combobox', message='Feeder File=' + fname)
+    self.feeder_name = key
+    self.feeder_path = row['path']
+    self.feeder_base = row['base']
+    fname = os.path.join (self.feeder_path, row['network'])
+    self.G = i2x.load_opendss_graph(fname)
+
+    self.ax_feeder.cla()
+    i2x.plot_opendss_feeder (self.G, on_canvas=True, ax=self.ax_feeder, fig=self.fig_feeder)
+    self.canvas_feeder.draw()
+
+#    messagebox.showinfo(title='Combobox', message='Feeder File=' + fname)
 
   def UpdateSolarProfile(self, event):
     key = self.cb_solar.get()

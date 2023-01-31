@@ -140,13 +140,16 @@ def get_edge_mnemonic(eclass):
     return edgeTypes[eclass]['tag']
   return edgeTypes['unknown']['tag']
 
-def plot_opendss_feeder (jname, plot_labels = True, pdf_name = None):
+def load_opendss_graph (jname):
   lp = open (jname).read()
   feeder = json.loads(lp)
   G = nx.readwrite.json_graph.node_link_graph(feeder)
-  nbus = G.number_of_nodes()
-  nbranch = G.number_of_edges()
-  print ('read graph with', nbus, 'nodes and', nbranch, 'edges')
+#  nbus = G.number_of_nodes()
+#  nbranch = G.number_of_edges()
+#  print ('read graph with', nbus, 'nodes and', nbranch, 'edges')
+  return G
+
+def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax = None, title=None, on_canvas=False):
 
   # extract the XY coordinates available for plotting
   xy = {}
@@ -188,13 +191,15 @@ def plot_opendss_feeder (jname, plot_labels = True, pdf_name = None):
     if not bFound:
       print ('unable to plot', data['ename'])
 
-  fig, ax = plt.subplots()
+  if fig is None:
+    fig, ax = plt.subplots()
   nx.draw_networkx_nodes (G, xy, nodelist=plotNodes, node_color=nodeColors, node_size=nodeSizes, ax=ax)
   nx.draw_networkx_edges (G, xy, edgelist=plotEdges, edge_color=edgeColors, width=edgeWidths, alpha=0.8, ax=ax)
   if plot_labels:
     nx.draw_networkx_labels (G, xyLbl, lblNode, font_size=8, font_color='k', 
                  horizontalalignment='left', verticalalignment='baseline', ax=ax)
-  plt.title ('Some Title')
+  if title is not None:
+    plt.title (title)
   plt.xlabel ('X coordinate [k]')
   plt.ylabel ('Y coordinate [k]')
   plt.grid(linestyle='dotted')
@@ -207,5 +212,6 @@ def plot_opendss_feeder (jname, plot_labels = True, pdf_name = None):
   plt.legend(lns, labs, loc='lower right')
   if pdf_name is not None:
     plt.savefig (pdf_name)
-  plt.show()
+  if not on_canvas:
+    plt.show()
 
