@@ -7,6 +7,17 @@ interconnection queue management and cost allocation.  This repository is
 used for engineering training bootcamps, interconnection study guides, and 
 an interconnection roadmap for the [i2x project](https://energy.gov/i2x).  
 
+## Developers
+
+The steps for deployment to PyPi are:
+
+1. `rm -rf dist`
+2. `python -m build`
+3. `twine check dist/*` should not show any errors
+4. `twine upload -r testpypi dist/*` requires project credentials for i2x on test.pypi.org
+5. `pip install -i https://test.pypi.org/simple/ i2x==0.0.1` for local testing of the deployable package, example version 0.0.1
+6. `twine upload dist/*` final deployment; requires project credentials for i2x on pypi.org
+
 ## License
 
 See [License](license.txt)

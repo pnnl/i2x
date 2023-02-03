@@ -18,6 +18,7 @@ import tkinter.ttk as ttk
 from tkinter import filedialog
 from tkinter import messagebox
 import matplotlib
+import pkg_resources
 
 try:
   matplotlib.use('TkAgg')
@@ -28,11 +29,11 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-support_dir = './support/'
+support_dir = 'models/support/'
 
 feederChoices = {
-  'ieee9500':{'path':'./ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
-  'ieee_lvn':{'path':'./ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
+  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
+  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
   }
 
 solarChoices = {
@@ -94,7 +95,8 @@ class DERConfigGUI:
     self.nb.pack(fill='both', expand='yes')
 
     for key, row in solarChoices.items():
-      fname = os.path.join (support_dir, row['file'])
+#      fname = os.path.join (support_dir, row['file'])
+      fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
       row['data'] = np.loadtxt (fname)
       row['npts'] = row['data'].shape[0]
       peak = max(np.abs(row['data']))
@@ -459,7 +461,8 @@ class DERConfigGUI:
     self.feeder_name = key
     self.feeder_path = row['path']
     self.feeder_base = row['base']
-    fname = os.path.join (self.feeder_path, row['network'])
+#    fname = os.path.join (self.feeder_path, row['network'])
+    fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
     self.G = i2x.load_opendss_graph(fname)
 
     self.ax_feeder.cla()
