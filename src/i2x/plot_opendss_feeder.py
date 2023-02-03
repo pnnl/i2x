@@ -83,6 +83,12 @@ import matplotlib.patches as patches
 import networkx as nx
 import sys
 import csv
+import pkg_resources
+
+feederChoices = {
+  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
+  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
+  }
 
 lblDeltaY = 0.35
 
@@ -140,14 +146,23 @@ def get_edge_mnemonic(eclass):
     return edgeTypes[eclass]['tag']
   return edgeTypes['unknown']['tag']
 
-def load_opendss_graph (jname):
-  lp = open (jname).read()
+def load_opendss_graph (json_name):
+  lp = open (json_name).read()
   feeder = json.loads(lp)
   G = nx.readwrite.json_graph.node_link_graph(feeder)
 #  nbus = G.number_of_nodes()
 #  nbranch = G.number_of_edges()
 #  print ('read graph with', nbus, 'nodes and', nbranch, 'edges')
   return G
+
+def load_builtin_graph (feeder_name):
+  if feeder_name not in feederChoices:
+    print ('{:s} is not a built-in feeder choice'.format(feeder_name))
+    print ('please choose from', feederChoices.keys())
+    return None
+  row = feederChoices[feeder_name]
+  fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
+  return load_opendss_graph (fname)
 
 def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax = None, title=None, on_canvas=False):
 

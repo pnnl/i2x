@@ -14,6 +14,12 @@ import networkx as nx
 import json
 import os
 import csv
+import pkg_resources
+
+feederChoices = {
+  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
+  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
+  }
 
 kvbases = [0.208, 0.418, 0.48, 4.16, 12.47, 13.2, 13.8, 34.5, 69.0, 115.0, 138.0, 230.0]
 def select_kvbase (val):
@@ -348,3 +354,12 @@ def make_opendss_graph(saved_path, outfile):
   json_data = nx.readwrite.json_graph.node_link_data(G)
   json.dump (json_data, json_fp, indent=2)
   json_fp.close()
+
+def make_builtin_graph (feeder_name):
+  if feeder_name not in feederChoices:
+    print ('{:s} is not a built-in feeder choice'.format(feeder_name))
+    print ('please choose from', feederChoices.keys())
+    return None
+  row = feederChoices[feeder_name]
+  fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
+

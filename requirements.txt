@@ -1,0 +1,4 @@
+matplotlib==3.5.2
+networkx==2.8.4
+py-dss-interface==1.0.1
+

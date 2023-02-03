@@ -7,6 +7,24 @@ interconnection queue management and cost allocation.  This repository is
 used for engineering training bootcamps, interconnection study guides, and 
 an interconnection roadmap for the [i2x project](https://energy.gov/i2x).  
 
+## Users
+
+The i2x DER package has been tested on Windows only, with Python 3.10. It
+should work on Mac OS X and Linux as well, but this has not been tested yet.
+During the installation process, a version of OpenDSS will be installed
+to work with the Python interface, i.e., you do not have to install OpenDSS
+separately. The steps are:
+
+1. Install Python 3 if necessary. This is available from [Python Site](https://python.org), [Anaconda/Miniconda](https://www.anaconda.com/), or the [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5).
+2. From a command prompt, `pip install i2x --upgrade`
+
+Once installed, create a file called _i2xDER.py_ with the following contents:
+
+    import i2x.api as i2x
+      i2x.show_der_config()
+
+Then start the interface from a command prompt: `python i2xDER.py`
+
 ## Developers
 
 The steps for deployment to PyPi are:
@@ -15,7 +33,7 @@ The steps for deployment to PyPi are:
 2. `python -m build`
 3. `twine check dist/*` should not show any errors
 4. `twine upload -r testpypi dist/*` requires project credentials for i2x on test.pypi.org
-5. `pip install -i https://test.pypi.org/simple/ i2x==0.0.1` for local testing of the deployable package, example version 0.0.1
+5. `pip install -i https://test.pypi.org/simple/ i2x==0.0.2` for local testing of the deployable package, example version 0.0.2
 6. `twine upload dist/*` final deployment; requires project credentials for i2x on pypi.org
 
 ## License
