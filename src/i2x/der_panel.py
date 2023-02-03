@@ -12,11 +12,13 @@ import csv
 import json
 import os
 import i2x.api as i2x
+import py_dss_interface
 
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import scrolledtext
 import matplotlib
 import pkg_resources
 
@@ -65,6 +67,9 @@ inverterChoices = {
                         'p':[1.00,1.00,1.00,1.00,1.00,0.00],
                         'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
   }
+
+solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY', 'YEARLY']
+controlModeChoices = ['OFF', 'STATIC', 'TIME', 'EVENT']
 
 # var columns are label, value, hint, JSON class, JSON attribute
 # if there is a sixth column, that will be the name of a Choices tuple, to be edited via Combobox
@@ -193,40 +198,35 @@ class DERConfigGUI:
     self.UpdateInverterMode(None)
 
     self.f6 = ttk.Frame(self.nb, name='varsOutput')
-#
+    lab = ttk.Label(self.f6, text='Solution Mode', relief=tk.RIDGE)
+    lab.grid(row=0, column=0, sticky=tk.NSEW)
+    self.cb_soln_mode = ttk.Combobox(self.f6, values=solutionModeChoices, name='cbSolutionMode')
+    self.cb_soln_mode.grid(row=0, column=1, sticky=tk.NSEW)
+    lab = ttk.Label(self.f6, text='Control Mode', relief=tk.RIDGE)
+    lab.grid(row=0, column=2, sticky=tk.NSEW)
+    self.cb_ctrl_mode = ttk.Combobox(self.f6, values=controlModeChoices, name='cbControlMode')
+    self.cb_ctrl_mode.grid(row=0, column=3, sticky=tk.NSEW)
+    lab = ttk.Label(self.f6, text='Stop Time [min]:', relief=tk.RIDGE)
+    lab.grid(row=1, column=0, sticky=tk.NSEW)
+    self.ent_stop = ttk.Entry(self.f6, name='stop')
+    self.ent_stop.insert(0, '1440')
+    self.ent_stop.grid(row=1, column=1, sticky=tk.NSEW)
+    lab = ttk.Label(self.f6, text='Time Step [s]:', relief=tk.RIDGE)
+    lab.grid(row=1, column=2, sticky=tk.NSEW)
+    self.ent_step = ttk.Entry(self.f6, name='step')
+    self.ent_step.insert(0, '5')
+    self.ent_step.grid(row=1, column=3, sticky=tk.NSEW)
+    #ttk.Style().configure('TButton', background='blue')
+    ttk.Style().configure('TButton', foreground='blue')
+    self.btn_run = ttk.Button(self.f6, text='Run', command=self.RunOpenDSS)
+    self.btn_run.grid(row=2, column=0, sticky=tk.NSEW)
+    self.txt_output = scrolledtext.ScrolledText(self.f6)
+    self.txt_output.grid(row=3, columnspan=4, sticky=tk.W + tk.E + tk.N + tk.S)
+    self.f6.rowconfigure (0, weight=0)
+    self.f6.rowconfigure (1, weight=0)
+    self.f6.rowconfigure (2, weight=0)
+    self.f6.rowconfigure (3, weight=1)
 
-    # ttk.Style().configure('TButton', background='blue')
-#   ttk.Style().configure('TButton', foreground='blue')
-#   btn = ttk.Button(self.f1, text='Lat/Long/Alt/TZ from TMY3', command=self.ReadLatLong)
-#   btn.grid(row=len(varsTM) + 2, column=1, sticky=tk.NSEW)
-#   btn = ttk.Button(self.f1, text='Save Config...', command=self.SaveConfig)
-#   btn.grid(row=len(varsTM) + 3, column=1, sticky=tk.NSEW)
-#   btn = ttk.Button(self.f1, text='Open Config...', command=self.OpenConfig)
-#   btn.grid(row=len(varsTM) + 4, column=1, sticky=tk.NSEW)
-#
-#   lab = ttk.Label(self.f7, text='Columns', relief=tk.RIDGE)
-#   lab.grid(row=0, column=0, sticky=tk.NSEW)
-#   cb = ttk.Combobox(self.f7, values=monteCarloChoices, name='cb1')
-#   cb.set(monteCarloChoices[1])
-#   cb.grid(row=0, column=1, sticky=tk.NSEW)
-#   cb = ttk.Combobox(self.f7, values=monteCarloChoices, name='cb2')
-#   cb.set(monteCarloChoices[2])
-#   cb.grid(row=0, column=2, sticky=tk.NSEW)
-#   cb = ttk.Combobox(self.f7, values=monteCarloChoices, name='cb3')
-#   cb.set(monteCarloChoices[3])
-#   cb.grid(row=0, column=3, sticky=tk.NSEW)
-#
-#   self.InitializeMonteCarlo(7)
-#   lab = ttk.Label(self.f7, text='Rows', relief=tk.RIDGE)
-#   lab.grid(row=1, column=0, sticky=tk.NSEW)
-#   ent = ttk.Entry(self.f7, name='rows')
-#   ent.insert(0, config['MonteCarloCase']['NumCases'])
-#   ent.grid(row=1, column=1, sticky=tk.NSEW)
-#   btn = ttk.Button(self.f7, text='Update', command=self.UpdateMonteCarloFrame)
-#   btn.grid(row=1, column=3, sticky=tk.NSEW)
-#   self.SizeMonteCarlo(config['MonteCarloCase']['NumCases'])
-#   self.SizeMonteCarloFrame(self.f7)
-#
     self.nb.add(self.f1, text='Network', underline=0, padding=2)
     self.nb.add(self.f2, text='DER', underline=0, padding=2)
     self.nb.add(self.f3, text='Solar', underline=0, padding=2)
@@ -456,6 +456,11 @@ class DERConfigGUI:
 #       attribute = vars[row - 1][4]
 #       config[section][attribute] = val
 #
+  def RunOpenDSS(self):
+    dss = py_dss_interface.DSSDLL()
+    dss.text('compile c:/src/i2x/src/i2x/models/ieee_lvn/secpar.dss')
+    dss.text('show voltages')
+
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()
     row = feederChoices[key]

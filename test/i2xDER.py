@@ -1,5 +1,5 @@
 # Copyright (C) 2023 Battelle Memorial Institute
-# file: der.py
+# file: i2xDER.py
 """Presents a GUI for DER boot camp
 """
 import i2x.api as i2x
