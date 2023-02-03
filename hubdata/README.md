@@ -7,6 +7,6 @@ use the links below to make sure you have the latest updates, including any
 corrections made to the data by its curators.
 
 - [Queued Up](https://emp.lbl.gov/queues) from Lawrence Berkeley National Lab (LBNL)
-- [SolarTRACE](https://solarapp.nrel.gov/solarTRACE) from National Renewable Energy Lab (NREL)
+- [SolarTRACE](https://solarapp.nrel.gov/solarTRACE) with [download](https://data.nrel.gov/submissions/160) from National Renewable Energy Lab (NREL)
 
 Copyright 2022-2023, Battelle Memorial Institute
