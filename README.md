@@ -9,11 +9,10 @@ an interconnection roadmap for the [i2x project](https://energy.gov/i2x).
 
 ## Users
 
-The i2x DER package has been tested on Windows only, with Python 3.10. It
-should work on Mac OS X and Linux as well, but this has not been tested yet.
-During the installation process, a version of OpenDSS will be installed
-to work with the Python interface, i.e., you do not have to install OpenDSS
-separately. The steps are:
+The i2x DER package has been tested on Windows only, with Python 3.10.  It 
+does net yet support Mac OS X or Linux.  During the installation process, 
+a version of OpenDSS will be installed to work with the Python interface, 
+i.e., you do not have to install OpenDSS separately.  The steps are: 
 
 1. Install Python 3 if necessary. This is available from [Python Site](https://python.org), [Anaconda/Miniconda](https://www.anaconda.com/), or the [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5).
 2. From a command prompt[^1], `pip install i2x --upgrade`
