@@ -18,12 +18,7 @@ separately. The steps are:
 1. Install Python 3 if necessary. This is available from [Python Site](https://python.org), [Anaconda/Miniconda](https://www.anaconda.com/), or the [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5).
 2. From a command prompt, `pip install i2x --upgrade`
 
-Once installed, create a file called _i2xDER.py_ with the following contents:
-
-    import i2x.api as i2x
-      i2x.show_der_config()
-
-Then start the interface from a command prompt: `python i2xDER.py`
+Once installed, invoke the GUI from a command prompt: `i2x-der`
 
 ## Developers
 

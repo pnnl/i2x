@@ -227,6 +227,8 @@ class DERConfigGUI:
     self.f6.rowconfigure (2, weight=0)
     self.f6.rowconfigure (3, weight=1)
 
+    self.txt_output.insert ('end', 'Stuff')
+
     self.nb.add(self.f1, text='Network', underline=0, padding=2)
     self.nb.add(self.f2, text='DER', underline=0, padding=2)
     self.nb.add(self.f3, text='Solar', underline=0, padding=2)
@@ -235,9 +237,11 @@ class DERConfigGUI:
     self.nb.add(self.f6, text='Output', underline=0, padding=2)
 
   def on_closing(self):
-    if messagebox.askokcancel('Quit', 'Do you want to close this window? This is likely to stop all simulations.'):
-      self.master.quit()
-      self.master.destroy()
+    self.master.quit()
+    self.master.destroy()
+#    if messagebox.askokcancel('Quit', 'Do you want to close this window? This is likely to stop all simulations.'):
+#      self.master.quit()
+#      self.master.destroy()
 
 # def AttachFrame(self, tag, vars):
 #   """Creates a GUI page and loads it with data
@@ -458,8 +462,14 @@ class DERConfigGUI:
 #
   def RunOpenDSS(self):
     dss = py_dss_interface.DSSDLL()
-    dss.text('compile c:/src/i2x/src/i2x/models/ieee_lvn/secpar.dss')
+    print (pkg_resources.get_default_cache())
+    fdr_path = pkg_resources.resource_filename (__name__, 'models/ieee_lvn')
+    print (fdr_path)
+    pkg_resources.resource_listdir (__name__, 'models/ieee_lvn')
+    dss.text ('compile {:s}/secpar.dss'.format (fdr_path))
     dss.text('show voltages')
+    dss.text('compile c:/src/i2x/src/i2x/models/ieee_lvn/secpar.dss')
+#    self.txt_output.insert(0, res)
 
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()

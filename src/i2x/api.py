@@ -21,4 +21,5 @@ from .opendss_graph import make_builtin_graph
 from .plot_opendss_feeder import plot_opendss_feeder
 from .plot_opendss_feeder import load_opendss_graph
 from .plot_opendss_feeder import load_builtin_graph
+from .test_dss import test_opendss_interface
 
