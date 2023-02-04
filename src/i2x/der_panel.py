@@ -468,7 +468,6 @@ class DERConfigGUI:
     pkg_resources.resource_listdir (__name__, 'models/ieee_lvn')
     dss.text ('compile {:s}/secpar.dss'.format (fdr_path))
     dss.text('show voltages')
-    dss.text('compile c:/src/i2x/src/i2x/models/ieee_lvn/secpar.dss')
 #    self.txt_output.insert(0, res)
 
   def UpdateFeeder(self, event):

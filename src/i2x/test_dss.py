@@ -16,6 +16,7 @@ def test_opendss_interface():
 #dss.text('compile c:/src/i2x/src/i2x/models/ieee_lvn/secpar.dss')
   dss.text ('compile {:s}/secpar.dss'.format (fdr_path))
   dss.text('show voltages')
+  dss.circuit()
 
 #dss = py_dss_interface.DSS()
 #print (dss.DLL_NAME_WIN)

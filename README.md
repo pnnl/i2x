@@ -16,9 +16,9 @@ to work with the Python interface, i.e., you do not have to install OpenDSS
 separately. The steps are:
 
 1. Install Python 3 if necessary. This is available from [Python Site](https://python.org), [Anaconda/Miniconda](https://www.anaconda.com/), or the [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5).
-2. From a command prompt, `pip install i2x --upgrade`
+2. From a command prompt[^1], `pip install i2x --upgrade`
 
-Once installed, invoke the GUI from a command prompt: `i2x-der`
+Once installed, invoke the GUI from a command prompt[^1]: `i2x-der`
 
 ## Developers
 
@@ -48,3 +48,5 @@ Reference herein to any specific commercial product, process, or service by trad
       under Contract DE-AC05-76RL01830
 
 Copyright 2022-2023, Battelle Memorial Institute
+
+[^1]: On Windows 10, this may be found from the _Start Menu_ under _Windows System / Command Prompt_. On Windows 11, one method is to search for _Command Prompt_ from the _Start Button_. Another method is to find _Terminal_ under _All apps_ from the _Start Button_.
