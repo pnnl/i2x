@@ -227,7 +227,7 @@ class DERConfigGUI:
     self.f6.rowconfigure (2, weight=0)
     self.f6.rowconfigure (3, weight=1)
 
-    self.txt_output.insert ('end', 'Stuff')
+#    self.txt_output.insert ('end', 'Stuff')
 
     self.nb.add(self.f1, text='Network', underline=0, padding=2)
     self.nb.add(self.f2, text='DER', underline=0, padding=2)
@@ -461,14 +461,49 @@ class DERConfigGUI:
 #       config[section][attribute] = val
 #
   def RunOpenDSS(self):
-    dss = py_dss_interface.DSSDLL()
-    print (pkg_resources.get_default_cache())
-    fdr_path = pkg_resources.resource_filename (__name__, 'models/ieee_lvn')
-    print (fdr_path)
-    pkg_resources.resource_listdir (__name__, 'models/ieee_lvn')
-    dss.text ('compile {:s}/secpar.dss'.format (fdr_path))
-    dss.text('show voltages')
-#    self.txt_output.insert(0, res)
+#    dss = py_dss_interface.DSSDLL()
+#    print (pkg_resources.get_default_cache())
+#    fdr_path = pkg_resources.resource_filename (__name__, 'models/ieee_lvn')
+#    print (fdr_path)
+#    pkg_resources.resource_listdir (__name__, 'models/ieee_lvn')
+    dict = i2x.test_opendss_interface(choice = 'ieee9500', 
+                                      pvcurve = 'pcloud', 
+                                      loadmult = 0.5, 
+                                      stepsize = 300, 
+                                      numsteps = 288, 
+                                      doc_fp=None)
+#   'kWh_Net':kWh_Net,
+#   'kWh_Load':kWh_Load,
+#   'kWh_Loss':kWh_Loss,
+#   'kWh_Gen':kWh_Gen,
+#   'kWh_PV':kWh_PV,
+#   'kvarh_PV':kvarh_PV,
+#   'kWh_EEN':kWh_EEN,
+#   'kWh_UE':kWh_UE,
+#   'kWh_OverN':kWh_OverN,
+#   'kWh_OverE':kWh_OverE}
+#    self.txt_output.delete(0, tk.END)
+    self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(dict['num_cap_switches']))
+    self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(dict['num_tap_changes']))
+    self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(dict['num_relay_trips']))
+    self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(dict['num_low_voltage'], dict['vminpu'], dict['node_vmin']))
+    self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(dict['num_high_voltage'], dict['vmaxpu'], dict['node_vmax']))
+    self.txt_output.insert(tk.END, 'Substation Energy =         {:9.2f} kWh\n'.format(dict['kWh_Net']))
+    self.txt_output.insert(tk.END, 'Load Served =               {:9.2f} kWh\n'.format(dict['kWh_Load']))
+    self.txt_output.insert(tk.END, 'Losses =                    {:9.2f} kWh\n'.format(dict['kWh_Loss']))
+    self.txt_output.insert(tk.END, 'Generation =                {:9.2f} kWh\n'.format(dict['kWh_Gen']))
+    self.txt_output.insert(tk.END, 'Solar Output =              {:9.2f} kWh\n'.format(dict['kWh_PV']))
+    self.txt_output.insert(tk.END, 'Solar Reactive Power =      {:9.2f} kWh\n'.format(dict['kvarh_PV']))
+    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:9.2f} kWh\n'.format(dict['kWh_EEN']))
+    self.txt_output.insert(tk.END, 'Unserved Energy =           {:9.2f} kWh\n'.format(dict['kWh_UE']))
+    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:9.2f} kWh\n'.format(dict['kWh_OverN']))
+    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:9.2f} kWh\n'.format(dict['kWh_OverE']))
+
+    self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean    Vdiff\n')
+    for key, row in dict['pvdict'].items():
+      self.txt_output.insert(tk.END, '{:20s} {:9.2f} {:9.2f} {:8.2f} {:8.2f} {:8.2f} {:8.2f}\n'.format(key, row['kWh'], row['kvarh'], 
+                                                                               row['vmin'], row['vmax'], row['vmean'], row['vdiff']))
+
 
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()
