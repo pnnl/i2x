@@ -242,3 +242,63 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax
   if not on_canvas:
     plt.show()
 
+def get_der_kw (load_kw):
+  kw = 5.0 * round(load_kw/5.0)
+  if kw < 5.0:
+    kw = 3.0
+  return kw
+
+def get_first_shunt_name (shunts, nclass):
+  for row in shunts:
+    toks = row.split('.')
+    if toks[0] == nclass:
+      return toks[1]
+  return '**NOT FOUND**'
+
+def parse_opendss_graph (G):
+  pvder = {}
+  gender = {}
+  batder = {}
+  largeder = {}
+  resloads = {}
+
+  for n in G.nodes():
+    if 'ndata' in G.nodes()[n] and 'nclass' in G.nodes()[n]:
+      ndata = G.nodes()[n]['ndata']
+      nclass = G.nodes()[n]['nclass']
+      bus = n
+      nomkv = ndata['nomkv']
+      phases = ndata['phases']
+      if nclass == 'solar':
+        kva = ndata['pvkva']
+        key = get_first_shunt_name (ndata['shunts'], 'pvsystem')
+        pvder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['pvkw'], 'phases':phases}
+        if kva >= 100.0:
+          largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['pvkw'], 'phases':phases, 'type':'solar'}
+      elif nclass == 'generator':
+        kva = ndata['genkva']
+        key = get_first_shunt_name (ndata['shunts'], 'generator')
+        gender[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['genkw'], 'phases':phases}
+        if kva >= 100.0:
+          largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['genkw'], 'phases':phases, 'type':'generator'}
+      elif nclass == 'storage':
+        kva = ndata['batkva']
+        key = get_first_shunt_name (ndata['shunts'], 'storage')
+        batder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases}
+        if kva >= 100.0:
+          largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases, 'type':'battery'}
+      elif nclass == 'load':
+        kva = ndata['loadkw']
+        if (phases == 2) and (nomkv < 1.0):
+          key = get_first_shunt_name (ndata['shunts'], 'load')
+          resloads[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'phases': phases, 'derkva': get_der_kw(kva)}
+
+  print ('\nLARGE_DER')
+  for key, row in largeder.items():
+    print (key, row)
+  print ('\nPV_DER', len(pvder))
+  print ('\nGEN_DER', len(gender))
+  print ('\nBAT_DER', len(batder))
+  print ('\nROOFTOP CANDIDATES', len(resloads))
+
+  return pvder, gender, batder, largeder, resloads
