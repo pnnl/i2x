@@ -453,6 +453,36 @@ class DERConfigGUI:
     self.ent_pct_roofs.insert(0, '10.0')
     self.ent_pct_roofs.grid(row=4, column=1, sticky=tk.NSEW)
 
+    lab = ttk.Label(self.f2, text='DER >= 100.0 kVA')
+    lab.grid(row=5, column=0, sticky=tk.NSEW)
+    lab = ttk.Label(self.f2, text='kW')
+    lab.grid(row=5, column=1, sticky=tk.NSEW)
+    lab = ttk.Label(self.f2, text='kVA')
+    lab.grid(row=5, column=2, sticky=tk.NSEW)
+    lab = ttk.Label(self.f2, text='Type')
+    lab.grid(row=5, column=3, sticky=tk.NSEW)
+
+    idx = 6
+    for key, row in self.largeder.items():
+      lab = ttk.Label(self.f2, text='Name={:s} Bus={:s} kV={:.2f} kW={:.2f} kVA={:.2f} Type={:s}'.format (key,
+                                                                                                          row['bus'],
+                                                                                                          row['kv'],
+                                                                                                          row['kw'],
+                                                                                                          row['kva'],
+                                                                                                          row['type']), 
+                      relief=tk.RIDGE)
+      lab.grid(row=idx, column=0, sticky=tk.NSEW)
+      e1 = ttk.Entry(self.f2, name='kw_{:s}'.format(key))
+      e1.insert(0, str(row['kw']))
+      e1.grid(row=idx, column=1, sticky=tk.NSEW)
+      e2 = ttk.Entry(self.f2, name='kva_{:s}'.format(key))
+      e2.insert(0, str(row['kva']))
+      e2.grid(row=idx, column=2, sticky=tk.NSEW)
+      cb1 = ttk.Combobox(self.f2, values=['solar','storage','generator'], name='type_{:s}'.format(key))
+      cb1.set(row['type'])
+      cb1.grid(row=idx, column=3, sticky=tk.NSEW)
+      idx += 1
+
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()
     row = feederChoices[key]
@@ -484,9 +514,6 @@ class DERConfigGUI:
     self.ax_solar.set_ylabel('Power [pu]')
     self.ax_solar.grid()
     self.canvas_solar.draw()
-
-#    msg = 'Solar={:s} dt={:.1f}s tmax={:.1f}s npts={:d}'.format(key, dt, tmax, npts)
-#    messagebox.showinfo(title='Combobox', message=msg)
 
   def UpdateLoadProfile(self, event):
     ticks = [0, 4, 8, 12, 16, 20, 24]

@@ -288,7 +288,7 @@ def parse_opendss_graph (G):
         key = get_first_shunt_name (ndata['shunts'], 'storage')
         batder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases}
         if kva >= 100.0:
-          largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases, 'type':'battery'}
+          largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases, 'type':'storage'}
       elif nclass == 'load':
         kva = ndata['loadkw']
         if (phases == 2) and (nomkv < 1.0):
