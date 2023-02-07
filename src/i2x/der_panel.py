@@ -305,6 +305,22 @@ class DERConfigGUI:
           rooftop_total += kw
           change_lines.append('new pvsystem.{:s} bus1={:s}.1.2 phases=2 kv={:.3f} kva={:.2f} pmpp={:.2f} irrad=1.0 pf=1.0'.format (key, bus, kv, kva, kw))
 
+    for key, row in self.largeder.items():
+      print (key, row)
+      kw = float(self.f2.nametowidget('kw_{:s}'.format(key)).get())
+      large_total += kw
+      kva = float(self.f2.nametowidget('kva_{:s}'.format(key)).get())
+      dertype = self.f2.nametowidget('type_{:s}'.format(key)).get()
+      if (kw < 0.0) or (kva < kw):
+        errors.append ('{:s} {:s} kw={:.2f} kva={:.2f} must have kw>=0 and kva>=kw'.format(dertype, key, kw, kva))
+        bValid = False
+      elif dertype == 'solar':
+        change_lines.append('edit pvsystem.{:s} kva={:.2f} pmpp={:.2f}'.format(key, kva, kw))
+      elif dertype == 'storage':
+        change_lines.append('edit storage.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+      elif dertype == 'generator':
+        change_lines.append('edit generator.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+
     if len(errors) > 0:
       messagebox.showerror('Please Correct these DER Entries', '\n'.join(errors))
       bValid = False
