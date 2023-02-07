@@ -4,9 +4,14 @@ import inspect
 import numpy as np
 from numpy import trapz
 
+def dss_line (dss, line):
+  print ('dss: ', line)
+  dss.text (line)
+
 # arg: choice, stepsize, numsteps, pvcurve, loadmult, inverters [TODO]
 def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, 
-                           loadcurve, invmode, invpf, solnmode, ctrlmode, doc_fp=None):
+                           loadcurve, invmode, invpf, solnmode, ctrlmode, 
+                           change_lines=None, doc_fp=None):
 
 #  choice = 'ieee9500'
 #  choice = 'ieee_lvn'
@@ -24,34 +29,38 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps,
 
   pkg.resource_listdir (__name__, 'models/{:s}'.format(choice))
 
-  dss.text ('compile {:s}/HCABase.dss'.format (fdr_path))
+  dss_line (dss, 'compile {:s}/HCABase.dss'.format (fdr_path))
 
-  dss.text ('batchedit PVSystem..* irradiance=1 daily={:s} %cutin=0.1 %cutout=0.1 varfollowinverter=true'.format (pvcurve)) #kvarmax=?
-  dss.text ('// New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5')
-  dss.text ('batchedit load..* daily={:s} duty={:s} yearly={:s}'.format (loadcurve, loadcurve, loadcurve))
+  if change_lines is not None:
+    for line in change_lines:
+      dss_line (dss, line)
+
+  dss_line (dss, 'batchedit PVSystem..* irradiance=1 daily={:s} %cutin=0.1 %cutout=0.1 varfollowinverter=true'.format (pvcurve)) #kvarmax=?
+#  dss_line (dss, '// New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5')
+  dss_line (dss, 'batchedit load..* daily={:s} duty={:s} yearly={:s}'.format (loadcurve, loadcurve, loadcurve))
   if invmode == 'CONSTANT_PF':
-    dss.text ('batchedit pvsystem..* pf={:.4f}'.format(invpf))
+    dss_line (dss, 'batchedit pvsystem..* pf={:.4f}'.format(invpf))
   elif invmode == 'VOLT_WATT':
-    dss.text ('new InvControl.vw mode=VOLTWATT voltage_curvex_ref=rated voltwatt_curve=voltwatt1547b deltaP_factor=0.02 EventLog=No')
+    dss_line (dss, 'new InvControl.vw mode=VOLTWATT voltage_curvex_ref=rated voltwatt_curve=voltwatt1547b deltaP_factor=0.02 EventLog=No')
   elif invmode == 'VOLT_VAR':
-    dss.text ('new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547b deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No')
+    dss_line (dss, 'new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547b deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No')
   elif invmode == 'VOLT_VAR_AVR':
-    dss.text ('New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5 EventLog=No')
+    dss_line (dss, 'New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5 EventLog=No')
   elif invmode == 'VOLT_VAR_VOLT_WATT':
-    dss.text ('new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No')
-  dss.text ('set loadmult={:.6f}'.format(loadmult))
-  dss.text ('set controlmode={:s}'.format(ctrlmode))
-  dss.text ('set maxcontroliter=1000')
-  dss.text ('set maxiter=30')
-  dss.text ('// batchedit pvsystem..* enabled=no')
-  dss.text ('// batchedit storage..* enabled=no')
+    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No')
+  dss_line (dss, 'set loadmult={:.6f}'.format(loadmult))
+  dss_line (dss, 'set controlmode={:s}'.format(ctrlmode))
+  dss_line (dss, 'set maxcontroliter=1000')
+  dss_line (dss, 'set maxiter=30')
+#  dss_line (dss, '// batchedit pvsystem..* enabled=no')
+#  dss_line (dss, '// batchedit storage..* enabled=no')
   pvnames = dss.pvsystems_all_names()
-  for pvname in pvnames:
+  for pvname in pvnames: # don't need to log all these
     dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
     dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
   dss.dssprogress_show ()
   dss.dssprogress_caption ('Running HCA simulation on {:s} for {:d} steps'.format (choice, numsteps))
-  dss.text ('solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize))
+  dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize))
   dss.dssprogress_close ()
 
   converged = bool(dss.solution_read_converged())

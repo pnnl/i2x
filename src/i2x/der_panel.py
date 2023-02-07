@@ -22,6 +22,8 @@ from tkinter import scrolledtext
 import matplotlib
 import pkg_resources
 import datetime
+import random
+import math
 
 try:
   matplotlib.use('TkAgg')
@@ -33,6 +35,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 support_dir = 'models/support/'
+SQRT3 = math.sqrt(3.0)
 
 # TODO: factor these into a separate file
 feederChoices = {
@@ -193,8 +196,15 @@ class DERConfigGUI:
     self.cb_inverter.set(next(iter(inverterChoices)))
     self.cb_inverter.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_inverter.bind('<<ComboboxSelected>>', self.UpdateInverterMode)
+    lab = ttk.Label(self.f5, text='Power Factor: ', relief=tk.RIDGE)
+    lab.grid(row=0, column=2, sticky=tk.NSEW)
+    self.ent_inv_pf = ttk.Entry(self.f5, name='inv_pf')
+    self.ent_inv_pf.insert(0, '1.0')
+    self.ent_inv_pf.grid(row=0, column=3, sticky=tk.NSEW)
     self.f5.columnconfigure(0, weight=0)
-    self.f5.columnconfigure(1, weight=1)
+    self.f5.columnconfigure(1, weight=0)
+    self.f5.columnconfigure(2, weight=0)
+    self.f5.columnconfigure(3, weight=1)
     self.f5.rowconfigure(0, weight=0)
     self.f5.rowconfigure(1, weight=1)
     self.fig_inverter = plt.figure(figsize=(5, 4), dpi=100)
@@ -202,7 +212,7 @@ class DERConfigGUI:
     self.ax_inverter.set_xlabel('Voltage [pu]')
     self.ax_inverter.set_ylabel('Power [pu]')
     self.canvas_inverter = FigureCanvasTkAgg(self.fig_inverter, master=self.f5)
-    self.canvas_inverter.get_tk_widget().grid(row=1, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
+    self.canvas_inverter.get_tk_widget().grid(row=1, columnspan=4, sticky=tk.W + tk.E + tk.N + tk.S)
     self.canvas_inverter.draw()
     self.UpdateInverterMode(None)
 
@@ -260,113 +270,55 @@ class DERConfigGUI:
 #      self.master.quit()
 #      self.master.destroy()
 
-# def SizeMonteCarlo(self, n):
-#   """Initializes the Monte Carlo data structures with variable choices and samples
-#
-#   Args:
-#     n (int): the number of Monte Carlo shots
-#   """
-#   var1 = config['MonteCarloCase']['Variable1']
-#   var2 = config['MonteCarloCase']['Variable2']
-#   var3 = config['MonteCarloCase']['Variable3']
-#   config['MonteCarloCase']['NumCases'] = n
-#   config['MonteCarloCase']['Band1'] = self.mcBand(var1)
-#   config['MonteCarloCase']['Band2'] = self.mcBand(var2)
-#   config['MonteCarloCase']['Band3'] = self.mcBand(var3)
-#   config['MonteCarloCase']['Samples1'] = [0] * n
-#   config['MonteCarloCase']['Samples2'] = [0] * n
-#   config['MonteCarloCase']['Samples3'] = [0] * n
-#   for i in range(n):
-#     config['MonteCarloCase']['Samples1'][i] = self.mcSample(var1)
-#     config['MonteCarloCase']['Samples2'][i] = self.mcSample(var2)
-#     config['MonteCarloCase']['Samples3'][i] = self.mcSample(var3)
-#
-# def InitializeMonteCarlo(self, n):
-#   """Makes default variable choices and then initializes the Monte Carlo GUI page
-#
-#   Args:
-#     n (int): the number of Monte Carlo shots
-#   """
-#   config['MonteCarloCase']['Variable1'] = monteCarloChoices[1]
-#   config['MonteCarloCase']['Variable2'] = monteCarloChoices[2]
-#   config['MonteCarloCase']['Variable3'] = monteCarloChoices[3]
-#   self.SizeMonteCarlo(n)
-#
-# # row 0 for dropdowns, 1 for update controls, 2 for column headers, 3 for range edits
-# def SizeMonteCarloFrame(self, f):
-#   """Update the Monte Carlo page to match the number of shots and variables
-#
-#   Args:
-#     f (Frame): the Monte Carlo GUI page
-#   """
-#   startRow = 3
-#   for w in f.grid_slaves():
-#     if int(w.grid_info()['row']) > 2:
-#       w.grid_forget()
-#
-#   col1 = f.children['cb1'].get()
-#   col2 = f.children['cb2'].get()
-#   col3 = f.children['cb3'].get()
-#   use1 = col1 != 'None'
-#   use2 = col2 != 'None'
-#   use3 = col3 != 'None'
-#   band1 = 'Mid' in col1
-#   band2 = 'Mid' in col2
-#   band3 = 'Mid' in col3
-#
-#   lab = ttk.Label(f, text='Case #', relief=tk.RIDGE)
-#   lab.grid(row=startRow + 1, column=0, sticky=tk.NSEW)
-#   lab = ttk.Label(f, text=col1, relief=tk.RIDGE)
-#   lab.grid(row=startRow - 1, column=1, sticky=tk.NSEW)
-#   lab = ttk.Label(f, text=col2, relief=tk.RIDGE)
-#   lab.grid(row=startRow - 1, column=2, sticky=tk.NSEW)
-#   lab = ttk.Label(f, text=col3, relief=tk.RIDGE)
-#   lab.grid(row=startRow - 1, column=3, sticky=tk.NSEW)
-#
-#   lab = ttk.Label(f, text='Band', relief=tk.RIDGE)
-#   lab.grid(row=startRow, column=0, sticky=tk.NSEW)
-#   if band1:
-#     w1 = ttk.Entry(f)
-#     w1.insert(0, config['MonteCarloCase']['Band1'])
-#   else:
-#     w1 = ttk.Label(f, text='n/a', relief=tk.RIDGE)
-#   if band2:
-#     w2 = ttk.Entry(f)
-#     w2.insert(0, config['MonteCarloCase']['Band2'])
-#   else:
-#     w2 = ttk.Label(f, text='n/a', relief=tk.RIDGE)
-#   if band3:
-#     w3 = ttk.Entry(f)
-#     w3.insert(0, config['MonteCarloCase']['Band3'])
-#   else:
-#     w3 = ttk.Label(f, text='n/a', relief=tk.RIDGE)
-#   w1.grid(row=startRow, column=1, sticky=tk.NSEW)
-#   w2.grid(row=startRow, column=2, sticky=tk.NSEW)
-#   w3.grid(row=startRow, column=3, sticky=tk.NSEW)
-#
-#   n = int(config['MonteCarloCase']['NumCases'])
-#   for i in range(n):
-#     lab = ttk.Label(f, text=str(i + 1), relief=tk.RIDGE)
-#     lab.grid(row=i + 2 + startRow, column=0, sticky=tk.NSEW)
-#     if use1:
-#       w1 = ttk.Entry(f)
-#       w1.insert(0, config['MonteCarloCase']['Samples1'][i])
-#     else:
-#       w1 = ttk.Label(f, text='n/a', relief=tk.RIDGE)
-#     if use2:
-#       w2 = ttk.Entry(f)
-#       w2.insert(0, config['MonteCarloCase']['Samples2'][i])
-#     else:
-#       w2 = ttk.Label(f, text='n/a', relief=tk.RIDGE)
-#     if use3:
-#       w3 = ttk.Entry(f)
-#       w3.insert(0, config['MonteCarloCase']['Samples3'][i])
-#     else:
-#       w3 = ttk.Label(f, text='n/a', relief=tk.RIDGE)
-#     w1.grid(row=i + 2 + startRow, column=1, sticky=tk.NSEW)
-#     w2.grid(row=i + 2 + startRow, column=2, sticky=tk.NSEW)
-#     w3.grid(row=i + 2 + startRow, column=3, sticky=tk.NSEW)
-#
+  def CheckEntries(self, load_mult, stop_minutes, step_seconds, inv_pf):
+    errors = []
+    if (stop_minutes < 1) or (stop_minutes > 1440):
+      errors.append ('Stop Minutes {:d} must be greater than 0 and no more than 1440'.format (stop_minutes))
+    if (step_seconds < 1) or (step_seconds > 300):
+      errors.append ('Step Seconds {:d} must be greater than 0 and no more than 300'.format (step_seconds))
+    if (load_mult <= 0.0) or (load_mult > 1.0):
+      errors.append ('Load Multiplier {:.4f} must be greater than 0.0 and no more than 1.0'.format (load_mult))
+    if (inv_pf <= 0.0) or (inv_pf > 1.0):
+      errors.append ('Inverter Power Factor {:.4f} must have magnitude between 0.8 and 1.0, inclusive'.format (inv_pf))
+    if len(errors) > 0:
+      messagebox.showerror('Please Correct these Errors', '\n'.join(errors))
+      return False
+    return True
+
+  def CollectDERChanges(self):
+    bValid = True
+    large_total = 0.0
+    rooftop_total = 0.0
+    change_lines = []
+    errors = []
+    pct_roofs = float(self.ent_pct_roofs.get())
+    if (pct_roofs < 0.0) or (pct_roofs > 100.0):
+      errors.append ('% Rooftops {:.4f} must lie between 0 and 100, inclusive'.format(pct_roofs))
+    else:
+      pu_roofs = pct_roofs * 0.01
+      for key, row in self.resloads.items():
+        if random.random() <= pu_roofs:
+          bus = row['bus']
+          kv = row['kv']
+          kw = row['derkw']
+          kva = kw * 1.21 # TODO: Cat A or Cat B
+          rooftop_total += kw
+          change_lines.append('new pvsystem.{:s} bus1={:s}.1.2 phases=2 kv={:.3f} kva={:.2f} pmpp={:.2f} irrad=1.0 pf=1.0'.format (key, bus, kv, kva, kw))
+
+    if len(errors) > 0:
+      messagebox.showerror('Please Correct these DER Entries', '\n'.join(errors))
+      bValid = False
+    return bValid, large_total, rooftop_total, change_lines
+
+  def get_pv_kv_base(self, name):
+    if name in self.pvder:
+      row = self.pvder[name]
+      kvnom = row['kv']
+      if row['phases'] > 1:
+        kvnom /= SQRT3
+      return kvnom
+    return 0.120
+
   def RunOpenDSS(self):
     load_mult = float(self.ent_load_mult.get())
     feeder_choice = self.cb_feeder.get()
@@ -375,42 +327,91 @@ class DERConfigGUI:
     solar_profile = self.cb_solar.get()
     load_profile = self.cb_load.get()
     inv_mode = self.cb_inverter.get()
+    inv_pf = float(self.ent_inv_pf.get())
     stop_minutes = int(self.ent_stop.get())
     step_seconds = int(self.ent_step.get())
     num_steps = int (60 * stop_minutes / step_seconds)
-    print (feeder_choice, solar_profile, load_mult, load_profile, inv_mode,
+    if not self.CheckEntries(load_mult, stop_minutes, step_seconds, inv_pf):
+      return
+    der_valid, large_total, rooftop_total, change_lines = self.CollectDERChanges()
+    if not der_valid:
+      return
+    print (feeder_choice, solar_profile, load_mult, load_profile, inv_mode, inv_pf,
            soln_mode, ctrl_mode, step_seconds, num_steps)
     dict = i2x.test_opendss_interface(choice = feeder_choice,
                                       pvcurve = solar_profile,
                                       loadmult = load_mult,
                                       loadcurve = load_profile,
-                                      invmode = inv_mode, 
+                                      invmode = inv_mode,
+                                      invpf = inv_pf, 
                                       stepsize = step_seconds, 
                                       numsteps = num_steps,
                                       ctrlmode = ctrl_mode,
-                                      solnmode = soln_mode, 
+                                      solnmode = soln_mode,
+                                      change_lines = change_lines, 
                                       doc_fp=None)
     self.txt_output.insert(tk.END, 'Analysis Run on {:s} at {:s}'.format(feeder_choice, datetime.datetime.now().strftime('%a %d-%b-%Y %H:%M:%S')))
+    self.txt_output.insert(tk.END, '  Large DER={:.2f} kW, Rooftop PV={:.2f} kW\n'.format(large_total, rooftop_total))
+    self.txt_output.insert(tk.END, '  LoadMult={:.4f}, LoadProfle={:s}\n'.format(load_mult, load_profile))
+    self.txt_output.insert(tk.END, '  SolarProfile={:s}, InvMode={:s}, InvPF={:.3f}\n'.format(solar_profile, inv_mode, inv_pf))
     self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(dict['num_cap_switches']))
     self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(dict['num_tap_changes']))
     self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(dict['num_relay_trips']))
     self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(dict['num_low_voltage'], dict['vminpu'], dict['node_vmin']))
     self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(dict['num_high_voltage'], dict['vmaxpu'], dict['node_vmax']))
-    self.txt_output.insert(tk.END, 'Substation Energy =         {:11.2f} kWh\n'.format(dict['kWh_Net']))
+
+    base = dict['kWh_Load']
+    pctSource = 0.0
+    pctLosses = 0.0
+    pctGeneration = 0.0
+    pctSolar = 0.0
+    pctUE = 0.0
+    pctEEN = 0.0
+    if base > 0.0:
+      pctSource = 100.0 * dict['kWh_Net'] / base
+      pctLosses = 100.0 * dict['kWh_Loss'] / base
+      pctGeneration = 100.0 * dict['kWh_Gen'] / base
+      pctSolar = 100.0 * dict['kWh_PV'] / base
+      pctEEN = 100.0 * dict['kWh_EEN'] / base
+      pctUE = 100.0 * dict['kWh_UE'] / base
+    pctReactive = 0.0
+    if dict['kWh_PV'] > 0.0:
+      pctReactive = abs(100.0 * dict['kvarh_PV'] / dict['kWh_PV'])
     self.txt_output.insert(tk.END, 'Load Served =               {:11.2f} kWh\n'.format(dict['kWh_Load']))
-    self.txt_output.insert(tk.END, 'Losses =                    {:11.2f} kWh\n'.format(dict['kWh_Loss']))
-    self.txt_output.insert(tk.END, 'Generation =                {:11.2f} kWh\n'.format(dict['kWh_Gen']))
-    self.txt_output.insert(tk.END, 'Solar Output =              {:11.2f} kWh\n'.format(dict['kWh_PV']))
-    self.txt_output.insert(tk.END, 'Solar Reactive Power =      {:11.2f} kWh\n'.format(dict['kvarh_PV']))
-    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:11.2f} kWh\n'.format(dict['kWh_EEN']))
-    self.txt_output.insert(tk.END, 'Unserved Energy =           {:11.2f} kWh\n'.format(dict['kWh_UE']))
-    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:11.2f} kWh\n'.format(dict['kWh_OverN']))
-    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:11.2f} kWh\n'.format(dict['kWh_OverE']))
+    self.txt_output.insert(tk.END, 'Substation Energy =         {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Net'], pctSource))
+    self.txt_output.insert(tk.END, 'Losses =                    {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Loss'], pctLosses))
+    self.txt_output.insert(tk.END, 'Generation =                {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Gen'], pctGeneration))
+    self.txt_output.insert(tk.END, 'Solar Output =              {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_PV'], pctSolar))
+    self.txt_output.insert(tk.END, 'Solar Reactive Energy =     {:11.2f} kvarh, {:.4f}% of P\n'.format(dict['kvarh_PV'], pctReactive))
+    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_EEN'], pctEEN))
+    self.txt_output.insert(tk.END, 'Unserved Energy =           {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_UE'], pctUE))
+#    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:11.2f} kWh\n'.format(dict['kWh_OverN']))
+#    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:11.2f} kWh\n'.format(dict['kWh_OverE']))
+
+    pv_vmin = 100.0
+    pv_vmax = 0.0
+    pv_vdiff = 0.0
+    for key, row in dict['pvdict'].items():
+      v_base = 1000.0 * self.get_pv_kv_base (key)
+      row['vmin'] /= v_base
+      row['vmax'] /= v_base
+      row['vmean'] /= v_base
+      row['vdiff'] /= v_base
+      row['vdiff'] *= 100.0
+      if row['vmin'] < pv_vmin:
+        pv_vmin = row['vmin']
+      if row['vmax'] > pv_vmax:
+        pv_vmax = row['vmax']
+      if row['vdiff'] > pv_vdiff:
+        pv_vdiff = row['vdiff']
+    self.txt_output.insert(tk.END, 'Minimum PV Voltage        = {:.4f} pu\n'.format(pv_vmin))
+    self.txt_output.insert(tk.END, 'Maximum PV Voltage        = {:.4f} pu\n'.format(pv_vmax))
+    self.txt_output.insert(tk.END, 'Maximum PV Voltage Change = {:.4f} %\n'.format(pv_vdiff))
 
     if self.output_details.get() > 0:
-      self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean    Vdiff\n')
+      self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean Vdiff[%]\n')
       for key, row in dict['pvdict'].items():
-        self.txt_output.insert(tk.END, '{:20s} {:9.2f} {:9.2f} {:8.2f} {:8.2f} {:8.2f} {:8.2f}\n'.format(key, row['kWh'], row['kvarh'], 
+        self.txt_output.insert(tk.END, '{:20s} {:9.2f} {:9.2f} {:8.4f} {:8.4f} {:8.4f} {:8.4f}\n'.format(key, row['kWh'], row['kvarh'], 
                                                                                row['vmin'], row['vmax'], row['vmean'], row['vdiff']))
 
 

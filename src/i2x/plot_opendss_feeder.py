@@ -290,10 +290,10 @@ def parse_opendss_graph (G):
         if kva >= 100.0:
           largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases, 'type':'storage'}
       elif nclass == 'load':
-        kva = ndata['loadkw']
+        kw = ndata['loadkw']
         if (phases == 2) and (nomkv < 1.0):
           key = get_first_shunt_name (ndata['shunts'], 'load')
-          resloads[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'phases': phases, 'derkva': get_der_kw(kva)}
+          resloads[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'phases': phases, 'derkw': get_der_kw(kw)}
 
   print ('\nLARGE_DER')
   for key, row in largeder.items():
