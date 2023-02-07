@@ -9,6 +9,9 @@ New XYcurve.voltvar1547a npts=4 Yarray=[0.25,0.25,-0.25,-0.25] Xarray=[.5,0.9,1.
 // 1547-2018 default volt-var settings for category B, with sentinels
 New XYcurve.voltvar1547b npts=6 Yarray=[0.44,0.44,0,0,-0.44,-0.44] Xarray=[.5,0.92,0.98,1.02,1.08,1.5]
 
+// volt-var for Hawaii Rule 14H, wider deadband but steeper slopes
+New XYcurve.voltvar14h npts=6 Yarray=[0.44,0.44,0,0,-0.44,-0.44] Xarray=[.5,0.94,0.97,1.03,1.06,1.5]
+
 // 1547-2018 default watt-var settings for category B, with sentinels; can only be implemented in Version 8 of OpenDSS
 New XYcurve.wattvar1547b npts=8 Yarray=[0.44,0.44,0,0,0,0,-0.44,-0.44] Xarray=[-2.0,-1.0,-0.5,-0.2,0.2,0.5,1.0,2.0]
 // New XYcurve.wattvar1547b npts=6 Yarray=[0.44,0.44,0,0,-0.44,-0.44] Xarray=[-2.0,-1.0,-0.5,0.5,1.0,2.0]

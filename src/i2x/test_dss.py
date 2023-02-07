@@ -6,7 +6,7 @@ from numpy import trapz
 
 # arg: choice, stepsize, numsteps, pvcurve, loadmult, inverters [TODO]
 def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, 
-                           loadcurve, invmode, solnmode, ctrlmode, doc_fp=None):
+                           loadcurve, invmode, invpf, solnmode, ctrlmode, doc_fp=None):
 
 #  choice = 'ieee9500'
 #  choice = 'ieee_lvn'
@@ -29,6 +29,16 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps,
   dss.text ('batchedit PVSystem..* irradiance=1 daily={:s} %cutin=0.1 %cutout=0.1 varfollowinverter=true'.format (pvcurve)) #kvarmax=?
   dss.text ('// New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5')
   dss.text ('batchedit load..* daily={:s} duty={:s} yearly={:s}'.format (loadcurve, loadcurve, loadcurve))
+  if invmode == 'CONSTANT_PF':
+    dss.text ('batchedit pvsystem..* pf={:.4f}'.format(invpf))
+  elif invmode == 'VOLT_WATT':
+    dss.text ('new InvControl.vw mode=VOLTWATT voltage_curvex_ref=rated voltwatt_curve=voltwatt1547b deltaP_factor=0.02 EventLog=No')
+  elif invmode == 'VOLT_VAR':
+    dss.text ('new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547b deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No')
+  elif invmode == 'VOLT_VAR_AVR':
+    dss.text ('New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5 EventLog=No')
+  elif invmode == 'VOLT_VAR_VOLT_WATT':
+    dss.text ('new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No')
   dss.text ('set loadmult={:.6f}'.format(loadmult))
   dss.text ('set controlmode={:s}'.format(ctrlmode))
   dss.text ('set maxcontroliter=1000')
@@ -51,7 +61,8 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps,
   num_relay_trips = 0
   for row in dss.solution_event_log():
     if ('Action=RESETTING' not in row) and ('Action=**RESET**' not in row) and ('Action=**ARMED**' not in row):
-      print (row)
+      if solnmode != 'DUTY':
+        print (row)
     if 'Element=Relay' in row:
       if 'Action=OPENED' in row:
         num_relay_trips += 1
@@ -59,7 +70,7 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps,
       if '**OPENED**' in row or '**CLOSED**' in row:
         num_cap_switches += 1
     if 'Element=Regulator' in row:
-      if 'CHANGED' in row and 'TAPS' in row:
+      if 'CHANGED' in row and 'TAP' in row:
         num_tap_changes += abs(int(row.split()[6]))
   print ('{:4d} capacitor bank switching operations'.format (num_cap_switches))
   print ('{:4d} regulator tap changes'.format (num_tap_changes))
