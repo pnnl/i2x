@@ -21,6 +21,7 @@ from tkinter import messagebox
 from tkinter import scrolledtext
 import matplotlib
 import pkg_resources
+import datetime
 
 try:
   matplotlib.use('TkAgg')
@@ -47,7 +48,8 @@ solarChoices = {
 
 loadChoices = {
   'default':{'t':[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
-             'p':[0.677,0.6256,0.6087,0.5833,0.58028,0.6025,0.657,0.7477,0.832,0.88,0.94,0.989,0.985,0.98,0.9898,0.999,1,0.958,0.936,0.913,0.876,0.876,0.828,0.756,0.677]}
+             'p':[0.677,0.6256,0.6087,0.5833,0.58028,0.6025,0.657,0.7477,0.832,0.88,0.94,0.989,0.985,0.98,0.9898,0.999,1,0.958,0.936,0.913,0.876,0.876,0.828,0.756,0.677]},
+  'flat':{'t':[0,24],'p':[1.0, 1.0]}
   }
 
 inverterChoices = {
@@ -164,8 +166,15 @@ class DERConfigGUI:
     self.cb_load.set(next(iter(loadChoices)))
     self.cb_load.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_load.bind('<<ComboboxSelected>>', self.UpdateLoadProfile)
+    lab = ttk.Label(self.f4, text='Load Multiplier: ', relief=tk.RIDGE)
+    lab.grid(row=0, column=2, sticky=tk.NSEW)
+    self.ent_load_mult = ttk.Entry(self.f4, name='load_mult')
+    self.ent_load_mult.insert(0, '1.0')
+    self.ent_load_mult.grid(row=0, column=3, sticky=tk.NSEW)
     self.f4.columnconfigure(0, weight=0)
-    self.f4.columnconfigure(1, weight=1)
+    self.f4.columnconfigure(1, weight=0)
+    self.f4.columnconfigure(2, weight=0)
+    self.f4.columnconfigure(3, weight=1)
     self.f4.rowconfigure(0, weight=0)
     self.f4.rowconfigure(1, weight=1)
     self.fig_load = plt.figure(figsize=(5, 4), dpi=100)
@@ -173,7 +182,7 @@ class DERConfigGUI:
     self.ax_load.set_xlabel('Time [hr]')
     self.ax_load.set_ylabel('Power [pu]')
     self.canvas_load = FigureCanvasTkAgg(self.fig_load, master=self.f4)
-    self.canvas_load.get_tk_widget().grid(row=1, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
+    self.canvas_load.get_tk_widget().grid(row=1, columnspan=4, sticky=tk.W + tk.E + tk.N + tk.S)
     self.canvas_load.draw()
     self.UpdateLoadProfile(None)
 
@@ -202,10 +211,12 @@ class DERConfigGUI:
     lab.grid(row=0, column=0, sticky=tk.NSEW)
     self.cb_soln_mode = ttk.Combobox(self.f6, values=solutionModeChoices, name='cbSolutionMode')
     self.cb_soln_mode.grid(row=0, column=1, sticky=tk.NSEW)
+    self.cb_soln_mode.set('DAILY')
     lab = ttk.Label(self.f6, text='Control Mode', relief=tk.RIDGE)
     lab.grid(row=0, column=2, sticky=tk.NSEW)
     self.cb_ctrl_mode = ttk.Combobox(self.f6, values=controlModeChoices, name='cbControlMode')
     self.cb_ctrl_mode.grid(row=0, column=3, sticky=tk.NSEW)
+    self.cb_ctrl_mode.set('STATIC')
     lab = ttk.Label(self.f6, text='Stop Time [min]:', relief=tk.RIDGE)
     lab.grid(row=1, column=0, sticky=tk.NSEW)
     self.ent_stop = ttk.Entry(self.f6, name='stop')
@@ -214,18 +225,26 @@ class DERConfigGUI:
     lab = ttk.Label(self.f6, text='Time Step [s]:', relief=tk.RIDGE)
     lab.grid(row=1, column=2, sticky=tk.NSEW)
     self.ent_step = ttk.Entry(self.f6, name='step')
-    self.ent_step.insert(0, '5')
+    self.ent_step.insert(0, '300')
     self.ent_step.grid(row=1, column=3, sticky=tk.NSEW)
     #ttk.Style().configure('TButton', background='blue')
+    self.output_details = tk.IntVar()
+    self.output_details.set(1)
+    self.cbk_detail = ttk.Checkbutton(self.f6, text='Output PV Details', variable=self.output_details)
+    self.cbk_detail.grid(row=2, column=0, sticky=tk.NSEW)
     ttk.Style().configure('TButton', foreground='blue')
     self.btn_run = ttk.Button(self.f6, text='Run', command=self.RunOpenDSS)
-    self.btn_run.grid(row=2, column=0, sticky=tk.NSEW)
+    self.btn_run.grid(row=2, column=1, sticky=tk.NSEW)
     self.txt_output = scrolledtext.ScrolledText(self.f6)
     self.txt_output.grid(row=3, columnspan=4, sticky=tk.W + tk.E + tk.N + tk.S)
     self.f6.rowconfigure (0, weight=0)
     self.f6.rowconfigure (1, weight=0)
     self.f6.rowconfigure (2, weight=0)
     self.f6.rowconfigure (3, weight=1)
+    self.f6.columnconfigure (0, weight=0)
+    self.f6.columnconfigure (1, weight=0)
+    self.f6.columnconfigure (2, weight=0)
+    self.f6.columnconfigure (3, weight=1)
 
 #    self.txt_output.insert ('end', 'Stuff')
 
@@ -461,47 +480,49 @@ class DERConfigGUI:
 #       config[section][attribute] = val
 #
   def RunOpenDSS(self):
-#    dss = py_dss_interface.DSSDLL()
-#    print (pkg_resources.get_default_cache())
-#    fdr_path = pkg_resources.resource_filename (__name__, 'models/ieee_lvn')
-#    print (fdr_path)
-#    pkg_resources.resource_listdir (__name__, 'models/ieee_lvn')
-    dict = i2x.test_opendss_interface(choice = 'ieee9500', 
-                                      pvcurve = 'pcloud', 
-                                      loadmult = 0.5, 
-                                      stepsize = 300, 
-                                      numsteps = 288, 
+    load_mult = float(self.ent_load_mult.get())
+    feeder_choice = self.cb_feeder.get()
+    soln_mode = self.cb_soln_mode.get()
+    ctrl_mode = self.cb_ctrl_mode.get()
+    solar_profile = self.cb_solar.get()
+    load_profile = self.cb_load.get()
+    inv_mode = self.cb_inverter.get()
+    stop_minutes = int(self.ent_stop.get())
+    step_seconds = int(self.ent_step.get())
+    num_steps = int (60 * stop_minutes / step_seconds)
+    print (feeder_choice, solar_profile, load_mult, load_profile, inv_mode,
+           soln_mode, ctrl_mode, step_seconds, num_steps)
+    dict = i2x.test_opendss_interface(choice = feeder_choice,
+                                      pvcurve = solar_profile,
+                                      loadmult = load_mult,
+                                      loadcurve = load_profile,
+                                      invmode = inv_mode, 
+                                      stepsize = step_seconds, 
+                                      numsteps = num_steps,
+                                      ctrlmode = ctrl_mode,
+                                      solnmode = soln_mode, 
                                       doc_fp=None)
-#   'kWh_Net':kWh_Net,
-#   'kWh_Load':kWh_Load,
-#   'kWh_Loss':kWh_Loss,
-#   'kWh_Gen':kWh_Gen,
-#   'kWh_PV':kWh_PV,
-#   'kvarh_PV':kvarh_PV,
-#   'kWh_EEN':kWh_EEN,
-#   'kWh_UE':kWh_UE,
-#   'kWh_OverN':kWh_OverN,
-#   'kWh_OverE':kWh_OverE}
-#    self.txt_output.delete(0, tk.END)
+    self.txt_output.insert(tk.END, 'Analysis Run on {:s} at {:s}'.format(feeder_choice, datetime.datetime.now().strftime('%a %d-%b-%Y %H:%M:%S')))
     self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(dict['num_cap_switches']))
     self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(dict['num_tap_changes']))
     self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(dict['num_relay_trips']))
     self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(dict['num_low_voltage'], dict['vminpu'], dict['node_vmin']))
     self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(dict['num_high_voltage'], dict['vmaxpu'], dict['node_vmax']))
-    self.txt_output.insert(tk.END, 'Substation Energy =         {:9.2f} kWh\n'.format(dict['kWh_Net']))
-    self.txt_output.insert(tk.END, 'Load Served =               {:9.2f} kWh\n'.format(dict['kWh_Load']))
-    self.txt_output.insert(tk.END, 'Losses =                    {:9.2f} kWh\n'.format(dict['kWh_Loss']))
-    self.txt_output.insert(tk.END, 'Generation =                {:9.2f} kWh\n'.format(dict['kWh_Gen']))
-    self.txt_output.insert(tk.END, 'Solar Output =              {:9.2f} kWh\n'.format(dict['kWh_PV']))
-    self.txt_output.insert(tk.END, 'Solar Reactive Power =      {:9.2f} kWh\n'.format(dict['kvarh_PV']))
-    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:9.2f} kWh\n'.format(dict['kWh_EEN']))
-    self.txt_output.insert(tk.END, 'Unserved Energy =           {:9.2f} kWh\n'.format(dict['kWh_UE']))
-    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:9.2f} kWh\n'.format(dict['kWh_OverN']))
-    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:9.2f} kWh\n'.format(dict['kWh_OverE']))
+    self.txt_output.insert(tk.END, 'Substation Energy =         {:11.2f} kWh\n'.format(dict['kWh_Net']))
+    self.txt_output.insert(tk.END, 'Load Served =               {:11.2f} kWh\n'.format(dict['kWh_Load']))
+    self.txt_output.insert(tk.END, 'Losses =                    {:11.2f} kWh\n'.format(dict['kWh_Loss']))
+    self.txt_output.insert(tk.END, 'Generation =                {:11.2f} kWh\n'.format(dict['kWh_Gen']))
+    self.txt_output.insert(tk.END, 'Solar Output =              {:11.2f} kWh\n'.format(dict['kWh_PV']))
+    self.txt_output.insert(tk.END, 'Solar Reactive Power =      {:11.2f} kWh\n'.format(dict['kvarh_PV']))
+    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:11.2f} kWh\n'.format(dict['kWh_EEN']))
+    self.txt_output.insert(tk.END, 'Unserved Energy =           {:11.2f} kWh\n'.format(dict['kWh_UE']))
+    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:11.2f} kWh\n'.format(dict['kWh_OverN']))
+    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:11.2f} kWh\n'.format(dict['kWh_OverE']))
 
-    self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean    Vdiff\n')
-    for key, row in dict['pvdict'].items():
-      self.txt_output.insert(tk.END, '{:20s} {:9.2f} {:9.2f} {:8.2f} {:8.2f} {:8.2f} {:8.2f}\n'.format(key, row['kWh'], row['kvarh'], 
+    if self.output_details.get() > 0:
+      self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean    Vdiff\n')
+      for key, row in dict['pvdict'].items():
+        self.txt_output.insert(tk.END, '{:20s} {:9.2f} {:9.2f} {:8.2f} {:8.2f} {:8.2f} {:8.2f}\n'.format(key, row['kWh'], row['kvarh'], 
                                                                                row['vmin'], row['vmax'], row['vmean'], row['vdiff']))
 
 
@@ -511,15 +532,13 @@ class DERConfigGUI:
     self.feeder_name = key
     self.feeder_path = row['path']
     self.feeder_base = row['base']
-#    fname = os.path.join (self.feeder_path, row['network'])
     fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
     self.G = i2x.load_opendss_graph(fname)
 
     self.ax_feeder.cla()
-    i2x.plot_opendss_feeder (self.G, on_canvas=True, ax=self.ax_feeder, fig=self.fig_feeder)
+    i2x.plot_opendss_feeder (self.G, plot_labels=True, on_canvas=True, 
+                             ax=self.ax_feeder, fig=self.fig_feeder)
     self.canvas_feeder.draw()
-
-#    messagebox.showinfo(title='Combobox', message='Feeder File=' + fname)
 
   def UpdateSolarProfile(self, event):
     key = self.cb_solar.get()

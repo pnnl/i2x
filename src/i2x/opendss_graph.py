@@ -17,8 +17,14 @@ import csv
 import pkg_resources
 
 feederChoices = {
-  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
-  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
+  'ieee9500':{'path':'models/ieee9500/', 
+              'base':'Master-bal-initial-config.dss', 
+              'network':'Network.json',
+              'extra_source_buses':['hvmv69sub1_hsb', 'hvmv69sub2_hsb', 'hvmv69sub3_hsb']},
+  'ieee_lvn':{'path':'models/ieee_lvn/', 
+              'base':'SecPar.dss', 
+              'network':'Network.json',
+              'extra_source_buses':[]}
   }
 
 kvbases = [0.208, 0.418, 0.48, 4.16, 12.47, 13.2, 13.8, 34.5, 69.0, 115.0, 138.0, 230.0]
@@ -180,7 +186,7 @@ def update_node_class (G, data, nclass):
     G.nodes()[data['bus1']]['nclass'] = nclass
   return G.nodes()[data['bus1']]['ndata']
 
-def make_opendss_graph(saved_path, outfile):
+def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   #-----------------------
   # Pull Model Into Memory
   #-----------------------
@@ -217,6 +223,9 @@ def make_opendss_graph(saved_path, outfile):
   reactors = dict_from_file (os.path.join (saved_path, 'Reactor.dss'),
                             ['bus1', 'bus2', 'R', 'X'], 
                             ['bus1', 'bus2'])
+  relays = dict_from_file (os.path.join (saved_path, 'Relay.dss'),
+                          ['MonitoredObj', 'type', 'MonitoredTerm'], 
+                          ['MonitoredObj', 'type'])
   regulators = dict_from_file (os.path.join (saved_path, 'RegControl.dss'),
                             ['transformer', 'winding', 'tapwinding', 'ptratio', 'vreg', 'band', 
                              'reversible', 'revvreg', 'revband','revThreshold', 'delay', 'revDelay'], 
@@ -235,6 +244,10 @@ def make_opendss_graph(saved_path, outfile):
         row['Switch'] = False
     else:
       row['Switch'] = False
+  for key, row in relays.items():
+    if 'line.' in row['MonitoredObj']:
+      branch = row['MonitoredObj'][5:]
+      lines[branch]['Relay'] = True
   set_branch_phasing (lines)
   set_shunt_phasing (capacitors)
   set_shunt_phasing (solars)
@@ -268,6 +281,7 @@ def make_opendss_graph(saved_path, outfile):
   print ('read {:4d} regulators (as transformers)'.format (len(regulators)))
   print ('read {:4d} lines'.format (len(lines)))
   print ('read {:4d} switches (as lines)'.format (nswitch))
+  print ('read {:4d} relays'.format (len(relays)))
   print ('read {:4d} reactors'.format (len(reactors)))
   print ('read {:4d} sources'.format (len(sources)))
   print ('read {:4d} busxy'.format (len(busxy)))
@@ -275,11 +289,16 @@ def make_opendss_graph(saved_path, outfile):
   # construct a graph of the model, starting with all known buses that have XY coordinates
   G = nx.Graph()
   for key, data in busxy.items():
-    G.add_node (key, nclass='bus', ndata=xy_ndata (data['x'], data['y']))
+    nclass='bus'
+    if key in extra_source_buses:
+      nclass = 'source'
+    G.add_node (key, nclass=nclass, ndata=xy_ndata (data['x'], data['y']))
 
   # add series power delivery branches (not handling series capacitors)
   for key, data in lines.items():
-    if data['Switch']:
+    if 'Relay' in data:
+      eclass = 'nwp'
+    elif data['Switch']:
       eclass = 'switch'
     else:
       eclass = 'line'
@@ -361,5 +380,7 @@ def make_builtin_graph (feeder_name):
     print ('please choose from', feederChoices.keys())
     return None
   row = feederChoices[feeder_name]
+  fpath = pkg_resources.resource_filename (__name__, row['path'] + '/graph')
   fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
+  make_opendss_graph (fpath, fname, row['extra_source_buses'])
 

@@ -90,14 +90,15 @@ feederChoices = {
   'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
   }
 
-lblDeltaY = 0.35
+lblDeltaY = 0.0 # 0.35
 
 edgeTypes = {
   'line':        {'color':'gray',   'tag':'LN'},
   'transformer': {'color':'orange', 'tag':'XFM'},
   'regulator':   {'color':'red',    'tag':'REG'},
   'switch':      {'color':'blue',   'tag':'SWT'},
-  'reactor':     {'color':'black',  'tag':'RCT'}
+  'nwp':         {'color':'magenta','tag':'NWP'},
+  'reactor':     {'color':'green',  'tag':'RCT'}
   }
 
 nodeTypes = {
@@ -182,8 +183,18 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax
         xy[n] = [busx, busy]
         if 'nclass' in G.nodes()[n]:
           nclass = G.nodes()[n]['nclass']
-          lblNode[n] = n.upper()
-          xyLbl[n] = [busx, busy + get_node_offset (nclass)]
+          bLabel = False
+          if nclass == 'source':
+            bLabel = True
+          if nclass == 'storage' and ndata['batkva'] >= 100.0:
+            bLabel = True
+          if nclass == 'generator' and ndata['genkva'] >= 100.0:
+            bLabel = True
+          if nclass == 'solar' and ndata['pvkva'] >= 100.0:
+            bLabel = True
+          if bLabel and (n not in lblNode):
+            lblNode[n] = n.upper()
+            xyLbl[n] = [busx, busy + get_node_offset (nclass)]
         else:
           nclass = 'bus'
         plotNodes.append(n)
@@ -211,20 +222,21 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax
   nx.draw_networkx_nodes (G, xy, nodelist=plotNodes, node_color=nodeColors, node_size=nodeSizes, ax=ax)
   nx.draw_networkx_edges (G, xy, edgelist=plotEdges, edge_color=edgeColors, width=edgeWidths, alpha=0.8, ax=ax)
   if plot_labels:
+#    print ('plotting {:d} node labels'.format (len(lblNode)))
     nx.draw_networkx_labels (G, xyLbl, lblNode, font_size=8, font_color='k', 
                  horizontalalignment='left', verticalalignment='baseline', ax=ax)
   if title is not None:
     plt.title (title)
   plt.xlabel ('X coordinate [k]')
   plt.ylabel ('Y coordinate [k]')
-  plt.grid(linestyle='dotted')
+  ax.grid(linestyle='dotted')
   xdata = [0, 1]
   ydata = [1, 0]
   lns = [lines.Line2D(xdata, ydata, color=get_edge_color(e)) for e in edgeTypes] + \
     [lines.Line2D(xdata, ydata, color=get_node_color(n), marker='o') for n in nodeTypes]
   labs = [get_edge_mnemonic (e) for e in edgeTypes] + [get_node_mnemonic (n) for n in nodeTypes]
   ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
-  plt.legend(lns, labs, loc='lower right')
+  ax.legend(lns, labs, loc='lower right')
   if pdf_name is not None:
     plt.savefig (pdf_name)
   if not on_canvas:

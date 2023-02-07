@@ -17,5 +17,5 @@ New PVSystem.S224 phases=3 bus1=S224 kV=0.48 kVA=1095 irrad=1.0 Pmpp=100 PF=1
 New PVSystem.S231 phases=3 bus1=S231 kV=0.48 kVA=1095 irrad=1.0 Pmpp=100 PF=1
 New PVSystem.S236 phases=3 bus1=S236 kV=0.48 kVA=1095 irrad=1.0 Pmpp=100 PF=1
 
-New Energymeter.m1 Element=Line.1 Terminal=1
+New Energymeter.m1 Element=Line.1 Terminal=1 Option=[E,M,C]
 

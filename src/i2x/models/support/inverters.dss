@@ -22,3 +22,5 @@ New XYcurve.voltwatt1547bch npts=4 Yarray=[0.0,0.0,1.0,1.0] Xarray=[0.0,1.06,1.1
 //   OpenDSS will screen for V1 >= 1.00 and V2 <= 1.10
 New XYcurve.voltwatt1547pv npts=4 Yarray=[1.0,1.0,0.0,0.0] Xarray=[0.0,1.03,1.06,2.00]
 
+new loadshape.flat npts=2 interval=0 hour=[0.00,24.00] mult=[1.00,1.00] action=normalize
+

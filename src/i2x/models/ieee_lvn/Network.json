@@ -3093,15 +3093,15 @@
       "id": "s194"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 1461.9199999999998,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3112,7 +3112,8 @@
           "load.3",
           "load.4",
           "load.5",
-          "load.6"
+          "load.6",
+          "pvsystem.s193"
         ],
         "source": false,
         "x": 8.5,
@@ -3163,15 +3164,15 @@
       "id": "s199"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 868.15,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3182,7 +3183,8 @@
           "load.9",
           "load.10",
           "load.11",
-          "load.12"
+          "load.12",
+          "pvsystem.s198"
         ],
         "source": false,
         "x": 19.0,
@@ -3233,15 +3235,15 @@
       "id": "s204"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 2274.91,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3252,7 +3254,8 @@
           "load.15",
           "load.16",
           "load.17",
-          "load.18"
+          "load.18",
+          "pvsystem.s203"
         ],
         "source": false,
         "x": 9.0,
@@ -3324,15 +3327,15 @@
       "id": "s211"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 2703.6,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3343,7 +3346,8 @@
           "load.21",
           "load.22",
           "load.23",
-          "load.24"
+          "load.24",
+          "pvsystem.s210"
         ],
         "source": false,
         "x": 18.5,
@@ -3415,15 +3419,15 @@
       "id": "s218"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 2860.3699999999994,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3434,7 +3438,8 @@
           "load.27",
           "load.28",
           "load.29",
-          "load.30"
+          "load.30",
+          "pvsystem.s217"
         ],
         "source": false,
         "x": 7.0,
@@ -3506,15 +3511,15 @@
       "id": "s225"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 2879.7200000000003,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3525,7 +3530,8 @@
           "load.33",
           "load.34",
           "load.35",
-          "load.36"
+          "load.36",
+          "pvsystem.s224"
         ],
         "source": false,
         "x": 14.0,
@@ -3597,15 +3603,15 @@
       "id": "s232"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 426.15000000000003,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3616,7 +3622,8 @@
           "load.39",
           "load.40",
           "load.41",
-          "load.42"
+          "load.42",
+          "pvsystem.s231"
         ],
         "source": false,
         "x": 3.5,
@@ -3667,15 +3674,15 @@
       "id": "s237"
     },
     {
-      "nclass": "load",
+      "nclass": "solar",
       "ndata": {
         "phases": 3,
         "nomkv": 0.48,
         "loadkw": 2704.01,
         "genkva": 0.0,
         "genkw": 0.0,
-        "pvkva": 0.0,
-        "pvkw": 0.0,
+        "pvkva": 1095.0,
+        "pvkw": 100.0,
         "batkva": 0.0,
         "batkw": 0.0,
         "batkwh": 0.0,
@@ -3686,7 +3693,8 @@
           "load.45",
           "load.46",
           "load.47",
-          "load.48"
+          "load.48",
+          "pvsystem.s236"
         ],
         "source": false,
         "x": 18.5,
@@ -11938,13 +11946,14 @@
       "target": "s193"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "61_sw",
       "edata": {
         "bus1": "s196",
         "bus2": "s194",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s194",
@@ -11965,13 +11974,14 @@
       "target": "s195"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "62_sw",
       "edata": {
         "bus1": "s197",
         "bus2": "s195",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s195",
@@ -11992,13 +12002,14 @@
       "target": "s198"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "63_sw",
       "edata": {
         "bus1": "s201",
         "bus2": "s199",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s199",
@@ -12019,13 +12030,14 @@
       "target": "s200"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "64_sw",
       "edata": {
         "bus1": "s202",
         "bus2": "s200",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s200",
@@ -12046,13 +12058,14 @@
       "target": "s203"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "65_sw",
       "edata": {
         "bus1": "s207",
         "bus2": "s204",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s204",
@@ -12087,26 +12100,28 @@
       "target": "s206"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "66_sw",
       "edata": {
         "bus1": "s208",
         "bus2": "s205",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s205",
       "target": "s208"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "67_sw",
       "edata": {
         "bus1": "s209",
         "bus2": "s206",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s206",
@@ -12127,13 +12142,14 @@
       "target": "s210"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "68_sw",
       "edata": {
         "bus1": "s214",
         "bus2": "s211",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s211",
@@ -12168,26 +12184,28 @@
       "target": "s213"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "69_sw",
       "edata": {
         "bus1": "s215",
         "bus2": "s212",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s212",
       "target": "s215"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "70_sw",
       "edata": {
         "bus1": "s216",
         "bus2": "s213",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s213",
@@ -12208,13 +12226,14 @@
       "target": "s217"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "71_sw",
       "edata": {
         "bus1": "s221",
         "bus2": "s218",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s218",
@@ -12249,26 +12268,28 @@
       "target": "s220"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "72_sw",
       "edata": {
         "bus1": "s222",
         "bus2": "s219",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s219",
       "target": "s222"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "73_sw",
       "edata": {
         "bus1": "s223",
         "bus2": "s220",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s220",
@@ -12289,13 +12310,14 @@
       "target": "s224"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "74_sw",
       "edata": {
         "bus1": "s228",
         "bus2": "s225",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s225",
@@ -12330,26 +12352,28 @@
       "target": "s227"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "75_sw",
       "edata": {
         "bus1": "s229",
         "bus2": "s226",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s226",
       "target": "s229"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "76_sw",
       "edata": {
         "bus1": "s230",
         "bus2": "s227",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s227",
@@ -12370,13 +12394,14 @@
       "target": "s231"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "77_sw",
       "edata": {
         "bus1": "s234",
         "bus2": "s232",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s232",
@@ -12397,13 +12422,14 @@
       "target": "s233"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "78_sw",
       "edata": {
         "bus1": "s235",
         "bus2": "s233",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s233",
@@ -12424,13 +12450,14 @@
       "target": "s236"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "79_sw",
       "edata": {
         "bus1": "s238",
         "bus2": "s237",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s237",
@@ -12451,13 +12478,14 @@
       "target": "s239"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "80_sw",
       "edata": {
         "bus1": "s240",
         "bus2": "s239",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s239",
@@ -12534,13 +12562,14 @@
       "target": "s5"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "14_sw",
       "edata": {
         "bus1": "s145",
         "bus2": "s4",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s4",
@@ -12631,13 +12660,14 @@
       "target": "s10"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "16_sw",
       "edata": {
         "bus1": "s149",
         "bus2": "s9",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s9",
@@ -12728,13 +12758,14 @@
       "target": "s15"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "18_sw",
       "edata": {
         "bus1": "s153",
         "bus2": "s14",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s14",
@@ -12825,13 +12856,14 @@
       "target": "s20"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "20_sw",
       "edata": {
         "bus1": "s157",
         "bus2": "s19",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s19",
@@ -12936,13 +12968,14 @@
       "target": "s45"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "21_sw",
       "edata": {
         "bus1": "s147",
         "bus2": "s44",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s44",
@@ -12963,13 +12996,14 @@
       "target": "s46"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "30_sw",
       "edata": {
         "bus1": "s161",
         "bus2": "s45",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s45",
@@ -13060,13 +13094,14 @@
       "target": "s50"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "23_sw",
       "edata": {
         "bus1": "s151",
         "bus2": "s49",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s49",
@@ -13087,13 +13122,14 @@
       "target": "s51"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "32_sw",
       "edata": {
         "bus1": "s165",
         "bus2": "s50",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s50",
@@ -13184,13 +13220,14 @@
       "target": "s55"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "25_sw",
       "edata": {
         "bus1": "s155",
         "bus2": "s54",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s54",
@@ -13211,13 +13248,14 @@
       "target": "s56"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "34_sw",
       "edata": {
         "bus1": "s169",
         "bus2": "s55",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s55",
@@ -13308,13 +13346,14 @@
       "target": "s60"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "27_sw",
       "edata": {
         "bus1": "s159",
         "bus2": "s59",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s59",
@@ -13335,13 +13374,14 @@
       "target": "s61"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "36_sw",
       "edata": {
         "bus1": "s173",
         "bus2": "s60",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s60",
@@ -13460,13 +13500,14 @@
       "target": "s86"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "37_sw",
       "edata": {
         "bus1": "s163",
         "bus2": "s85",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s85",
@@ -13487,13 +13528,14 @@
       "target": "s87"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "46_sw",
       "edata": {
         "bus1": "s177",
         "bus2": "s86",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s86",
@@ -13584,13 +13626,14 @@
       "target": "s91"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "39_sw",
       "edata": {
         "bus1": "s167",
         "bus2": "s90",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s90",
@@ -13611,13 +13654,14 @@
       "target": "s92"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "48_sw",
       "edata": {
         "bus1": "s181",
         "bus2": "s91",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s91",
@@ -13708,13 +13752,14 @@
       "target": "s96"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "41_sw",
       "edata": {
         "bus1": "s171",
         "bus2": "s95",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s95",
@@ -13735,13 +13780,14 @@
       "target": "s97"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "50_sw",
       "edata": {
         "bus1": "s185",
         "bus2": "s96",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s96",
@@ -13832,13 +13878,14 @@
       "target": "s101"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "43_sw",
       "edata": {
         "bus1": "s175",
         "bus2": "s100",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s100",
@@ -13859,13 +13906,14 @@
       "target": "s102"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "52_sw",
       "edata": {
         "bus1": "s189",
         "bus2": "s101",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s101",
@@ -13970,13 +14018,14 @@
       "target": "s127"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "53_sw",
       "edata": {
         "bus1": "s179",
         "bus2": "s126",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s126",
@@ -14067,13 +14116,14 @@
       "target": "s132"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "55_sw",
       "edata": {
         "bus1": "s183",
         "bus2": "s131",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s131",
@@ -14164,13 +14214,14 @@
       "target": "s137"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "57_sw",
       "edata": {
         "bus1": "s187",
         "bus2": "s136",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s136",
@@ -14261,13 +14312,14 @@
       "target": "s142"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "59_sw",
       "edata": {
         "bus1": "s191",
         "bus2": "s141",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s141",
@@ -14344,13 +14396,14 @@
       "target": "s32"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "13_sw",
       "edata": {
         "bus1": "s148",
         "bus2": "s27",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s27",
@@ -14399,13 +14452,14 @@
       "target": "s73"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "29_sw",
       "edata": {
         "bus1": "s164",
         "bus2": "s68",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s68",
@@ -14454,13 +14508,14 @@
       "target": "s114"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "45_sw",
       "edata": {
         "bus1": "s180",
         "bus2": "s109",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s109",
@@ -14509,13 +14564,14 @@
       "target": "s33"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "15_sw",
       "edata": {
         "bus1": "s152",
         "bus2": "s28",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s28",
@@ -14536,13 +14592,14 @@
       "target": "s38"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "22_sw",
       "edata": {
         "bus1": "s146",
         "bus2": "s33",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s33",
@@ -14577,13 +14634,14 @@
       "target": "s74"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "31_sw",
       "edata": {
         "bus1": "s168",
         "bus2": "s69",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s69",
@@ -14604,13 +14662,14 @@
       "target": "s79"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "38_sw",
       "edata": {
         "bus1": "s162",
         "bus2": "s74",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s74",
@@ -14645,13 +14704,14 @@
       "target": "s115"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "47_sw",
       "edata": {
         "bus1": "s184",
         "bus2": "s110",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s110",
@@ -14672,13 +14732,14 @@
       "target": "s120"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "54_sw",
       "edata": {
         "bus1": "s178",
         "bus2": "s115",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s115",
@@ -14713,13 +14774,14 @@
       "target": "s34"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "17_sw",
       "edata": {
         "bus1": "s156",
         "bus2": "s29",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s29",
@@ -14740,13 +14802,14 @@
       "target": "s39"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "24_sw",
       "edata": {
         "bus1": "s150",
         "bus2": "s34",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s34",
@@ -14781,13 +14844,14 @@
       "target": "s75"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "33_sw",
       "edata": {
         "bus1": "s172",
         "bus2": "s70",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s70",
@@ -14808,13 +14872,14 @@
       "target": "s80"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "40_sw",
       "edata": {
         "bus1": "s166",
         "bus2": "s75",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s75",
@@ -14849,13 +14914,14 @@
       "target": "s116"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "49_sw",
       "edata": {
         "bus1": "s188",
         "bus2": "s111",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s111",
@@ -14876,13 +14942,14 @@
       "target": "s121"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "56_sw",
       "edata": {
         "bus1": "s182",
         "bus2": "s116",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s116",
@@ -14917,13 +14984,14 @@
       "target": "s35"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "19_sw",
       "edata": {
         "bus1": "s160",
         "bus2": "s30",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s30",
@@ -14944,13 +15012,14 @@
       "target": "s40"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "26_sw",
       "edata": {
         "bus1": "s154",
         "bus2": "s35",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s35",
@@ -14985,13 +15054,14 @@
       "target": "s76"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "35_sw",
       "edata": {
         "bus1": "s176",
         "bus2": "s71",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s71",
@@ -15012,13 +15082,14 @@
       "target": "s81"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "42_sw",
       "edata": {
         "bus1": "s170",
         "bus2": "s76",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s76",
@@ -15053,13 +15124,14 @@
       "target": "s117"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "51_sw",
       "edata": {
         "bus1": "s192",
         "bus2": "s112",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s112",
@@ -15080,13 +15152,14 @@
       "target": "s122"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "58_sw",
       "edata": {
         "bus1": "s186",
         "bus2": "s117",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s117",
@@ -15135,13 +15208,14 @@
       "target": "s41"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "28_sw",
       "edata": {
         "bus1": "s158",
         "bus2": "s36",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s36",
@@ -15190,13 +15264,14 @@
       "target": "s82"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "44_sw",
       "edata": {
         "bus1": "s174",
         "bus2": "s77",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s77",
@@ -15245,13 +15320,14 @@
       "target": "s123"
     },
     {
-      "eclass": "switch",
+      "eclass": "nwp",
       "ename": "60_sw",
       "edata": {
         "bus1": "s190",
         "bus2": "s118",
         "Switch": true,
         "length": 1.0,
+        "Relay": true,
         "phases": 3
       },
       "source": "s118",

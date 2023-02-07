@@ -111,7 +111,7 @@
       "id": "hvmv69sub1_lsb2"
     },
     {
-      "nclass": "bus",
+      "nclass": "source",
       "ndata": {
         "phases": 3,
         "nomkv": 0.0,
@@ -447,7 +447,7 @@
       "id": "hvmv69sub2_lnb"
     },
     {
-      "nclass": "bus",
+      "nclass": "source",
       "ndata": {
         "phases": 3,
         "nomkv": 0.0,
@@ -552,7 +552,7 @@
       "id": "hvmv69s2s3_2"
     },
     {
-      "nclass": "bus",
+      "nclass": "source",
       "ndata": {
         "phases": 3,
         "nomkv": 0.0,

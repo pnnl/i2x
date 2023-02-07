@@ -5,7 +5,8 @@ import numpy as np
 from numpy import trapz
 
 # arg: choice, stepsize, numsteps, pvcurve, loadmult, inverters [TODO]
-def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp=None):
+def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, 
+                           loadcurve, invmode, solnmode, ctrlmode, doc_fp=None):
 
 #  choice = 'ieee9500'
 #  choice = 'ieee_lvn'
@@ -27,8 +28,9 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp
 
   dss.text ('batchedit PVSystem..* irradiance=1 daily={:s} %cutin=0.1 %cutout=0.1 varfollowinverter=true'.format (pvcurve)) #kvarmax=?
   dss.text ('// New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5')
+  dss.text ('batchedit load..* daily={:s} duty={:s} yearly={:s}'.format (loadcurve, loadcurve, loadcurve))
   dss.text ('set loadmult={:.6f}'.format(loadmult))
-  dss.text ('set controlmode=static')
+  dss.text ('set controlmode={:s}'.format(ctrlmode))
   dss.text ('set maxcontroliter=1000')
   dss.text ('set maxiter=30')
   dss.text ('// batchedit pvsystem..* enabled=no')
@@ -39,9 +41,11 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp
     dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
   dss.dssprogress_show ()
   dss.dssprogress_caption ('Running HCA simulation on {:s} for {:d} steps'.format (choice, numsteps))
-  dss.text ('solve mode=daily number={:d} stepsize={:d}s'.format(numsteps, stepsize))
+  dss.text ('solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize))
   dss.dssprogress_close ()
 
+  converged = bool(dss.solution_read_converged())
+  print ('Converged = ', converged)
   num_cap_switches = 0
   num_tap_changes = 0
   num_relay_trips = 0
@@ -60,6 +64,11 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp
   print ('{:4d} capacitor bank switching operations'.format (num_cap_switches))
   print ('{:4d} regulator tap changes'.format (num_tap_changes))
   print ('{:4d} relay trip operations'.format (num_relay_trips))
+  if not converged:
+    return {'converged': converged,
+            'num_cap_switches': num_cap_switches,
+            'num_tap_changes': num_tap_changes,
+            'num_relay_trips': num_relay_trips}
 
   node_names = dss.circuit_all_node_names()
   node_vpus = dss.circuit_all_bus_vmag_pu()
@@ -102,8 +111,14 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp
     name = dss.monitors_read_name()
     if name.endswith('_pq'):
       key = name[0:-3]
-      ep = -trapz (np.array(dss.monitors_channel(1)), dx=dh)
-      eq = -trapz (np.array(dss.monitors_channel(2)), dx=dh)
+      p = np.array(dss.monitors_channel(1))
+      q = np.array(dss.monitors_channel(2))
+      ep = 0.0
+      eq = 0.0
+      if np.count_nonzero(np.isnan(p)) < 1:
+        ep = -trapz (p, dx=dh)
+      if np.count_nonzero(np.isnan(q)) < 1:
+        eq = -trapz (q, dx=dh)
       kWh_PV += ep
       kvarh_PV += eq
       pvdict[key]['kWh'] = ep
@@ -136,20 +151,21 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp
 #    print ('{:30s} {:13.6f}'.format (names[i], vals[i]))
     if names[i] == 'kWh':
       kWh_Net = vals[i]
-    if names[i] == 'Gen kWh':
-      kWh_Gen = vals[i]
-    if names[i] == 'Zone kWh':
-      kWh_Load = vals[i]
-    if names[i] == 'Zone Losses kWh':
-      kWh_Loss = vals[i]
-    if names[i] == 'Load EEN':
-      kWh_EEN = vals[i]
-    if names[i] == 'Load UE':
-      kWh_UE = vals[i]
-    if names[i] == 'Overload kWh Normal':
-      kWh_OverN = vals[i]
-    if names[i] == 'Overload kWh Emerg':
-      kWh_OverE = vals[i]
+    if num_relay_trips < 1:
+      if names[i] == 'Gen kWh':
+        kWh_Gen = vals[i]
+      if names[i] == 'Zone kWh':
+        kWh_Load = vals[i]
+      if names[i] == 'Zone Losses kWh':
+        kWh_Loss = vals[i]
+      if names[i] == 'Load EEN':
+        kWh_EEN = vals[i]
+      if names[i] == 'Load UE':
+        kWh_UE = vals[i]
+      if names[i] == 'Overload kWh Normal':
+        kWh_OverN = vals[i]
+      if names[i] == 'Overload kWh Emerg':
+        kWh_OverE = vals[i]
   print ('Srce  kWh = {:10.2f}'.format (kWh_Net))
   print ('Load  kWh = {:10.2f}'.format (kWh_Load))
   print ('Loss  kWh = {:10.2f}'.format (kWh_Loss))
@@ -158,8 +174,8 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp
   print ('PV  kvarh = {:10.2f}'.format (kvarh_PV))
   print ('EEN   kWh = {:10.2f}'.format (kWh_EEN))
   print ('UE    kWh = {:10.2f}'.format (kWh_UE))
-  print ('OverN kWh = {:10.2f}'.format (kWh_OverN))
-  print ('OverE kWh = {:10.2f}'.format (kWh_OverE))
+#  print ('OverN kWh = {:10.2f}'.format (kWh_OverN))
+#  print ('OverE kWh = {:10.2f}'.format (kWh_OverE))
 
   print ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems_count(), dss.generators_count()))
 
@@ -173,7 +189,8 @@ def test_opendss_interface(choice, pvcurve, loadmult, stepsize, numsteps, doc_fp
       if inspect.ismethod(fn):
         print ('  {:40s} {:s}'.format (row, str(inspect.signature(fn))), file=doc_fp)
 
-  return {'pvdict':pvdict,
+  return {'converged': converged,
+          'pvdict':pvdict,
           'num_cap_switches': num_cap_switches,
           'num_tap_changes': num_tap_changes,
           'num_relay_trips': num_relay_trips,
