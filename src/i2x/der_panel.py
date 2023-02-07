@@ -135,9 +135,9 @@ class DERConfigGUI:
     self.toolbar = NavigationToolbar2Tk(self.canvas_feeder, self.f1, pack_toolbar=False)
     self.toolbar.update()
     self.toolbar.grid(row=2, columnspan=2)
-    self.UpdateFeeder(None)
 
     self.f2 = ttk.Frame(self.nb, name='varsDER')
+    self.UpdateFeeder(None) # this updates f2 with DER information on the selected feeder
 
     self.f3 = ttk.Frame(self.nb, name='varsSolar')
     lab = ttk.Label(self.f3, text='Solar Profile: ', relief=tk.RIDGE)
@@ -246,8 +246,6 @@ class DERConfigGUI:
     self.f6.columnconfigure (2, weight=0)
     self.f6.columnconfigure (3, weight=1)
 
-#    self.txt_output.insert ('end', 'Stuff')
-
     self.nb.add(self.f1, text='Network', underline=0, padding=2)
     self.nb.add(self.f2, text='DER', underline=0, padding=2)
     self.nb.add(self.f3, text='Solar', underline=0, padding=2)
@@ -262,91 +260,6 @@ class DERConfigGUI:
 #      self.master.quit()
 #      self.master.destroy()
 
-# def AttachFrame(self, tag, vars):
-#   """Creates a GUI page and loads it with data
-#
-#   Label, Combobox and Entry (i.e. edit) controls are automatically created for each row of data
-#
-#   Args:
-#     tag (str): the name of the Frame, i.e., GUI page
-#     vars (dict): the section of case configuration data to be loaded onto this new GUI page
-#   """
-#   f = ttk.Frame(self.nb, name=tag)
-#   lab = ttk.Label(f, text='Parameter', relief=tk.RIDGE)
-#   lab.grid(row=0, column=0, sticky=tk.NSEW)
-#   lab = ttk.Label(f, text='Value', relief=tk.RIDGE)
-#   lab.grid(row=0, column=1, sticky=tk.NSEW)
-#   lab = ttk.Label(f, text='Units/Notes', relief=tk.RIDGE)
-#   lab.grid(row=0, column=2, sticky=tk.NSEW)
-#   for i in range(len(vars)):
-#     lab = ttk.Label(f, text=vars[i][0], relief=tk.RIDGE)
-#     lab.grid(row=i + 1, column=0, sticky=tk.NSEW)
-#     varName = (vars[i][3] + '#' + vars[i][4]).lower()
-#     if len(vars[i]) > 5:
-#       cb = ttk.Combobox(f, values=globals()[vars[i][5]], name=varName)
-#       cb.set(vars[i][1])
-#       cb.grid(row=i + 1, column=1, sticky=tk.NSEW)
-#     else:
-#       ent = ttk.Entry(f, name=varName)
-#       ent.insert(0, vars[i][1])
-#       ent.grid(row=i + 1, column=1, sticky=tk.NSEW)
-#     lab = ttk.Label(f, text=vars[i][2], relief=tk.RIDGE)
-#     lab.grid(row=i + 1, column=2, sticky=tk.NSEW)
-#   f.columnconfigure(0, weight=1)
-#   f.columnconfigure(1, weight=2)
-#   f.columnconfigure(2, weight=1)
-#   return f
-#
-# def ReloadFrame(self, f, vars):
-#   """Helper function to recreate the GUI page controls and load them with values
-#
-#   Args:
-#     f (Frame): the GUI page to reload
-#     vars (dict): the section of case configuration with values to be loaded
-#   """
-#   for i in range(len(vars)):
-#     ent = f.grid_slaves(row=i + 1, column=1)[0]
-#     ent.delete(0, tk.END)
-#     ent.insert(0, vars[i][1])
-#
-# def mcSample(self, var):
-#   """Return an appropriate random value for each Monte Carlo variable choice
-#
-#   Args:
-#     var (str): one of ElectricCoolingParticipation, ThermostatRampMid, ThermostatOffsetLimitMid, WeekdayEveningStartMid or WeekdayEveningSetMid
-#   """
-#   if var == 'ElectricCoolingParticipation':
-#     return '{:.3f}'.format(np.random.uniform(0, 100))
-#   elif var == 'ThermostatRampMid':
-#     return '{:.3f}'.format(np.random.uniform(1.0, 4.0))
-#   elif var == 'ThermostatOffsetLimitMid':
-#     return '{:.3f}'.format(np.random.uniform(0, 6.0))
-#   elif var == 'WeekdayEveningStartMid':
-#     return '{:.3f}'.format(np.random.uniform(16.5, 18.0))
-#   elif var == 'WeekdayEveningSetMid':
-#     return '{:.3f}'.format(np.random.uniform(68.0, 74.0))
-#   else:
-#     return '{:.3f}'.format(np.random.uniform(0, 1))
-#
-# def mcBand(self, var):
-#   """Find the band size corresponding to each Monte Carlo variable choice
-#
-#   Args:
-#     var (str): one of ElectricCoolingParticipation, ThermostatRampMid, ThermostatOffsetLimitMid, WeekdayEveningStartMid or WeekdayEveningSetMid
-#   """
-#   if var == 'ElectricCoolingParticipation':
-#     return 10.0
-#   elif var == 'ThermostatRampMid':
-#     return 0.5
-#   elif var == 'ThermostatOffsetLimitMid':
-#     return 2.0
-#   elif var == 'WeekdayEveningStartMid':
-#     return 1.0
-#   elif var == 'WeekdayEveningSetMid':
-#     return 1.0
-#   else:
-#     return 0.0
-#
 # def SizeMonteCarlo(self, n):
 #   """Initializes the Monte Carlo data structures with variable choices and samples
 #
@@ -454,31 +367,6 @@ class DERConfigGUI:
 #     w2.grid(row=i + 2 + startRow, column=2, sticky=tk.NSEW)
 #     w3.grid(row=i + 2 + startRow, column=3, sticky=tk.NSEW)
 #
-# def ReadFrame(self, f, vars):
-#   """Helper function that reads values from gridded GUI controls into the local case configuration
-#
-#   Args:
-#     f (Frame): the GUI page to read
-#     vars (dict): the local data structure to update
-#   """
-#   for w in f.grid_slaves():
-#     col = int(w.grid_info()['column'])
-#     row = int(w.grid_info()['row'])
-#     if col == 1 and row > 0 and row <= len(vars):
-#       val = w.get()
-#       try:
-#         tmp = int(val)
-#         val = tmp
-#       except:
-#         try:
-#           tmp = float(val)
-#           val = tmp
-#         except:
-#           pass
-#       section = vars[row - 1][3]
-#       attribute = vars[row - 1][4]
-#       config[section][attribute] = val
-#
   def RunOpenDSS(self):
     load_mult = float(self.ent_load_mult.get())
     feeder_choice = self.cb_feeder.get()
@@ -526,6 +414,45 @@ class DERConfigGUI:
                                                                                row['vmin'], row['vmax'], row['vmean'], row['vdiff']))
 
 
+  def ResetDERPage(self):
+    for w in self.f2.grid_slaves():
+      w.grid_forget()
+
+    pvkw = 0.0
+    pvkva = 0.0
+    npv = len(self.pvder)
+    for key, row in self.pvder.items():
+      pvkw += row['kw']
+      pvkva += row['kva']
+
+    genkw = 0.0
+    genkva = 0.0
+    ngen = len(self.gender)
+    for key, row in self.gender.items():
+      genkw += row['kw']
+      genkva += row['kva']
+
+    batkw = 0.0
+    batkva = 0.0
+    nbat = len(self.batder)
+    for key, row in self.batder.items():
+      batkw += row['kw']
+      batkva += row['kva']
+
+    lab_load = ttk.Label(self.f2, text='Total Load = {:.2f} kW'.format(self.loadkw), relief=tk.RIDGE)
+    lab_load.grid(row=0, column=0, sticky=tk.NSEW)
+    lab_pv = ttk.Label(self.f2, text='Existing Solar = {:.2f} kVA, {:.2f} kW in {:d} units'.format(pvkva, pvkw, npv), relief=tk.RIDGE)
+    lab_pv.grid(row=1, column=0, sticky=tk.NSEW)
+    lab_bat = ttk.Label(self.f2, text='Existing Storage = {:.2f} kVA, {:.2f} kW in {:d} units'.format(batkva, batkw, nbat), relief=tk.RIDGE)
+    lab_bat.grid(row=2, column=0, sticky=tk.NSEW)
+    lab_gen = ttk.Label(self.f2, text='Existing Generation = {:.2f} kVA, {:.2f} kW in {:d} units'.format(genkva, genkw, ngen), relief=tk.RIDGE)
+    lab_gen.grid(row=3, column=0, sticky=tk.NSEW)
+    lab_roofs = ttk.Label(self.f2, text='{:d} Available Residential Rooftops, Use[%]:'.format(len(self.resloads)), relief=tk.RIDGE)
+    lab_roofs.grid(row=4, column=0, sticky=tk.NSEW)
+    self.ent_pct_roofs = ttk.Entry(self.f2, name='pct_roofs')
+    self.ent_pct_roofs.insert(0, '10.0')
+    self.ent_pct_roofs.grid(row=4, column=1, sticky=tk.NSEW)
+
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()
     row = feederChoices[key]
@@ -535,10 +462,13 @@ class DERConfigGUI:
     fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
     self.G = i2x.load_opendss_graph(fname)
 
+    self.pvder, self.gender, self.batder, self.largeder, self.resloads, self.loadkw = i2x.parse_opendss_graph(self.G)
+
     self.ax_feeder.cla()
     i2x.plot_opendss_feeder (self.G, plot_labels=True, on_canvas=True, 
                              ax=self.ax_feeder, fig=self.fig_feeder)
     self.canvas_feeder.draw()
+    self.ResetDERPage()
 
   def UpdateSolarProfile(self, event):
     key = self.cb_solar.get()
@@ -590,81 +520,7 @@ class DERConfigGUI:
 #   ctl.delete(0, tk.END)
 #   ctl.insert(0, val)
 #
-# def ReadLatLong(self):
-#   """Updates the Latitude and Longitude from TMY3 file
-#   """
-#   weatherpath = self.path_ent.get()
-#   weatherfile = self.tmy3_ent.get()
-#   fname = weather_path + weatherfile
-#   if os.path.isfile(fname):
-#     fd = open(fname, 'r')
-#     rd = csv.reader(fd, delimiter=',', skipinitialspace=True)
-#     row = next(rd)
-#     tmy3source = row[0]
-#     tmy3station = row[1]
-#     tmy3state = row[2]
-#     tmy3tzoffset = float(row[3])
-#     tmy3latitude = float(row[4])
-#     tmy3longitude = float(row[5])
-#     tmy3altitude = float(row[6])
-#     self.update_entry(self.tz_ent, tmy3tzoffset)
-#     self.update_entry(self.lat_ent, tmy3latitude)
-#     self.update_entry(self.long_ent, tmy3longitude)
-#     self.update_entry(self.alt_ent, tmy3altitude)
-#     fd.close()
-#   else:
-#     print(fname, 'not found')
-#
 # def SaveConfig(self):
-#   """Updates the local case configuration from the GUI, queries user for a file name, and then saves case configuration to that file
-#   """
-#   self.ReadFrame(self.f1, varsTM)
-#   self.ReadFrame(self.f2, varsFD)
-#   self.ReadFrame(self.f3, varsPP)
-#   self.ReadFrame(self.f4, varsEP)
-#   self.ReadFrame(self.f5, varsAC)
-#   self.ReadFrame(self.f6, varsTS)
-#
-#   col1 = self.f7.children['cb1'].get()
-#   col2 = self.f7.children['cb2'].get()
-#   col3 = self.f7.children['cb3'].get()
-#   config['MonteCarloCase']['Variable1'] = col1
-#   config['MonteCarloCase']['Variable2'] = col2
-#   config['MonteCarloCase']['Variable3'] = col3
-#   use1 = col1 != 'None'
-#   use2 = col2 != 'None'
-#   use3 = col3 != 'None'
-#   band1 = 'Mid' in col1
-#   band2 = 'Mid' in col2
-#   band3 = 'Mid' in col3
-#   numCases = int(
-#     self.f7.children['rows'].get())  # what if user changed entry and didn't click Update...global numCases?
-#   for w in self.f7.grid_slaves():
-#     row = int(w.grid_info()['row'])
-#     col = int(w.grid_info()['column'])
-#     if row == 3:
-#       if col == 1 and band1:
-#         val = float(w.get())
-#         config['MonteCarloCase']['Band1'] = val
-#       if col == 2 and band2:
-#         val = float(w.get())
-#         config['MonteCarloCase']['Band2'] = val
-#       if col == 3 and band3:
-#         val = float(w.get())
-#         config['MonteCarloCase']['Band3'] = val
-#     elif row > 4:
-#       if col == 1 and use1:
-#         val = float(w.get())
-#         config['MonteCarloCase']['Samples1'][row - 5] = val
-#       if col == 2 and use2:
-#         val = float(w.get())
-#         config['MonteCarloCase']['Samples2'][row - 5] = val
-#       if col == 3 and use3:
-#         val = float(w.get())
-#         config['MonteCarloCase']['Samples3'][row - 5] = val
-#   if not os.path.exists(tesp_share):
-#     if not messagebox.askyesno('Continue to Save?', 'TESP Support Directory: ' + tesp_share + ' not found.'):
-#       return
 #   fname = filedialog.asksaveasfilename(initialdir='~/src/examples/te30',
 #                      title='Save JSON Configuration to',
 #                      defaultextension='json')
@@ -673,22 +529,7 @@ class DERConfigGUI:
 #     json.dump(config, op, ensure_ascii=False, indent=2)
 #     op.close()
 #
-# def JsonToSection(self, jsn, vars):
-#   """Helper function that transfers a JSON file segment into GUI data structures
-#
-#   Args:
-#     jsn (dict): the loaded JSON file
-#     vars (dict): the local data structure
-#   """
-#   for i in range(len(vars)):
-#     section = vars[i][3]
-#     attribute = vars[i][4]
-#     vars[i][1] = jsn[section][attribute]
-#     config[section][attribute] = jsn[section][attribute]
-#
 # def OpenConfig(self):
-#   """Opens a JSON case configuration; transfers its data to the GUI
-#   """
 #   fname = filedialog.askopenfilename(initialdir='~/src/examples/te30',
 #                      title='Open JSON Configuration',
 #                      filetypes=(("JSON files", "*.json"), ("all files", "*.*")),
@@ -696,61 +537,7 @@ class DERConfigGUI:
 #   lp = open(fname)
 #   cfg = json.loads(lp.read())
 #   lp.close()
-#   self.JsonToSection(cfg, varsTM)
-#   self.JsonToSection(cfg, varsFD)
-#   self.JsonToSection(cfg, varsPP)
-#   self.JsonToSection(cfg, varsEP)
-#   self.JsonToSection(cfg, varsAC)
-#   self.JsonToSection(cfg, varsTS)
-#   self.ReloadFrame(self.f1, varsTM)
-#   self.ReloadFrame(self.f2, varsFD)
-#   self.ReloadFrame(self.f3, varsPP)
-#   self.ReloadFrame(self.f4, varsEP)
-#   self.ReloadFrame(self.f5, varsAC)
-#   self.ReloadFrame(self.f6, varsTS)
 #
-#   numCases = int(cfg['MonteCarloCase']['NumCases'])
-#   config['MonteCarloCase']['NumCases'] = numCases
-#   ent = self.f7.children['rows']
-#   ent.delete(0, tk.END)
-#   ent.insert(0, str(numCases))
-#
-#   var1 = cfg['MonteCarloCase']['Variable1']
-#   config['MonteCarloCase']['Variable1'] = var1
-#   self.f7.children['cb1'].set(var1)
-#
-#   var2 = cfg['MonteCarloCase']['Variable2']
-#   config['MonteCarloCase']['Variable2'] = var2
-#   self.f7.children['cb2'].set(var2)
-#
-#   var3 = cfg['MonteCarloCase']['Variable3']
-#   config['MonteCarloCase']['Variable3'] = var3
-#   self.f7.children['cb3'].set(var3)
-#
-#   config['MonteCarloCase']['Band1'] = cfg['MonteCarloCase']['Band1']
-#   config['MonteCarloCase']['Band2'] = cfg['MonteCarloCase']['Band2']
-#   config['MonteCarloCase']['Band3'] = cfg['MonteCarloCase']['Band3']
-#
-#   config['MonteCarloCase']['Samples1'] = [0] * numCases
-#   config['MonteCarloCase']['Samples2'] = [0] * numCases
-#   config['MonteCarloCase']['Samples3'] = [0] * numCases
-#
-#   for i in range(numCases):
-#     config['MonteCarloCase']['Samples1'][i] = cfg['MonteCarloCase']['Samples1'][i]
-#     config['MonteCarloCase']['Samples2'][i] = cfg['MonteCarloCase']['Samples2'][i]
-#     config['MonteCarloCase']['Samples3'][i] = cfg['MonteCarloCase']['Samples3'][i]
-#
-#   self.SizeMonteCarloFrame(self.f7)
-#
-# def UpdateMonteCarloFrame(self):
-#   """Transfer data from the Monte Carlo page into the case configuration
-#   """
-#   numCases = int(self.f7.children['rows'].get())
-#   config['MonteCarloCase']['Variable1'] = self.f7.children['cb1'].get()
-#   config['MonteCarloCase']['Variable2'] = self.f7.children['cb2'].get()
-#   config['MonteCarloCase']['Variable3'] = self.f7.children['cb3'].get()
-#   self.SizeMonteCarlo(numCases)
-#   self.SizeMonteCarloFrame(self.f7)
 
 def show_der_config():
   """Runs the GUI. Reads and writes JSON case configuration files.
@@ -764,7 +551,6 @@ def show_der_config():
       break
     except UnicodeDecodeError:
       pass
-
 
 if __name__ == "__main__":
   show_der_config()

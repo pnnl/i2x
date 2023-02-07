@@ -261,6 +261,7 @@ def parse_opendss_graph (G):
   batder = {}
   largeder = {}
   resloads = {}
+  loadkw = 0.0
 
   for n in G.nodes():
     if 'ndata' in G.nodes()[n] and 'nclass' in G.nodes()[n]:
@@ -269,6 +270,7 @@ def parse_opendss_graph (G):
       bus = n
       nomkv = ndata['nomkv']
       phases = ndata['phases']
+      loadkw += ndata['loadkw']
       if nclass == 'solar':
         kva = ndata['pvkva']
         key = get_first_shunt_name (ndata['shunts'], 'pvsystem')
@@ -300,5 +302,6 @@ def parse_opendss_graph (G):
   print ('\nGEN_DER', len(gender))
   print ('\nBAT_DER', len(batder))
   print ('\nROOFTOP CANDIDATES', len(resloads))
+  print ('\bTOTAL LOAD KW = {:.2f}'.format(loadkw))
 
-  return pvder, gender, batder, largeder, resloads
+  return pvder, gender, batder, largeder, resloads, loadkw
