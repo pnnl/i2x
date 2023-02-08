@@ -75,8 +75,8 @@ inverterChoices = {
                         'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
   }
 
-solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY', 'YEARLY']
-controlModeChoices = ['OFF', 'STATIC', 'TIME', 'EVENT']
+solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY']#, 'YEARLY']
+controlModeChoices = ['OFF', 'STATIC'] #, 'TIME', 'EVENT']
 
 # var columns are label, value, hint, JSON class, JSON attribute
 # if there is a sixth column, that will be the name of a Choices tuple, to be edited via Combobox
@@ -269,16 +269,22 @@ class DERConfigGUI:
   def on_closing(self):
     self.master.quit()
     self.master.destroy()
-#    if messagebox.askokcancel('Quit', 'Do you want to close this window? This is likely to stop all simulations.'):
+#    if messagebox.askokcancel('Quit', 'Do you want to close this window? It will stop all simulations.'):
 #      self.master.quit()
 #      self.master.destroy()
 
-  def CheckEntries(self, load_mult, stop_minutes, step_seconds, inv_pf):
+  def CheckEntries(self, load_mult, stop_minutes, step_seconds, inv_pf, soln_mode):
     errors = []
-    if (stop_minutes < 1) or (stop_minutes > 1440):
-      errors.append ('Stop Minutes {:d} must be greater than 0 and no more than 1440'.format (stop_minutes))
-    if (step_seconds < 1) or (step_seconds > 300):
-      errors.append ('Step Seconds {:d} must be greater than 0 and no more than 300'.format (step_seconds))
+    if soln_mode == 'DAILY':
+      if (stop_minutes < 1) or (stop_minutes > 1440):
+        errors.append ('In DAILY mode, Stop Minutes {:d} must be greater than 0 and no more than 1440'.format (stop_minutes))
+      if (step_seconds < 1) or (step_seconds > 300):
+        errors.append ('In DAILY mode, Step Seconds {:d} must be greater than 0 and no more than 300'.format (step_seconds))
+    elif soln_mode == 'DUTY':
+      if (stop_minutes < 1) or (stop_minutes > 1440):
+        errors.append ('In DUTY mode, Stop Minutes {:d} must be greater than 0 and no more than 60'.format (stop_minutes))
+      if (step_seconds < 1) or (step_seconds > 300):
+        errors.append ('In DUTY mode, Step Seconds {:d} must be greater than 0 and no more than 5'.format (step_seconds))
     if (load_mult <= 0.0) or (load_mult > 1.0):
       errors.append ('Load Multiplier {:.4f} must be greater than 0.0 and no more than 1.0'.format (load_mult))
     if (abs(inv_pf) <= 0.8) or (abs(inv_pf) > 1.0):
@@ -350,7 +356,7 @@ class DERConfigGUI:
     stop_minutes = int(self.ent_stop.get())
     step_seconds = int(self.ent_step.get())
     num_steps = int (60 * stop_minutes / step_seconds)
-    if not self.CheckEntries(load_mult, stop_minutes, step_seconds, inv_pf):
+    if not self.CheckEntries(load_mult, stop_minutes, step_seconds, inv_pf, soln_mode):
       return
     der_valid, large_total, rooftop_total, change_lines = self.CollectDERChanges()
     if not der_valid:
