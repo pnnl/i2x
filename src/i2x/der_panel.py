@@ -320,15 +320,34 @@ class DERConfigGUI:
       large_total += kw
       kva = float(self.f2.nametowidget('kva_{:s}'.format(key)).get())
       dertype = self.f2.nametowidget('type_{:s}'.format(key)).get()
+      oldtype = row['type']
       if (kw < 0.0) or (kva < kw):
         errors.append ('{:s} {:s} kw={:.2f} kva={:.2f} must have kw>=0 and kva>=kw'.format(dertype, key, kw, kva))
         bValid = False
-      elif dertype == 'solar':
-        change_lines.append('edit pvsystem.{:s} kva={:.2f} pmpp={:.2f}'.format(key, kva, kw))
-      elif dertype == 'storage':
-        change_lines.append('edit storage.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
-      elif dertype == 'generator':
-        change_lines.append('edit generator.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+      elif dertype == oldtype:  # change the size or dispatch, but not the type
+        if dertype == 'solar':
+          change_lines.append('edit pvsystem.{:s} kva={:.2f} pmpp={:.2f}'.format(key, kva, kw))
+        elif dertype == 'storage':
+          change_lines.append('edit storage.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+        elif dertype == 'generator':
+          change_lines.append('edit generator.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+      else:
+        bus = row['bus']
+        kv = row['kv']
+        # remove the old one
+        if oldtype == 'solar':
+          change_lines.append('edit pvsystem.{:s} enabled=no'.format(key))
+        elif oldtype == 'storage':
+          change_lines.append('edit storage.{:s} enabled=no'.format(key))
+        elif oldtype == 'generator':
+          change_lines.append('edit generator.{:s} enabled=no'.format(key))
+        # create a new one
+        if dertype == 'solar':
+          change_lines.append('new pvsystem.{:s} bus1={:s} kv={:.3f} kva={:.3f} pmpp={:.3f} irrad=1'.format(key, bus, kv, kva, kw))
+        elif dertype == 'storage':
+          change_lines.append('new storage.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f}'.format(key, bus, kv, kva, kw))
+        elif dertype == 'generator':
+          change_lines.append('new generator.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f}'.format(key, bus, kv, kva, kw))
 
     if len(errors) > 0:
       messagebox.showerror('Please Correct these DER Entries', '\n'.join(errors))
@@ -363,18 +382,17 @@ class DERConfigGUI:
       return
     print (feeder_choice, solar_profile, load_mult, load_profile, inv_mode, inv_pf,
            soln_mode, ctrl_mode, step_seconds, num_steps)
-    dict = i2x.test_opendss_interface(choice = feeder_choice,
-                                      pvcurve = solar_profile,
-                                      loadmult = load_mult,
-                                      loadcurve = load_profile,
-                                      invmode = inv_mode,
-                                      invpf = inv_pf, 
-                                      stepsize = step_seconds, 
-                                      numsteps = num_steps,
-                                      ctrlmode = ctrl_mode,
-                                      solnmode = soln_mode,
-                                      change_lines = change_lines, 
-                                      doc_fp=None)
+    dict = i2x.run_opendss(choice = feeder_choice,
+                           pvcurve = solar_profile,
+                           loadmult = load_mult,
+                           loadcurve = load_profile,
+                           invmode = inv_mode,
+                           invpf = inv_pf, 
+                           stepsize = step_seconds, 
+                           numsteps = num_steps,
+                           ctrlmode = ctrl_mode,
+                           solnmode = soln_mode,
+                           change_lines = change_lines)
     self.txt_output.insert(tk.END, 'Analysis Run on {:s} at {:s}'.format(feeder_choice, datetime.datetime.now().strftime('%a %d-%b-%Y %H:%M:%S')))
     self.txt_output.insert(tk.END, '  Large DER={:.2f} kW, Rooftop PV={:.2f} kW\n'.format(large_total, rooftop_total))
     self.txt_output.insert(tk.END, '  LoadMult={:.4f}, LoadProfle={:s}\n'.format(load_mult, load_profile))
