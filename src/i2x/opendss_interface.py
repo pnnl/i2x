@@ -32,7 +32,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
 
   pkg.resource_listdir (__name__, 'models/{:s}'.format(choice))
 
-  dss_line (dss, 'compile {:s}/HCABase.dss'.format (fdr_path))
+  dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path))
 
   if change_lines is not None:
     for line in change_lines:
