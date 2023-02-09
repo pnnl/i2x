@@ -39,24 +39,26 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
       dss_line (dss, line)
 
   dss_line (dss, 'batchedit PVSystem..* irradiance=1 daily={:s} %cutin=0.1 %cutout=0.1 varfollowinverter=true'.format (pvcurve)) #kvarmax=?
-#  dss_line (dss, '// New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5')
   dss_line (dss, 'batchedit load..* daily={:s} duty={:s} yearly={:s}'.format (loadcurve, loadcurve, loadcurve))
   if invmode == 'CONSTANT_PF':
     dss_line (dss, 'batchedit pvsystem..* pf={:.4f}'.format(invpf))
   elif invmode == 'VOLT_WATT':
+    dss_line (dss, 'batchedit pvsystem..* pf={:.4f}'.format(invpf))
     dss_line (dss, 'new InvControl.vw mode=VOLTWATT voltage_curvex_ref=rated voltwatt_curve=voltwatt1547b deltaP_factor=0.02 EventLog=No')
-  elif invmode == 'VOLT_VAR':
+  elif invmode == 'VOLT_VAR_CATA':
+    dss_line (dss, 'new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547a deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No')
+  elif invmode == 'VOLT_VAR_CATB':
     dss_line (dss, 'new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547b deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No')
   elif invmode == 'VOLT_VAR_AVR':
     dss_line (dss, 'New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5 EventLog=No')
   elif invmode == 'VOLT_VAR_VOLT_WATT':
-    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No')
+    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar1547b voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No')
+  elif invmode == 'VOLT_VAR_14H':
+    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt14h deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No')
   dss_line (dss, 'set loadmult={:.6f}'.format(loadmult))
   dss_line (dss, 'set controlmode={:s}'.format(ctrlmode))
   dss_line (dss, 'set maxcontroliter=1000')
   dss_line (dss, 'set maxiter=30')
-#  dss_line (dss, '// batchedit pvsystem..* enabled=no')
-#  dss_line (dss, '// batchedit storage..* enabled=no')
   pvnames = dss.pvsystems_all_names()
   for pvname in pvnames: # don't need to log all these
     dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))

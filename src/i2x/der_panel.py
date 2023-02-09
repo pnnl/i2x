@@ -19,6 +19,7 @@ import tkinter.ttk as ttk
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import scrolledtext
+from tkinter import font
 import matplotlib
 import pkg_resources
 import datetime
@@ -37,6 +38,7 @@ import numpy as np
 support_dir = 'models/support/'
 SQRT3 = math.sqrt(3.0)
 fontchoice=('Segoe UI', 16)
+monochoice=('Courier', fontchoice[1])
 boldchoice=(fontchoice[0], fontchoice[1], 'bold')
 
 # TODO: factor these into a separate file
@@ -64,42 +66,27 @@ inverterChoices = {
   'VOLT_WATT':{'v':[0.90,1.06,1.10],
                'p':[1.00,1.00,0.20],
                'q':[0.00,0.00,0.00]}, 
-  'VOLT_VAR':{'v':[0.90,0.92,0.98,1.02,1.08,1.10],
-              'p':[1.00,1.00,1.00,1.00,1.00,1.00],
-              'q':[0.44,0.44,0.00,0.00,-.44,-.44]},
+  'VOLT_VAR_CATA':{'v':[0.90,1.10],
+                   'p':[1.00,1.00],
+                   'q':[0.25,-.25]},
+  'VOLT_VAR_CATB':{'v':[0.90,0.92,0.98,1.02,1.08,1.10],
+                   'p':[1.00,1.00,1.00,1.00,1.00,1.00],
+                   'q':[0.44,0.44,0.00,0.00,-.44,-.44]},
   'VOLT_VAR_AVR':{'v':[0.90,0.98,1.02,1.10],
                   'p':[1.00,1.00,1.00,1.00],
                   'q':[0.44,0.44,-.44,-.44]}, 
-  'VOLT_VAR_VOLT_WATT':{'v':[0.90,0.92,0.98,1.02,1.06,1.10],
-                        'p':[1.00,1.00,1.00,1.00,1.00,0.00],
-                        'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
+  'VOLT_VAR_VOLT_WATT':{'v':[0.90,0.92,0.98,1.02,1.06,1.08,1.10],
+                        'p':[1.00,1.00,1.00,1.00,1.00,0.60,0.20],
+                        'q':[0.44,0.44,0.00,0.00,-.2933,-.44,-.44]},
+  'VOLT_VAR_14H':{'v':[0.90,0.94,0.97,1.03,1.06,1.10],
+                  'p':[1.00,1.00,1.00,1.00,1.00,0.00],
+                  'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
   }
 
 solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY']#, 'YEARLY']
 controlModeChoices = ['OFF', 'STATIC'] #, 'TIME', 'EVENT']
 
-# var columns are label, value, hint, JSON class, JSON attribute
-# if there is a sixth column, that will be the name of a Choices tuple, to be edited via Combobox
-# if there is not a sixth column, that indicates a single value to be edited via Entry
-
 class DERConfigGUI:
-  """Manages a seven-page GUI for case configuration
-
-  The GUI opens and saves a JSON file in the format used by *tesp.tesp_config*
-
-  Todo:
-    * Possible data loss if the user updated the number of Monte Carlo cases, but didn't click the Update button before saving the case configuration.
-
-  Attributes:
-    nb (Notebook): the top-level GUI with tabbed pages
-    f1 (Frame): the page for feeder selection
-    f2 (Frame): the page for DER placement
-    f3 (Frame): the page for solar profile selection
-    f4 (Frame): the page for load profile selection
-    f5 (Frame): the page for inverter profile selection
-    f6 (Frame): the page for time-scheduled thermostat settings
-  """
-
   def __init__(self, master):
     self.master = master
     self.master.protocol('WM_DELETE_WINDOW', self.on_closing)
@@ -111,7 +98,6 @@ class DERConfigGUI:
     s.configure('.', font=fontchoice)
 
     for key, row in solarChoices.items():
-#      fname = os.path.join (support_dir, row['file'])
       fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
       row['data'] = np.loadtxt (fname)
       row['npts'] = row['data'].shape[0]
@@ -246,9 +232,13 @@ class DERConfigGUI:
     self.output_details.set(1)
     self.cbk_detail = tk.Checkbutton(self.f6, text='Output PV Details', variable=self.output_details, font=fontchoice)
     self.cbk_detail.grid(row=2, column=0, sticky=tk.NSEW)
+    self.output_clear = tk.IntVar()
+    self.output_clear.set(1)
+    self.cbk_clear = tk.Checkbutton(self.f6, text='Clear Old Output', variable=self.output_clear, font=fontchoice)
+    self.cbk_clear.grid(row=2, column=1, sticky=tk.NSEW)
     self.btn_run = tk.Button(self.f6, text='Run', command=self.RunOpenDSS, font=boldchoice, bg='blue', fg='white')
-    self.btn_run.grid(row=2, column=1, sticky=tk.NSEW)
-    self.txt_output = scrolledtext.ScrolledText(self.f6, font=fontchoice)
+    self.btn_run.grid(row=2, column=2, sticky=tk.NSEW)
+    self.txt_output = scrolledtext.ScrolledText(self.f6, font=monochoice)
     self.txt_output.grid(row=3, columnspan=4, sticky=tk.W + tk.E + tk.N + tk.S)
     self.f6.rowconfigure (0, weight=0)
     self.f6.rowconfigure (1, weight=0)
@@ -355,13 +345,18 @@ class DERConfigGUI:
     return bValid, large_total, rooftop_total, change_lines
 
   def get_pv_kv_base(self, name):
+    kvnom = 0.120
     if name in self.pvder:
       row = self.pvder[name]
       kvnom = row['kv']
       if row['phases'] > 1:
         kvnom /= SQRT3
-      return kvnom
-    return 0.120
+    elif name in self.largeder: # maybe user changed the type from generator or storage
+      row = self.largeder[name]
+      kvnom = row['kv']
+      if row['phases'] > 1:
+        kvnom /= SQRT3
+    return kvnom
 
   def RunOpenDSS(self):
     load_mult = float(self.ent_load_mult.get())
@@ -380,6 +375,10 @@ class DERConfigGUI:
     der_valid, large_total, rooftop_total, change_lines = self.CollectDERChanges()
     if not der_valid:
       return
+
+    if self.output_clear.get() > 0:
+      self.txt_output.delete('1.0', tk.END)
+
     print (feeder_choice, solar_profile, load_mult, load_profile, inv_mode, inv_pf,
            soln_mode, ctrl_mode, step_seconds, num_steps)
     dict = i2x.run_opendss(choice = feeder_choice,
@@ -402,6 +401,9 @@ class DERConfigGUI:
     self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(dict['num_relay_trips']))
     self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(dict['num_low_voltage'], dict['vminpu'], dict['node_vmin']))
     self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(dict['num_high_voltage'], dict['vmaxpu'], dict['node_vmax']))
+
+    if soln_mode == 'SNAPSHOT':
+      return
 
     base = dict['kWh_Load']
     pctSource = 0.0
@@ -615,6 +617,9 @@ def show_der_config():
   """
   root = tk.Tk()
   root.title('i2x Test Systems: DER Cases')
+  bigfont = font.Font(family=fontchoice[0],size=fontchoice[1])
+  root.option_add("*TCombobox*Listbox*Font", bigfont)
+#  root.option_add("*Font", bigfont)
   my_gui = DERConfigGUI(root)
   while True:
     try:
