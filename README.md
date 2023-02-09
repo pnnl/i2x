@@ -25,17 +25,17 @@ Once installed, invoke the GUI from a command prompt[^1]: `i2x-der`
 ### Examples: 9500-Node Network
 
 | Profile | Inverters | Max Vdiff [%] | Notes |
-| ------- | --------- | ------- | ------------|
+| ------- | --------- | -----: | ------------|
 | pclear | CONSTANT\_PF=1.0 | 0.8656 | No problem on a clear day. |
 | pcloud | CONSTANT\_PF=1.0 | 3.1382 | With clouds, too much voltage fluctuation. |
 | pcloud | CONSTANT\_PF=0.9 | 4.5609 | Injecting reactive power makes it worse. |
 | pcloud | CONSTANT\_PF=-0.9 | 1.6858 | Absorbing reactive power all the time. |
-| pcloud | VOLT\_WATT, PF=-0.9 | 1.6999 | Close to CONSTANT_PF result. |
-| pcloud | VOLT_VAR_CATA | 2.8752 | Helps a little. |
-| pcloud | VOLT_VAR_CATB | 3.0721 | No help in the deadband. |
-| pcloud | VOLT_VAR_AVR | 1.5747 | Setpoint adjusts to grid voltage over several minutes. |
-| pcloud | VOLT_VAR_VOLT_WATT | 3.0721 | Still no help in the deadband. |
-| pcloud | VOLT_VAR_14H | 3.1209 | Still no help in the deadband. |
+| pcloud | VOLT\_WATT, PF=-0.9 | 1.6999 | Close to CONSTANT\_PF result at same power factor. |
+| pcloud | VOLT\_VAR\_CATA | 2.8752 | Helps a little. |
+| pcloud | VOLT\_VAR\_CATB | 3.0721 | No help in the deadband. |
+| pcloud | VOLT\_VAR\_AVR | 1.5747 | Setpoint adjusts to grid voltage over several minutes. |
+| pcloud | VOLT\_VAR\_VOLT\_WATT | 3.0721 | Still no help in the deadband. |
+| pcloud | VOLT\_VAR\_14H | 3.1209 | Still no help in the deadband. |
 
 
 ### Examples: Low-Voltage Secondary Network
