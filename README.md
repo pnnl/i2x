@@ -22,6 +22,80 @@ Once installed, invoke the GUI from a command prompt[^1]: `i2x-der`
 
 ### User Interface
 
+When you start the program, six tabbed pages appear in a notebook format:
+
+1. **Network** shows an overview map of the circuit selected from a library.
+   Buses are labeled when they have either a substation source, or DER at
+   least 100 kW in size. X and Y coordinates are arbitrary.  You can pan and
+   zoom this map using the toolbar, but can not modify it or obtain more data
+   from it.  A key to the legend is:
+   - LN = line segment
+   - XFM = transformer segment
+   - REG = voltage regulator segment
+   - SWT = switch segment
+   - NWP = network protector segment
+   - RCT = series reactor segment
+   - SUB = substation
+   - GEN = (conventional) generator
+   - PV = photovoltaic generator
+   - CAP = capacitor bank
+   - BAT = battery, i.e., storage
+2. **DER** summarizes DER and load on the circuit. _kVA_ refers to the size,
+   while _kW_ refers to the requested output. The _Available Residential Rooftops_
+   include single-phase load points without existing DER, with 120/240-volt service.
+   You can choose a percentage of these to populate with new PV each time a case
+   is run. The size at each location depends on local load:
+   - The PV size matches the local load size, rounded to the nearest 5 kW.
+   - When the rounded PV size is 0 kW, the minimum size is 3 kW instead.
+   The rooftop locations change each time due to randomization, which usually produces a slight
+   variation when you repeat a case, unless you set the useage rate to 0%. You can change
+   the _kW_, _kvar_, and even the _type_ of existing large DER, but you can't add new
+   large DER at a different location. You can effectively remove DER by setting _kW_ to 0.
+3. **Solar** offers a choice of time-dependent solar output profiles, which apply to
+   each PV in the circuit.
+4. **Loads** offers a choice of time-dependent load output profiles, which apply to
+   each load in the circuit. You can also apply a global scaling factor to the loads, which
+   acts along with the load profile.
+5. **Inverters** offers a choice of 7 inverter functions that respond to voltage, which apply
+   uniformly to every PV and storage inverter in the circuit. Please see IEEE 1547 and its
+   application guides for more details. The _Power Factor_ applies to both _CONSTANT\_PF_ and
+   _VOLT\_WATT_ modes. Enter a negative number to absorb reactive power, positive to inject
+   reactive power. In other modes, the red curve shows how reactive power varies in response
+   to voltage.
+6. **Output** allows you to run a simulation and view the results. Click the blue **Run** button
+   to run a new case. The other widgets on this page are:
+   - _Solution Mode_ should be _DAILY_ for a 24-hour simulation using the _pcloud_ or _pclear_ 
+     solar profile. Use _DUTY_ with the _pvduty_ solar profile to focus on rapid voltage regulator
+     and capacitor switching response. Less often, use _SNAPSHOT_ to run a single power flow, with
+     limited results shown.
+   - _Control Mode_ should be _STATIC_. Change this only if you are familiar with how it works
+     in OpenDSS.
+   - _Stop Time_ specifies how long a period will be simulated. 1440 minutes covers one day, while
+     48 minutes covers the _pvduty_ solar profile.
+   - _Time Step_ specifies the period between each power flow solution. There is a tradeoff between
+     precision of the voltage fluctuations, and the simulation time. The software requires a value
+     from 1 to 300, inclusive.
+   - _Output PV Details_ will show the production and voltage results for each PV in the circuit.
+     There may be a lot of these, especially on residential roof tops.
+   - _Clear Old Output_ will erase prior results before displaying new ones. This is the default, so
+     new results appear right at the top whenever you run a new case. If you unselect this option,
+     please remember to scroll down to the bottom of the results each time you run a new case. The
+     advantage is that you will now have a log of all cases run. Use copy-and-paste to another program
+     to save any of these results.
+
+Some other important notes about the program:
+
+- Close the program by clicking the **X** in the top right corner.
+- As you run simulations, some logging messages appear in the Command Prompt. You don't
+  need to pay attention to these, unless an error occurs. If there is an error message,
+  please copy-and-paste the message into your issue report.
+- Please report any comments, suggestions, or errors on the [issues page](https://github.com/pnnl/i2x/issues).
+  Before submitting a new issue, check the others listed to see if the problem or suggestion
+  has already been reported.  If it has, you might still add new information to the existing
+  issue as a comment. The issues page is better than emailing for this purpose, as it helps 
+  the team organize these reports and updates. It also creates a public record that may help
+  other users.
+
 ### Examples: 9500-Node Network
 
 | Profile | Inverters | Max Vdiff [%] | Notes |
