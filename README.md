@@ -223,6 +223,11 @@ The steps for deployment to PyPi are:
 5. `pip install -i https://test.pypi.org/simple/ i2x==0.0.2` for local testing of the deployable package, example version 0.0.2
 6. `twine upload dist/*` final deployment; requires project credentials for i2x on pypi.org
 
+## Bulk Electric System (BES) Test Cases
+
+Two BES test systems are under development at [CIMHub/BES](https://github.com/GRIDAPPSD/CIMHub/tree/feature/SETO/BES).
+These will be used in BES boot camps and i2x sprint studies.
+
 ## License
 
 See [License](license.txt)
