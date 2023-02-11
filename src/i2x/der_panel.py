@@ -25,6 +25,7 @@ import pkg_resources
 import datetime
 import random
 import math
+import requests
 
 try:
   matplotlib.use('TkAgg')
@@ -493,7 +494,7 @@ class DERConfigGUI:
     lab_bat.grid(row=2, column=0, sticky=tk.NSEW)
     lab_gen = ttk.Label(self.f2, text='Existing Generation = {:.2f} kVA, {:.2f} kW in {:d} units'.format(genkva, genkw, ngen), relief=tk.RIDGE)
     lab_gen.grid(row=3, column=0, sticky=tk.NSEW)
-    lab_roofs = ttk.Label(self.f2, text='{:d} Available Residential Rooftops, Use[%]:'.format(len(self.resloads)), relief=tk.RIDGE)
+    lab_roofs = ttk.Label(self.f2, text='{:d} Available Residential Rooftops, Use [%]:'.format(len(self.resloads)), relief=tk.RIDGE)
     lab_roofs.grid(row=4, column=0, sticky=tk.NSEW)
     self.ent_pct_roofs = ttk.Entry(self.f2, name='pct_roofs', font=fontchoice)
     self.ent_pct_roofs.insert(0, '10.0')
@@ -612,14 +613,27 @@ class DERConfigGUI:
 #   lp.close()
 #
 
+def get_latest_version():
+  resp = requests.get('https://pypi.org/pypi/i2x/json')
+  assert resp.status_code == 200
+  jtext = resp.json()
+  return jtext['info']['version']
+
+# resp = requests.get("https://pypi.org/simple/i2x")
+# assert resp.status_code == 200
+# text = resp.text
+# print (text)
+
 def show_der_config():
   """Runs the GUI. Reads and writes JSON case configuration files.
   """
   root = tk.Tk()
-  root.title('i2x Test Systems: DER Cases')
+  root.title('i2x Test Systems: DER Cases: v{:s}'.format(i2x.__version__))
   bigfont = font.Font(family=fontchoice[0],size=fontchoice[1])
+  root.option_add("*Font", bigfont)
   root.option_add("*TCombobox*Listbox*Font", bigfont)
-#  root.option_add("*Font", bigfont)
+#  pypi_version = get_latest_version()
+#  print ('latest version on PyPi is v{:s}'.format(pypi_version))
   my_gui = DERConfigGUI(root)
   while True:
     try:
