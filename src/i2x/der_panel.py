@@ -239,16 +239,38 @@ class DERConfigGUI:
     self.cbk_clear.grid(row=2, column=1, sticky=tk.NSEW)
     self.btn_run = tk.Button(self.f6, text='Run', command=self.RunOpenDSS, font=boldchoice, bg='blue', fg='white')
     self.btn_run.grid(row=2, column=2, sticky=tk.NSEW)
+    self.btn_version = tk.Button(self.f6, text='Check for Updates', command=self.CheckLatestVersion, font=fontchoice, bg='cyan')
+    self.btn_version.grid(row=2, column=3, sticky=tk.NSEW)
+    self.lab_relay = ttk.Label(self.f6, text='   Relay Trips', relief=tk.RIDGE, justify=tk.RIGHT)
+    self.lab_relay.grid(row=3, column=0, sticky=tk.NSEW)
+    self.lab_vmin = ttk.Label(self.f6, text='      Vmin pu', relief=tk.RIDGE, justify=tk.RIGHT)
+    self.lab_vmin.grid(row=3, column=1, sticky=tk.NSEW)
+    self.lab_vmax = ttk.Label(self.f6, text='      Vmax pu', relief=tk.RIDGE, justify=tk.RIGHT)
+    self.lab_vmax.grid(row=3, column=2, sticky=tk.NSEW)
+    self.lab_vdiff = ttk.Label(self.f6, text='      Vdiff %', relief=tk.RIDGE, justify=tk.RIGHT)
+    self.lab_vdiff.grid(row=3, column=3, sticky=tk.NSEW)
+    self.lab_een = ttk.Label(self.f6, text='      EEN %', relief=tk.RIDGE, justify=tk.RIGHT)
+    self.lab_een.grid(row=3, column=4, sticky=tk.NSEW)
+    self.lab_ue = ttk.Label(self.f6, text='      UE %', relief=tk.RIDGE, justify=tk.RIGHT)
+    self.lab_ue.grid(row=3, column=5, sticky=tk.NSEW)
     self.txt_output = scrolledtext.ScrolledText(self.f6, font=monochoice)
-    self.txt_output.grid(row=3, columnspan=4, sticky=tk.W + tk.E + tk.N + tk.S)
+    self.txt_output.grid(row=4, columnspan=6, sticky=tk.W + tk.E + tk.N + tk.S)
     self.f6.rowconfigure (0, weight=0)
     self.f6.rowconfigure (1, weight=0)
     self.f6.rowconfigure (2, weight=0)
-    self.f6.rowconfigure (3, weight=1)
+    self.f6.rowconfigure (3, weight=0)
+    self.f6.rowconfigure (4, weight=1)
     self.f6.columnconfigure (0, weight=0)
     self.f6.columnconfigure (1, weight=0)
     self.f6.columnconfigure (2, weight=0)
-    self.f6.columnconfigure (3, weight=1)
+    self.f6.columnconfigure (3, weight=0)
+    self.f6.columnconfigure (4, weight=0)
+    self.f6.columnconfigure (5, weight=1)
+
+    self.no_error_style = ttk.Style()
+    self.no_error_style.configure('Black.TLabel', foreground='black')
+    self.error_style = ttk.Style()
+    self.error_style.configure('Red.TLabel', foreground='red')
 
     self.nb.add(self.f1, text='Network', underline=0, padding=2)
     self.nb.add(self.f2, text='DER', underline=0, padding=2)
@@ -359,6 +381,25 @@ class DERConfigGUI:
         kvnom /= SQRT3
     return kvnom
 
+
+  def update_entry(self, ctl, val):
+    ctl.delete(0, tk.END)
+    ctl.insert(0, val)
+
+  def clear_label(self, lbl, text):
+    lbl.config(text=text)
+    lbl.configure(style='Black.TLabel')
+
+  def update_label(self, lbl, val, fmt, thresh):
+    valstr = fmt.format(val)
+    color = 'Black.TLabel'
+    if thresh >= 0 and val > thresh:
+      color = 'Red.TLabel'
+    if thresh < 0 and val < abs(thresh):
+      color = 'Red.TLabel'
+    lbl.config(text=valstr)
+    lbl.configure(style=color)
+
   def RunOpenDSS(self):
     load_mult = float(self.ent_load_mult.get())
     feeder_choice = self.cb_feeder.get()
@@ -403,7 +444,14 @@ class DERConfigGUI:
     self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(dict['num_low_voltage'], dict['vminpu'], dict['node_vmin']))
     self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(dict['num_high_voltage'], dict['vmaxpu'], dict['node_vmax']))
 
+    self.update_label (self.lab_relay, dict['num_relay_trips'], '{:d} relay trips', 0)
+
     if soln_mode == 'SNAPSHOT':
+      self.update_label (self.lab_vmin, dict['vminpu'], 'Vmin={:.4f} pu', -0.95)
+      self.update_label (self.lab_vmax, dict['vmaxpu'], 'Vmax={:.4f} pu', 1.05)
+      self.clear_label (self.lab_vdiff, 'Vdiff %')
+      self.clear_label (self.lab_een, 'EEN %')
+      self.clear_label (self.lab_ue, 'UE %')
       return
 
     base = dict['kWh_Load']
@@ -453,6 +501,12 @@ class DERConfigGUI:
     self.txt_output.insert(tk.END, 'Minimum PV Voltage        = {:.4f} pu\n'.format(pv_vmin))
     self.txt_output.insert(tk.END, 'Maximum PV Voltage        = {:.4f} pu\n'.format(pv_vmax))
     self.txt_output.insert(tk.END, 'Maximum PV Voltage Change = {:.4f} %\n'.format(pv_vdiff))
+
+    self.update_label (self.lab_vmin, pv_vmin, 'Vmin={:.4f} pu', -0.95)
+    self.update_label (self.lab_vmax, pv_vmax, 'Vmax={:.4f} pu', 1.05)
+    self.update_label (self.lab_vdiff, pv_vdiff, 'Vdiff={:.4f} %', 2.0)
+    self.update_label (self.lab_een, pctEEN, 'EEN={:.3f} %', 0.0)
+    self.update_label (self.lab_ue, pctUE, 'UE={:.3f} %', 0.0)
 
     if self.output_details.get() > 0:
       self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean Vdiff[%]\n')
@@ -589,10 +643,34 @@ class DERConfigGUI:
     self.ax_inverter.grid()
     self.ax_inverter.legend()
     self.canvas_inverter.draw()
-#
-# def update_entry(self, ctl, val):
-#   ctl.delete(0, tk.END)
-#   ctl.insert(0, val)
+
+  def CheckLatestVersion(self):
+    resp = requests.get('https://pypi.org/pypi/i2x/json')
+    if resp.status_code == 200:
+      jtext = resp.json()
+      pypi_version = jtext['info']['version']
+      my_version = i2x.__version__
+      advice = ''
+      status = 'equal'
+      if my_version < pypi_version:
+        status = 'newer'
+        advice = '\nuse "pip install i2x --upgrade" if you wish to upgrade'
+      elif my_version > pypi_version:
+        status = 'older'
+      messagebox.showinfo('Version Check', 
+                          'You have version {:s}\nLatest release version is {:s}, {:s}{:s}'.format(my_version,
+                                                                                                   status, 
+                                                                                                   pypi_version,
+                                                                                                   advice))
+    else:
+      messagebox.showwarning('Version Check', 
+                             'Unable to reach pypi.org for the latest released version number')
+
+  # resp = requests.get("https://pypi.org/simple/i2x")
+  # assert resp.status_code == 200
+  # text = resp.text
+  # print (text)
+
 #
 # def SaveConfig(self):
 #   fname = filedialog.asksaveasfilename(initialdir='~/src/examples/te30',
@@ -613,17 +691,6 @@ class DERConfigGUI:
 #   lp.close()
 #
 
-def get_latest_version():
-  resp = requests.get('https://pypi.org/pypi/i2x/json')
-  assert resp.status_code == 200
-  jtext = resp.json()
-  return jtext['info']['version']
-
-# resp = requests.get("https://pypi.org/simple/i2x")
-# assert resp.status_code == 200
-# text = resp.text
-# print (text)
-
 def show_der_config():
   """Runs the GUI. Reads and writes JSON case configuration files.
   """
@@ -632,8 +699,7 @@ def show_der_config():
   bigfont = font.Font(family=fontchoice[0],size=fontchoice[1])
   root.option_add("*Font", bigfont)
   root.option_add("*TCombobox*Listbox*Font", bigfont)
-#  pypi_version = get_latest_version()
-#  print ('latest version on PyPi is v{:s}'.format(pypi_version))
+  root.option_add("*Dialog.msg.font", bigfont)
   my_gui = DERConfigGUI(root)
   while True:
     try:
