@@ -20,6 +20,14 @@ i.e., you do not have to install OpenDSS separately.  The steps are:
 
 Once installed, invoke the GUI from a command prompt[^1]: `i2x-der`
 
+Sources of background information include:
+
+1. Slides from the first DER interconnection study boot camp, 
+   [PNNL](doc/DER_Bootcamp_Circuits.pdf) and [NRECA](doc/NRECA_Bootcamp%20slides_v2.pdf).
+2. [CIGRE Canada Paper](https://cigre.ca/papers/2021/paper%20460.pdf) on
+   hosting capacity analysis methods, focused on North America.
+3. [Multi-country Survey of Hosting Capacity](https://www.mdpi.com/1996-1073/13/18/4756)
+
 ### User Interface
 
 When you start the program, six tabbed pages appear in a notebook format:
@@ -82,7 +90,9 @@ When you start the program, six tabbed pages appear in a notebook format:
      please remember to scroll down to the bottom of the results each time you run a new case. The
      advantage is that you will now have a log of all cases run. Use copy-and-paste to another program
      to save any of these results.
-   - _Results_ appear in the large white area below the other widgets, categorized as follows:
+   - **_Summary Results_** is a row of labels that will show in **_red_** when important limits are violated
+     in the simulation results. See below for more details.
+   - _Detailed Results_ appear in the large white area below the other widgets, categorized as follows:
      - _Number of Capacitor Switchings_: the number of times a capacitor bank switched on or off. Expect no more than 2 per capacitor bank per day. If higher, PV fluctuations may be the cause.
      - _Number of Tap Changes_: the total number of voltage regulator tap movements. Expect one or two dozen per day per regulator. If higher, PV fluctuations may be the cause.
      - _Number of Relay Trips_: if not zero, PV reverse power flow may be the cause. Any time a relay trips, some load has likely lost service. Furthermore, the following voltage and energy results may be unreliable. 
@@ -111,6 +121,7 @@ When you start the program, six tabbed pages appear in a notebook format:
        load _Vdiff_ values should all be equal to or less than the worst PV value. The use of inverter control modes could
        mitigate _Vdiff_ without having to reduce the amount of DER.
      - _PV Details_: if requested, shows the real and reactive energies, and the voltage results, for each PV in the model.
+   - _Check for Updates_ will compare your installed software version to the latest on PyPi. Requires an Internet connection.
 
 Some other important notes about the program:
 
