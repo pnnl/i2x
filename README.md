@@ -23,7 +23,8 @@ Once installed, invoke the GUI from a command prompt[^1]: `i2x-der`
 Sources of background information include:
 
 1. Slides from the first DER interconnection study boot camp, 
-   [PNNL](doc/DER_Bootcamp_Circuits.pdf) and [NRECA](doc/NRECA_Bootcamp%20slides_v2.pdf).
+   [PNNL](doc/DER_Bootcamp_Circuits.pdf), [NRECA](doc/NRECA_Bootcamp%20slides_v2.pdf)
+   and [GridUnity](doc/GU_GridTech_Connect_DER_Interconnection_Study_Bootcamp.pdf).
 2. [CIGRE Canada Paper](https://cigre.ca/papers/2021/paper%20460.pdf) on
    hosting capacity analysis methods, focused on North America.
 3. [Multi-country Survey of Hosting Capacity](https://www.mdpi.com/1996-1073/13/18/4756)
