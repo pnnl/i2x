@@ -24,5 +24,13 @@ from .plot_opendss_feeder import load_builtin_graph
 from .plot_opendss_feeder import parse_opendss_graph
 from .opendss_interface import print_opendss_interface
 from .opendss_interface import run_opendss
+
+from .der_choices import feederChoices
+from .der_choices import solarChoices
+from .der_choices import loadChoices
+from .der_choices import inverterChoices
+from .der_choices import solutionModeChoices
+from .der_choices import controlModeChoices
+
 from .version import __version__
 

@@ -42,51 +42,6 @@ fontchoice=('Segoe UI', 16)
 monochoice=('Courier', fontchoice[1])
 boldchoice=(fontchoice[0], fontchoice[1], 'bold')
 
-# TODO: factor these into a separate file
-feederChoices = {
-  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
-  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
-  }
-
-solarChoices = {
-  'pclear':{'dt':1.0, 'file':'pclear.dat', 'npts':0, 'data':None},
-  'pcloud':{'dt':1.0, 'file':'pcloud.dat', 'npts':0, 'data':None},
-  'pvduty':{'dt':1.0, 'file':'pvloadshape-1sec-2900pts.dat', 'npts':0, 'data':None}
-  }
-
-loadChoices = {
-  'default':{'t':[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
-             'p':[0.677,0.6256,0.6087,0.5833,0.58028,0.6025,0.657,0.7477,0.832,0.88,0.94,0.989,0.985,0.98,0.9898,0.999,1,0.958,0.936,0.913,0.876,0.876,0.828,0.756,0.677]},
-  'flat':{'t':[0,24],'p':[1.0, 1.0]}
-  }
-
-inverterChoices = {
-  'CONSTANT_PF':{'v':[0.90,1.10],
-                 'p':[1.00,1.00],
-                 'q':[0.00,0.00]},
-  'VOLT_WATT':{'v':[0.90,1.06,1.10],
-               'p':[1.00,1.00,0.20],
-               'q':[0.00,0.00,0.00]}, 
-  'VOLT_VAR_CATA':{'v':[0.90,1.10],
-                   'p':[1.00,1.00],
-                   'q':[0.25,-.25]},
-  'VOLT_VAR_CATB':{'v':[0.90,0.92,0.98,1.02,1.08,1.10],
-                   'p':[1.00,1.00,1.00,1.00,1.00,1.00],
-                   'q':[0.44,0.44,0.00,0.00,-.44,-.44]},
-  'VOLT_VAR_AVR':{'v':[0.90,0.98,1.02,1.10],
-                  'p':[1.00,1.00,1.00,1.00],
-                  'q':[0.44,0.44,-.44,-.44]}, 
-  'VOLT_VAR_VOLT_WATT':{'v':[0.90,0.92,0.98,1.02,1.06,1.08,1.10],
-                        'p':[1.00,1.00,1.00,1.00,1.00,0.60,0.20],
-                        'q':[0.44,0.44,0.00,0.00,-.2933,-.44,-.44]},
-  'VOLT_VAR_14H':{'v':[0.90,0.94,0.97,1.03,1.06,1.10],
-                  'p':[1.00,1.00,1.00,1.00,1.00,0.00],
-                  'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
-  }
-
-solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY']#, 'YEARLY']
-controlModeChoices = ['OFF', 'STATIC'] #, 'TIME', 'EVENT']
-
 class DERConfigGUI:
   def __init__(self, master):
     self.master = master
@@ -98,7 +53,7 @@ class DERConfigGUI:
     s = ttk.Style()
     s.configure('.', font=fontchoice)
 
-    for key, row in solarChoices.items():
+    for key, row in i2x.solarChoices.items():
       fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
       row['data'] = np.loadtxt (fname)
       row['npts'] = row['data'].shape[0]
@@ -108,8 +63,8 @@ class DERConfigGUI:
     self.f1 = ttk.Frame(self.nb, name='varsNet')
     lab = ttk.Label(self.f1, text='Feeder Model: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_feeder = ttk.Combobox(self.f1, values=[i for i in feederChoices], name='cbFeeders', font=fontchoice)
-    self.cb_feeder.set(next(iter(feederChoices)))
+    self.cb_feeder = ttk.Combobox(self.f1, values=[i for i in i2x.feederChoices], name='cbFeeders', font=fontchoice)
+    self.cb_feeder.set(next(iter(i2x.feederChoices)))
     self.cb_feeder.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_feeder.bind('<<ComboboxSelected>>', self.UpdateFeeder)
     self.f1.columnconfigure(0, weight=0)
@@ -137,8 +92,8 @@ class DERConfigGUI:
     self.f3 = ttk.Frame(self.nb, name='varsSolar')
     lab = ttk.Label(self.f3, text='Solar Profile: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_solar = ttk.Combobox(self.f3, values=[i for i in solarChoices], name='cbSolars', font=fontchoice)
-    self.cb_solar.set(next(iter(solarChoices)))
+    self.cb_solar = ttk.Combobox(self.f3, values=[i for i in i2x.solarChoices], name='cbSolars', font=fontchoice)
+    self.cb_solar.set(next(iter(i2x.solarChoices)))
     self.cb_solar.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_solar.bind('<<ComboboxSelected>>', self.UpdateSolarProfile)
     self.f3.columnconfigure(0, weight=0)
@@ -157,8 +112,8 @@ class DERConfigGUI:
     self.f4 = ttk.Frame(self.nb, name='varsLoad')
     lab = ttk.Label(self.f4, text='Load Profile: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_load = ttk.Combobox(self.f4, values=[i for i in loadChoices], name='cbLoads', font=fontchoice)
-    self.cb_load.set(next(iter(loadChoices)))
+    self.cb_load = ttk.Combobox(self.f4, values=[i for i in i2x.loadChoices], name='cbLoads', font=fontchoice)
+    self.cb_load.set(next(iter(i2x.loadChoices)))
     self.cb_load.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_load.bind('<<ComboboxSelected>>', self.UpdateLoadProfile)
     lab = ttk.Label(self.f4, text='Load Multiplier: ', relief=tk.RIDGE)
@@ -184,8 +139,8 @@ class DERConfigGUI:
     self.f5 = ttk.Frame(self.nb, name='varsInverter')
     lab = ttk.Label(self.f5, text='Inverter Mode: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_inverter = ttk.Combobox(self.f5, values=[i for i in inverterChoices], name='cbInverters', font=fontchoice)
-    self.cb_inverter.set(next(iter(inverterChoices)))
+    self.cb_inverter = ttk.Combobox(self.f5, values=[i for i in i2x.inverterChoices], name='cbInverters', font=fontchoice)
+    self.cb_inverter.set(next(iter(i2x.inverterChoices)))
     self.cb_inverter.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_inverter.bind('<<ComboboxSelected>>', self.UpdateInverterMode)
     lab = ttk.Label(self.f5, text='Power Factor: ', relief=tk.RIDGE)
@@ -211,12 +166,12 @@ class DERConfigGUI:
     self.f6 = ttk.Frame(self.nb, name='varsOutput')
     lab = ttk.Label(self.f6, text='Solution Mode', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_soln_mode = ttk.Combobox(self.f6, values=solutionModeChoices, name='cbSolutionMode', font=fontchoice)
+    self.cb_soln_mode = ttk.Combobox(self.f6, values=i2x.solutionModeChoices, name='cbSolutionMode', font=fontchoice)
     self.cb_soln_mode.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_soln_mode.set('DAILY')
     lab = ttk.Label(self.f6, text='Control Mode', relief=tk.RIDGE)
     lab.grid(row=0, column=2, sticky=tk.NSEW)
-    self.cb_ctrl_mode = ttk.Combobox(self.f6, values=controlModeChoices, name='cbControlMode', font=fontchoice)
+    self.cb_ctrl_mode = ttk.Combobox(self.f6, values=i2x.controlModeChoices, name='cbControlMode', font=fontchoice)
     self.cb_ctrl_mode.grid(row=0, column=3, sticky=tk.NSEW)
     self.cb_ctrl_mode.set('STATIC')
     lab = ttk.Label(self.f6, text='Stop Time [min]:', relief=tk.RIDGE)
@@ -586,7 +541,7 @@ class DERConfigGUI:
 
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()
-    row = feederChoices[key]
+    row = i2x.feederChoices[key]
     self.feeder_name = key
     self.feeder_path = row['path']
     self.feeder_base = row['base']
@@ -603,7 +558,7 @@ class DERConfigGUI:
 
   def UpdateSolarProfile(self, event):
     key = self.cb_solar.get()
-    row = solarChoices[key]
+    row = i2x.solarChoices[key]
     dt = row['dt']
     npts = row['npts']
     tmax = dt * (npts - 1)
@@ -619,7 +574,7 @@ class DERConfigGUI:
   def UpdateLoadProfile(self, event):
     ticks = [0, 4, 8, 12, 16, 20, 24]
     key = self.cb_load.get()
-    row = loadChoices[key]
+    row = i2x.loadChoices[key]
     self.ax_load.cla()
     self.ax_load.plot(row['t'], row['p'], color='blue')
     self.ax_load.set_xlabel('Hour [pu]')
@@ -632,7 +587,7 @@ class DERConfigGUI:
   def UpdateInverterMode(self, event):
     ticks = [0.90, 0.92, 0.94, 0.96, 0.98, 1.00, 1.02, 1.04, 1.06, 1.08, 1.10]
     key = self.cb_inverter.get()
-    row = inverterChoices[key]
+    row = i2x.inverterChoices[key]
     self.ax_inverter.cla()
     self.ax_inverter.plot(row['v'], row['p'], label='Real', color='blue')
     self.ax_inverter.plot(row['v'], row['q'], label='Reactive', color='red')
