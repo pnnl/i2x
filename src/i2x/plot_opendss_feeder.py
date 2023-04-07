@@ -255,7 +255,7 @@ def get_first_shunt_name (shunts, nclass):
       return toks[1]
   return '**NOT FOUND**'
 
-def parse_opendss_graph (G):
+def parse_opendss_graph (G, bSummarize=True):
   pvder = {}
   gender = {}
   batder = {}
@@ -295,13 +295,14 @@ def parse_opendss_graph (G):
           key = get_first_shunt_name (ndata['shunts'], 'load')
           resloads[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'phases': phases, 'derkw': get_der_kw(kw)}
 
-  print ('\nLARGE_DER')
-  for key, row in largeder.items():
-    print (key, row)
-  print ('\nPV_DER', len(pvder))
-  print ('\nGEN_DER', len(gender))
-  print ('\nBAT_DER', len(batder))
-  print ('\nROOFTOP CANDIDATES', len(resloads))
-  print ('\bTOTAL LOAD KW = {:.2f}'.format(loadkw))
+  if bSummarize:
+    print ('\nLARGE_DER')
+    for key, row in largeder.items():
+      print (key, row)
+    print ('\nPV_DER', len(pvder))
+    print ('\nGEN_DER', len(gender))
+    print ('\nBAT_DER', len(batder))
+    print ('\nROOFTOP CANDIDATES', len(resloads))
+    print ('\bTOTAL LOAD KW = {:.2f}'.format(loadkw))
 
   return pvder, gender, batder, largeder, resloads, loadkw
