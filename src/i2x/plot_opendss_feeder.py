@@ -261,6 +261,7 @@ def parse_opendss_graph (G, bSummarize=True):
   batder = {}
   largeder = {}
   resloads = {}
+  bus3phase = {}
   loadkw = 0.0
 
   for n in G.nodes():
@@ -286,14 +287,16 @@ def parse_opendss_graph (G, bSummarize=True):
       elif nclass == 'storage':
         kva = ndata['batkva']
         key = get_first_shunt_name (ndata['shunts'], 'storage')
-        batder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases}
+        batder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'kwh':ndata['batkwh'], 'phases':phases}
         if kva >= 100.0:
-          largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'phases':phases, 'type':'storage'}
+          largeder[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'kw':ndata['batkw'], 'kwh':ndata['batkwh'], 'phases':phases, 'type':'storage'}
       elif nclass == 'load':
         kw = ndata['loadkw']
         if (phases == 2) and (nomkv < 1.0):
           key = get_first_shunt_name (ndata['shunts'], 'load')
           resloads[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'phases': phases, 'derkw': get_der_kw(kw)}
+      elif (nclass == 'bus') and (phases > 2):
+        bus3phase[bus] = {'kv':nomkv}
 
   if bSummarize:
     print ('\nLARGE_DER')
@@ -303,6 +306,7 @@ def parse_opendss_graph (G, bSummarize=True):
     print ('\nGEN_DER', len(gender))
     print ('\nBAT_DER', len(batder))
     print ('\nROOFTOP CANDIDATES', len(resloads))
-    print ('\bTOTAL LOAD KW = {:.2f}'.format(loadkw))
+    print ('\nLARGE DER CANDIDATES', len(bus3phase))
+    print ('\nTOTAL LOAD KW = {:.2f}'.format(loadkw))
 
-  return pvder, gender, batder, largeder, resloads, loadkw
+  return pvder, gender, batder, largeder, resloads, bus3phase, loadkw

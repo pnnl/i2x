@@ -336,7 +336,6 @@ class DERConfigGUI:
         kvnom /= SQRT3
     return kvnom
 
-
   def update_entry(self, ctl, val):
     ctl.delete(0, tk.END)
     ctl.insert(0, val)
@@ -378,38 +377,38 @@ class DERConfigGUI:
 
     print (feeder_choice, solar_profile, load_mult, load_profile, inv_mode, inv_pf,
            soln_mode, ctrl_mode, step_seconds, num_steps)
-    dict = i2x.run_opendss(choice = feeder_choice,
-                           pvcurve = solar_profile,
-                           loadmult = load_mult,
-                           loadcurve = load_profile,
-                           invmode = inv_mode,
-                           invpf = inv_pf, 
-                           stepsize = step_seconds, 
-                           numsteps = num_steps,
-                           ctrlmode = ctrl_mode,
-                           solnmode = soln_mode,
-                           change_lines = change_lines)
+    d = i2x.run_opendss(choice = feeder_choice,
+                        pvcurve = solar_profile,
+                        loadmult = load_mult,
+                        loadcurve = load_profile,
+                        invmode = inv_mode,
+                        invpf = inv_pf, 
+                        stepsize = step_seconds, 
+                        numsteps = num_steps,
+                        ctrlmode = ctrl_mode,
+                        solnmode = soln_mode,
+                        change_lines = change_lines)
     self.txt_output.insert(tk.END, 'Analysis Run on {:s} at {:s}'.format(feeder_choice, datetime.datetime.now().strftime('%a %d-%b-%Y %H:%M:%S')))
     self.txt_output.insert(tk.END, '  Large DER={:.2f} kW, Rooftop PV={:.2f} kW\n'.format(large_total, rooftop_total))
     self.txt_output.insert(tk.END, '  LoadMult={:.4f}, LoadProfle={:s}\n'.format(load_mult, load_profile))
     self.txt_output.insert(tk.END, '  SolarProfile={:s}, InvMode={:s}, InvPF={:.3f}\n'.format(solar_profile, inv_mode, inv_pf))
-    self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(dict['num_cap_switches']))
-    self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(dict['num_tap_changes']))
-    self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(dict['num_relay_trips']))
-    self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(dict['num_low_voltage'], dict['vminpu'], dict['node_vmin']))
-    self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(dict['num_high_voltage'], dict['vmaxpu'], dict['node_vmax']))
+    self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(d['num_cap_switches']))
+    self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(d['num_tap_changes']))
+    self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(d['num_relay_trips']))
+    self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(d['num_low_voltage'], d['vminpu'], d['node_vmin']))
+    self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(d['num_high_voltage'], d['vmaxpu'], d['node_vmax']))
 
-    self.update_label (self.lab_relay, dict['num_relay_trips'], '{:d} relay trips', 0)
+    self.update_label (self.lab_relay, d['num_relay_trips'], '{:d} relay trips', 0)
 
     if soln_mode == 'SNAPSHOT':
-      self.update_label (self.lab_vmin, dict['vminpu'], 'Vmin={:.4f} pu', -0.95)
-      self.update_label (self.lab_vmax, dict['vmaxpu'], 'Vmax={:.4f} pu', 1.05)
+      self.update_label (self.lab_vmin, d['vminpu'], 'Vmin={:.4f} pu', -0.95)
+      self.update_label (self.lab_vmax, d['vmaxpu'], 'Vmax={:.4f} pu', 1.05)
       self.clear_label (self.lab_vdiff, 'Vdiff %')
       self.clear_label (self.lab_een, 'EEN %')
       self.clear_label (self.lab_ue, 'UE %')
       return
 
-    base = dict['kWh_Load']
+    base = d['kWh_Load']
     pctSource = 0.0
     pctLosses = 0.0
     pctGeneration = 0.0
@@ -417,30 +416,30 @@ class DERConfigGUI:
     pctUE = 0.0
     pctEEN = 0.0
     if base > 0.0:
-      pctSource = 100.0 * dict['kWh_Net'] / base
-      pctLosses = 100.0 * dict['kWh_Loss'] / base
-      pctGeneration = 100.0 * dict['kWh_Gen'] / base
-      pctSolar = 100.0 * dict['kWh_PV'] / base
-      pctEEN = 100.0 * dict['kWh_EEN'] / base
-      pctUE = 100.0 * dict['kWh_UE'] / base
+      pctSource = 100.0 * d['kWh_Net'] / base
+      pctLosses = 100.0 * d['kWh_Loss'] / base
+      pctGeneration = 100.0 * d['kWh_Gen'] / base
+      pctSolar = 100.0 * d['kWh_PV'] / base
+      pctEEN = 100.0 * d['kWh_EEN'] / base
+      pctUE = 100.0 * d['kWh_UE'] / base
     pctReactive = 0.0
-    if dict['kWh_PV'] > 0.0:
-      pctReactive = abs(100.0 * dict['kvarh_PV'] / dict['kWh_PV'])
-    self.txt_output.insert(tk.END, 'Load Served =               {:11.2f} kWh\n'.format(dict['kWh_Load']))
-    self.txt_output.insert(tk.END, 'Substation Energy =         {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Net'], pctSource))
-    self.txt_output.insert(tk.END, 'Losses =                    {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Loss'], pctLosses))
-    self.txt_output.insert(tk.END, 'Generation =                {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Gen'], pctGeneration))
-    self.txt_output.insert(tk.END, 'Solar Output =              {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_PV'], pctSolar))
-    self.txt_output.insert(tk.END, 'Solar Reactive Energy =     {:11.2f} kvarh, {:.4f}% of P\n'.format(dict['kvarh_PV'], pctReactive))
-    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_EEN'], pctEEN))
-    self.txt_output.insert(tk.END, 'Unserved Energy =           {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_UE'], pctUE))
-#    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:11.2f} kWh\n'.format(dict['kWh_OverN']))
-#    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:11.2f} kWh\n'.format(dict['kWh_OverE']))
+    if d['kWh_PV'] > 0.0:
+      pctReactive = abs(100.0 * d['kvarh_PV'] / d['kWh_PV'])
+    self.txt_output.insert(tk.END, 'Load Served =               {:11.2f} kWh\n'.format(d['kWh_Load']))
+    self.txt_output.insert(tk.END, 'Substation Energy =         {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_Net'], pctSource))
+    self.txt_output.insert(tk.END, 'Losses =                    {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_Loss'], pctLosses))
+    self.txt_output.insert(tk.END, 'Generation =                {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_Gen'], pctGeneration))
+    self.txt_output.insert(tk.END, 'Solar Output =              {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_PV'], pctSolar))
+    self.txt_output.insert(tk.END, 'Solar Reactive Energy =     {:11.2f} kvarh, {:.4f}% of P\n'.format(d['kvarh_PV'], pctReactive))
+    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_EEN'], pctEEN))
+    self.txt_output.insert(tk.END, 'Unserved Energy =           {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_UE'], pctUE))
+#    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:11.2f} kWh\n'.format(d['kWh_OverN']))
+#    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:11.2f} kWh\n'.format(d['kWh_OverE']))
 
     pv_vmin = 100.0
     pv_vmax = 0.0
     pv_vdiff = 0.0
-    for key, row in dict['pvdict'].items():
+    for key, row in d['pvdict'].items():
       v_base = 1000.0 * self.get_pv_kv_base (key)
       row['vmin'] /= v_base
       row['vmax'] /= v_base
@@ -465,7 +464,7 @@ class DERConfigGUI:
 
     if self.output_details.get() > 0:
       self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean Vdiff[%]\n')
-      for key, row in dict['pvdict'].items():
+      for key, row in d['pvdict'].items():
         self.txt_output.insert(tk.END, '{:20s} {:9.2f} {:9.2f} {:8.4f} {:8.4f} {:8.4f} {:8.4f}\n'.format(key, row['kWh'], row['kvarh'], 
                                                                                row['vmin'], row['vmax'], row['vmean'], row['vdiff']))
 
@@ -548,7 +547,7 @@ class DERConfigGUI:
     fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
     self.G = i2x.load_opendss_graph(fname)
 
-    self.pvder, self.gender, self.batder, self.largeder, self.resloads, self.loadkw = i2x.parse_opendss_graph(self.G)
+    self.pvder, self.gender, self.batder, self.largeder, self.resloads, bus3phase, self.loadkw = i2x.parse_opendss_graph(self.G)
 
     self.ax_feeder.cla()
     i2x.plot_opendss_feeder (self.G, plot_labels=True, on_canvas=True, 
