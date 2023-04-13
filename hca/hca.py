@@ -164,7 +164,8 @@ if __name__ == "__main__":
       print (' ', ln)
 
   print ('\nAdding PV to 10% of the residential rooftops that don\'t already have PV')
-  append_rooftop_pv (change_lines, resloads, 0.1)
+  append_rooftop_pv (change_lines, resloads, 0.2)
+  #change_lines.append('batchedit pvsystem..* enabled=no')
 
   d = i2x.run_opendss(choice = 'ieee9500',
                       pvcurve = 'pcloud', # 'pclear', 'pcloud', 'pvduty', 
