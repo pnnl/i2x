@@ -69,6 +69,16 @@ def summary_outputs (d, pvbases):
   print ('  Minimum PV Voltage        = {:.4f} pu'.format(pv_vmin))
   print ('  Maximum PV Voltage        = {:.4f} pu'.format(pv_vmax))
   print ('  Maximum PV Voltage Change = {:.4f} %'.format(pv_vdiff))
+  if len(d['recdict']) > 0:
+    print ('\nRecloser Measurement Summary:')
+    print ('                     P [kW]             Q[kvar]             V[V]              I[A]')
+    print ('  Name            min      max       min      max       min      max      min     max')
+    for key, row in d['recdict'].items():
+      print ('  {:10s} {:8.2f} {:8.2f}  {:8.2f} {:8.2f}  {:8.2f} {:8.2f}  {:7.2f} {:7.2f}'.format (key, 
+                                                                                              row['pmin'], row['pmax'],
+                                                                                              row['qmin'], row['qmax'],
+                                                                                              row['vmin'], row['vmax'],
+                                                                                              row['imin'], row['imax']))
 
 def print_large_der (largeder):
   print ('\nExisting DER:')

@@ -75,6 +75,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   kWh_PV = 0.0
   kvarh_PV = 0.0
   pvdict = {}
+  recdict = {}
   kWh_Net = 0.0
   kWh_Gen = 0.0
   kWh_Load = 0.0
@@ -153,7 +154,27 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
       dh = hours[1] - hours[0]
     while idx > 0:
       name = dss.monitors_read_name()
-      if name.endswith('_pq'):
+      if name.endswith('_rec_pq'):
+        key = name[0:-7]
+        p = np.array(dss.monitors_channel(1))
+        q = np.array(dss.monitors_channel(2))
+        if key not in recdict:
+          recdict[key] = {}
+        recdict[key]['pmin'] = np.min(p)
+        recdict[key]['pmax'] = np.max(p)
+        recdict[key]['qmin'] = np.min(q)
+        recdict[key]['qmax'] = np.max(q)
+      elif name.endswith('_rec_vi'):
+        key = name[0:-7]
+        v = np.array(dss.monitors_channel(1))
+        amps = np.array(dss.monitors_channel(2))
+        if key not in recdict:
+          recdict[key] = {}
+        recdict[key]['vmin'] = np.min(v)
+        recdict[key]['vmax'] = np.max(v)
+        recdict[key]['imin'] = np.min(amps)
+        recdict[key]['imax'] = np.max(amps)
+      elif name.endswith('_pq'):
         key = name[0:-3]
         p = np.array(dss.monitors_channel(1))
         q = np.array(dss.monitors_channel(2))
@@ -215,7 +236,8 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   #  print ('OverE kWh = {:10.2f}'.format (kWh_OverE))
 
   return {'converged': converged,
-          'pvdict':pvdict,
+          'pvdict': pvdict,
+          'recdict': recdict,
           'num_cap_switches': num_cap_switches,
           'num_tap_changes': num_tap_changes,
           'num_relay_trips': num_relay_trips,

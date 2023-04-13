@@ -226,6 +226,9 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   relays = dict_from_file (os.path.join (saved_path, 'Relay.dss'),
                           ['MonitoredObj', 'type', 'MonitoredTerm'], 
                           ['MonitoredObj', 'type'])
+  reclosers = dict_from_file (os.path.join (saved_path, 'Recloser.dss'),
+                          ['MonitoredObj', 'MonitoredTerm', 'PhaseTrip', 'GroundTrip'], 
+                          ['MonitoredObj'])
   regulators = dict_from_file (os.path.join (saved_path, 'RegControl.dss'),
                             ['transformer', 'winding', 'tapwinding', 'ptratio', 'vreg', 'band', 
                              'reversible', 'revvreg', 'revband','revThreshold', 'delay', 'revDelay'], 
@@ -248,6 +251,10 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
     if 'line.' in row['MonitoredObj']:
       branch = row['MonitoredObj'][5:]
       lines[branch]['Relay'] = True
+  for key, row in reclosers.items():
+    if 'line.' in row['MonitoredObj']:
+      branch = row['MonitoredObj'][5:]
+      lines[branch]['Recloser'] = True
   set_branch_phasing (lines)
   set_shunt_phasing (capacitors)
   set_shunt_phasing (solars)
@@ -298,6 +305,8 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   for key, data in lines.items():
     if 'Relay' in data:
       eclass = 'nwp'
+    elif 'Recloser' in data:
+      eclass = 'recloser'
     elif data['Switch']:
       eclass = 'switch'
     else:

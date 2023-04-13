@@ -114214,7 +114214,7 @@
       "target": "regxfmr_hvmv11sub1_lsb"
     },
     {
-      "eclass": "line",
+      "eclass": "recloser",
       "ename": "hvmv_sub_connector",
       "edata": {
         "bus1": "hvmv11sub1_lsb",
@@ -114222,6 +114222,7 @@
         "units": "none",
         "length": 0.001,
         "Switch": false,
+        "Recloser": true,
         "phases": 3
       },
       "source": "hvmv11sub1_lsb",
@@ -114463,13 +114464,14 @@
       "target": "regxfmr_hvmv11sub2_lsb"
     },
     {
-      "eclass": "switch",
+      "eclass": "recloser",
       "ename": "hvmv69s2b2_sw",
       "edata": {
         "bus1": "hvmv11sub2_lsb",
         "bus2": "m1047300",
         "Switch": true,
         "length": 0.001,
+        "Recloser": true,
         "phases": 3
       },
       "source": "hvmv11sub2_lsb",
@@ -114560,13 +114562,14 @@
       "target": "regxfmr_hvmv11sub3_lsb"
     },
     {
-      "eclass": "switch",
+      "eclass": "recloser",
       "ename": "hvmv69s3b2_sw",
       "edata": {
         "bus1": "hvmv11sub3_lsb",
         "bus2": "e203026",
         "Switch": true,
         "length": 0.001,
+        "Recloser": true,
         "phases": 3
       },
       "source": "hvmv11sub3_lsb",
@@ -117412,7 +117415,7 @@
       "target": "d5472350-1_int"
     },
     {
-      "eclass": "line",
+      "eclass": "recloser",
       "ename": "ln5502532-1",
       "edata": {
         "bus1": "190-7361",
@@ -117420,6 +117423,7 @@
         "units": "km",
         "length": 0.005820451,
         "Switch": false,
+        "Recloser": true,
         "phases": 3
       },
       "source": "d5472350-1_int",
@@ -122440,7 +122444,7 @@
       "target": "n1136367"
     },
     {
-      "eclass": "line",
+      "eclass": "recloser",
       "ename": "ln6350556-2",
       "edata": {
         "bus1": "m1069517",
@@ -122448,6 +122452,7 @@
         "units": "km",
         "length": 0.02869456,
         "Switch": false,
+        "Recloser": true,
         "phases": 3
       },
       "source": "n1136367",
@@ -124655,7 +124660,7 @@
       "target": "m1142851"
     },
     {
-      "eclass": "line",
+      "eclass": "recloser",
       "ename": "ln6413954-1",
       "edata": {
         "bus1": "l2955077",
@@ -124663,6 +124668,7 @@
         "units": "km",
         "length": 0.06026552,
         "Switch": false,
+        "Recloser": true,
         "phases": 3
       },
       "source": "m1142851",
@@ -129043,13 +129049,14 @@
       "target": "m1209-dies1"
     },
     {
-      "eclass": "switch",
+      "eclass": "recloser",
       "ename": "ln0956471_sw",
       "edata": {
         "bus1": "n1136670",
         "bus2": "d5956471-2_int",
         "Switch": true,
         "length": 0.001,
+        "Recloser": true,
         "phases": 3
       },
       "source": "n1136670",
@@ -136802,7 +136809,7 @@
       "target": "x3253570c"
     },
     {
-      "eclass": "line",
+      "eclass": "recloser",
       "ename": "ln6359077-1",
       "edata": {
         "bus1": "l2937757",
@@ -136810,6 +136817,7 @@
         "units": "km",
         "length": 0.08085206,
         "Switch": false,
+        "Recloser": true,
         "phases": 3
       },
       "source": "l2937757",
@@ -168977,7 +168985,7 @@
       "target": "m2000901"
     },
     {
-      "eclass": "line",
+      "eclass": "recloser",
       "ename": "ln2001100-1",
       "edata": {
         "bus1": "m2001000",
@@ -168985,6 +168993,7 @@
         "units": "km",
         "length": 0.1284093,
         "Switch": false,
+        "Recloser": true,
         "phases": 3
       },
       "source": "m2001000",

@@ -98,6 +98,7 @@ edgeTypes = {
   'regulator':   {'color':'red',    'tag':'REG'},
   'switch':      {'color':'blue',   'tag':'SWT'},
   'nwp':         {'color':'magenta','tag':'NWP'},
+  'recloser':    {'color':'lime',   'tag':'REC'},
   'reactor':     {'color':'green',  'tag':'RCT'}
   }
 
@@ -117,7 +118,7 @@ def get_node_mnemonic(nclass):
 def get_node_size(nclass):
   if nclass in nodeTypes:
     return nodeTypes[nclass]['size']
-  return 3
+  return 1
 
 def get_node_offset(nclass):
   if nclass in nodeTypes:
@@ -129,7 +130,9 @@ def get_node_color(nclass):
     return nodeTypes[nclass]['color']
   return 'black'
 
-def get_edge_width(nphs):
+def get_edge_width(nphs, eclass):
+  if eclass == 'recloser':
+    return 10.0
   if nphs == 1:
     return 2.0 # 1.0
   if nphs == 2:
@@ -212,7 +215,7 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax
         bFound = True
         nph = data['edata']['phases']
         plotEdges.append ((n1, n2))
-        edgeWidths.append (get_edge_width(nph))
+        edgeWidths.append (get_edge_width(nph, data['eclass']))
         edgeColors.append (get_edge_color(data['eclass']))
     if not bFound:
       print ('unable to plot', data['ename'])

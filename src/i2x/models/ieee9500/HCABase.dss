@@ -88,3 +88,5 @@ open LINE.A8645_48332_SW
 open LINE.TSW568613_SW
 //solve
 
+// include reclosers and their monitors
+redirect reclosers.dss

@@ -1,0 +1,42 @@
+// feeder head reclosers
+new recloser.r1  monitoredobj=line.HVMV_SUB_CONNECTOR MonitoredTerm=1 phasetrip=400.0 groundtrip=200.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+new recloser.r2  monitoredobj=line.HVMV69S2B2_SW      MonitoredTerm=1 phasetrip=400.0 groundtrip=200.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+new recloser.r3  monitoredobj=line.HVMV69S3B2_SW      MonitoredTerm=1 phasetrip=400.0 groundtrip=200.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+
+// reclosers out on the line
+new recloser.r4  monitoredobj=line.LN0956471_SW       MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r5  monitoredobj=line.LN6350556-2        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r6  monitoredobj=line.LN5502532-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r7  monitoredobj=line.LN6413954-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r8  monitoredobj=line.LN6359077-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r9  monitoredobj=line.LN2001100-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+
+// setting built-in TOC curves
+batchedit recloser..* phasefast=A groundfast=A phasedelayed=D grounddelayed=D
+
+// P + jQ monitors
+new monitor.r1_rec_pq element=line.HVMV_SUB_CONNECTOR terminal=1 mode=65 ppolar=no
+new monitor.r2_rec_pq element=line.HVMV69S2B2_SW      terminal=1 mode=65 ppolar=no
+new monitor.r3_rec_pq element=line.HVMV69S3B2_SW      terminal=1 mode=65 ppolar=no
+new monitor.r4_rec_pq element=line.LN0956471_SW       terminal=1 mode=65 ppolar=no
+new monitor.r5_rec_pq element=line.LN6350556-2        terminal=1 mode=65 ppolar=no
+new monitor.r6_rec_pq element=line.LN5502532-1        terminal=1 mode=65 ppolar=no
+new monitor.r7_rec_pq element=line.LN6413954-1        terminal=1 mode=65 ppolar=no
+new monitor.r8_rec_pq element=line.LN6359077-1        terminal=1 mode=65 ppolar=no
+new monitor.r9_rec_pq element=line.LN2001100-1        terminal=1 mode=65 ppolar=no
+
+// voltage and current positive sequence magnitude monitors
+new monitor.r1_rec_vi element=line.HVMV_SUB_CONNECTOR terminal=1 mode=96
+new monitor.r2_rec_vi element=line.HVMV69S2B2_SW      terminal=1 mode=96
+new monitor.r3_rec_vi element=line.HVMV69S3B2_SW      terminal=1 mode=96
+new monitor.r4_rec_vi element=line.LN0956471_SW       terminal=1 mode=96
+new monitor.r5_rec_vi element=line.LN6350556-2        terminal=1 mode=96
+new monitor.r6_rec_vi element=line.LN5502532-1        terminal=1 mode=96
+new monitor.r7_rec_vi element=line.LN6413954-1        terminal=1 mode=96
+new monitor.r8_rec_vi element=line.LN6359077-1        terminal=1 mode=96
+new monitor.r9_rec_vi element=line.LN2001100-1        terminal=1 mode=96
+
+
