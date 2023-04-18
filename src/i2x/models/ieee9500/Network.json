@@ -114141,6 +114141,7 @@
         "bus2": "hvmv115_hsb2",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "hvmv115_hsb1",
@@ -114168,6 +114169,7 @@
         "bus2": "hvmv69sub1_lsb2",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "regxfmr_hvmv69sub1_lsb1",
@@ -114181,6 +114183,7 @@
         "bus2": "hvmv69sub1_hsb",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "hvmv69sub1_lsb2",
@@ -114194,6 +114197,7 @@
         "bus2": "hvmv69s1s2_1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "hvmv69sub1_lsb2",
@@ -114265,6 +114269,7 @@
         "bus2": "e192860",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5710794-3_int",
@@ -114418,6 +114423,7 @@
         "bus2": "hvmv69sub2_lnb",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "hvmv69s1s2_10",
@@ -114431,6 +114437,7 @@
         "bus2": "hvmv69sub2_hsb",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "hvmv69sub2_lnb",
@@ -114444,6 +114451,7 @@
         "bus2": "hvmv69s2s3_1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "hvmv69sub2_lnb",
@@ -114471,6 +114479,7 @@
         "bus2": "m1047300",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "Recloser": true,
         "phases": 3
       },
@@ -114542,6 +114551,7 @@
         "bus2": "hvmv69sub3_hsb",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "hvmv69s2s3_2",
@@ -114569,6 +114579,7 @@
         "bus2": "e203026",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "Recloser": true,
         "phases": 3
       },
@@ -114768,6 +114779,7 @@
         "bus2": "e192201",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5513564-1_int",
@@ -114993,6 +115005,7 @@
         "bus2": "d6048634-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1186072",
@@ -115289,6 +115302,7 @@
         "bus2": "e184626",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d6023352-1_int",
@@ -115429,6 +115443,7 @@
         "bus2": "q16483",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5563942-4_int",
@@ -116207,6 +116222,7 @@
         "bus2": "e182748",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "e182748",
@@ -116491,6 +116507,7 @@
         "bus2": "q14412",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q14412",
@@ -117145,6 +117162,7 @@
         "bus2": "e182724",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "e182724",
@@ -117284,6 +117302,7 @@
         "bus2": "d6138609-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1089112",
@@ -117409,6 +117428,7 @@
         "bus2": "m1089120",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1089120",
@@ -117466,6 +117486,7 @@
         "bus2": "q14404",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q14404",
@@ -118007,6 +118028,7 @@
         "bus2": "l2879773",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "l2879773",
@@ -118183,13 +118205,16 @@
       "target": "p829986"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "a8645_48332_sw",
       "edata": {
         "bus1": "d5958866-1_int",
         "bus2": "e183493",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 3
       },
       "source": "e183493",
@@ -118503,6 +118528,7 @@
         "bus2": "d5504876-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1142818",
@@ -118758,6 +118784,7 @@
         "bus2": "e193509",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "e193509",
@@ -119168,6 +119195,7 @@
         "bus2": "m1069-mt1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1069der480-1",
@@ -119323,6 +119351,7 @@
         "bus2": "m1069300",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1069230",
@@ -120001,6 +120030,7 @@
         "bus2": "q14411",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q14411",
@@ -120121,13 +120151,16 @@
       "target": "m1069457"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "tsw803273_sw",
       "edata": {
         "bus1": "d5803273-1_int",
         "bus2": "m1069457",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 3
       },
       "source": "m1069457",
@@ -120809,6 +120842,7 @@
         "bus2": "n1137992",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "n1137992",
@@ -121033,6 +121067,7 @@
         "bus2": "m1026chp-2",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1026chp-1",
@@ -121145,6 +121180,7 @@
         "bus2": "q14413",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q14413",
@@ -121753,6 +121789,7 @@
         "bus2": "d5863704-2_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "l2858166",
@@ -121907,6 +121944,7 @@
         "bus2": "m1047pv-1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1047pv-2",
@@ -121948,6 +121986,7 @@
         "bus2": "m1047522",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1047522",
@@ -122129,6 +122168,7 @@
         "bus2": "q14733",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q14733",
@@ -122185,6 +122225,7 @@
         "bus2": "m1047575",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1047575",
@@ -122368,6 +122409,7 @@
         "bus2": "q16642",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q16642",
@@ -122628,13 +122670,16 @@
       "target": "n1134479"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "v7173_48332_sw",
       "edata": {
         "bus1": "d5534969-2_int",
         "bus2": "e182729",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 3
       },
       "source": "e182729",
@@ -122859,6 +122904,7 @@
         "bus2": "m1089-dies1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1089der480-2",
@@ -123267,6 +123313,7 @@
         "bus2": "q14734",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q14734",
@@ -123323,6 +123370,7 @@
         "bus2": "l2692635",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "l2692635",
@@ -123894,6 +123942,7 @@
         "bus2": "e183473",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "e183473",
@@ -124175,6 +124224,7 @@
         "bus2": "e206217",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "e206217",
@@ -124626,6 +124676,7 @@
         "bus2": "q1301",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "q1301",
@@ -124697,6 +124748,7 @@
         "bus2": "e206209",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d6108141-1_int",
@@ -124809,6 +124861,7 @@
         "bus2": "d5895780-3_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "n1140519",
@@ -125247,6 +125300,7 @@
         "bus2": "e182732",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5534970-1_int",
@@ -125709,6 +125763,7 @@
         "bus2": "d6108145-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "l2879078",
@@ -125808,19 +125863,23 @@
         "bus2": "q14414",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5835167-6_int",
       "target": "q14414"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "ln0653457_sw",
       "edata": {
         "bus1": "l3085398",
         "bus2": "d5653457-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 3
       },
       "source": "l3085398",
@@ -126145,6 +126204,7 @@
         "bus2": "d5621886-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1009805",
@@ -126582,6 +126642,7 @@
         "bus2": "l3047060",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "l3047059",
@@ -126863,6 +126924,7 @@
         "bus2": "e183472",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5867591-1_int",
@@ -127668,6 +127730,7 @@
         "bus2": "l2990828",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "l2990827",
@@ -127822,6 +127885,7 @@
         "bus2": "m1089-lng1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1089der480-1",
@@ -127885,13 +127949,16 @@
       "target": "l2729406"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "a333_48332_sw",
       "edata": {
         "bus1": "d5746546-1_int",
         "bus2": "e182723",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 3
       },
       "source": "e182723",
@@ -127990,6 +128057,7 @@
         "bus2": "d5534967-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1089174",
@@ -128216,19 +128284,23 @@
         "bus2": "e182745",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5837361-8_int",
       "target": "e182745"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "tsw320328_sw",
       "edata": {
         "bus1": "d6320328-1_int",
         "bus2": "l2879062",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 1
       },
       "source": "l2879062",
@@ -128778,6 +128850,7 @@
         "bus2": "m1108317",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m1108317",
@@ -128833,6 +128906,7 @@
         "bus2": "d6504019-6_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m3032981",
@@ -129043,6 +129117,7 @@
         "bus2": "m1209-dies1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1209der480-1",
@@ -129056,6 +129131,7 @@
         "bus2": "d5956471-2_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "Recloser": true,
         "phases": 3
       },
@@ -129947,6 +130023,7 @@
         "bus2": "e206211",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "d5682346-3_int",
@@ -130410,6 +130487,7 @@
         "bus2": "m1142-lng1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1142der480-1",
@@ -130696,6 +130774,7 @@
         "bus2": "f739845",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "f739845",
@@ -131702,6 +131781,7 @@
         "bus2": "d5774457-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1026915",
@@ -132650,6 +132730,7 @@
         "bus2": "d6017295-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "l2973156",
@@ -132914,13 +132995,16 @@
       "target": "x2691949b"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "tsw568613_sw",
       "edata": {
         "bus1": "l2692000",
         "bus2": "l2841000",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 1
       },
       "source": "l2692000",
@@ -133931,6 +134015,7 @@
         "bus2": "e206210",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d5712486-1_int",
@@ -134195,13 +134280,16 @@
       "target": "x3645811c"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "wf856_48332_sw",
       "edata": {
         "bus1": "228-1353934-4_int",
         "bus2": "193-103041",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 1
       },
       "source": "193-103041",
@@ -134450,13 +134538,16 @@
       "target": "x2729207c"
     },
     {
-      "eclass": "switch",
+      "eclass": "swtcontrol",
       "ename": "wg127_48332_sw",
       "edata": {
         "bus1": "228-961799-3_int",
         "bus2": "193-46661",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": true,
+        "SwitchedTerminal": 1,
+        "SwtOpen": true,
         "phases": 1
       },
       "source": "228-961799-3_int",
@@ -134585,6 +134676,7 @@
         "bus2": "e182727",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d6019477-1_int",
@@ -134812,6 +134904,7 @@
         "bus2": "e182731",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d6140778-1_int",
@@ -135211,6 +135304,7 @@
         "bus2": "e182725",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d5655682-1_int",
@@ -135380,6 +135474,7 @@
         "bus2": "e182726",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d5806920-1_int",
@@ -135537,6 +135632,7 @@
         "bus2": "e182722",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d6049822-1_int",
@@ -136165,6 +136261,7 @@
         "bus2": "e206614",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d6231996-1_int",
@@ -136418,6 +136515,7 @@
         "bus2": "e182730",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d6140776-1_int",
@@ -136517,6 +136615,7 @@
         "bus2": "d5746703-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p829957",
@@ -136960,6 +137059,7 @@
         "bus2": "m1186-wt1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1186der-1",
@@ -136973,6 +137073,7 @@
         "bus2": "m1186-wt2",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1186der-2",
@@ -136986,6 +137087,7 @@
         "bus2": "m1186-wt3",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m1186der-3",
@@ -137958,6 +138060,7 @@
         "bus2": "d5955074-2_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "n1139546",
@@ -138424,6 +138527,7 @@
         "bus2": "d5712477-3_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "n1139545",
@@ -138968,6 +139072,7 @@
         "bus2": "d5653469-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "l3066818",
@@ -139511,6 +139616,7 @@
         "bus2": "f739842",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d5472341-1_int",
@@ -139624,6 +139730,7 @@
         "bus2": "e182744",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d5565090-1_int",
@@ -139694,6 +139801,7 @@
         "bus2": "f739841",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d5865224-1_int",
@@ -139792,6 +139900,7 @@
         "bus2": "f739844",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "d6047588-1_int",
@@ -139834,6 +139943,7 @@
         "bus2": "d5804798-3_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "n1136030",
@@ -139988,6 +140098,7 @@
         "bus2": "d5623395-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m1047767",
@@ -140073,6 +140184,7 @@
         "bus2": "d6409775-4_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "n1136027",
@@ -140187,6 +140299,7 @@
         "bus2": "d5774470-2_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "n1138594",
@@ -140357,6 +140470,7 @@
         "bus2": "d6017316-1_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "l2729430",
@@ -140456,6 +140570,7 @@
         "bus2": "d6440002-2_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "n1137999",
@@ -140584,6 +140699,7 @@
         "bus2": "d5712587-2_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "n1144667",
@@ -168811,6 +168927,7 @@
         "bus2": "d2000100_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m2000100",
@@ -169148,6 +169265,7 @@
         "bus2": "d2000401_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m2000401",
@@ -169567,6 +169685,7 @@
         "bus2": "d2000701_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m2000701",
@@ -169986,6 +170105,7 @@
         "bus2": "d2000901_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m2000901",
@@ -170405,6 +170525,7 @@
         "bus2": "d2001001_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m2001001",
@@ -170824,6 +170945,7 @@
         "bus2": "d2001201_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m2001201",
@@ -171243,6 +171365,7 @@
         "bus2": "d2001301_int",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 1
       },
       "source": "m2001301",
@@ -171704,6 +171827,7 @@
         "bus2": "m2001-mt1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m2001der-1",
@@ -171717,6 +171841,7 @@
         "bus2": "m2001-mt2",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m2001der-2",
@@ -171730,6 +171855,7 @@
         "bus2": "m2001-mt3",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m2001der-3",
@@ -171771,6 +171897,7 @@
         "bus2": "m2001-ess1",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m2001der-4",
@@ -171784,6 +171911,7 @@
         "bus2": "m2001-ess2",
         "Switch": true,
         "length": 0.001,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "m2001der-5",

@@ -14,6 +14,6 @@ if __name__ == "__main__":
   G = i2x.load_builtin_graph('ieee9500')
   if G is not None:
     i2x.plot_opendss_feeder(G, plot_labels=True)
-    i2x.parse_opendss_graph(G)
+#    i2x.parse_opendss_graph(G)
 #  i2x.show_der_config()
 

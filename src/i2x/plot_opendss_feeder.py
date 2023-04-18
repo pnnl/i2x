@@ -96,7 +96,8 @@ edgeTypes = {
   'line':        {'color':'gray',   'tag':'LN'},
   'transformer': {'color':'orange', 'tag':'XFM'},
   'regulator':   {'color':'red',    'tag':'REG'},
-  'switch':      {'color':'blue',   'tag':'SWT'},
+  'switch':      {'color':'cornflowerblue',   'tag':'SWT'},
+  'swtcontrol':  {'color':'blue',   'tag':'CTL'},
   'nwp':         {'color':'magenta','tag':'NWP'},
   'recloser':    {'color':'lime',   'tag':'REC'},
   'reactor':     {'color':'green',  'tag':'RCT'}
@@ -131,7 +132,7 @@ def get_node_color(nclass):
   return 'black'
 
 def get_edge_width(nphs, eclass):
-  if eclass == 'recloser':
+  if eclass in ['recloser', 'swtcontrol']:
     return 10.0
   if nphs == 1:
     return 2.0 # 1.0

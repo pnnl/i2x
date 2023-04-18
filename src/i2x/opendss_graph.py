@@ -233,6 +233,9 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
                             ['transformer', 'winding', 'tapwinding', 'ptratio', 'vreg', 'band', 
                              'reversible', 'revvreg', 'revband','revThreshold', 'delay', 'revDelay'], 
                             ['transformer', 'reversible'])
+  swtcontrols = dict_from_file (os.path.join (saved_path, 'SwtControl.dss'),
+                          ['SwitchedObj', 'State', 'Normal', 'SwitchedTerm'], 
+                          ['SwitchedObj', 'State', 'Normal'])
   transformers = xfmr_dict_from_file (os.path.join (saved_path, 'Transformer.dss'))
 
   for key, row in regulators.items():
@@ -242,6 +245,7 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
     if 'Switch' in row:
       if row['Switch'] == 'true':
         row['Switch'] = True
+        row['SwtControl'] = False # till proven otherwise
         nswitch += 1
       else:
         row['Switch'] = False
@@ -255,6 +259,20 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
     if 'line.' in row['MonitoredObj']:
       branch = row['MonitoredObj'][5:]
       lines[branch]['Recloser'] = True
+  for key, row in swtcontrols.items():
+    if 'line.' in row['SwitchedObj']:
+      branch = row['SwitchedObj'][5:]
+      lines[branch]['SwtControl'] = True
+      lines[branch]['SwitchedTerminal'] = int(row['SwitchedTerm'])
+      SwtOpen = False
+      if 'State' in row:
+        if row['State'] == 'open':
+          SwtOpen = True
+      elif 'Normal' in row:
+        if row['Normal'] == 'open':
+          SwtOpen = True
+      lines[branch]['SwtOpen'] = SwtOpen
+
   set_branch_phasing (lines)
   set_shunt_phasing (capacitors)
   set_shunt_phasing (solars)
@@ -287,7 +305,9 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   print ('read {:4d} transformers'.format (len(transformers)))
   print ('read {:4d} regulators (as transformers)'.format (len(regulators)))
   print ('read {:4d} lines'.format (len(lines)))
-  print ('read {:4d} switches (as lines)'.format (nswitch))
+  print ('read {:4d} switches (in lines)'.format (nswitch))
+  print ('read {:4d} switch controls'.format (len(swtcontrols)))
+  print ('read {:4d} reclosers'.format (len(reclosers)))
   print ('read {:4d} relays'.format (len(relays)))
   print ('read {:4d} reactors'.format (len(reactors)))
   print ('read {:4d} sources'.format (len(sources)))
@@ -308,7 +328,10 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
     elif 'Recloser' in data:
       eclass = 'recloser'
     elif data['Switch']:
-      eclass = 'switch'
+      if data['SwtControl']:
+        eclass = 'swtcontrol'
+      else:
+        eclass = 'switch'
     else:
       eclass = 'line'
     G.add_edge(data['bus1'],data['bus2'],eclass=eclass,ename=key,edata=data)
