@@ -63,10 +63,8 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   for pvname in pvnames: # don't need to log all these
     dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
     dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
-  dss.dssprogress_show ()
-  dss.dssprogress_caption ('Running HCA simulation on {:s} for {:d} steps'.format (choice, numsteps))
+#  dss.dssprogress_*() replaced by DSSProgress.exe calls over TCP/IP
   dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output)
-  dss.dssprogress_close ()
 
   if debug_output:
     print ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems_count(), dss.generators_count()))
