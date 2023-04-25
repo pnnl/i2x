@@ -1,0 +1,14 @@
+{
+"feederName":  "ieee9500",
+"loadcurve":  "DEFAULT",
+"loadmult": 1.0,
+"pvcurve" : "pcloud",
+"invmode" : "CONSTANT_PF",
+"invpf" : 1.0,
+"solnmode" : "DAILY",
+"ctrlmode" : "STATIC",
+"debug_output" : false,
+"res_pv_frac": 0.2,
+"stepsize": 300,
+"numsteps": 288
+}

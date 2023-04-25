@@ -22,7 +22,7 @@ def dss_line (dss, line, debug_output):
 
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
-                change_lines=None, debug_output=True):
+                change_lines=None, debug_output=True, **kwargs):
 
   dss = py_dss_interface.DSSDLL()
   fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))

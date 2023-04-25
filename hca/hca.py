@@ -1,6 +1,10 @@
 import i2x.api as i2x
 import random
 import math
+import argparse
+import json
+import sys
+import islands as isl
 
 SQRT3 = math.sqrt(3.0)
 
@@ -132,7 +136,7 @@ def redispatch_large_storage (change_lines, key, kva, kw):
 def redispatch_large_generator (change_lines, key, kva, kw):
   change_lines.append('edit generator.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
 
-if __name__ == "__main__":
+def print_options():
   print ('Feeder Model Choices for HCA')
   print ('Feeder       Path                 Base File')
   for key, row in i2x.feederChoices.items():
@@ -143,11 +147,38 @@ if __name__ == "__main__":
   print ('Solution Mode Choices:', i2x.solutionModeChoices)
   print ('Control Mode Choices:', i2x.controlModeChoices)
 
-  feederName = 'ieee9500'
-  G = i2x.load_builtin_graph(feederName)
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser(description="i2X Hosting Capacity Analysis")
+  parser.add_argument("config", nargs='?', help="configuration file", default="defaults.json")
+  parser.add_argument("--show-options", help="Show options and exit", action='store_true')
+  parser.add_argument("--print-inputs", help="print passed inputs", action="store_true")
+  args = parser.parse_args()
+
+  if args.show_options:
+    print_options()
+    sys.exit(0)
+  
+  ### get defaults
+  with open('defaults.json') as f:
+    inputs = json.load(f)
+  
+  if args.config != 'defaults.json':
+    with open(args.config) as f:
+      config = json.load(f)
+    for k,v in config.items():
+      if k not in inputs:
+        print(f"WARNING: configuration parameter {k} is unknown. Check spelling and capitalization perhaps?")
+      inputs[k] = v
+  
+  if args.print_inputs:
+    print("Provided/Default Inputs:\n===============")
+    for k,v in inputs.items():
+      print(f"{k}: {v}")
+
+  G = i2x.load_builtin_graph(inputs["feederName"])
   pvder, gender, batder, largeder, resloads, bus3phase, loadkw = i2x.parse_opendss_graph(G, bSummarize=False)
 
-  print ('\nLoaded Feeder Model {:s}'.format(feederName))
+  print ('\nLoaded Feeder Model {:s}'.format(inputs["feederName"]))
   print_column_keys ('Large DER', largeder)
   print_column_keys ('Generators', gender)
   print_column_keys ('PV DER', pvder)
@@ -173,22 +204,21 @@ if __name__ == "__main__":
     for ln in change_lines:
       print (' ', ln)
 
-  print ('\nAdding PV to 10% of the residential rooftops that don\'t already have PV')
-  append_rooftop_pv (change_lines, resloads, 0.2)
+  print (f'\nAdding PV to {inputs["res_pv_frac"]*100}% of the residential rooftops that don\'t already have PV')
+  append_rooftop_pv (change_lines, resloads, inputs["res_pv_frac"])
   #change_lines.append('batchedit pvsystem..* enabled=no')
+  
+  #TODO: capacities shown reflective of the additions/changes above
+  comps, reclosers = isl.get_islands(G)
+  print('\nIslanding Considerations:\n')
+  print(f'{len(comps)} components found based on recloser positions')
+  for i, c in enumerate(comps):
+    isl.show_component(G, comps, i, printvals=True, printheader=i==0, plot=False)
 
-  d = i2x.run_opendss(choice = 'ieee9500',
-                      pvcurve = 'pcloud', # 'pclear', 'pcloud', 'pvduty', 
-                      invmode = 'CONSTANT_PF', # 'VOLT_VAR_VOLT_WATT', # 'VOLT_WATT', # 'VOLT_VAR_AVR', # 'VOLT_VAR', #'CONSTANT_PF',
-                      invpf = 1.0,
-                      loadmult = 1.0,
-                      loadcurve = 'DEFAULT',
-                      stepsize = 300, # 1,
-                      numsteps = 288, # 2900,
-                      solnmode = 'DAILY', # 'DUTY',
-                      ctrlmode = 'STATIC',
-                      change_lines = change_lines, 
-                      debug_output = False)
+  
+  inputs["choice"] = inputs["feederName"]
+  inputs["change_lines"] = change_lines
+  d = i2x.run_opendss(**inputs)
   summary_outputs (d, pvbases)
 
 
