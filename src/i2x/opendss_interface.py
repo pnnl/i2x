@@ -60,6 +60,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   dss_line (dss, 'set maxcontroliter=1000', debug_output)
   dss_line (dss, 'set maxiter=30', debug_output)
   pvnames = dss.pvsystems_all_names()
+  ## add pq and vi monitors to all pv systems
   for pvname in pvnames: # don't need to log all these
     dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
     dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
@@ -150,29 +151,42 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
     if idx > 0:
       hours = np.array(dss.monitors_dbl_hour())
       dh = hours[1] - hours[0]
+    ## loop over monitor elements
     while idx > 0:
-      name = dss.monitors_read_name()
+      name = dss.monitors_read_name() # name of monitor
+      elem = dss.monitors_read_element() # name of monitored element
       if name.endswith('_rec_pq'):
+        # recloser pq monitor
         key = name[0:-7]
         p = np.array(dss.monitors_channel(1))
         q = np.array(dss.monitors_channel(2))
         if key not in recdict:
+          # rec_pq OR rec_vi could occur first in the list
           recdict[key] = {}
+          recdict[key]['elem'] = elem
         recdict[key]['pmin'] = np.min(p)
         recdict[key]['pmax'] = np.max(p)
+        recdict[key]['p'] = p
         recdict[key]['qmin'] = np.min(q)
         recdict[key]['qmax'] = np.max(q)
+        recdict[key]['q'] = q
       elif name.endswith('_rec_vi'):
+        # recloser vi monitor
         key = name[0:-7]
         v = np.array(dss.monitors_channel(1))
         amps = np.array(dss.monitors_channel(2))
         if key not in recdict:
+          # rec_pq OR rec_vi could occur first in the list
           recdict[key] = {}
+          recdict[key]['elem'] = elem
         recdict[key]['vmin'] = np.min(v)
         recdict[key]['vmax'] = np.max(v)
         recdict[key]['imin'] = np.min(amps)
         recdict[key]['imax'] = np.max(amps)
+        recdict[key]['v'] = v
+        recdict[key]['i'] = amps
       elif name.endswith('_pq'):
+        # PV system pq monitor
         key = name[0:-3]
         p = np.array(dss.monitors_channel(1))
         q = np.array(dss.monitors_channel(2))
@@ -186,9 +200,13 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
         kvarh_PV += eq
         pvdict[key]['kWh'] = ep
         pvdict[key]['kvarh'] = eq
+        pvdict[key]['p'] = p
+        pvdict[key]['q'] = q
       elif name.endswith('_vi'):
+        # PV system vi monitor
         key = name[0:-3]
         v = np.array(dss.monitors_channel(1))
+        amps = np.array(dss.monitors_channel(2))
         vmin = np.min(v)
         vmax = np.max(v)
         vmean = np.mean(v)
@@ -197,6 +215,8 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
         pvdict[key]['vmax'] = vmax
         pvdict[key]['vmean'] = vmean
         pvdict[key]['vdiff'] = vdiff
+        pvdict[key]['v'] = v
+        pvdict[key]['i'] = i
       idx = dss.monitors_next()
 
     dss.meters_first()
@@ -254,5 +274,6 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
           'kWh_EEN':kWh_EEN,
           'kWh_UE':kWh_UE,
           'kWh_OverN':kWh_OverN,
-          'kWh_OverE':kWh_OverE}
+          'kWh_OverE':kWh_OverE,
+          'dss': dss}
 

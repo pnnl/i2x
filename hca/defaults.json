@@ -10,5 +10,10 @@
 "debug_output" : false,
 "res_pv_frac": 0.2,
 "stepsize": 300,
-"numsteps": 288
+"numsteps": 288,
+"remove_all_pv": false,
+"remove_large_der": [],
+"explicit_storage": {},
+"explicit_pv": {},
+"redisp_gen": {}
 }

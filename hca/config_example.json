@@ -1,0 +1,34 @@
+{
+"remove_all_pv": false,
+"remove_large_der": ["pvfarm1", "battery1", "battery2", "diesel590", "diesel620", "lngengine1800", "lngengine100", "microturb-2", "microturb-3"],
+"explicit_storage":{
+        "bat1new": {
+            "bus": "m2001-ess1",
+            "kv": 0.48,
+            "kva": 250.0,
+            "kw": 250.0,
+            "kwh": 1000.0
+        },
+        "bat2new": {
+            "bus": "m2001-ess2",
+            "kv": 0.48,
+            "kva": 250.0,
+            "kw": 250.0,
+            "kwh": 1000.0
+        }
+    },
+"explicit_pv":{
+        "pvnew":{
+            "bus": "m1047pv-3",
+            "kv": 12.47,
+            "kva": 1500.0,
+            "kw": 1200.0
+        }
+    },
+"redisp_gen":{
+    "steamgen1":{
+        "kva": 1000.0,
+        "kw": 800.0
+    }
+}
+}

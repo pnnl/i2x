@@ -266,6 +266,7 @@ def parse_opendss_graph (G, bSummarize=True):
   largeder = {}
   resloads = {}
   bus3phase = {}
+  all3phase = {}
   loadkw = 0.0
 
   for n in G.nodes():
@@ -301,6 +302,10 @@ def parse_opendss_graph (G, bSummarize=True):
           resloads[key] = {'bus':bus, 'kv':nomkv, 'kva':kva, 'phases': phases, 'derkw': get_der_kw(kw)}
       elif (nclass == 'bus') and (phases > 2):
         bus3phase[bus] = {'kv':nomkv}
+      
+      # collect all 3 phase buses
+      if phases > 2:
+        all3phase[bus] = {'kv':nomkv}
 
   if bSummarize:
     print ('\nLARGE_DER')
@@ -313,4 +318,11 @@ def parse_opendss_graph (G, bSummarize=True):
     print ('\nLARGE DER CANDIDATES', len(bus3phase))
     print ('\nTOTAL LOAD KW = {:.2f}'.format(loadkw))
 
-  return pvder, gender, batder, largeder, resloads, bus3phase, loadkw
+  return {"pvder": pvder, 
+          "gender": gender, 
+          "batder": batder, 
+          "largeder": largeder, 
+          "resloads": resloads, 
+          "bus3phase": bus3phase, 
+          "loadkw": loadkw, 
+          "all3phase": all3phase}
