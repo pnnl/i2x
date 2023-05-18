@@ -60,7 +60,7 @@ def get_comps(e:tuple, comps:list) -> tuple:
     """
     return ([e[0] in c for c in comps].index(True), [e[1] in c for c in comps].index(True))
 
-def show_component(G, comps, i, printvals=True, printheader=False, plot=False, **kwargs):
+def show_component(G, comps, i, printvals=True, printheader=False, printfun=print, plot=False, **kwargs):
     cap = {k: 0 for k in ["loadkw", "genkw", "pvkw", "batkw"]}
     for n, d  in G.subgraph(comps[i]).nodes(data=True):
         for k in cap:
@@ -68,9 +68,9 @@ def show_component(G, comps, i, printvals=True, printheader=False, plot=False, *
     
     if printvals:
         if printheader:
-            print("comp       nodes   loadkw   genkw     pvkw    batkw  ")
-            print("-------- -------- -------- -------- -------- --------")
-        print(f'comp {i:3d} {len(comps[i]):8d} {cap["loadkw"]:8.2f} {cap["genkw"]:8.2f} {cap["pvkw"]:8.2f} {cap["batkw"]:8.2f}')
+            printfun("comp       nodes   loadkw   genkw     pvkw    batkw  ")
+            printfun("-------- -------- -------- -------- -------- --------")
+        printfun(f'comp {i:3d} {len(comps[i]):8d} {cap["loadkw"]:8.2f} {cap["genkw"]:8.2f} {cap["pvkw"]:8.2f} {cap["batkw"]:8.2f}')
 
     if plot:
         plot_opendss_feeder(G.subgraph(comps[i]), **kwargs)

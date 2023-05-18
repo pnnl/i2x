@@ -1,4 +1,8 @@
 {
+"hca_log":{
+    "logtofile": true,
+    "format": "{message}"
+},
 "remove_all_pv": false,
 "remove_large_der": ["pvfarm1", "battery1", "battery2", "diesel590", "diesel620", "lngengine1800", "lngengine100", "microturb-2", "microturb-3"],
 "explicit_storage":{

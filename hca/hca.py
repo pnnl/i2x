@@ -8,6 +8,7 @@ import sys
 import islands as isl
 import numpy as np
 import py_dss_interface
+from hca_utils import Logger, merge_configs
 
 SQRT3 = math.sqrt(3.0)
 
@@ -18,15 +19,6 @@ def print_column_keys (label, d):
     break
   print ('{:4d} {:20s} {:s}'.format (len(d), label, columns))
 
-def pv_voltage_base_list (pvder, largeder, **kwargs):
-  pvbases = {}
-  for d in [pvder, largeder]:
-    for key, row in d.items():  
-      vnom = row['kv'] * 1000.0
-      if row['phases'] > 1:
-        vnom /= SQRT3
-      pvbases[key] = vnom
-  return pvbases
 
 def check_element_status(dss:py_dss_interface.DSSDLL, elemname:str) -> int:
   index_str = dss.circuit_set_active_element(elemname)
@@ -99,153 +91,267 @@ def summary_outputs (d, pvbases):
                                                                                               row['vmin'], row['vmax'],
                                                                                               row['imin'], row['imax']))
 
-def print_large_der (largeder):
-  print ('\nExisting DER:')
-  for key, row in largeder.items():
-    print (' ', key, row)
+class HCA:
+  def __init__(self, inputs):
+    self.inputs = inputs
+    self.change_lines = []
+    self.logger = Logger(inputs["hca_log"]["logname"], 
+                         level=inputs["hca_log"]["loglevel"], format=inputs["hca_log"]["format"])
+    if inputs["hca_log"]["logtofile"]:
+      self.logger.set_logfile()
 
-# This function adds appropriately sized PV to 100*pu_roofs % of the residential loads.
-# The call to 'random' does not re-use any seed value, so repeated invocations will differ in results.
-def append_rooftop_pv (change_lines, G, resloads, pu_roofs, seed=None):
-  """
-  This function adds appropriately sized PV to 100*pu_roofs % of the residential loads.
-  The optional seed argument for the random number generator can take either: 
-    - None (default): Operating system defaults will be used
-    - 'hash': the hash of graph G, will be used as the seed.
-                        As a result, calls on exactly the same graph will be reproducible.
-    - Int: any integer value will be passed directly to the seed function.
-  """
+    ## load networkx graph
+    self.load_graph()
 
-  if seed == 'hash':
-    random.seed(hash(G))
-  else:
-    random.seed(seed)
+    self.logger.info('\nLoaded Feeder Model {:s}'.format(self.inputs["choice"]))
+    self.print_parsed_graph()
 
-  rooftop_kw = 0.0
-  rooftop_count = 0
-  if (pu_roofs < 0.0) or (pu_roofs > 1.0):
-    print ('Portion of PV Rooftops {:.4f} must lie between 0 and 1, inclusive'.format(pu_roofs))
-  else:
-    for key, row in resloads.items():
-      if random.random() <= pu_roofs:
-        bus = row['bus']
-        kv = row['kv']
-        kw = row['derkw']
-        kva = kw * 1.21 # TODO: Cat A or Cat B
-        rooftop_kw += kw
-        rooftop_count += 1
-        change_lines.append('new pvsystem.{:s} bus1={:s}.1.2 phases=2 kv={:.3f} kva={:.2f} pmpp={:.2f} irrad=1.0 pf=1.0'.format (key, bus, kv, kva, kw))
-        G.nodes[bus]["nclass"] = 'solar' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
-        G.nodes[bus]["ndata"]["pvkva"] = kva
-        G.nodes[bus]["ndata"]["pvkw"] = kw
-        G.nodes[bus]["ndata"]["kv"] = kv
-        G.nodes[bus]["ndata"]["shunts"].append(f"pvsystem.{key}")
-  print ('Added {:.2f} kW PV on {:d} residential rooftops'.format(rooftop_kw, rooftop_count))
+  def load_graph(self):
+    self.G = i2x.load_builtin_graph(self.inputs["choice"])
+    self.parse_graph()
+    self.pv_voltage_base_list()
+    self.comps, self.reclosers = isl.get_islands(self.G)
 
-def remove_large_der (change_lines, G, key, d):
-  try:
-    row = d[key]
-  except KeyError:
-    ## if der was already removed by some other method
-    ## we could end up here
-    return 
-  if row['type'] == 'solar':
-    change_lines.append('edit pvsystem.{:s} enabled=no'.format(key))
-    G.nodes[row["bus"]]["ndata"]["pvkva"] = 0
-    G.nodes[row["bus"]]["ndata"]["pvkw"] = 0
-  elif row['type'] == 'storage':
-    change_lines.append('edit storage.{:s} enabled=no'.format(key))
-    G.nodes[row["bus"]]["ndata"]["batkva"] = 0
-    G.nodes[row["bus"]]["ndata"]["batkw"] = 0
-  elif row['type'] == 'generator':
-    change_lines.append('edit generator.{:s} enabled=no'.format(key))
-    G.nodes[row["bus"]]["ndata"]["genkva"] = 0
-    G.nodes[row["bus"]]["ndata"]["genkw"] = 0
-  else:
-    return
-  
-  ## update graph (no need to return, G should be passed by reference)
-  # remove the element from the shunt list
-  sidx = np.where( [key in s for s in G.nodes[row["bus"]]["ndata"]["shunts"]])[0][0]
-  G.nodes[row["bus"]]["ndata"]["shunts"].pop(sidx)
-  G.nodes[row["bus"]]["nclass"] = update_node_class(G, row["bus"])
+  def parse_graph(self, summarize=False):
+    """ parse the various categories of objects in the graph """
+    self.graph_dirs = i2x.parse_opendss_graph(self.G, bSummarize=summarize)
 
-def remove_all_pv(change_lines, G):
-  change_lines.append('batchedit pvsystem..* enabled=no')
-  for n, d in G.nodes(data=True):
-    if d.get("nclass") == 'solar':
-      d["ndata"]["pvkva"] = 0.0
-      d["ndata"]["pvkw"] = 0.0
-      shunts_new = [s for s in d["ndata"]["shunts"] if 'pvsystem' not in s]
-      d["ndata"]["shunts"] = shunts_new
-      d["nclass"] = update_node_class(G, n)
+  def show_component(self, i, printvals=True, printheader=False, plot=False, **kwargs):
+    isl.show_component(self.G, self.comps, i, printvals=printvals, printheader=printheader, printfun=self.logger.info, plot=plot, **kwargs)
 
-def append_large_pv (change_lines, G, pvbases, key, bus, kv, kva, kw):
-  change_lines.append('new pvsystem.{:s} bus1={:s} kv={:.3f} kva={:.3f} pmpp={:.3f} irrad=1'.format(key, bus, kv, kva, kw))
-  pvbases[key] = 1000.0 * kv / SQRT3
-  G.nodes[bus]["nclass"] = 'solar' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
-  G.nodes[bus]["ndata"]["pvkva"] = kva
-  G.nodes[bus]["ndata"]["pvkw"] = kw
-  G.nodes[bus]["ndata"]["nomkv"] = kv
-  G.nodes[bus]["ndata"]["shunts"].append(f"pvsystem.{key}")
+  def print_parsed_graph(self):
+    self._print_parsed_graph(**self.graph_dirs)
+  def _print_parsed_graph(self, pvder, gender, batder, largeder, resloads, bus3phase, all3phase, **kwargs):
+    self.print_column_keys ('Large DER (>=100 kVA)', largeder)
+    self.print_column_keys ('Generators', gender)
+    self.print_column_keys ('PV DER', pvder)
+    self.print_column_keys ('Batteries', batder)
+    self.print_column_keys ('Rooftop Candidates (2ph & < 1kV)', resloads)
+    # these are 3-phase buses without something else there, but the kV must be assumed
+    self.print_column_keys ('Available 3-phase Buses', bus3phase)
+    self.print_column_keys ('All 3-phase Buses', all3phase) 
+    self.print_large_der()
 
-def append_large_storage (change_lines, G, key, bus, kv, kva, kw, kwh):
-  change_lines.append('new storage.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f} kwhrated={:.3f} kwhstored={:.3f}'.format(key, bus, kv, kva, kw, kwh, 0.5*kwh))
-  G.nodes[bus]["nclass"] = 'storage' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
-  G.nodes[bus]["ndata"]["batkva"] = kva
-  G.nodes[bus]["ndata"]["batkw"] = kw
-  G.nodes[bus]["ndata"]["batkwh"] = kwh
-  G.nodes[bus]["ndata"]["nomkv"] = kv
-  G.nodes[bus]["ndata"]["shunts"].append(f"storage.{key}")
-
-def append_large_generator (change_lines, G, key, bus, kv, kva, kw):
-  change_lines.append('new generator.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f}'.format(key, bus, kv, kva, kw))
-  G.nodes[bus]["nclass"] = 'generator' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
-  G.nodes[bus]["ndata"]["genkva"] = kva
-  G.nodes[bus]["ndata"]["genkw"] = kw
-  G.nodes[bus]["ndata"]["nomkv"] = kv
-  G.nodes[bus]["ndata"]["shunts"].append(f"generator.{key}")
-
-def redispatch_large_pv (change_lines, G, key, kva, kw):
-  change_lines.append('edit pvsystem.{:s} kva={:.2f} pmpp={:.2f}'.format(key, kva, kw))
-  bus = get_node_from_classkey(G, "pvsystem", key)
-  G.nodes[bus]["ndata"]["pvkva"] = kva
-  G.nodes[bus]["ndata"]["pvkw"] = kw
-
-def redispatch_large_storage (change_lines, G, key, kva, kw):
-  change_lines.append('edit storage.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
-  bus = get_node_from_classkey(G, "storage", key)
-  G.nodes[bus]["ndata"]["batkva"] = kva
-  G.nodes[bus]["ndata"]["batkw"] = kw
-
-def redispatch_large_generator (change_lines, G, key, kva, kw):
-  change_lines.append('edit generator.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
-  bus = get_node_from_classkey(G, "generator", key)
-  G.nodes[bus]["ndata"]["genkva"] = kva
-  G.nodes[bus]["ndata"]["genkw"] = kw
-
-def get_node_from_classkey(G, nclass, key):
-  """Retrive the bus name where shunt nclass.key is connected
-  From graph G
-  """
-  
-  for n, d in G.nodes(data=True):
+  def print_column_keys (self, label, d):
+    columns = ''
+    for key, row in d.items():
+      columns = 'described by ' + str(row.keys())
+      break
+    self.logger.info ('{:4d} {:20s} {:s}'.format (len(d), label, columns))
+    
+  def update_node_class(self, n):
+    nclass  = "bus"
     try:
-      if np.any([f"{nclass}.{key}" == s for s in d["ndata"]["shunts"]]):
-        return n
+      if self.G.nodes[n]["ndata"]["shunts"]:
+        nclass = self.G.nodes[n]["ndata"]["shunts"][-1].split(".")[0]
+        if nclass == 'pvsystem':
+          nclass = 'solar'
     except KeyError:
       pass
+    return nclass
 
-def update_node_class(G, n):
-  nclass  = "bus"
-  try:
-    if G.nodes[n]["ndata"]["shunts"]:
-      nclass = G.nodes[n]["ndata"]["shunts"][-1].split(".")[0]
-      if nclass == 'pvsystem':
-        nclass = 'solar'
-  except KeyError:
-    pass
-  return nclass
+  def pv_voltage_base_list (self):
+    """ create a list of pv voltage bases """
+    self.pvbases = {}
+    for d in [self.graph_dirs["pvder"], self.graph_dirs["largeder"]]:
+      for key, row in d.items():  
+        vnom = row['kv'] * 1000.0
+        if row['phases'] > 1:
+          vnom /= SQRT3
+        self.pvbases[key] = vnom
+
+  def print_large_der (self):
+    self.logger.info('\nExisting DER:')
+    for key, row in self.graph_dirs["largeder"].items():
+      self.logger.info(f' {key} {row}')
+
+
+  def append_rooftop_pv (self, pu_roofs=None, seed=None):
+    """
+    This function adds appropriately sized PV to 100*pu_roofs % of the residential loads.
+    The optional seed argument for the random number generator can take either: 
+      - None (default): Operating system defaults will be used
+      - 'hash': the hash of graph G, will be used as the seed.
+                          As a result, calls on exactly the same graph will be reproducible.
+      - Int: any integer value will be passed directly to the seed function.
+    """
+
+    if seed == 'hash':
+      random.seed(hash(self.G))
+    else:
+      random.seed(seed)
+
+    if pu_roofs is None:
+      pu_roofs = self.inputs["res_pv_frac"]
+
+    rooftop_kw = 0.0
+    rooftop_count = 0
+    if (pu_roofs < 0.0) or (pu_roofs > 1.0):
+      self.logger.error('Portion of PV Rooftops {:.4f} must lie between 0 and 1, inclusive'.format(pu_roofs))
+    else:
+      self.logger.info (f'\nAdding PV to {inputs["res_pv_frac"]*100}% of the residential rooftops that don\'t already have PV')
+      for key, row in self.graph_dirs["resloads"].items():
+        if random.random() <= pu_roofs:
+          bus = row['bus']
+          kv = row['kv']
+          kw = row['derkw']
+          kva = kw * 1.21 # TODO: Cat A or Cat B
+          rooftop_kw += kw
+          rooftop_count += 1
+          self.change_lines.append('new pvsystem.{:s} bus1={:s}.1.2 phases=2 kv={:.3f} kva={:.2f} pmpp={:.2f} irrad=1.0 pf=1.0'.format (key, bus, kv, kva, kw))
+          self.G.nodes[bus]["nclass"] = 'solar' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
+          self.G.nodes[bus]["ndata"]["pvkva"] = kva
+          self.G.nodes[bus]["ndata"]["pvkw"] = kw
+          self.G.nodes[bus]["ndata"]["kv"] = kv
+          self.G.nodes[bus]["ndata"]["shunts"].append(f"pvsystem.{key}")
+    self.logger.info('Added {:.2f} kW PV on {:d} residential rooftops'.format(rooftop_kw, rooftop_count))
+    self.parse_graph()
+    self.pv_voltage_base_list()
+
+  def remove_large_der (self, key):
+    try:
+      row = self.graph_dirs["largeder"][key]
+    except KeyError:
+      ## if der was already removed by some other method
+      ## we could end up here
+      return 
+    if row['type'] == 'solar':
+      self.change_lines.append('edit pvsystem.{:s} enabled=no'.format(key))
+      self.G.nodes[row["bus"]]["ndata"]["pvkva"] = 0
+      self.G.nodes[row["bus"]]["ndata"]["pvkw"] = 0
+    elif row['type'] == 'storage':
+      self.change_lines.append('edit storage.{:s} enabled=no'.format(key))
+      self.G.nodes[row["bus"]]["ndata"]["batkva"] = 0
+      self.G.nodes[row["bus"]]["ndata"]["batkw"] = 0
+    elif row['type'] == 'generator':
+      self.change_lines.append('edit generator.{:s} enabled=no'.format(key))
+      self.G.nodes[row["bus"]]["ndata"]["genkva"] = 0
+      self.G.nodes[row["bus"]]["ndata"]["genkw"] = 0
+    else:
+      return
+    
+    ## update graph (no need to return, G should be passed by reference)
+    # remove the element from the shunt list
+    sidx = np.where( [key in s for s in self.G.nodes[row["bus"]]["ndata"]["shunts"]])[0][0]
+    self.G.nodes[row["bus"]]["ndata"]["shunts"].pop(sidx)
+    self.G.nodes[row["bus"]]["nclass"] = self.update_node_class(row["bus"])
+
+  def remove_all_pv(self):
+    self.change_lines.append('batchedit pvsystem..* enabled=no')
+    for n, d in self.G.nodes(data=True):
+      if d.get("nclass") == 'solar':
+        d["ndata"]["pvkva"] = 0.0
+        d["ndata"]["pvkw"] = 0.0
+        shunts_new = [s for s in d["ndata"]["shunts"] if 'pvsystem' not in s]
+        d["ndata"]["shunts"] = shunts_new
+        d["nclass"] = self.update_node_class(n)
+
+  def append_large_pv(self, key):
+    self._append_large_pv(key, **self.inputs["explicit_pv"][key])
+
+  def _append_large_pv (self, key, bus, kv, kva, kw):
+    self.change_lines.append('new pvsystem.{:s} bus1={:s} kv={:.3f} kva={:.3f} pmpp={:.3f} irrad=1'.format(key, bus, kv, kva, kw))
+    self.pvbases[key] = 1000.0 * kv / SQRT3
+    self.G.nodes[bus]["nclass"] = 'solar' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
+    self.G.nodes[bus]["ndata"]["pvkva"] = kva
+    self.G.nodes[bus]["ndata"]["pvkw"] = kw
+    self.G.nodes[bus]["ndata"]["nomkv"] = kv
+    self.G.nodes[bus]["ndata"]["shunts"].append(f"pvsystem.{key}")
+
+  def append_large_storage(self, key):
+    self._append_large_storage(key, **self.inputs["explicit_storage"][key])
+
+  def _append_large_storage (self, key, bus, kv, kva, kw, kwh):
+    self.change_lines.append('new storage.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f} kwhrated={:.3f} kwhstored={:.3f}'.format(key, bus, kv, kva, kw, kwh, 0.5*kwh))
+    self.G.nodes[bus]["nclass"] = 'storage' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
+    self.G.nodes[bus]["ndata"]["batkva"] = kva
+    self.G.nodes[bus]["ndata"]["batkw"] = kw
+    self.G.nodes[bus]["ndata"]["batkwh"] = kwh
+    self.G.nodes[bus]["ndata"]["nomkv"] = kv
+    self.G.nodes[bus]["ndata"]["shunts"].append(f"storage.{key}")
+
+  def append_large_generator(self, key):
+    self._append_large_generator(self, key, **self.inputs["explicit_generator"][key])
+  def append_large_generator (self, key, bus, kv, kva, kw):
+    self.change_lines.append('new generator.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f}'.format(key, bus, kv, kva, kw))
+    self.G.nodes[bus]["nclass"] = 'generator' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
+    self.G.nodes[bus]["ndata"]["genkva"] = kva
+    self.G.nodes[bus]["ndata"]["genkw"] = kw
+    self.G.nodes[bus]["ndata"]["nomkv"] = kv
+    self.G.nodes[bus]["ndata"]["shunts"].append(f"generator.{key}")
+
+  def redispatch_large_pv(self, key):
+    self._redispatch_large_pv(key, **inputs["redisp_pv"][key])
+  def _redispatch_large_pv (self, key, kva, kw):
+    self.change_lines.append('edit pvsystem.{:s} kva={:.2f} pmpp={:.2f}'.format(key, kva, kw))
+    bus = self.get_node_from_classkey("pvsystem", key)
+    self.G.nodes[bus]["ndata"]["pvkva"] = kva
+    self.G.nodes[bus]["ndata"]["pvkw"] = kw
+  
+  def redispatch_large_storage(self, key):
+    self._redispatch_large_storage(key, **inputs["redisp_storage"][key])
+  def _redispatch_large_storage (self, key, kva, kw):
+    self.change_lines.append('edit storage.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+    bus = self.get_node_from_classkey("storage", key)
+    self.G.nodes[bus]["ndata"]["batkva"] = kva
+    self.G.nodes[bus]["ndata"]["batkw"] = kw
+
+  def redispatch_large_generator(self, key):
+    self._redispatch_large_generator(key, **inputs["redisp_gen"][key])
+  def _redispatch_large_generator (self, key, kva, kw):
+    self.change_lines.append('edit generator.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+    bus = self.get_node_from_classkey("generator", key)
+    self.G.nodes[bus]["ndata"]["genkva"] = kva
+    self.G.nodes[bus]["ndata"]["genkw"] = kw
+
+  def get_node_from_classkey(self, nclass, key):
+    """Retrive the node name where shunt <nclass>.<key> is connected
+    From graph G
+    """
+    
+    for n, d in self.G.nodes(data=True):
+      try:
+        if np.any([f"{nclass}.{key}" == s for s in d["ndata"]["shunts"]]):
+          return n
+      except KeyError:
+        pass
+
+  def deterministic_changes(self):
+    self.logger.info('Making some deterministic changes')
+    ### remove all pv 
+    if self.inputs["remove_all_pv"]:
+      self.remove_all_pv()
+      self.parse_graph()
+    
+    ### remove specified large ders
+    for key in self.inputs["remove_large_der"]:
+      self.remove_large_der(key)
+    self.parse_graph()
+    
+    ### add new specified storage
+    for key in self.inputs["explicit_storage"]:
+      self.append_large_storage(key)
+    self.parse_graph()
+
+    ### add new pv
+    for key in inputs["explicit_pv"]:
+      self.append_large_pv(key)
+      self.parse_graph()
+      self.pv_voltage_base_list()
+
+    ### redispatch existing generators
+    for key in inputs["redisp_gen"]:
+      self.redispatch_large_generator(key)
+    
+    self.parse_graph()
+    for ln in self.change_lines:
+      self.logger.info (f' {ln}')    
+
+  def rundss(self):
+    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines}, **self.inputs} )  
+
+  def summary_outputs(self):
+    summary_outputs(self.lastres, self.pvbases)
 
 def print_options():
   print ('Feeder Model Choices for HCA')
@@ -259,17 +365,8 @@ def print_options():
   print ('Control Mode Choices:', i2x.controlModeChoices)
 
 
-def print_parsed_graph(pvder, gender, batder, largeder, resloads, bus3phase, all3phase, **kwargs):
-  print_column_keys ('Large DER (>=100 kVA)', largeder)
-  print_column_keys ('Generators', gender)
-  print_column_keys ('PV DER', pvder)
-  print_column_keys ('Batteries', batder)
-  print_column_keys ('Rooftop Candidates (2ph & < 1kV)', resloads)
-  # these are 3-phase buses without something else there, but the kV must be assumed
-  print_column_keys ('Available 3-phase Buses', bus3phase)
-  print_column_keys ('All 3-phase Buses', all3phase) 
-  print_large_der (largeder)
 
+    
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="i2X Hosting Capacity Analysis")
   parser.add_argument("config", nargs='?', help="configuration file", default="defaults.json")
@@ -288,105 +385,36 @@ if __name__ == "__main__":
   if args.config != 'defaults.json':
     with open(args.config) as f:
       config = json.load(f)
-    for k,v in config.items():
-      if k not in inputs:
-        print(f"WARNING: configuration parameter {k} is unknown. Check spelling and capitalization perhaps?")
-      inputs[k] = v
+    merge_configs(inputs, config)
   
   if args.print_inputs:
     print("Provided/Default Inputs:\n===============")
     for k,v in inputs.items():
       print(f"{k}: {v}")
   
-  G = i2x.load_builtin_graph(inputs["feederName"])
-  graph_dirs = i2x.parse_opendss_graph(G, bSummarize=False)
+  ### create hca object
+  hca = HCA(inputs)
 
-  print ('\nLoaded Feeder Model {:s}'.format(inputs["feederName"]))
-  print_parsed_graph(**graph_dirs)
+  ###########################################################################
+  ##### Initialization
+  ###########################################################################
+  ### deterministic changes
+  hca.deterministic_changes()
+  hca.logger.info(f"\nFeeder description following deterministic changes:")
+  hca.print_parsed_graph()
 
 
-  pvbases = pv_voltage_base_list (**graph_dirs)
+  ### rooftop solar
+  hca.append_rooftop_pv()
+  hca.logger.info(f"\nFeeder description following intialization changes:")
+  hca.print_parsed_graph()
 
-  print(f'\nnode m1047pv-3: {G.nodes["m1047pv-3"]}')
-  print(f"pvfarm1: {pvbases.get('pvfarm1')}")
-  change_lines = []
-  # if True:
-  #   print ('\nMaking some experimental changes to the large DER')
-  #   # delete some of the existing generators
-  #   for key in ['pvfarm1', 'battery1', 'battery2', 'diesel590', 'diesel620', 'lngengine1800', 'lngengine100', 'microturb-2', 'microturb-3']:
-  #     remove_large_der (change_lines, key, largeder, G)
-  #   # add the PV and battery back in, with different names
-  #   append_large_storage (change_lines, 'bat1new', 'm2001-ess1', 0.48, 250.0, 250.0, 1000.0)  # change from 2-hour to 4-hour
-  #   append_large_storage (change_lines, 'bat2new', 'm2001-ess2', 0.48, 250.0, 250.0, 1000.0)  # change from 2-hour to 4-hour
-  #   append_large_pv (change_lines, 'pvnew', 'm1047pv-3', 12.47, 1500.0, 1200.0, pvbases) # 200 kW larger than pvfarm1
-  #   redispatch_large_generator (change_lines, 'steamgen1', 1000.0, 800.0) # reduce output by 800 kW
-  #   for ln in change_lines:
-  #     print (' ', ln)
-  print ('\nMaking some deterministic changes')
-  ### remove all pv 
-  if inputs["remove_all_pv"]:
-    remove_all_pv(change_lines, G)
-    graph_dirs = i2x.parse_opendss_graph(G, bSummarize=False)
-  print(f'\nnode m1047pv-3: {G.nodes["m1047pv-3"]}')
-  print(f"pvfarm1: {pvbases.get('pvfarm1')}")
-  ### remove specified large ders
-  for key in inputs["remove_large_der"]:
-    remove_large_der(change_lines, G, key, graph_dirs["largeder"])
-  graph_dirs = i2x.parse_opendss_graph(G, bSummarize=False)
-  print(f'\nnode m1047pv-3: {G.nodes["m1047pv-3"]}')
-  print(f"pvfarm1: {pvbases.get('pvfarm1')}")
-  
-  ### add new specified storage
-  for key, val in inputs["explicit_storage"].items():
-    append_large_storage(change_lines, G, key, **val)
-  graph_dirs = i2x.parse_opendss_graph(G, bSummarize=False)
+  hca.logger.info('\nIslanding Considerations:\n')
+  hca.logger.info(f'{len(hca.comps)} components found based on recloser positions')
+  for i, c in enumerate(hca.comps):
+    hca.show_component(i, printvals=True, printheader=i==0, plot=False)
 
-  print(f'\nnode m1047pv-3: {G.nodes["m1047pv-3"]}')
-  print(f"pvfarm1: {pvbases.get('pvfarm1')}")
-
-  ### add new pv
-  for key, val in inputs["explicit_pv"].items():
-    append_large_pv(change_lines, G, pvbases, key, **val)
-    graph_dirs = i2x.parse_opendss_graph(G, bSummarize=False)
-    pvbases = pv_voltage_base_list (**graph_dirs)
-  
-  print(f'\nnode m1047pv-3: {G.nodes["m1047pv-3"]}')
-  print(f"pvfarm1: {pvbases.get('pvfarm1')}")
-
-  ### redispatch existing generators
-  for key, val in inputs["redisp_gen"].items():
-    redispatch_large_generator(change_lines, G, key, **val)
-  
-  for ln in change_lines:
-    print (' ', ln)
-  
-  ### post explicit change parsing:
-  graph_dirs = i2x.parse_opendss_graph(G, bSummarize=False)
-  print(f"\nFeeder description following deterministic changes:")
-  print_parsed_graph(**graph_dirs)
-
-  ### base rooftop pv
-  print (f'\nAdding PV to {inputs["res_pv_frac"]*100}% of the residential rooftops that don\'t already have PV')
-  append_rooftop_pv (change_lines, G, graph_dirs["resloads"], inputs["res_pv_frac"])
-  
-  graph_dirs = i2x.parse_opendss_graph(G, bSummarize=False)
-  pvbases = pv_voltage_base_list (**graph_dirs)
-  print("\nFeeder description following intialization changes:")
-  print_parsed_graph(**graph_dirs)
-
-  print(f"unique pvbases:\n{np.unique([np.round(x,3) for x in pvbases.values()])}")
-  print(f'\nnode m1047pv-3: {G.nodes["m1047pv-3"]}')
-  print(f"pvfarm1: {pvbases.get('pvfarm1')}")
-
-  comps, reclosers = isl.get_islands(G)
-  print('\nIslanding Considerations:\n')
-  print(f'{len(comps)} components found based on recloser positions')
-  for i, c in enumerate(comps):
-    isl.show_component(G, comps, i, printvals=True, printheader=i==0, plot=False)
-
-  inputs["choice"] = inputs["feederName"]
-  inputs["change_lines"] = change_lines
-  d = i2x.run_opendss(**inputs)
-  summary_outputs (d, pvbases)
+  hca.rundss()
+  hca.summary_outputs()
 
 
