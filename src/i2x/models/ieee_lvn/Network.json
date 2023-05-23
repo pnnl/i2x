@@ -8983,6 +8983,7 @@
         "bus2": "p4",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p3",
@@ -8996,6 +8997,7 @@
         "bus2": "p8",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p7",
@@ -9051,6 +9053,7 @@
         "bus2": "p6",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p6",
@@ -9064,6 +9067,7 @@
         "bus2": "p12",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p11",
@@ -9077,6 +9081,7 @@
         "bus2": "p28",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p27",
@@ -9118,6 +9123,7 @@
         "bus2": "p46",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p45",
@@ -9131,6 +9137,7 @@
         "bus2": "p63",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p62",
@@ -9186,6 +9193,7 @@
         "bus2": "p10",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p10",
@@ -9199,6 +9207,7 @@
         "bus2": "p82",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p81",
@@ -9212,6 +9221,7 @@
         "bus2": "p98",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p97",
@@ -9253,6 +9263,7 @@
         "bus2": "p118",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p117",
@@ -9266,6 +9277,7 @@
         "bus2": "p135",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p134",
@@ -11953,6 +11965,7 @@
         "bus2": "s194",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -11981,6 +11994,7 @@
         "bus2": "s195",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12009,6 +12023,7 @@
         "bus2": "s199",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12037,6 +12052,7 @@
         "bus2": "s200",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12065,6 +12081,7 @@
         "bus2": "s204",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12107,6 +12124,7 @@
         "bus2": "s205",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12121,6 +12139,7 @@
         "bus2": "s206",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12149,6 +12168,7 @@
         "bus2": "s211",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12191,6 +12211,7 @@
         "bus2": "s212",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12205,6 +12226,7 @@
         "bus2": "s213",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12233,6 +12255,7 @@
         "bus2": "s218",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12275,6 +12298,7 @@
         "bus2": "s219",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12289,6 +12313,7 @@
         "bus2": "s220",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12317,6 +12342,7 @@
         "bus2": "s225",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12359,6 +12385,7 @@
         "bus2": "s226",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12373,6 +12400,7 @@
         "bus2": "s227",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12401,6 +12429,7 @@
         "bus2": "s232",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12429,6 +12458,7 @@
         "bus2": "s233",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12457,6 +12487,7 @@
         "bus2": "s237",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12485,6 +12516,7 @@
         "bus2": "s239",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12569,6 +12601,7 @@
         "bus2": "s4",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12667,6 +12700,7 @@
         "bus2": "s9",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12765,6 +12799,7 @@
         "bus2": "s14",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12863,6 +12898,7 @@
         "bus2": "s19",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -12975,6 +13011,7 @@
         "bus2": "s44",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13003,6 +13040,7 @@
         "bus2": "s45",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13101,6 +13139,7 @@
         "bus2": "s49",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13129,6 +13168,7 @@
         "bus2": "s50",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13227,6 +13267,7 @@
         "bus2": "s54",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13255,6 +13296,7 @@
         "bus2": "s55",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13353,6 +13395,7 @@
         "bus2": "s59",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13381,6 +13424,7 @@
         "bus2": "s60",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13507,6 +13551,7 @@
         "bus2": "s85",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13535,6 +13580,7 @@
         "bus2": "s86",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13633,6 +13679,7 @@
         "bus2": "s90",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13661,6 +13708,7 @@
         "bus2": "s91",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13759,6 +13807,7 @@
         "bus2": "s95",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13787,6 +13836,7 @@
         "bus2": "s96",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13885,6 +13935,7 @@
         "bus2": "s100",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -13913,6 +13964,7 @@
         "bus2": "s101",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14025,6 +14077,7 @@
         "bus2": "s126",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14123,6 +14176,7 @@
         "bus2": "s131",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14221,6 +14275,7 @@
         "bus2": "s136",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14319,6 +14374,7 @@
         "bus2": "s141",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14403,6 +14459,7 @@
         "bus2": "s27",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14459,6 +14516,7 @@
         "bus2": "s68",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14515,6 +14573,7 @@
         "bus2": "s109",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14571,6 +14630,7 @@
         "bus2": "s28",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14599,6 +14659,7 @@
         "bus2": "s33",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14641,6 +14702,7 @@
         "bus2": "s69",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14669,6 +14731,7 @@
         "bus2": "s74",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14711,6 +14774,7 @@
         "bus2": "s110",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14739,6 +14803,7 @@
         "bus2": "s115",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14781,6 +14846,7 @@
         "bus2": "s29",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14809,6 +14875,7 @@
         "bus2": "s34",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14851,6 +14918,7 @@
         "bus2": "s70",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14879,6 +14947,7 @@
         "bus2": "s75",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14921,6 +14990,7 @@
         "bus2": "s111",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14949,6 +15019,7 @@
         "bus2": "s116",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -14991,6 +15062,7 @@
         "bus2": "s30",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15019,6 +15091,7 @@
         "bus2": "s35",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15061,6 +15134,7 @@
         "bus2": "s71",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15089,6 +15163,7 @@
         "bus2": "s76",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15131,6 +15206,7 @@
         "bus2": "s112",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15159,6 +15235,7 @@
         "bus2": "s117",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15215,6 +15292,7 @@
         "bus2": "s36",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15271,6 +15349,7 @@
         "bus2": "s77",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
@@ -15327,6 +15406,7 @@
         "bus2": "s118",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "Relay": true,
         "phases": 3
       },
