@@ -1,0 +1,9 @@
+New "Recloser.r1" MonitoredObj=line.HVMV_SUB_CONNECTOR MonitoredTerm=1 PhaseTrip=400.0 GroundTrip=200.0 TDPhDelayed=1.5 TDPhFast=1.5 TDGrDelayed=1.5 TDGrFast=1.5 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r2" MonitoredObj=line.HVMV69S2B2_SW MonitoredTerm=1 PhaseTrip=400.0 GroundTrip=200.0 TDPhDelayed=1.5 TDPhFast=1.5 TDGrDelayed=1.5 TDGrFast=1.5 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r3" MonitoredObj=line.HVMV69S3B2_SW MonitoredTerm=1 PhaseTrip=400.0 GroundTrip=200.0 TDPhDelayed=1.5 TDPhFast=1.5 TDGrDelayed=1.5 TDGrFast=1.5 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r4" MonitoredObj=line.LN0956471_SW MonitoredTerm=1 PhaseTrip=200.0 GroundTrip=150.0 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r5" MonitoredObj=line.LN6350556-2 MonitoredTerm=1 PhaseTrip=200.0 GroundTrip=150.0 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r6" MonitoredObj=line.LN5502532-1 MonitoredTerm=1 PhaseTrip=200.0 GroundTrip=150.0 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r7" MonitoredObj=line.LN6413954-1 MonitoredTerm=1 PhaseTrip=200.0 GroundTrip=150.0 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r8" MonitoredObj=line.LN6359077-1 MonitoredTerm=1 PhaseTrip=200.0 GroundTrip=150.0 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D
+New "Recloser.r9" MonitoredObj=line.LN2001100-1 MonitoredTerm=1 PhaseTrip=200.0 GroundTrip=150.0 PhaseFast=A GroundFast=A PhaseDelayed=D GroundDelayed=D

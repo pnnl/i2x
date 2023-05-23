@@ -1,0 +1,18 @@
+New "RegControl.feeder_reg1a" transformer=FEEDER_REG1A winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=10 revDelay=10
+New "RegControl.feeder_reg1b" transformer=FEEDER_REG1B winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=11 revDelay=10
+New "RegControl.feeder_reg1c" transformer=FEEDER_REG1C winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=12 revDelay=10
+New "RegControl.feeder_reg2a" transformer=FEEDER_REG2A winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=20 revDelay=10
+New "RegControl.feeder_reg2b" transformer=FEEDER_REG2B winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=21 revDelay=10
+New "RegControl.feeder_reg2c" transformer=FEEDER_REG2C winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=22 revDelay=10
+New "RegControl.feeder_reg3a" transformer=FEEDER_REG3A winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=30 revDelay=10
+New "RegControl.feeder_reg3b" transformer=FEEDER_REG3B winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=31 revDelay=10
+New "RegControl.feeder_reg3c" transformer=FEEDER_REG3C winding=2 tapwinding=2 vreg=123 ptratio=60 band=2 delay=32 revDelay=10
+New "RegControl.vreg2_a" transformer=VREG2_A winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=50 revDelay=10
+New "RegControl.vreg2_b" transformer=VREG2_B winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=51 revDelay=10
+New "RegControl.vreg2_c" transformer=VREG2_C winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=52 revDelay=10
+New "RegControl.vreg3_a" transformer=VREG3_A winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=60 revDelay=10
+New "RegControl.vreg3_b" transformer=VREG3_B winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=61 revDelay=10
+New "RegControl.vreg3_c" transformer=VREG3_C winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=62 revDelay=10
+New "RegControl.vreg4_a" transformer=VREG4_A winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=70 revDelay=10
+New "RegControl.vreg4_b" transformer=VREG4_B winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=71 revDelay=10
+New "RegControl.vreg4_c" transformer=VREG4_C winding=2 tapwinding=2 vreg=125 ptratio=60 band=2 reversible=yes revvreg=125 revband=2 revThreshold=50 delay=72 revDelay=10
