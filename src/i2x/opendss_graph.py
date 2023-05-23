@@ -163,10 +163,11 @@ def phases_ndata (phases):
     'pvkva': 0.0, 'pvkw': 0.0, 'batkva': 0.0, 'batkw': 0.0, 'batkwh': 0.0, 'capkvar': 0.0, 
     'shunts':[], 'source':False}
 
-def xy_ndata (x, y):
+def xy_kv_ndata (x, y, kv):
   ndata = phases_ndata(0)
   ndata['x'] = x
   ndata['y'] = y
+  ndata['nomkv'] = kv
   return ndata
 
 def update_node_phases (G, nd, phases):
@@ -190,13 +191,25 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   #-----------------------
   # Pull Model Into Memory
   #-----------------------
-  busxy = {}
+  bus_xy_kv = {}
   fp = open (os.path.join (saved_path, 'BusCoords.dss'), 'r')
   rdr = csv.reader (fp)
   for row in rdr:
     bus = row[0].lower()
-    if bus not in busxy:
-      busxy[bus] = {'x':float(row[1]),'y':float(row[2])}
+    if bus not in bus_xy_kv:
+      bus_xy_kv[bus] = {'x':float(row[1]),'y':float(row[2]), 'kv':0.0}
+  fp.close()
+
+  fp = open (os.path.join (saved_path, 'voltages.dat'), 'r')
+  rdr = csv.reader (fp)
+  next (rdr) # skip the header
+  for row in rdr:
+    bus = row[0].lower().replace('"', '')
+    kv = float(row[1])
+    if bus not in bus_xy_kv:
+      print ('** {:s} with kv={:.3f} not found in bus_xy list'.format(bus, kv))
+    else:
+      bus_xy_kv[bus]['kv'] = kv
   fp.close()
 
   sources = dict_from_file (os.path.join (saved_path, 'Vsource.dss'),
@@ -311,15 +324,15 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   print ('read {:4d} relays'.format (len(relays)))
   print ('read {:4d} reactors'.format (len(reactors)))
   print ('read {:4d} sources'.format (len(sources)))
-  print ('read {:4d} busxy'.format (len(busxy)))
+  print ('read {:4d} bus_xy_kv'.format (len(bus_xy_kv)))
 
   # construct a graph of the model, starting with all known buses that have XY coordinates
   G = nx.Graph()
-  for key, data in busxy.items():
+  for key, data in bus_xy_kv.items():
     nclass='bus'
     if key in extra_source_buses:
       nclass = 'source'
-    G.add_node (key, nclass=nclass, ndata=xy_ndata (data['x'], data['y']))
+    G.add_node (key, nclass=nclass, ndata=xy_kv_ndata (data['x'], data['y'], data['kv']))
 
   # add series power delivery branches (not handling series capacitors)
   for key, data in lines.items():
