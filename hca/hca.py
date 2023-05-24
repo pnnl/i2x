@@ -9,6 +9,7 @@ import islands as isl
 import numpy as np
 import py_dss_interface
 from hca_utils import Logger, merge_configs
+import os
 
 SQRT3 = math.sqrt(3.0)
 
@@ -24,7 +25,32 @@ def check_element_status(dss:py_dss_interface.DSSDLL, elemname:str) -> int:
   index_str = dss.circuit_set_active_element(elemname)
   return dss.cktelement_read_enabled()
 
-def summary_outputs (d, pvbases):
+def activate_monitor_byname(dss:py_dss_interface.DSSDLL, monitorname:str) -> int:
+  """
+  activate monitor, return 0 if monitor not found
+  """
+
+  idx = dss.monitors_first()
+  while idx > 0:
+    if monitorname == dss.monitors_read_name():
+      return idx
+    idx = dss.monitors_next()
+  return idx
+  
+
+def activate_monitor_byelem(dss:py_dss_interface.DSSDLL, elemname:str, mode:int) -> int:
+  """
+  activate monitor, return 0 if monitor not found
+  """
+
+  idx = dss.monitors_first()
+  while idx > 0:
+    if (elemname == dss.monitors_read_element()) and (mode == dss.monitors_read_mode()):
+      return idx
+    idx = dss.monitors_next()
+  return idx
+
+def summary_outputs (d, pvbases, print=print):
   print ('\nSUMMARY of HOSTING CAPACITY ANALYSIS RESULTS\n')
   for key in ['converged', 'num_cap_switches', 'num_tap_changes', 'num_relay_trips', 'num_low_voltage', 'num_high_voltage']:
     print ('{:20s} {:>10s}'.format (key, str(d[key])))
@@ -85,7 +111,7 @@ def summary_outputs (d, pvbases):
     print ('                     P [kW]             Q[kvar]             V[V]              I[A]')
     print ('  Name            min      max       min      max       min      max      min     max')
     for key, row in d['recdict'].items():
-      print ('  {:10s} {:8.2f} {:8.2f}  {:8.2f} {:8.2f}  {:8.2f} {:8.2f}  {:7.2f} {:7.2f}'.format (key, 
+      print ('  {:10s} {:8.2f} {:8.2f}  {:8.2f} {:8.2f}  {:8.2f} {:8.2f}  {:7.2f} {:7.2f}'.format (key[:10], 
                                                                                               row['pmin'], row['pmax'],
                                                                                               row['qmin'], row['qmax'],
                                                                                               row['vmin'], row['vmax'],
@@ -106,11 +132,26 @@ class HCA:
     self.logger.info('\nLoaded Feeder Model {:s}'.format(self.inputs["choice"]))
     self.print_parsed_graph()
 
+    ## initialize dss model
+    self.dss = i2x.initialize_opendss(**self.inputs)
+    self.update_basekv()
+
+  def update_basekv(self):
+    for i,n in enumerate(self.dss.circuit_all_bus_names()):
+      self.dss.circuit_set_active_bus_i(i)
+      basekv = self.dss.bus_kv_base()*SQRT3
+      if self.G.nodes[n]["ndata"]["nomkv"] == 0:
+        self.G.nodes[n]["ndata"]["nomkv"] = basekv
+      elif self.G.nodes[n]["ndata"]["nomkv"] != basekv:
+          self.logger.warn(f'Base voltage for bus {n} is {basekv} kv, but graph has {self.G.nodes[n]["ndata"]["nomkv"]} kv. Updating')
+          self.G.nodes[n]["ndata"]["nomkv"] = basekv
+        
+
   def load_graph(self):
     self.G = i2x.load_builtin_graph(self.inputs["choice"])
     self.parse_graph()
     self.pv_voltage_base_list()
-    self.comps, self.reclosers = isl.get_islands(self.G)
+    self.comps, self.reclosers, self.comp2rec = isl.get_islands(self.G)
 
   def parse_graph(self, summarize=False):
     """ parse the various categories of objects in the graph """
@@ -189,7 +230,7 @@ class HCA:
     if (pu_roofs < 0.0) or (pu_roofs > 1.0):
       self.logger.error('Portion of PV Rooftops {:.4f} must lie between 0 and 1, inclusive'.format(pu_roofs))
     else:
-      self.logger.info (f'\nAdding PV to {inputs["res_pv_frac"]*100}% of the residential rooftops that don\'t already have PV')
+      self.logger.info (f'\nAdding PV to {self.inputs["res_pv_frac"]*100}% of the residential rooftops that don\'t already have PV')
       for key, row in self.graph_dirs["resloads"].items():
         if random.random() <= pu_roofs:
           bus = row['bus']
@@ -281,7 +322,7 @@ class HCA:
     self.G.nodes[bus]["ndata"]["shunts"].append(f"generator.{key}")
 
   def redispatch_large_pv(self, key):
-    self._redispatch_large_pv(key, **inputs["redisp_pv"][key])
+    self._redispatch_large_pv(key, **self.inputs["redisp_pv"][key])
   def _redispatch_large_pv (self, key, kva, kw):
     self.change_lines.append('edit pvsystem.{:s} kva={:.2f} pmpp={:.2f}'.format(key, kva, kw))
     bus = self.get_node_from_classkey("pvsystem", key)
@@ -289,7 +330,7 @@ class HCA:
     self.G.nodes[bus]["ndata"]["pvkw"] = kw
   
   def redispatch_large_storage(self, key):
-    self._redispatch_large_storage(key, **inputs["redisp_storage"][key])
+    self._redispatch_large_storage(key, **self.inputs["redisp_storage"][key])
   def _redispatch_large_storage (self, key, kva, kw):
     self.change_lines.append('edit storage.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
     bus = self.get_node_from_classkey("storage", key)
@@ -297,7 +338,7 @@ class HCA:
     self.G.nodes[bus]["ndata"]["batkw"] = kw
 
   def redispatch_large_generator(self, key):
-    self._redispatch_large_generator(key, **inputs["redisp_gen"][key])
+    self._redispatch_large_generator(key, **self.inputs["redisp_gen"][key])
   def _redispatch_large_generator (self, key, kva, kw):
     self.change_lines.append('edit generator.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
     bus = self.get_node_from_classkey("generator", key)
@@ -334,13 +375,13 @@ class HCA:
     self.parse_graph()
 
     ### add new pv
-    for key in inputs["explicit_pv"]:
+    for key in self.inputs["explicit_pv"]:
       self.append_large_pv(key)
       self.parse_graph()
       self.pv_voltage_base_list()
 
     ### redispatch existing generators
-    for key in inputs["redisp_gen"]:
+    for key in self.inputs["redisp_gen"]:
       self.redispatch_large_generator(key)
     
     self.parse_graph()
@@ -348,10 +389,13 @@ class HCA:
       self.logger.info (f' {ln}')    
 
   def rundss(self):
-    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines}, **self.inputs} )  
-
+    pwd = os.getcwd()
+    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines, "dss": self.dss}, **self.inputs} )  
+    os.chdir(pwd)
+    
   def summary_outputs(self):
-    summary_outputs(self.lastres, self.pvbases)
+    summary_outputs(self.lastres, self.pvbases, print=self.logger.info)
+
 
 def print_options():
   print ('Feeder Model Choices for HCA')
@@ -365,36 +409,22 @@ def print_options():
   print ('Control Mode Choices:', i2x.controlModeChoices)
 
 
-
-    
-if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="i2X Hosting Capacity Analysis")
-  parser.add_argument("config", nargs='?', help="configuration file", default="defaults.json")
-  parser.add_argument("--show-options", help="Show options and exit", action='store_true')
-  parser.add_argument("--print-inputs", help="print passed inputs", action="store_true")
-  args = parser.parse_args()
-
-  if args.show_options:
-    print_options()
-    sys.exit(0)
-  
+def load_config(configin):
   ### get defaults
-  with open('defaults.json') as f:
+  defaultsconfig = os.path.join(os.path.dirname(os.path.realpath(__file__)), "defaults.json")
+  with open(defaultsconfig) as f:
     inputs = json.load(f)
   
-  if args.config != 'defaults.json':
-    with open(args.config) as f:
+  if os.path.basename(configin) != 'defaults.json':
+    with open(configin) as f:
       config = json.load(f)
     merge_configs(inputs, config)
-  
-  if args.print_inputs:
-    print("Provided/Default Inputs:\n===============")
-    for k,v in inputs.items():
-      print(f"{k}: {v}")
-  
+  return inputs
+
+def main(inputs):
   ### create hca object
   hca = HCA(inputs)
-
+  
   ###########################################################################
   ##### Initialization
   ###########################################################################
@@ -416,5 +446,26 @@ if __name__ == "__main__":
 
   hca.rundss()
   hca.summary_outputs()
+  return hca
+   
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser(description="i2X Hosting Capacity Analysis")
+  parser.add_argument("config", nargs='?', help="configuration file", default="defaults.json")
+  parser.add_argument("--show-options", help="Show options and exit", action='store_true')
+  parser.add_argument("--print-inputs", help="print passed inputs", action="store_true")
+  args = parser.parse_args()
+
+  if args.show_options:
+    print_options()
+    sys.exit(0)
+  
+  inputs = load_config(args.config)
+  
+  if args.print_inputs:
+    print("Provided/Default Inputs:\n===============")
+    for k,v in inputs.items():
+      print(f"{k}: {v}")
+  
+  hca = main(inputs)
 
 

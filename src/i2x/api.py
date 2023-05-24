@@ -23,7 +23,7 @@ from .plot_opendss_feeder import load_opendss_graph
 from .plot_opendss_feeder import load_builtin_graph
 from .plot_opendss_feeder import parse_opendss_graph
 from .opendss_interface import print_opendss_interface
-from .opendss_interface import run_opendss
+from .opendss_interface import run_opendss, initialize_opendss
 
 from .der_choices import feederChoices
 from .der_choices import solarChoices

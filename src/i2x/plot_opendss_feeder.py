@@ -80,10 +80,12 @@ import json
 import matplotlib.pyplot as plt 
 import matplotlib.lines as lines
 import matplotlib.patches as patches
+import matplotlib as mpl
 import networkx as nx
 import sys
 import csv
 import pkg_resources
+import numpy as np
 
 feederChoices = {
   'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
@@ -169,7 +171,7 @@ def load_builtin_graph (feeder_name):
   fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
   return load_opendss_graph (fname)
 
-def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax = None, title=None, on_canvas=False):
+def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax = None, title=None, on_canvas=False, plot_comps=False):
 
   # extract the XY coordinates available for plotting
   xy = {}
@@ -178,7 +180,9 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax
   plotNodes = []
   nodeColors = []
   nodeSizes = []
-  for n in G.nodes():
+  if plot_comps:
+    compcolors = mpl.colormaps["tab20"].colors
+  for n,d in G.nodes(data=True):
     if 'ndata' in G.nodes()[n]:
       ndata = G.nodes()[n]['ndata']
       if 'x' in ndata:
@@ -202,7 +206,10 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax
         else:
           nclass = 'bus'
         plotNodes.append(n)
-        nodeColors.append (get_node_color (nclass))
+        if plot_comps:
+          nodeColors.append(compcolors[d["comp"]])
+        else:
+          nodeColors.append (get_node_color (nclass))
         nodeSizes.append (get_node_size (nclass))
 
   # only plot the edges that have XY coordinates at both ends

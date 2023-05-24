@@ -3,6 +3,7 @@ import pkg_resources as pkg
 import inspect
 import numpy as np
 from numpy import trapz
+import os
 
 def print_opendss_interface(doc_fp):
   dss = py_dss_interface.DSSDLL()
@@ -20,10 +21,11 @@ def dss_line (dss, line, debug_output):
     print ('dss: ', line)
   dss.text (line)
 
-def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
-                loadcurve, invmode, invpf, solnmode, ctrlmode, 
-                change_lines=None, debug_output=True, **kwargs):
-
+def initialize_opendss(choice, debug_output=True, **kwargs):
+  """
+  Load and compile the open dss feeder model
+  """
+  pwd = os.getcwd()
   dss = py_dss_interface.DSSDLL()
   fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
 
@@ -33,6 +35,25 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
     pkg.resource_listdir (__name__, 'models/{:s}'.format(choice))
 
   dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output)
+  os.chdir(pwd)
+  return dss
+
+def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
+                loadcurve, invmode, invpf, solnmode, ctrlmode, 
+                change_lines=None, debug_output=True, dss=None, **kwargs):
+
+  # dss = py_dss_interface.DSSDLL()
+  # fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
+
+  # if debug_output:
+  #   print ('default cache:', pkg.get_default_cache())
+  #   print ('HCA feeder model path:', fdr_path)
+  #   pkg.resource_listdir (__name__, 'models/{:s}'.format(choice))
+
+  # dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output)
+
+  if dss is None:
+    dss = initialize_opendss(choice, debug_output=True, **kwargs)
 
   if change_lines is not None:
     for line in change_lines:
@@ -157,13 +178,15 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
       elem = dss.monitors_read_element() # name of monitored element
       if name.endswith('_rec_pq'):
         # recloser pq monitor
-        key = name[0:-7]
+        # key = name[0:-7]
+        key = elem.split(".")[1]
         p = np.array(dss.monitors_channel(1))
         q = np.array(dss.monitors_channel(2))
         if key not in recdict:
           # rec_pq OR rec_vi could occur first in the list
           recdict[key] = {}
           recdict[key]['elem'] = elem
+          recdict[key]['monitor'] = name
         recdict[key]['pmin'] = np.min(p)
         recdict[key]['pmax'] = np.max(p)
         recdict[key]['p'] = p
@@ -172,13 +195,15 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
         recdict[key]['q'] = q
       elif name.endswith('_rec_vi'):
         # recloser vi monitor
-        key = name[0:-7]
+        # key = name[0:-7]
+        key = elem.split(".")[1]
         v = np.array(dss.monitors_channel(1))
         amps = np.array(dss.monitors_channel(2))
         if key not in recdict:
           # rec_pq OR rec_vi could occur first in the list
           recdict[key] = {}
           recdict[key]['elem'] = elem
+          recdict[key]['monitor'] = name
         recdict[key]['vmin'] = np.min(v)
         recdict[key]['vmax'] = np.max(v)
         recdict[key]['imin'] = np.min(amps)
