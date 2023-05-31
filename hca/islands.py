@@ -196,6 +196,13 @@ def island_flows(compid:int, comp2rec:dict, recdict:dict):
         direction = e[2]["direction"]
         df["p"][name] = direction * recdict[name]["p"]
         df["q"][name] = direction * recdict[name]["q"]
+    df = {k: pd.DataFrame(v) for k, v in df.items()}
+    df["lims"] = pd.DataFrame({k: df[k].sum(axis=1).agg(["min", "max", minabs]).to_dict() for k in ["p", "q"]})
 
-    return {k: pd.DataFrame(v) for k, v in df.items()}
-        
+    return df
+
+def all_island_flows(comp2rec:dict, recdict:dict):
+    return {i: island_flows(i, comp2rec, recdict) for i in comp2rec.keys()}    
+
+def minabs(x):
+    return x.abs().min()
