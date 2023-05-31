@@ -189,95 +189,26 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
         # recloser pq monitor
         # key = name[0:-7]
         key = elem.split(".")[1]
-        p = np.array(dss.monitors_channel(1))
-        q = np.array(dss.monitors_channel(2))
-        if key not in recdict:
-          # rec_pq OR rec_vi could occur first in the list
-          recdict[key] = {}
-          recdict[key]['elem'] = elem
-          recdict[key]['monitor'] = name
-          recdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
-        recdict[key]['pmin'] = np.min(p)
-        recdict[key]['pmax'] = np.max(p)
-        recdict[key]['p'] = p
-        recdict[key]['qmin'] = np.min(q)
-        recdict[key]['qmax'] = np.max(q)
-        recdict[key]['q'] = q
+        get_pq_monitor(dss, key, elem, name, recdict, dh=dh)
       elif name.endswith('_rec_vi'):
         # recloser vi monitor
         # key = name[0:-7]
         key = elem.split(".")[1]
-        v = np.array(dss.monitors_channel(1))
-        amps = np.array(dss.monitors_channel(2))
-        if key not in recdict:
-          # rec_pq OR rec_vi could occur first in the list
-          recdict[key] = {}
-          recdict[key]['elem'] = elem
-          recdict[key]['monitor'] = name
-          recdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
-        recdict[key]['vmin'] = np.min(v)
-        recdict[key]['vmax'] = np.max(v)
-        recdict[key]['imin'] = np.min(amps)
-        recdict[key]['imax'] = np.max(amps)
-        recdict[key]['v'] = v
-        recdict[key]['i'] = amps
-      elif name.endwith("_volt_vi"):
+        get_vi_monitor(dss, key, elem, name, recdict)
+      elif name.endswith("_volt_vi"):
         # voltage monitor 
         key = name[:-8] #this is the bus name
-        dss.set_active_bus(key)
-        v = np.array(dss.monitors_channel(1))
-        amps = np.array(dss.monitors_channel(2))
-        voltdict[key]["elem"] = elem
-        voltdict[key]["monitor"] = name
-        voltdict[key]["basekv"] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
-        voltdict[key]['vmin'] = np.min(v)
-        voltdict[key]['vmax'] = np.max(v)
-        voltdict[key]['imin'] = np.min(amps)
-        voltdict[key]['imax'] = np.max(amps)
-        voltdict[key]['v'] = v
-        voltdict[key]['i'] = amps
+        get_vi_monitor(dss, key, elem, name, voltdict)
       elif name.endswith('_pq'):
         # PV system pq monitor
         key = name[0:-3]
-        if key not in pvdict:
-          pvdict[key] = {}
-          pvdict[key]['elem'] = elem
-          pvdict[key]['monitor'] = name
-          pvdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
-        p = np.array(dss.monitors_channel(1))
-        q = np.array(dss.monitors_channel(2))
-        ep = 0.0
-        eq = 0.0
-        if np.count_nonzero(np.isnan(p)) < 1:
-          ep = -trapz (p, dx=dh)
-        if np.count_nonzero(np.isnan(q)) < 1:
-          eq = -trapz (q, dx=dh)
-        kWh_PV += ep
-        kvarh_PV += eq
-        pvdict[key]['kWh'] = ep
-        pvdict[key]['kvarh'] = eq
-        pvdict[key]['p'] = p
-        pvdict[key]['q'] = q
+        get_pq_monitor(dss, key, elem, name, pvdict, dh=dh)
+        kWh_PV += pvdict[key]["kWh"]
+        kvarh_PV += pvdict[key]["kvarh"]
       elif name.endswith('_vi'):
         # PV system vi monitor
         key = name[0:-3]
-        if key not in pvdict:
-          pvdict[key] = {}
-          pvdict[key]['elem'] = elem
-          pvdict[key]['monitor'] = name
-          pvdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
-        v = np.array(dss.monitors_channel(1))
-        amps = np.array(dss.monitors_channel(2))
-        vmin = np.min(v)
-        vmax = np.max(v)
-        vmean = np.mean(v)
-        vdiff = np.max(np.abs(np.diff(v)))
-        pvdict[key]['vmin'] = vmin
-        pvdict[key]['vmax'] = vmax
-        pvdict[key]['vmean'] = vmean
-        pvdict[key]['vdiff'] = vdiff
-        pvdict[key]['v'] = v
-        pvdict[key]['i'] = i
+        get_vi_monitor(dss, key, elem, name, pvdict)
       idx = dss.monitors_next()
 
     dss.meters_first()
@@ -348,7 +279,6 @@ def get_vi_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
   v = np.array(dss.monitors_channel(1))
   amps = np.array(dss.monitors_channel(2))
   if key not in d:
-    # rec_pq OR rec_vi could occur first in the list
     d[key] = {}
     d[key]['elem'] = elem
     d[key]['monitor'] = name
@@ -362,8 +292,30 @@ def get_vi_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
   d[key]['v'] = v
   d[key]['i'] = amps
 
-def get_pq_monitor():
-  pass
+def get_pq_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:dict, dh=0):
+  p = np.array(dss.monitors_channel(1))
+  q = np.array(dss.monitors_channel(2))
+  if key not in d:
+    d[key] = {}
+    d[key]['elem'] = elem
+    d[key]['monitor'] = name
+    d[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float except for transformers
+  d[key]['pmin'] = np.min(p)
+  d[key]['pmax'] = np.max(p)
+  d[key]['p'] = p
+  d[key]['qmin'] = np.min(q)
+  d[key]['qmax'] = np.max(q)
+  d[key]['q'] = q
+  if dh > 0:
+    # calculate energy
+    ep = 0.0
+    eq = 0.0
+    if np.count_nonzero(np.isnan(p)) < 1:
+      ep = -trapz (p, dx=dh)
+    if np.count_nonzero(np.isnan(q)) < 1:
+      eq = -trapz (q, dx=dh)
+    d[key]['kWh'] = ep
+    d[key]['kvarh'] = eq
 
 def check_element_status(dss:py_dss_interface.DSSDLL, elemname:str) -> int:
   index_str = dss.circuit_set_active_element(elemname)

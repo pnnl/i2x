@@ -20,11 +20,6 @@ def print_column_keys (label, d):
     break
   print ('{:4d} {:20s} {:s}'.format (len(d), label, columns))
 
-
-def check_element_status(dss:py_dss_interface.DSSDLL, elemname:str) -> int:
-  index_str = dss.circuit_set_active_element(elemname)
-  return dss.cktelement_read_enabled()
-
 def activate_monitor_byname(dss:py_dss_interface.DSSDLL, monitorname:str) -> int:
   """
   activate monitor, return 0 if monitor not found
@@ -49,6 +44,21 @@ def activate_monitor_byelem(dss:py_dss_interface.DSSDLL, elemname:str, mode:int)
       return idx
     idx = dss.monitors_next()
   return idx
+
+def get_volt_stats(d:dict) -> dict:
+  try:
+    return {"min": np.min([v["vmin"]/(1000*v["basekv"]/SQRT3) for _,v in d.items()]),
+            "max": np.max([v["vmax"]/(1000*v["basekv"]/SQRT3) for _,v in d.items()]),
+            "diff": np.max([100*v["vdiff"]/(1000*v["basekv"]/SQRT3) for _,v in d.items()])}
+  except ValueError:
+    # if arrays are empty
+    return {"min": None, "max": None, "diff": None}
+
+def dict_key_comp(d:list[dict], key:str, f):
+  """compare values in a list of dictionaries with the same key using function f
+  None values are ignored
+  """
+  return f([i[key] for i in d if i[key] is not None])
 
 def summary_outputs (d, pvbases, print=print):
   print ('\nSUMMARY of HOSTING CAPACITY ANALYSIS RESULTS\n')
@@ -76,36 +86,17 @@ def summary_outputs (d, pvbases, print=print):
     break
   print ('{:d} PV output rows {:s}'.format (len(d['pvdict']), columns))
   print ('\nTime-series Voltage Results:')
-  pv_vmin = 100.0
-  pv_vmax = 0.0
-  pv_vdiff = 0.0
-
-  # print("key             vbase        vmin        vmax")
-  # print("------------  ----------  ----------  ----------")
-
-  for key, row in d['pvdict'].items():
-    if key in pvbases:
-      v_base = pvbases[key]
-    else:
-      if check_element_status(d["dss"], f"pvsystem.{key}") == 0:
-        ## element is not enabled -> skip
-        continue
-      v_base = 120.0
-    row['vmin'] /= v_base
-    row['vmax'] /= v_base
-    row['vmean'] /= v_base
-    row['vdiff'] /= v_base
-    row['vdiff'] *= 100.0
-    # print(f"{key:12s}  {v_base:10.2f}  {row['vmin']:10.2f}  {row['vmax']:10.2f}")
-    if row['vmin'] < pv_vmin:
-      pv_vmin = row['vmin']
-    if row['vmax'] > pv_vmax:
-      pv_vmax = row['vmax']
-    if row['vdiff'] > pv_vdiff:
-      pv_vdiff = row['vdiff']
-  print ('  Minimum PV Voltage        = {:.4f} pu'.format(pv_vmin))
-  print ('  Maximum PV Voltage        = {:.4f} pu'.format(pv_vmax))
-  print ('  Maximum PV Voltage Change = {:.4f} %'.format(pv_vdiff))
+  volt_stats = get_volt_stats(d["voltdict"])
+  pv_stats = get_volt_stats(d["pvdict"])
+  rec_stats = get_volt_stats(d["recdict"])
+  
+  print ('  Minimum Voltage        = {:.4f} pu'.format(dict_key_comp([volt_stats, pv_stats, rec_stats], "min", np.min)))
+  print ('  Maximum Voltage        = {:.4f} pu'.format(dict_key_comp([volt_stats, pv_stats, rec_stats], "max", np.max)))
+  print ('  Maximum Voltage Change = {:.4f} %'.format(dict_key_comp([volt_stats, pv_stats, rec_stats], "diff", np.max)))
+  if pv_stats["min"] is not None:
+    print ('  Minimum PV Voltage        = {:.4f} pu'.format(pv_stats["min"]))
+    print ('  Maximum PV Voltage        = {:.4f} pu'.format(pv_stats["max"]))
+    print ('  Maximum PV Voltage Change = {:.4f} %'.format(pv_stats["diff"]))
   if len(d['recdict']) > 0:
     print ('\nRecloser Measurement Summary:')
     print ('                     P [kW]             Q[kvar]             V[V]              I[A]')
@@ -121,6 +112,7 @@ class HCA:
   def __init__(self, inputs):
     self.inputs = inputs
     self.change_lines = []
+    self.change_lines_noprint = []
     self.logger = Logger(inputs["hca_log"]["logname"], 
                          level=inputs["hca_log"]["loglevel"], format=inputs["hca_log"]["format"])
     if inputs["hca_log"]["logtofile"]:
@@ -135,6 +127,9 @@ class HCA:
     ## initialize dss model
     self.dss = i2x.initialize_opendss(**self.inputs)
     self.update_basekv()
+
+    ## create a set of voltage monitors throughout the feeder
+    self.voltage_monitor()
 
   def update_basekv(self):
     for i,n in enumerate(self.dss.circuit_all_bus_names()):
@@ -152,6 +147,25 @@ class HCA:
     self.parse_graph()
     self.pv_voltage_base_list()
     self.comps, self.reclosers, self.comp2rec = isl.get_islands(self.G)
+
+  def voltage_monitor(self):
+    """Add voltage monitors throughout the system"""
+
+    depth = 1
+    while True:
+      n = nx.descendants_at_distance(self.G, "sourcebus", depth)
+      if not n:
+          break
+      n = [i for i in n if self.G.nodes[i]["ndata"]["shunts"]]
+      if not n:
+          depth += 1
+          continue
+      
+      
+      ns = np.random.choice(n, 1)[0] # sample one of the nodes with a shunt element 
+      elem = self.G.nodes[ns]["ndata"]["shunts"][0] # select the first shunt
+      self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal=1 mode=96") # add a voltage monitor
+      depth += 1 
 
   def parse_graph(self, summarize=False):
     """ parse the various categories of objects in the graph """
@@ -390,11 +404,20 @@ class HCA:
 
   def rundss(self):
     pwd = os.getcwd()
-    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines, "dss": self.dss}, **self.inputs} )  
+    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint, "dss": self.dss}, **self.inputs} )  
+    self.lastres["compflows"] = isl.all_island_flows(self.comp2rec, self.lastres["recdict"])
     os.chdir(pwd)
-    
+  
   def summary_outputs(self):
     summary_outputs(self.lastres, self.pvbases, print=self.logger.info)
+
+
+class HCAMetrics:
+  def __init__(self):
+    pass
+
+  def voltage_check(self):
+    pass
 
 
 def print_options():
