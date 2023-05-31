@@ -7,6 +7,8 @@ i2X Test Systems and Analytic Tools (i2X)
 
    Overview
    Users
+   Developers
+   TestSystems
    SprintStudies
    SOCO
    LICENSE

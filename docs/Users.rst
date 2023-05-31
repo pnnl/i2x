@@ -1,5 +1,5 @@
-Users
-=====
+i2x Tool Users
+==============
 
 The i2x DER package has been tested on Windows only, with Python 3.10.  It 
 does net yet support Mac OS X or Linux.  During the installation process, 
@@ -25,8 +25,8 @@ Sources of background information include:
    capacity analysis methods, focused on North America.
 3. `Multi-country Survey of Hosting Capacity <https://www.mdpi.com/1996-1073/13/18/4756>`_
 
-GUI Reference
--------------
+DER GUI Reference
+-----------------
 
 When you start the program, six tabbed pages appear in a notebook format:
 
@@ -92,8 +92,8 @@ Some other important notes about the program:
 - As you run simulations, some logging messages appear in the Command Prompt. You don't need to pay attention to these, unless an error occurs. If there is an error message, please copy-and-paste the message into your issue report.
 - Please report any comments, suggestions, or errors on the `issues page <https://github.com/pnnl/i2x/issues>`_. Before submitting a new issue, check the others listed to see if the problem or suggestion has already been reported.  If it has, you might still add new information to the existing issue as a comment. The issues page is better than emailing for this purpose, as it helps the team organize these reports and updates. It also creates a public record that may help other users.
 
-Example: 9500-Node Network
---------------------------
+DER Example: 9500-Node Network
+------------------------------
 
 When you first start **i2x-der**, the `IEEE 9500 node circuit <https://www.pnnl.gov/main/publications/external/technical_reports/PNNL-33471.pdf>`_ is displayed. We can use this to examine the effect of inverter controls on solar-induced voltage fluctuations:
 
@@ -133,8 +133,8 @@ Suggested exercises for this circuit:
 - Use the **DER** tab to replace as much of the conventional generation as possible with PV. How could you quantify the effect on local air quality?
 - Use the **DER** tab to increase the existing **pvfarm1** size as much as possible.
 
-Example: Low-Voltage Secondary Network
---------------------------------------
+DER Example: Low-Voltage Secondary Network
+------------------------------------------
 
 The second available circuit is an `IEEE Low-Voltage Network Test System <https://doi.org/10.1109/PESGM.2014.6939794>`_. It comprises 8 radial primary feeders that supply a grid of 480-V and 208-V secondary cables in an urban, downtown area. This design provides economic, high-reliability service to dense load areas, but it does not support very much DER. The network protectors (NWP) trip on reverse power flow, as intended for faults on a primary feeder. DER can also cause NWP trips under normal conditions, which is not intended. To explore this effect:
 
@@ -145,35 +145,6 @@ The second available circuit is an `IEEE Low-Voltage Network Test System <https:
 - On the **Output** tab, run the case again. Now, you should see 4 relay trips, and some of the loads are unserved. Two of the eight PV were also disconnected. This result is not acceptable.
 - On the **DER** tab, adjust the individual DER kW and kva parameters to achieve as high a hosting capacity as possible.
 - Some changes to the traditional NWP scheme have been investigated to increase the DER hosting capacity, but these are advanced topics and not considered in the **i2x-der** software.
-
-Developers
-==========
-
-Familiarity with ``git`` and Python is expected.  Experience with OpenDSS is also helpful.  The steps for working on the i2x Python code are: 
-
-1. From your local directory of software projects: ``git clone https://github.com/pnnl/i2x.git``
-2. ``cd i2x``
-3. ``pip install -e .`` to install i2x from your local copy of the code.
-
-The steps for deployment to PyPi are:
-
-1. ``rm -rf dist``
-2. ``python -m build``
-3. ``twine check dist/*`` should not show any errors
-4. ``twine upload -r testpypi dist/*`` requires project credentials for i2x on test.pypi.org
-5. ``pip install -i https://test.pypi.org/simple/ i2x==0.0.8`` for local testing of the deployable package, example version 0.0.8
-6. ``twine upload dist/*`` final deployment; requires project credentials for i2x on pypi.org
-
-To run the documentation locally:
-
-1. Make sure the required packages are installed. Go to the ``i2x/docs/`` directory and run ``pip install -r Requrirements.txt --upgrade-strategy only-if-needed``
-2. From the ``i2x`` directory run: ``sphinx-autobuild docs docs/_build/html``. This will create a live updating webpage at http://127.0.0.1:8000 where the local documentation can be viewed. The server can be shutdown with :kbd:`ctrl+c`.
-3. See the `sphinx-guide <https://sublime-and-sphinx-guide.readthedocs.io/en/latest/>`_ for syntax help.
-
-Bulk Electric System (BES) Test Cases
-=====================================
-
-Two BES test systems are under development at `CIMHub/BES <https://github.com/GRIDAPPSD/CIMHub/tree/feature/SETO/BES>`_. These will be used in BES boot camps and i2x sprint studies.
 
 .. rubric:: Footnotes
 
