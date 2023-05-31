@@ -53,7 +53,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   # dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output)
 
   if dss is None:
-    dss = initialize_opendss(choice, debug_output=True, **kwargs)
+    dss = initialize_opendss(choice, debug_output=debug_output, **kwargs)
 
   if change_lines is not None:
     for line in change_lines:
