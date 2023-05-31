@@ -39,7 +39,7 @@ todo_include_todos = True
 
 html_theme = 'sphinx_rtd_theme'
 
-html_static_path = ['bootcamp']
+html_static_path = ['assets']
 htmlhelp_basename = 'i2x'
 latex_elements = {
 }

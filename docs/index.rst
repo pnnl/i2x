@@ -7,6 +7,8 @@ i2X Test Systems and Analytic Tools (i2X)
 
    Overview
    Users
+   SprintStudies
+   SOCO
    LICENSE
 
 Indices and tables
