@@ -273,7 +273,7 @@ class DERConfigGUI:
       errors.append ('% Rooftops {:.4f} must lie between 0 and 100, inclusive'.format(pct_roofs))
     else:
       pu_roofs = pct_roofs * 0.01
-      for key, row in self.resloads.items():
+      for key, row in self.graph_dirs["resloads"].items():
         if random.random() <= pu_roofs:
           bus = row['bus']
           kv = row['kv']
@@ -282,7 +282,7 @@ class DERConfigGUI:
           rooftop_total += kw
           change_lines.append('new pvsystem.{:s} bus1={:s}.1.2 phases=2 kv={:.3f} kva={:.2f} pmpp={:.2f} irrad=1.0 pf=1.0'.format (key, bus, kv, kva, kw))
 
-    for key, row in self.largeder.items():
+    for key, row in self.graph_dirs["largeder"].items():
       print (key, row)
       kw = float(self.f2.nametowidget('kw_{:s}'.format(key)).get())
       large_total += kw
@@ -324,13 +324,13 @@ class DERConfigGUI:
 
   def get_pv_kv_base(self, name):
     kvnom = 0.120
-    if name in self.pvder:
-      row = self.pvder[name]
+    if name in self.graph_dirs["pvder"]:
+      row = self.graph_dirs["pvder"][name]
       kvnom = row['kv']
       if row['phases'] > 1:
         kvnom /= SQRT3
-    elif name in self.largeder: # maybe user changed the type from generator or storage
-      row = self.largeder[name]
+    elif name in self.graph_dirs["largeder"]: # maybe user changed the type from generator or storage
+      row = self.graph_dirs["largeder"][name]
       kvnom = row['kv']
       if row['phases'] > 1:
         kvnom /= SQRT3
@@ -475,26 +475,26 @@ class DERConfigGUI:
 
     pvkw = 0.0
     pvkva = 0.0
-    npv = len(self.pvder)
-    for key, row in self.pvder.items():
+    npv = len(self.graph_dirs["pvder"])
+    for key, row in self.graph_dirs["pvder"].items():
       pvkw += row['kw']
       pvkva += row['kva']
 
     genkw = 0.0
     genkva = 0.0
-    ngen = len(self.gender)
-    for key, row in self.gender.items():
+    ngen = len(self.graph_dirs["gender"])
+    for key, row in self.graph_dirs["gender"].items():
       genkw += row['kw']
       genkva += row['kva']
 
     batkw = 0.0
     batkva = 0.0
-    nbat = len(self.batder)
-    for key, row in self.batder.items():
+    nbat = len(self.graph_dirs["batder"])
+    for key, row in self.graph_dirs["batder"].items():
       batkw += row['kw']
       batkva += row['kva']
 
-    lab_load = ttk.Label(self.f2, text='Total Load = {:.2f} kW'.format(self.loadkw), relief=tk.RIDGE)
+    lab_load = ttk.Label(self.f2, text='Total Load = {:.2f} kW'.format(self.graph_dirs["loadkw"]), relief=tk.RIDGE)
     lab_load.grid(row=0, column=0, sticky=tk.NSEW)
     lab_pv = ttk.Label(self.f2, text='Existing Solar = {:.2f} kVA, {:.2f} kW in {:d} units'.format(pvkva, pvkw, npv), relief=tk.RIDGE)
     lab_pv.grid(row=1, column=0, sticky=tk.NSEW)
@@ -502,7 +502,7 @@ class DERConfigGUI:
     lab_bat.grid(row=2, column=0, sticky=tk.NSEW)
     lab_gen = ttk.Label(self.f2, text='Existing Generation = {:.2f} kVA, {:.2f} kW in {:d} units'.format(genkva, genkw, ngen), relief=tk.RIDGE)
     lab_gen.grid(row=3, column=0, sticky=tk.NSEW)
-    lab_roofs = ttk.Label(self.f2, text='{:d} Available Residential Rooftops, Use [%]:'.format(len(self.resloads)), relief=tk.RIDGE)
+    lab_roofs = ttk.Label(self.f2, text='{:d} Available Residential Rooftops, Use [%]:'.format(len(self.graph_dirs["resloads"])), relief=tk.RIDGE)
     lab_roofs.grid(row=4, column=0, sticky=tk.NSEW)
     self.ent_pct_roofs = ttk.Entry(self.f2, name='pct_roofs', font=fontchoice)
     self.ent_pct_roofs.insert(0, '10.0')
@@ -518,7 +518,7 @@ class DERConfigGUI:
     lab.grid(row=5, column=3, sticky=tk.NSEW)
 
     idx = 6
-    for key, row in self.largeder.items():
+    for key, row in self.graph_dirs["largeder"].items():
       lab = ttk.Label(self.f2, text='Name={:s} Bus={:s} kV={:.2f} kW={:.2f} kVA={:.2f} Type={:s}'.format (key,
                                                                                                           row['bus'],
                                                                                                           row['kv'],
@@ -547,7 +547,8 @@ class DERConfigGUI:
     fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
     self.G = i2x.load_opendss_graph(fname)
 
-    self.pvder, self.gender, self.batder, self.largeder, self.resloads, bus3phase, self.loadkw = i2x.parse_opendss_graph(self.G)
+    self.graph_dirs = i2x.parse_opendss_graph(self.G)
+    # self.pvder, self.gender, self.batder, self.largeder, self.resloads, bus3phase, self.loadkw = i2x.parse_opendss_graph(self.G)
 
     self.ax_feeder.cla()
     i2x.plot_opendss_feeder (self.G, plot_labels=True, on_canvas=True, 
