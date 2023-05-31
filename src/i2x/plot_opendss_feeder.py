@@ -171,7 +171,8 @@ def load_builtin_graph (feeder_name):
   fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
   return load_opendss_graph (fname)
 
-def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax = None, title=None, on_canvas=False, plot_comps=False):
+def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, 
+                         ax = None, title=None, on_canvas=False, plot_comps=False, legend_loc='lower right'):
 
   # extract the XY coordinates available for plotting
   xy = {}
@@ -247,7 +248,7 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, ax
     [lines.Line2D(xdata, ydata, color=get_node_color(n), marker='o') for n in nodeTypes]
   labs = [get_edge_mnemonic (e) for e in edgeTypes] + [get_node_mnemonic (n) for n in nodeTypes]
   ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
-  ax.legend(lns, labs, loc='lower right')
+  ax.legend(lns, labs, loc=legend_loc)
   if pdf_name is not None:
     plt.savefig (pdf_name)
   if not on_canvas:
