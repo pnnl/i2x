@@ -6,6 +6,7 @@ i2X Test Systems and Analytic Tools (i2X)
    :caption: Contents:
 
    Overview
+   Users
    LICENSE
 
 Indices and tables
