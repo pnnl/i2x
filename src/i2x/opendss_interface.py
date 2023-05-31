@@ -40,7 +40,7 @@ def initialize_opendss(choice, debug_output=True, **kwargs):
 
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
-                change_lines=None, debug_output=True, dss=None, **kwargs):
+                change_lines=None, debug_output=True, dss=None, output=True, **kwargs):
 
   # dss = py_dss_interface.DSSDLL()
   # fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
@@ -88,6 +88,10 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
 #  dss.dssprogress_*() replaced by DSSProgress.exe calls over TCP/IP
   dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output)
 
+  if output:
+    return opendss_output(dss, solnmode, pvnames, debug_output=debug_output, **kwargs)
+  
+def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
   if debug_output:
     print ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems_count(), dss.generators_count()))
 
@@ -96,6 +100,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   kvarh_PV = 0.0
   pvdict = {}
   recdict = {}
+  voltdict = {}
   kWh_Net = 0.0
   kWh_Gen = 0.0
   kWh_Load = 0.0
@@ -166,8 +171,8 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
     print ('{:4d} node voltages above 1.05 pu, highest is {:.4f} pu at {:s}'.format (num_high_voltage, vmaxpu, node_vmax))
 
   if solnmode != 'SNAPSHOT':
-    for name in pvnames:
-      pvdict[name] = {'kWh':0.0, 'kvarh':0.0, 'vmin':0.0, 'vmax':0.0, 'vmean':0.0, 'vdiff':0.0}
+    # for name in pvnames:
+    #   pvdict[name] = {'kWh':0.0, 'kvarh':0.0, 'vmin':0.0, 'vmax':0.0, 'vmean':0.0, 'vdiff':0.0}
     idx = dss.monitors_first()
     if idx > 0:
       hours = np.array(dss.monitors_dbl_hour())
@@ -176,6 +181,10 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
     while idx > 0:
       name = dss.monitors_read_name() # name of monitor
       elem = dss.monitors_read_element() # name of monitored element
+      if check_element_status(dss, elem) == 0:
+        # element is not active, skip
+        idx = dss.monitors_next()
+        continue
       if name.endswith('_rec_pq'):
         # recloser pq monitor
         # key = name[0:-7]
@@ -187,6 +196,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
           recdict[key] = {}
           recdict[key]['elem'] = elem
           recdict[key]['monitor'] = name
+          recdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
         recdict[key]['pmin'] = np.min(p)
         recdict[key]['pmax'] = np.max(p)
         recdict[key]['p'] = p
@@ -204,15 +214,36 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
           recdict[key] = {}
           recdict[key]['elem'] = elem
           recdict[key]['monitor'] = name
+          recdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
         recdict[key]['vmin'] = np.min(v)
         recdict[key]['vmax'] = np.max(v)
         recdict[key]['imin'] = np.min(amps)
         recdict[key]['imax'] = np.max(amps)
         recdict[key]['v'] = v
         recdict[key]['i'] = amps
+      elif name.endwith("_volt_vi"):
+        # voltage monitor 
+        key = name[:-8] #this is the bus name
+        dss.set_active_bus(key)
+        v = np.array(dss.monitors_channel(1))
+        amps = np.array(dss.monitors_channel(2))
+        voltdict[key]["elem"] = elem
+        voltdict[key]["monitor"] = name
+        voltdict[key]["basekv"] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
+        voltdict[key]['vmin'] = np.min(v)
+        voltdict[key]['vmax'] = np.max(v)
+        voltdict[key]['imin'] = np.min(amps)
+        voltdict[key]['imax'] = np.max(amps)
+        voltdict[key]['v'] = v
+        voltdict[key]['i'] = amps
       elif name.endswith('_pq'):
         # PV system pq monitor
         key = name[0:-3]
+        if key not in pvdict:
+          pvdict[key] = {}
+          pvdict[key]['elem'] = elem
+          pvdict[key]['monitor'] = name
+          pvdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
         p = np.array(dss.monitors_channel(1))
         q = np.array(dss.monitors_channel(2))
         ep = 0.0
@@ -230,6 +261,11 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
       elif name.endswith('_vi'):
         # PV system vi monitor
         key = name[0:-3]
+        if key not in pvdict:
+          pvdict[key] = {}
+          pvdict[key]['elem'] = elem
+          pvdict[key]['monitor'] = name
+          pvdict[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float
         v = np.array(dss.monitors_channel(1))
         amps = np.array(dss.monitors_channel(2))
         vmin = np.min(v)
@@ -281,6 +317,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   return {'converged': converged,
           'pvdict': pvdict,
           'recdict': recdict,
+          'voltdict': voltdict,
           'num_cap_switches': num_cap_switches,
           'num_tap_changes': num_tap_changes,
           'num_relay_trips': num_relay_trips,
@@ -302,3 +339,40 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
           'kWh_OverE':kWh_OverE,
           'dss': dss}
 
+def get_vi_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:dict):
+  """update dictionary d at `key` with values from a voltage/current monitor
+  `elem`: name of monitored element
+  `name`: name of monitor object
+  `d`: dictionary to be updated
+  """
+  v = np.array(dss.monitors_channel(1))
+  amps = np.array(dss.monitors_channel(2))
+  if key not in d:
+    # rec_pq OR rec_vi could occur first in the list
+    d[key] = {}
+    d[key]['elem'] = elem
+    d[key]['monitor'] = name
+    d[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float except for transformers
+  d[key]['vmin'] = np.min(v)
+  d[key]['vmax'] = np.max(v)
+  d[key]['vmean'] = np.mean(v)
+  d[key]['vdiff'] = np.max(np.abs(np.diff(v)))
+  d[key]['imin'] = np.min(amps)
+  d[key]['imax'] = np.max(amps)
+  d[key]['v'] = v
+  d[key]['i'] = amps
+
+def get_pq_monitor():
+  pass
+
+def check_element_status(dss:py_dss_interface.DSSDLL, elemname:str) -> int:
+  index_str = dss.circuit_set_active_element(elemname)
+  return dss.cktelement_read_enabled()
+
+def get_basekv(dss:py_dss_interface.DSSDLL, elemname:str) -> list[float]:
+  dss.circuit_set_active_element(elemname)
+  basekv = []
+  for n in dss.cktelement_read_bus_names():
+    dss.circuit_set_active_bus(n)
+    basekv.append(dss.bus_kv_base()*np.sqrt(3))
+    return basekv
