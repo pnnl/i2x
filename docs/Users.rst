@@ -1,18 +1,28 @@
 Users
 =====
 
-The i2x DER package has been tested on Windows only, with Python 3.10.  It does net yet support Mac OS X or Linux.  During the installation process, a version of OpenDSS will be installed to work with the Python interface, i.e., you do not have to install OpenDSS separately.  The steps are: 
+The i2x DER package has been tested on Windows only, with Python 3.10.  It 
+does net yet support Mac OS X or Linux.  During the installation process, 
+a version of OpenDSS will be installed to work with the Python interface, 
+i.e., you do not have to install OpenDSS separately.  The steps are: 
 
-1. Install Python 3 if necessary. This is available from `Python Site <https://python.org>`_, `Anaconda/Miniconda <https://www.anaconda.com/>`_, or the `Microsoft Store <https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5>`_.
-2. On the second panel of Python 3's installer, select the option that adds Python variables to your system environment, which includes the **path**.
+1. Install Python 3 if necessary. This is available from `Python Site <https://python.org>`_, 
+   `Anaconda/Miniconda <https://www.anaconda.com/>`_, or the 
+   `Microsoft Store <https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5>`_.
+2. On the second panel of Python 3's installer, select the option that
+   adds Python variables to your system environment, which includes the **path**.
 3. From a command prompt [#f1]_, `pip install i2x --upgrade`
 
 Once installed, invoke the GUI from a command prompt: `i2x-der`
 
 Sources of background information include:
 
-1. Slides from the first DER interconnection study boot camp by `PNNL <_static/DER_Bootcamp_Circuits.pdf>`_, `NRECA <_static/NRECA_Bootcamp%20slides_v2.pdf>`_ and `GridUnity <_static/GU_GridTech_Connect_DER_Interconnection_Study_Bootcamp.pdf>`_.
-2. `CIGRE Canada Paper <https://cigre.ca/papers/2021/paper%20460.pdf>`_ on hosting capacity analysis methods, focused on North America.
+1. Slides from the first DER interconnection study boot camp by 
+   `PNNL <_static/DER_Bootcamp_Circuits.pdf>`_, 
+   `NRECA <_static/NRECA_Bootcamp%20slides_v2.pdf>`_ and 
+   `GridUnity <_static/GU_GridTech_Connect_DER_Interconnection_Study_Bootcamp.pdf>`_.
+2. `CIGRE Canada Paper <https://cigre.ca/papers/2021/paper%20460.pdf>`_ on hosting 
+   capacity analysis methods, focused on North America.
 3. `Multi-country Survey of Hosting Capacity <https://www.mdpi.com/1996-1073/13/18/4756>`_
 
 GUI Reference
@@ -20,7 +30,7 @@ GUI Reference
 
 When you start the program, six tabbed pages appear in a notebook format:
 
-1. **Network** shows an overview map of the circuit selected from a library. Buses are labeled when they have either a substation source, or DER at least 100 kW in size. X and Y coordinates are arbitrary.  You can pan and zoom this map using the toolbar, but can not modify it or obtain more data from it.  A key to the legend is:
+1.  **Network** shows an overview map of the circuit selected from a library.  Buses are labeled when they have either a substation source, or DER at least 100 kW in size.  X and Y coordinates are arbitrary.  You can pan and zoom this map using the toolbar, but can not modify it or obtain more data from it.  A key to the legend is: 
 
    - LN = line segment
    - XFM = transformer segment
@@ -52,7 +62,7 @@ When you start the program, six tabbed pages appear in a notebook format:
    - **Time Step** specifies the period between each power flow solution. There is a tradeoff between precision of the voltage fluctuations, and the simulation time. The software requires a value from 1 to 300, inclusive.
    - **Output PV Details** will show the production and voltage results for each PV in the circuit. There may be a lot of these, especially on residential roof tops.
    - **Clear Old Output** will erase prior results before displaying new ones. This is the default, so new results appear right at the top whenever you run a new case. If you unselect this option, please remember to scroll down to the bottom of the results each time you run a new case. The advantage is that you will now have a log of all cases run. Use copy-and-paste to another program to save any of these results.
-   - **_Summary Results_** is a row of labels that will show in **_red_** when important limits are violated in the simulation results. See below for more details.
+   - **Summary Results** is a row of labels that will show in **red** when important limits are violated in the simulation results. See below for more details.
    - **Detailed Results** appear in the large white area below the other widgets, categorized as follows:
 
      - **Number of Capacitor Switchings**: the number of times a capacitor bank switched on or off. Expect no more than 2 per capacitor bank per day. If higher, PV fluctuations may be the cause.
@@ -96,25 +106,25 @@ When you first start **i2x-der**, the `IEEE 9500 node circuit <https://www.pnnl.
 
   - **VOLT\_VAR\_CATA** has a small beneficial effect, but it's not very aggressive in using reactive power. 
   - **VOLT\_VAR\_CATB** is more aggressive, but only outside a "deadband" of zero response (see its graph). In this case, the voltage fluctuations occur mostly within the deadband, which spans 4%.
-  - **VOLT\_VAR\_AVR** uses the most aggressive response allowed in IEEE 1547-2018, along with "autonomously adjusting reference voltage" as described on page 39 of IEEE 1547-2018. There is no deadband, but the setpoint is not fixed at 1 perunit reference voltage. Instead, the se_VOLT\_VAR\_CATB** point follows the grid voltage with a response time of several minutes. The effect is to resist sudden voltage changes, while not resisting longer term changes in grid voltage. In this case, it reduces the voltage fluctuation below 2%, and the PV reactive energy is only 0.80% of the PV real energy. There are higher short-term transients in PV reactive power, but over the day these net to nearly zero. On the other hand, the **CONSTANT\_PF** result with -0.9 power factor also reduced the voltage fluctuation below 2%, but the PV reactive energy was 48.4% of the PV real energy, i.e., the PV absorbed reactive power all the time.
+  - **VOLT\_VAR\_AVR** uses the most aggressive response allowed in IEEE 1547-2018, along with "autonomously adjusting reference voltage" as described on page 39 of IEEE 1547-2018. There is no deadband, but the setpoint is not fixed at 1 perunit reference voltage. Instead, the **VOLT\_VAR\_CATB** setpoint follows the grid voltage with a response time of several minutes. The effect is to resist sudden voltage changes, while not resisting longer term changes in grid voltage. In this case, it reduces the voltage fluctuation below 2%, and the PV reactive energy is only 0.80% of the PV real energy. There are higher short-term transients in PV reactive power, but over the day these net to nearly zero. On the other hand, the **CONSTANT\_PF** result with -0.9 power factor also reduced the voltage fluctuation below 2%, but the PV reactive energy was 48.4% of the PV real energy, i.e., the PV absorbed reactive power all the time.
   - **VOLT\_VAR\_VOLT\_WATT** uses both **VOLT\_VAR\_CATB** and **VOLT\_WATT**, at unity power factor. Because of the deadband, it doesn't help with voltage fluctuations in this case.
   - **VOLT\_VAR\_14H** uses both volt-var and volt-watt characteristics according to Hawaii Rule 14H, which was developed for an area that has high steady-state voltage rise on some long secondary circuits. The volt-watt characteristic is more aggressive, but the volt-var characteristic has a wider deadband, of 6%. As a result, it helps even less with voltage fluctuations in this case.
   - Although not illustrated here, **VOLT\_VAR\_AVR** may be combined with **VOLT\_WATT** to address steady-state voltage rise along with voltage fluctuations. This is the same combination in IEEE 1547-2018 that allows the **VOLT\_VAR\_VOLT\_WATT** and **VOLT\_VAR\_14H** modes.
 
-======= ===================== ============= ======================================================
-Profile Inverters             Max Vdiff [%] Notes
-======= ===================== ============= ======================================================
-pclear  CONSTANT\_PF=1.0      0.8656        No problem on a clear day.
-pcloud  CONSTANT\_PF=1.0      3.1382        With clouds, too much voltage fluctuation.
-pcloud  CONSTANT\_PF=0.9      4.5609        Injecting reactive power makes it worse.
-pcloud  CONSTANT\_PF=-0.9     1.6858        Absorbing reactive power all the time.
-pcloud  VOLT\_WATT, PF=-0.9   1.6999        Close to CONSTANT\_PF result at same power factor.
-pcloud  VOLT\_VAR\_CATA       2.8752        Helps a little.
-pcloud  VOLT\_VAR\_CATB       3.0721        No help in the deadband.
-pcloud  VOLT\_VAR\_AVR        1.5747        Setpoint adjusts to grid voltage over several minutes.
-pcloud  VOLT\_VAR\_VOLT\_WATT 3.0721        Still no help in the deadband.
-pcloud  VOLT\_VAR\_14H        3.1209        Still no help in the deadband.
-======= ===================== ============= ======================================================
+======= ===================== ======= ==================================================
+Profile Inverters             Vdiff   Notes
+======= ===================== ======= ==================================================
+pclear  CONSTANT\_PF=1.0      0.8656  No problem on a clear day.
+pcloud  CONSTANT\_PF=1.0      3.1382  With clouds, too much voltage fluctuation.
+pcloud  CONSTANT\_PF=0.9      4.5609  Injecting reactive power makes it worse.
+pcloud  CONSTANT\_PF=-0.9     1.6858  Absorbing reactive power all the time.
+pcloud  VOLT\_WATT, PF=-0.9   1.6999  Similar to CONSTANT\_PF at same power factor.
+pcloud  VOLT\_VAR\_CATA       2.8752  Helps a little.
+pcloud  VOLT\_VAR\_CATB       3.0721  No help in the deadband.
+pcloud  VOLT\_VAR\_AVR        1.5747  Setpoint adjusts to grid voltage in a few minutes.
+pcloud  VOLT\_VAR\_VOLT\_WATT 3.0721  Still no help in the deadband.
+pcloud  VOLT\_VAR\_14H        3.1209  Still no help in the deadband.
+======= ===================== ======= ==================================================
 
 Suggested exercises for this circuit:
 
