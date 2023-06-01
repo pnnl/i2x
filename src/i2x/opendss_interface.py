@@ -1,20 +1,46 @@
-import py_dss_interface # .DSS as dss
+import py_dss_interface
 import pkg_resources as pkg
 import inspect
 import numpy as np
 from numpy import trapz
 import os
 
+def print_class_doc (key, root, doc_fp):
+  print ('-------------------------', file=doc_fp)
+  print ('  {:s} {:s}'.format (key, root.__doc__), file=doc_fp)
+  mbrs = dir(root)
+  for row in mbrs:
+    if row[0] != '_':
+      print ('     ', row, file=doc_fp)
+
 def print_opendss_interface(doc_fp):
-  dss = py_dss_interface.DSSDLL()
-  print ('DSSDLL vars:', file=doc_fp)
-  for row in vars(dss):
-    print (' ', row, file=doc_fp)
-  print ('DSSDLL dir:', file=doc_fp)
-  for row in dir(dss):
-    fn = getattr(dss, row)
-    if inspect.ismethod(fn):
-      print ('  {:40s} {:s}'.format (row, str(inspect.signature(fn))), file=doc_fp)
+  print ('Summmary of py-dss-interface methods', file=doc_fp)
+  print ('See https://py-dss-interface.readthedocs.io/en/latest/index.html for more details\n', file=doc_fp)
+  dss = py_dss_interface.DSS()
+  mbrs = inspect.getmembers(dss)
+  interfaces = {}
+  print ('Properties', file=doc_fp)
+  print ('==========================', file=doc_fp)
+  for row in mbrs:
+    name = row[0]
+    val = row[1]
+    if name[0] != '_' and not inspect.ismethod(val):
+      classname = type(val).__name__
+      if classname in ['str', 'bool']:
+        print ('  ', name, classname, val, file=doc_fp)
+      else:
+        interfaces[name] = val
+  print ('\nMethods', file=doc_fp)
+  print ('==========================', file=doc_fp)
+  for row in mbrs:
+    name = row[0]
+    val = row[1]
+    if name[0] != '_' and inspect.ismethod(val):
+      print ('  ', name, val.__doc__, inspect.signature(val), file=doc_fp)
+  print ('\nInterfaces', file=doc_fp)
+  print ('==========================', file=doc_fp)
+  for key, val in interfaces.items():
+    print_class_doc (key, val, doc_fp)
 
 def dss_line (dss, line, debug_output):
   if debug_output:
@@ -26,7 +52,7 @@ def initialize_opendss(choice, debug_output=True, **kwargs):
   Load and compile the open dss feeder model
   """
   pwd = os.getcwd()
-  dss = py_dss_interface.DSSDLL()
+  dss = py_dss_interface.DSS()
   fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
 
   if debug_output:
@@ -38,11 +64,24 @@ def initialize_opendss(choice, debug_output=True, **kwargs):
   os.chdir(pwd)
   return dss
 
+def get_event_log (dss):
+#  dss.solution.event_log
+#  log = []
+  fname = dss.text ('export eventlog')
+  print ('================')
+  print ('log file at', fname)
+  fp = open (fname, 'r')
+  log = [line.rstrip() for line in fp]
+  fp.close()
+  print (log)
+  print ('================')
+  return log
+
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
                 change_lines=None, debug_output=True, dss=None, output=True, **kwargs):
 
-  # dss = py_dss_interface.DSSDLL()
+  # dss = py_dss_interface.DSS()
   # fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
 
   # if debug_output:
@@ -80,7 +119,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   dss_line (dss, 'set controlmode={:s}'.format(ctrlmode), debug_output)
   dss_line (dss, 'set maxcontroliter=1000', debug_output)
   dss_line (dss, 'set maxiter=30', debug_output)
-  pvnames = dss.pvsystems_all_names()
+  pvnames = dss.pvsystems.names
   ## add pq and vi monitors to all pv systems
   for pvname in pvnames: # don't need to log all these
     dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
@@ -93,7 +132,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   
 def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
   if debug_output:
-    print ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems_count(), dss.generators_count()))
+    print ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems.count, dss.generators.count))
 
   # initialize the outputs that are only filled in DUTY, DAILY, or other time series mode
   kWh_PV = 0.0
@@ -111,13 +150,13 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
   kWh_OverE = 0.0
 
   # these outputs apply to SNAPSHOT and time series modes
-  converged = bool(dss.solution_read_converged())
+  converged = bool(dss.solution.converged)
   if debug_output:
     print ('Converged = ', converged)
   num_cap_switches = 0
   num_tap_changes = 0
   num_relay_trips = 0
-  for row in dss.solution_event_log():
+  for row in get_event_log (dss):
     if ('Action=RESETTING' not in row) and ('Action=**RESET**' not in row) and ('Action=**ARMED**' not in row):
       if solnmode != 'DUTY' and debug_output:
         print (row)
@@ -140,8 +179,8 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
             'num_tap_changes': num_tap_changes,
             'num_relay_trips': num_relay_trips}
 
-  node_names = dss.circuit_all_node_names()
-  node_vpus = dss.circuit_all_bus_vmag_pu()
+  node_names = dss.circuit.nodes_names
+  node_vpus = dss.circuit.buses_vmag_pu
 #  print (bus_names)
 #  print (bus_vpus)
   nnode = len(node_names)
@@ -173,17 +212,17 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
   if solnmode != 'SNAPSHOT':
     # for name in pvnames:
     #   pvdict[name] = {'kWh':0.0, 'kvarh':0.0, 'vmin':0.0, 'vmax':0.0, 'vmean':0.0, 'vdiff':0.0}
-    idx = dss.monitors_first()
+    idx = dss.monitors.first()
     if idx > 0:
-      hours = np.array(dss.monitors_dbl_hour())
+      hours = np.array(dss.monitors.dbl_hour)
       dh = hours[1] - hours[0]
     ## loop over monitor elements
     while idx > 0:
-      name = dss.monitors_read_name() # name of monitor
-      elem = dss.monitors_read_element() # name of monitored element
+      name = dss.monitors.name # name of monitor
+      elem = dss.monitors.element # name of monitored element
       if check_element_status(dss, elem) == 0:
         # element is not active, skip
-        idx = dss.monitors_next()
+        idx = dss.monitors.next()
         continue
       if name.endswith('_rec_pq'):
         # recloser pq monitor
@@ -209,11 +248,11 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
         # PV system vi monitor
         key = name[0:-3]
         get_vi_monitor(dss, key, elem, name, pvdict)
-      idx = dss.monitors_next()
+      idx = dss.monitors.next()
 
-    dss.meters_first()
-    names = dss.meters_register_names()
-    vals = dss.meters_register_values()
+    dss.meters.first()
+    names = dss.meters.register_names
+    vals = dss.meters.register_values
     for i in range (len(vals)):
   #    print ('{:30s} {:13.6f}'.format (names[i], vals[i]))
       if names[i] == 'kWh':
@@ -276,8 +315,8 @@ def get_vi_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
   `name`: name of monitor object
   `d`: dictionary to be updated
   """
-  v = np.array(dss.monitors_channel(1))
-  amps = np.array(dss.monitors_channel(2))
+  v = np.array(dss.monitors.channel(1))
+  amps = np.array(dss.monitors.channel(2))
   if key not in d:
     d[key] = {}
     d[key]['elem'] = elem
@@ -293,8 +332,8 @@ def get_vi_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
   d[key]['i'] = amps
 
 def get_pq_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:dict, dh=0):
-  p = np.array(dss.monitors_channel(1))
-  q = np.array(dss.monitors_channel(2))
+  p = np.array(dss.monitors.channel(1))
+  q = np.array(dss.monitors.channel(2))
   if key not in d:
     d[key] = {}
     d[key]['elem'] = elem
@@ -318,13 +357,13 @@ def get_pq_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
     d[key]['kvarh'] = eq
 
 def check_element_status(dss:py_dss_interface.DSSDLL, elemname:str) -> int:
-  index_str = dss.circuit_set_active_element(elemname)
-  return dss.cktelement_read_enabled()
+  index_str = dss.circuit.set_active_element(elemname)
+  return dss.cktelement.is_enabled
 
 def get_basekv(dss:py_dss_interface.DSSDLL, elemname:str) -> list[float]:
-  dss.circuit_set_active_element(elemname)
+  dss.circuit.set_active_element(elemname)
   basekv = []
-  for n in dss.cktelement_read_bus_names():
-    dss.circuit_set_active_bus(n)
-    basekv.append(dss.bus_kv_base()*np.sqrt(3))
+  for n in dss.cktelement.bus_names:
+    dss.circuit.set_active_bus(n)
+    basekv.append(dss.bus.kv_base*np.sqrt(3))
     return basekv
