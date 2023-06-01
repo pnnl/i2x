@@ -327,7 +327,7 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   print ('read {:4d} bus_xy_kv'.format (len(bus_xy_kv)))
 
   # construct a graph of the model, starting with all known buses that have XY coordinates
-  G = nx.Graph()
+  G = nx.DiGraph()
   for key, data in bus_xy_kv.items():
     nclass='bus'
     if key in extra_source_buses:

@@ -55,7 +55,12 @@ def get_islands(G: nx.classes.graph.Graph) -> Tuple[list, list]:
     The components are sorted from largest to smallest.
     """
 
-    H = G.copy() # so we don't mess the original graph
+    H = G.copy().to_undirected() # so we don't mess the original graph
+    # G is now a directed graph to preserve the bus order, but H must be
+    #  undirected in order to call nx.connected_components on it. After
+    #  converting G to undirected, the node orders in H may change. This is
+    #  why the original DiGraph could not simply be saved as undirected, it
+    #  would have spoiled the node ordering.
 
     ## get the open switches and remove them from the graph
     open_switches = get_branch_elem(H, ['eclass', 'SwtOpen'], ['swtcontrol', True])
