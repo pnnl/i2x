@@ -2,8 +2,8 @@
 
 This example uses GridLAB-D, HELICS, and a custom Python agent
 to produce metrics for a community resilience hub, including
-energy and environmental justice (EEJ) factors. It provides a
-starting point for sprint studies that include EEJ factors.
+energy equity and environmental justice (EEEJ) factors. It provides a
+starting point for sprint studies that include EEEJ factors.
 
 [Summary](../docs/assets/soco_test.pdf)
 
