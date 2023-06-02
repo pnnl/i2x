@@ -16,15 +16,15 @@ if __name__ == "__main__":
                          solnmode = 'DAILY', # 'DUTY', # 'DAILY',
                          ctrlmode = 'STATIC')
 
-# dict = i2x.run_opendss(choice = 'ieee_lvn',
-#                        pvcurve = 'pclear',
-#                        invmode = 'CONSTANT_PF',
-#                        invpf = 1.00,
-#                        loadmult = 1.0,
-#                        loadcurve = 'FLAT',
-#                        stepsize = 300,
-#                        numsteps = 288,
-#                        solnmode = 'DAILY', # 'SNAPSHOT',
-#                        ctrlmode = 'STATIC')
+  dict = i2x.run_opendss(choice = 'ieee_lvn',
+                         pvcurve = 'pclear',
+                         invmode = 'CONSTANT_PF',
+                         invpf = 1.00,
+                         loadmult = 1.0,
+                         loadcurve = 'FLAT',
+                         stepsize = 300,
+                         numsteps = 288,
+                         solnmode = 'DAILY', # 'SNAPSHOT',
+                         ctrlmode = 'STATIC')
 # print (dict)
 
