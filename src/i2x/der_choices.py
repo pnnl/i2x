@@ -16,10 +16,16 @@ solarChoices = {
   'pvduty':{'dt':1.0, 'file':'pvloadshape-1sec-2900pts.dat', 'npts':0, 'data':None}
   }
 
+# this is the original OpenDSS data for piece-wise constant interpolation
+#  we are now using a quadratic interpolant at 1-second interfals
+#'default':{'t':[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+#           'p':[0.677,0.6256,0.6087,0.5833,0.58028,0.6025,0.657,0.7477,0.832,0.88,0.94,0.989,0.985,0.98,0.9898,0.999,1,0.958,0.936,0.913,0.876,0.876,0.828,0.756,0.677]},
+
 loadChoices = {
-  'default':{'t':[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
-             'p':[0.677,0.6256,0.6087,0.5833,0.58028,0.6025,0.657,0.7477,0.832,0.88,0.94,0.989,0.985,0.98,0.9898,0.999,1,0.958,0.936,0.913,0.876,0.876,0.828,0.756,0.677]},
-  'flat':{'t':[0,24],'p':[1.0, 1.0]}
+  'qdaily':{'dt':1.0, 'file':'qdaily.dat', 'npts':0, 'data':None},
+  'ldaily':{'dt':1.0, 'file':'ldaily.dat', 'npts':0, 'data':None},
+  'cdaily':{'dt':1.0, 'file':'cdaily.dat', 'npts':0, 'data':None},
+  'flat':{'t':[0,24], 'p':[1.0, 1.0]}
   }
 
 inverterChoices = {

@@ -59,6 +59,13 @@ class DERConfigGUI:
       row['npts'] = row['data'].shape[0]
       peak = max(np.abs(row['data']))
       row['data'] /= peak
+    for key, row in i2x.loadChoices.items():
+      if 'file' in row:
+        fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
+        row['data'] = np.loadtxt (fname)
+        row['npts'] = row['data'].shape[0]
+        peak = max(np.abs(row['data']))
+        row['data'] /= peak
 
     self.f1 = ttk.Frame(self.nb, name='varsNet')
     lab = ttk.Label(self.f1, text='Feeder Model: ', relief=tk.RIDGE)
@@ -586,8 +593,17 @@ class DERConfigGUI:
     ticks = [0, 4, 8, 12, 16, 20, 24]
     key = self.cb_load.get()
     row = i2x.loadChoices[key]
+    if 'dt' in row:
+      dt = row['dt']
+      npts = row['npts']
+      tmax = dt * (npts - 1)
+      p = row['data']
+      t = np.linspace (0.0, tmax, npts) / 3600.0
+    else:
+      t = row['t']
+      p = row['p']
     self.ax_load.cla()
-    self.ax_load.plot(row['t'], row['p'], color='blue')
+    self.ax_load.plot(t, p, color='blue')
     self.ax_load.set_xlabel('Hour [pu]')
     self.ax_load.set_ylabel('Power [pu]')
     self.ax_load.set_xticks(ticks)
