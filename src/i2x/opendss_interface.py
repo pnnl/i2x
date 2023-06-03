@@ -58,6 +58,8 @@ def initialize_opendss(choice, debug_output=True, **kwargs):
   if debug_output:
     print ('default cache:', pkg.get_default_cache())
     print ('HCA feeder model path:', fdr_path)
+    print ('OpenDSS path:', dss.dll_file_path)
+    print ('     version:', dss.dssinterface.version)
     pkg.resource_listdir (__name__, 'models/{:s}'.format(choice))
 
   dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output)
@@ -123,7 +125,10 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   for pvname in pvnames: # don't need to log all these
     dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
     dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
-#  dss.dssprogress_*() replaced by DSSProgress.exe calls over TCP/IP
+  # print the last one
+  pvname = pvnames[-1]
+  print ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
+  print ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
   dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output)
 
   if output:

@@ -255,8 +255,8 @@ class DERConfigGUI:
         errors.append ('In DUTY mode, Step Seconds {:d} must be greater than 0 and no more than 5'.format (step_seconds))
     if (load_mult <= 0.0) or (load_mult > 1.0):
       errors.append ('Load Multiplier {:.4f} must be greater than 0.0 and no more than 1.0'.format (load_mult))
-    if (abs(inv_pf) <= 0.8) or (abs(inv_pf) > 1.0):
-      errors.append ('Inverter Power Factor {:.4f} must have magnitude between 0.8 and 1.0, inclusive'.format (inv_pf))
+    if (abs(inv_pf) < 0.9153) or (abs(inv_pf) > 1.0):
+      errors.append ('Inverter Power Factor {:.4f} must have magnitude between 0.9153 and 1.0, inclusive'.format (inv_pf))
     if len(errors) > 0:
       messagebox.showerror('Please Correct these Errors', '\n'.join(errors))
       return False
@@ -344,6 +344,10 @@ class DERConfigGUI:
     lbl.config(text=text)
     lbl.configure(style='Black.TLabel')
 
+  def failed_label(self, lbl):
+    lbl.config(text='FAILED')
+    lbl.configure(style='Red.TLabel')
+
   def update_label(self, lbl, val, fmt, thresh):
     valstr = fmt.format(val)
     color = 'Black.TLabel'
@@ -395,6 +399,13 @@ class DERConfigGUI:
     self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(d['num_cap_switches']))
     self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(d['num_tap_changes']))
     self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(d['num_relay_trips']))
+
+    if not d['converged']:
+      self.txt_output.insert(tk.END, 'Solution Failed to Converge!')
+      for lbl in [self.lab_vmin, self.lab_vmax, self.lab_vdiff, self.lab_een, self.lab_ue]:
+        self.failed_label (lbl)
+      return
+
     self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(d['num_low_voltage'], d['vminpu'], d['node_vmin']))
     self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(d['num_high_voltage'], d['vmaxpu'], d['node_vmax']))
 
