@@ -98,33 +98,33 @@ DER Example: 9500-Node Network
 When you first start **i2x-der**, the `IEEE 9500 node circuit <https://www.pnnl.gov/main/publications/external/technical_reports/PNNL-33471.pdf>`_ is displayed. We can use this to examine the effect of inverter controls on solar-induced voltage fluctuations:
 
 - Go to the **DER** tab, and reduce the usage of residential rooftops to 0%. This makes the results repeatable.
-- Go the the **Output** tab and run a case. You should find the maximum PV voltage fluctuation to be at or near 0.8656%. This is less than 2%, and should be acceptable, but that's on a clear day.
+- Go the the **Output** tab and run a case. You should find the maximum PV voltage fluctuation to be at or near 0.7552%. This is less than 2%, and should be acceptable, but that's on a clear day.
 - Go to the **Solar** tab and select the **pcloud** profile. The graph shows much more variation in output. Use this profile for the rest of the example. If you run the case again, the voltage fluctuation should exceed 3%, which is not acceptable.
-- Go to the **Inverters** tab and try non-unity power factors, e.g., 0.9 and -0.9. One of these improves the voltage fluctuation, while one makes it worse. Both choices result in significant levels of PV reactive energy.
+- Go to the **Inverters** tab and try non-unity power factors, e.g., 0.9153 and -0.9153. One of these improves the voltage fluctuation, while one makes it worse. Both choices result in significant levels of PV reactive energy. In IEEE Standard 1547-2018, the minimum power factor required of Category B inverters is 0.9153, so these two results bound the reactive power injection of inverters operating at constant power factor.
 - On the **Inverters** tab, try the **VOLT\_WATT** function, which is designed to mitigate steady-state voltage rise. It doesn't affect the voltage fluctuations in this case, i.e., you should get approximately the same result as you did with the same power factor in **CONSTANT\_PF** mode. The IEEE 9500-node circuit doesn't have significant voltage rise problems, even if you were to add much more PV.
 - On the **Inverters** tab, try the other functions. Results are tabulated below.
 
   - **VOLT\_VAR\_CATA** has a small beneficial effect, but it's not very aggressive in using reactive power. 
   - **VOLT\_VAR\_CATB** is more aggressive, but only outside a "deadband" of zero response (see its graph). In this case, the voltage fluctuations occur mostly within the deadband, which spans 4%.
-  - **VOLT\_VAR\_AVR** uses the most aggressive response allowed in IEEE 1547-2018, along with "autonomously adjusting reference voltage" as described on page 39 of IEEE 1547-2018. There is no deadband, but the setpoint is not fixed at 1 perunit reference voltage. Instead, the **VOLT\_VAR\_CATB** setpoint follows the grid voltage with a response time of several minutes. The effect is to resist sudden voltage changes, while not resisting longer term changes in grid voltage. In this case, it reduces the voltage fluctuation below 2%, and the PV reactive energy is only 0.80% of the PV real energy. There are higher short-term transients in PV reactive power, but over the day these net to nearly zero. On the other hand, the **CONSTANT\_PF** result with -0.9 power factor also reduced the voltage fluctuation below 2%, but the PV reactive energy was 48.4% of the PV real energy, i.e., the PV absorbed reactive power all the time.
+  - **VOLT\_VAR\_AVR** uses the most aggressive response allowed in IEEE 1547-2018, along with "autonomously adjusting reference voltage" as described on page 39 of IEEE 1547-2018. There is no deadband, but the setpoint is not fixed at 1 perunit reference voltage. Instead, the **VOLT\_VAR\_CATB** setpoint follows the grid voltage with a response time of several minutes. The effect is to resist sudden voltage changes, while not resisting longer term changes in grid voltage. In this case, it reduces the voltage fluctuation below 2%, and the PV reactive energy is only 0.55% of the PV real energy. There are higher short-term transients in PV reactive power, but over the day these net to nearly zero. On the other hand, the **CONSTANT\_PF** result with -0.9153 power factor also reduced the voltage fluctuation below 2%, but the PV reactive energy was 44.0% of the PV real energy, i.e., the PV absorbed reactive power all the time.
   - **VOLT\_VAR\_VOLT\_WATT** uses both **VOLT\_VAR\_CATB** and **VOLT\_WATT**, at unity power factor. Because of the deadband, it doesn't help with voltage fluctuations in this case.
   - **VOLT\_VAR\_14H** uses both volt-var and volt-watt characteristics according to Hawaii Rule 14H, which was developed for an area that has high steady-state voltage rise on some long secondary circuits. The volt-watt characteristic is more aggressive, but the volt-var characteristic has a wider deadband, of 6%. As a result, it helps even less with voltage fluctuations in this case.
   - Although not illustrated here, **VOLT\_VAR\_AVR** may be combined with **VOLT\_WATT** to address steady-state voltage rise along with voltage fluctuations. This is the same combination in IEEE 1547-2018 that allows the **VOLT\_VAR\_VOLT\_WATT** and **VOLT\_VAR\_14H** modes.
 
-======= ===================== ======= ==================================================
-Profile Inverters             Vdiff   Notes
-======= ===================== ======= ==================================================
-pclear  CONSTANT\_PF=1.0      0.8656  No problem on a clear day.
-pcloud  CONSTANT\_PF=1.0      3.1382  With clouds, too much voltage fluctuation.
-pcloud  CONSTANT\_PF=0.9      4.5609  Injecting reactive power makes it worse.
-pcloud  CONSTANT\_PF=-0.9     1.6858  Absorbing reactive power all the time.
-pcloud  VOLT\_WATT, PF=-0.9   1.6999  Similar to CONSTANT\_PF at same power factor.
-pcloud  VOLT\_VAR\_CATA       2.8752  Helps a little.
-pcloud  VOLT\_VAR\_CATB       3.0721  No help in the deadband.
-pcloud  VOLT\_VAR\_AVR        1.5747  Setpoint adjusts to grid voltage in a few minutes.
-pcloud  VOLT\_VAR\_VOLT\_WATT 3.0721  Still no help in the deadband.
-pcloud  VOLT\_VAR\_14H        3.1209  Still no help in the deadband.
-======= ===================== ======= ==================================================
+======= ====================== ======= ==================================================
+Profile Inverters              Vdiff   Notes
+======= ====================== ======= ==================================================
+pclear  CONSTANT\_PF=1.0       0.7552  No problem on a clear day.
+pcloud  CONSTANT\_PF=1.0       3.2108  With clouds, too much voltage fluctuation.
+pcloud  CONSTANT\_PF=0.9153    4.5894  Injecting reactive power makes it worse.
+pcloud  CONSTANT\_PF=-0.9153   1.8005  Absorbing reactive power all the time.
+pcloud  VOLT\_WATT, PF=-0.9153 1.8006  Similar to CONSTANT\_PF at same power factor.
+pcloud  VOLT\_VAR\_CATA        2.9250  Helps a little.
+pcloud  VOLT\_VAR\_CATB        3.1626  No help in the deadband.
+pcloud  VOLT\_VAR\_AVR         1.6010  Setpoint adjusts to grid voltage in a few minutes.
+pcloud  VOLT\_VAR\_VOLT\_WATT  3.1626  Still no help in the deadband.
+pcloud  VOLT\_VAR\_14H         3.2090  Still no help in the deadband.
+======= ====================== ======= ==================================================
 
 Suggested exercises for this circuit:
 
