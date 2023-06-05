@@ -232,7 +232,7 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None,
   if fig is None:
     fig, ax = plt.subplots()
   nx.draw_networkx_nodes (G, xy, nodelist=plotNodes, node_color=nodeColors, node_size=nodeSizes, ax=ax)
-  nx.draw_networkx_edges (G, xy, edgelist=plotEdges, edge_color=edgeColors, width=edgeWidths, alpha=0.8, ax=ax)
+  nx.draw_networkx_edges (G, xy, edgelist=plotEdges, edge_color=edgeColors, width=edgeWidths, alpha=0.8, ax=ax, arrows=False)
   if plot_labels:
 #    print ('plotting {:d} node labels'.format (len(lblNode)))
     nx.draw_networkx_labels (G, xyLbl, lblNode, font_size=8, font_color='k', 

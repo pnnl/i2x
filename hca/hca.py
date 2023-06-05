@@ -25,11 +25,11 @@ def activate_monitor_byname(dss:py_dss_interface.DSSDLL, monitorname:str) -> int
   activate monitor, return 0 if monitor not found
   """
 
-  idx = dss.monitors_first()
+  idx = dss.monitors.first()
   while idx > 0:
-    if monitorname == dss.monitors_read_name():
+    if monitorname == dss.monitors.name:
       return idx
-    idx = dss.monitors_next()
+    idx = dss.monitors.next()
   return idx
   
 
@@ -38,11 +38,11 @@ def activate_monitor_byelem(dss:py_dss_interface.DSSDLL, elemname:str, mode:int)
   activate monitor, return 0 if monitor not found
   """
 
-  idx = dss.monitors_first()
+  idx = dss.monitors.first()
   while idx > 0:
-    if (elemname == dss.monitors_read_element()) and (mode == dss.monitors_read_mode()):
+    if (elemname == dss.monitors.element) and (mode == dss.monitors.mode):
       return idx
-    idx = dss.monitors_next()
+    idx = dss.monitors.next()
   return idx
 
 def get_volt_stats(d:dict) -> dict:
@@ -132,9 +132,9 @@ class HCA:
     self.voltage_monitor()
 
   def update_basekv(self):
-    for i,n in enumerate(self.dss.circuit_all_bus_names()):
-      self.dss.circuit_set_active_bus_i(i)
-      basekv = self.dss.bus_kv_base()*SQRT3
+    for i,n in enumerate(self.dss.circuit.buses_names):
+      self.dss.circuit.set_active_bus_i(i)
+      basekv = self.dss.bus.kv_base*SQRT3
       if self.G.nodes[n]["ndata"]["nomkv"] == 0:
         self.G.nodes[n]["ndata"]["nomkv"] = basekv
       elif self.G.nodes[n]["ndata"]["nomkv"] != basekv:
