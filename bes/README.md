@@ -4,13 +4,15 @@ This repository contains Matpower scripts for BES hosting
 capacity analysis, used in sprint studies for the i2x roadmap.
 Prerequisites include: 
  
-- [Octave 8.2](https://octave.org/download). 
+- [Octave 8.2](https://octave.org/download). MATLAB could also work, but Octave is free, has a smaller footprint, and includes the GLPK solver.
 
-- [Matpower 7.1](https://matpower.org/).
+- [Matpower 7.1](https://matpower.org/). Install and test in Octave as directed, choosing option 3 to save the Matpower paths within Octave.
 
-- [CIMHub Model of the IEEE 118-Bus Test System](https://github.com/GRIDAPPSD/CIMHub/blob/feature/SETO/BES/IEEE118.m)
+- Test Systems Based on [CIMHub/BES](https://github.com/GRIDAPPSD/CIMHub/blob/feature/SETO/BES)
 
-- [CIMHub Model of the WECC 240-Bus Test System](https://github.com/GRIDAPPSD/CIMHub/blob/feature/SETO/BES/WECC240.m)
+To run a simulation:
+
+`python mpow.py [#]` where **#** is 0 for the IEEE 118-bus case, or 1 for the WECC 240-bus case, defaults to 0.
 
 Copyright 2022-2023, Battelle Memorial Institute
 
