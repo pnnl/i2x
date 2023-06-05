@@ -66,6 +66,7 @@ Set loadmult=1.0
 ! CHP at 30% capacity, MT-1 at 25%, MT-2 at 50%, all other DG off.
 ! generator PV model (3) is not compatible with InvControl and ExpControl
 edit Generator.SteamGen1 model=1 kw=1000 vpu=1.00 pf=-0.68
+//edit Generator.SteamGen1 kw=1000 vpu=1.00
 Generator.MicroTurb-1.kw=50
 Generator.MicroTurb-2.kw=0
 Generator.MicroTurb-3.kw=0
