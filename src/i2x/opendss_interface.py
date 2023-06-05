@@ -206,8 +206,8 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
     if v > 1.05:
       num_high_voltage += 1
   if debug_output:
-    print ('{:4d} node voltages below 0.95 pu,  lowest is {:.4f} pu at {:s} '.format (num_low_voltage, vminpu, node_vmin))
-    print ('{:4d} node voltages above 1.05 pu, highest is {:.4f} pu at {:s}'.format (num_high_voltage, vmaxpu, node_vmax))
+    print ('{:4d} final node voltages below 0.95 pu,  lowest is {:.4f} pu at {:s} '.format (num_low_voltage, vminpu, node_vmin))
+    print ('{:4d} final node voltages above 1.05 pu, highest is {:.4f} pu at {:s}'.format (num_high_voltage, vmaxpu, node_vmax))
 
   if solnmode != 'SNAPSHOT':
     # for name in pvnames:

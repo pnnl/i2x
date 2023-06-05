@@ -68,8 +68,8 @@ When you start the program, six tabbed pages appear in a notebook format:
      - **Number of Capacitor Switchings**: the number of times a capacitor bank switched on or off. Expect no more than 2 per capacitor bank per day. If higher, PV fluctuations may be the cause.
      - **Number of Tap Changes**: the total number of voltage regulator tap movements. Expect one or two dozen per day per regulator. If higher, PV fluctuations may be the cause.
      - **Number of Relay Trips**: if not zero, PV reverse power flow may be the cause. Any time a relay trips, some load has likely lost service. Furthermore, the following voltage and energy results may be unreliable. When this is not zero, the DER hosting capacity limit has been exceeded.
-     - **Nodes with Low Voltage**: how many node voltages fell below the ANSI C84.1 A Range, i.e., 0.95 perunit
-     - **Nodes with High Voltage**: how many node voltages fell above the ANSI C84.1 A Range, i.e., 1.05 perunit 
+     - **Nodes with Low Final Voltage**: how many node voltages at the last time point fell below the ANSI C84.1 A Range, i.e., 0.95 perunit. *Minimum PV Voltage* is more significant because it considers all time points.
+     - **Nodes with High Final Voltage**: how many node voltages at the last time point fell above the ANSI C84.1 A Range, i.e., 1.05 perunit. *Maximum PV Voltage* is more significant because it considers all time points.
      - **Load Served**: total energy delivered to loads in the circuit
      - **Substation Energy**: total energy from the substation, i.e., the bulk electric system
      - **Losses**: total losses in lines and transformers
@@ -78,8 +78,8 @@ When you start the program, six tabbed pages appear in a notebook format:
      - **Solar Reactive Energy**: total reactive power production from PV, in response to local voltage
      - **Energy Exceeding Normal**: EEN is an estimate of the load energy delivered under conditions of voltage outside normal limits, and/or conditions of line or transformer current above normal limits. This may indicate the need for grid infrastructure upgrades. It indicates that a DER hosting capacity limit has been exceeded. See the OpenDSS documentation for more details.
      - **Unserved Energy**: UE is defined like EEN, but with emergency limits rather than normal limits. Load would not be disconnected, but non-zero UE is a stronger indication that grid upgrades are needed, that DER hosting capacity has been exceeded, and that operational problems are more likely.
-     - **Minimum PV Voltage**: among all PV, in per-unit. 
-     - **Maximum PV Voltage**: among all PV, in per-unit.
+     - **Minimum PV Voltage**: among all PV and times, in per-unit. 
+     - **Maximum PV Voltage**: among all PV and times, in per-unit.
      - **Maximum PV Voltage Change**: the voltage change, in percent, is measured as the largest difference in PV voltage magnitude between consecutive time points. There is some sensitivity to the choice of **Time Step**. In more detailed OpenDSS modeling, signal processing techniques are applied to mitigate the sensitivity, but for illustrative purposes in the **i2x-der** software, that's not necessary. The voltage change, **Vdiff**, should be limited to 2% or 3%, depending on the local electric utility guidelines. Otherwise, nearby customers may complain. The **Vdiff** results consider only the PV locations, as the load **Vdiff** values should all be equal to or less than the worst PV value. The use of inverter control modes could mitigate **Vdiff** without having to reduce the amount of DER.
      - **PV Details**: if requested, shows the real and reactive energies, and the voltage results, for each PV in the model.
 

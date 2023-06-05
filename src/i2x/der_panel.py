@@ -413,8 +413,8 @@ class DERConfigGUI:
         self.failed_label (lbl)
       return
 
-    self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(d['num_low_voltage'], d['vminpu'], d['node_vmin']))
-    self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(d['num_high_voltage'], d['vmaxpu'], d['node_vmax']))
+    self.txt_output.insert(tk.END, '{:d} Nodes with Low Final Voltage, Lowest={:.4f}pu at {:s}\n'.format(d['num_low_voltage'], d['vminpu'], d['node_vmin']))
+    self.txt_output.insert(tk.END, '{:d} Nodes with High Final Voltage, Highest={:.4f}pu at {:s}\n'.format(d['num_high_voltage'], d['vmaxpu'], d['node_vmax']))
 
     self.update_label (self.lab_relay, d['num_relay_trips'], '{:d} relay trips', 0)
 
