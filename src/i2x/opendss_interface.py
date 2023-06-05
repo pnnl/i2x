@@ -67,7 +67,7 @@ def initialize_opendss(choice, debug_output=True, **kwargs):
   return dss
 
 def get_event_log (dss):
-#  dss.solution.event_log
+  return dss.solution.event_log
   fname = dss.text ('export eventlog')
   print ('================')
   print ('log file at', fname)
