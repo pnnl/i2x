@@ -7,7 +7,8 @@
 
 feederChoices = {
   'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
-  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
+  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'},
+  'radial':{'path':'models/radial/', 'base':'HCABase.dss', 'network':'Network.json'}
   }
 
 solarChoices = {

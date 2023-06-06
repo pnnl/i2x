@@ -95,23 +95,37 @@ feederChoices = {
 lblDeltaY = 0.0 # 0.35
 
 edgeTypes = {
-  'line':        {'color':'gray',   'tag':'LN'},
-  'transformer': {'color':'orange', 'tag':'XFM'},
-  'regulator':   {'color':'red',    'tag':'REG'},
-  'switch':      {'color':'cornflowerblue',   'tag':'SWT'},
-  'swtcontrol':  {'color':'blue',   'tag':'CTL'},
-  'nwp':         {'color':'magenta','tag':'NWP'},
-  'recloser':    {'color':'lime',   'tag':'REC'},
-  'reactor':     {'color':'green',  'tag':'RCT'}
+  'line':        {'color':'gray',   'tag':'LN', 'count':0},
+  'transformer': {'color':'orange', 'tag':'XFM', 'count':0},
+  'regulator':   {'color':'red',    'tag':'REG', 'count':0},
+  'switch':      {'color':'cornflowerblue',   'tag':'SWT', 'count':0},
+  'swtcontrol':  {'color':'blue',   'tag':'CTL', 'count':0},
+  'nwp':         {'color':'magenta','tag':'NWP', 'count':0},
+  'recloser':    {'color':'lime',   'tag':'REC', 'count':0},
+  'reactor':     {'color':'green',  'tag':'RCT', 'count':0},
+  'fuse':        {'color':'magenta','tag':'FUS', 'count':0}
   }
 
 nodeTypes = {
-  'source':     {'color':'cyan',   'tag':'SUB', 'size':10, 'lblDeltaY': -lblDeltaY},
-  'generator':  {'color':'red',    'tag':'GEN', 'size':10, 'lblDeltaY':  lblDeltaY},
-  'solar':      {'color':'gold',   'tag':'PV',  'size':25, 'lblDeltaY': -lblDeltaY},
-  'capacitor':  {'color':'blue',   'tag':'CAP', 'size':15, 'lblDeltaY': -lblDeltaY},
-  'storage':    {'color':'green',  'tag':'BAT', 'size':35, 'lblDeltaY': -lblDeltaY}
+  'source':     {'color':'cyan',   'tag':'SUB', 'size':25, 'lblDeltaY': -lblDeltaY, 'count':0},
+  'generator':  {'color':'red',    'tag':'GEN', 'size':25, 'lblDeltaY':  lblDeltaY, 'count':0},
+  'solar':      {'color':'gold',   'tag':'PV',  'size':25, 'lblDeltaY': -lblDeltaY, 'count':0},
+  'capacitor':  {'color':'blue',   'tag':'CAP', 'size':15, 'lblDeltaY': -lblDeltaY, 'count':0},
+  'storage':    {'color':'green',  'tag':'BAT', 'size':25, 'lblDeltaY': -lblDeltaY, 'count':0}
   }
+
+def filter_types_used(d):
+  ret = {}
+  for key, val in d.items():
+    if val['count'] > 0:
+      ret[key] = val
+  return ret
+
+def reset_type_counts():
+  for key, val in edgeTypes.items():
+    val['count'] = 0
+  for key, val in nodeTypes.items():
+    val['count'] = 0
 
 def get_node_mnemonic(nclass):
   if nclass in nodeTypes:
@@ -130,20 +144,27 @@ def get_node_offset(nclass):
 
 def get_node_color(nclass):
   if nclass in nodeTypes:
+    nodeTypes[nclass]['count'] += 1
     return nodeTypes[nclass]['color']
   return 'black'
 
 def get_edge_width(nphs, eclass):
-  if eclass in ['recloser', 'swtcontrol']:
-    return 10.0
+  if eclass != 'line':
+    return 4.0
   if nphs == 1:
-    return 2.0 # 1.0
+    return 1.0
   if nphs == 2:
-    return 2.0 # 1.5
+    return 1.5
   return 2.0
+
+def get_edge_marker(eclass):
+  if eclass == 'line':
+    return None
+  return None # 's'
 
 def get_edge_color(eclass):
   if eclass in edgeTypes:
+    edgeTypes[eclass]['count'] += 1
     return edgeTypes[eclass]['color']
   print ('unknown edge class', eclass)
   return edgeTypes['unknown']['color']
@@ -174,6 +195,7 @@ def load_builtin_graph (feeder_name):
 def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, 
                          ax = None, title=None, on_canvas=False, plot_comps=False, legend_loc='lower right'):
 
+  reset_type_counts()
   # extract the XY coordinates available for plotting
   xy = {}
   xyLbl = {}
@@ -242,11 +264,14 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None,
   plt.xlabel ('X coordinate [k]')
   plt.ylabel ('Y coordinate [k]')
   ax.grid(linestyle='dotted')
+  # plot a legend containing only the node and edge types that were actually used
+  legendEdges = filter_types_used (edgeTypes)
+  legendNodes = filter_types_used (nodeTypes)
   xdata = [0, 1]
   ydata = [1, 0]
-  lns = [lines.Line2D(xdata, ydata, color=get_edge_color(e)) for e in edgeTypes] + \
-    [lines.Line2D(xdata, ydata, color=get_node_color(n), marker='o') for n in nodeTypes]
-  labs = [get_edge_mnemonic (e) for e in edgeTypes] + [get_node_mnemonic (n) for n in nodeTypes]
+  lns = [lines.Line2D(xdata, ydata, color=get_edge_color(e), marker=get_edge_marker(e)) for e in legendEdges] + \
+    [lines.Line2D(xdata, ydata, color=get_node_color(n), marker='o') for n in legendNodes]
+  labs = [get_edge_mnemonic (e) for e in legendEdges] + [get_node_mnemonic (n) for n in legendNodes]
   ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
   ax.legend(lns, labs, loc=legend_loc)
   if pdf_name is not None:
