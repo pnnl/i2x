@@ -14,7 +14,8 @@ feederChoices = {
 solarChoices = {
   'pclear':{'dt':1.0, 'file':'pclear.dat', 'npts':0, 'data':None},
   'pcloud':{'dt':1.0, 'file':'pcloud.dat', 'npts':0, 'data':None},
-  'pvduty':{'dt':1.0, 'file':'pvloadshape-1sec-2900pts.dat', 'npts':0, 'data':None}
+  'pvduty':{'dt':1.0, 'file':'pvloadshape-1sec-2900pts.dat', 'npts':0, 'data':None},
+  'step':{'t':[0,6,6.003,18,18.003,24], 'p':[0,0,1,1,0,0]}
   }
 
 # this is the original OpenDSS data for piece-wise constant interpolation

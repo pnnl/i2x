@@ -21,13 +21,7 @@ new recloser.R1 monitoredobj=line.R1 MonitoredTerm=2 phasetrip=600.0 groundtrip=
 
 ///////////////////////////////////
 
-new Loadshape.pclear npts=86401 sinterval=1 csvfile=../support/pclear.dat action=normalize
-new Loadshape.pcloud npts=86401 sinterval=1 csvfile=../support/pcloud.dat action=normalize
-new Loadshape.ldaily npts=86401 sinterval=1 csvfile=../support/ldaily.dat action=normalize
-new Loadshape.qdaily npts=86401 sinterval=1 csvfile=../support/qdaily.dat action=normalize
-new Loadshape.cdaily npts=86401 sinterval=1 csvfile=../support/cdaily.dat action=normalize
-new Loadshape.pvduty npts=2900 sinterval=1 mult=(file=../support/pvloadshape-1sec-2900pts.dat) action=normalize
-redirect ../support/inverters.dss
+redirect ../support/loadshapes_and_xycurves.dss
 
 new linecode.1 nphases=3 units=mi
 ~ rmatrix=[ .416 | .112 .416 | .104 .112 .408 ]

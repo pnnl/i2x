@@ -54,11 +54,12 @@ class DERConfigGUI:
     s.configure('.', font=fontchoice)
 
     for key, row in i2x.solarChoices.items():
-      fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
-      row['data'] = np.loadtxt (fname)
-      row['npts'] = row['data'].shape[0]
-      peak = max(np.abs(row['data']))
-      row['data'] /= peak
+      if 'file' in row:
+        fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
+        row['data'] = np.loadtxt (fname)
+        row['npts'] = row['data'].shape[0]
+        peak = max(np.abs(row['data']))
+        row['data'] /= peak
     for key, row in i2x.loadChoices.items():
       if 'file' in row:
         fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
@@ -577,11 +578,15 @@ class DERConfigGUI:
   def UpdateSolarProfile(self, event):
     key = self.cb_solar.get()
     row = i2x.solarChoices[key]
-    dt = row['dt']
-    npts = row['npts']
-    tmax = dt * (npts - 1)
-    y = row['data']
-    t = np.linspace (0.0, tmax, npts) / 3600.0
+    if 'dt' in row:
+      dt = row['dt']
+      npts = row['npts']
+      tmax = dt * (npts - 1)
+      y = row['data']
+      t = np.linspace (0.0, tmax, npts) / 3600.0
+    else:
+      t = row['t']
+      y = row['p']
     self.ax_solar.cla()
     self.ax_solar.plot(t, y, color='blue')
     self.ax_solar.set_xlabel('Time [hr]')
