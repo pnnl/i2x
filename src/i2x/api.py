@@ -24,6 +24,7 @@ from .plot_opendss_feeder import load_builtin_graph
 from .plot_opendss_feeder import parse_opendss_graph
 from .opendss_interface import print_opendss_interface
 from .opendss_interface import run_opendss, initialize_opendss, opendss_output, get_basekv, check_element_status
+from .pcc_analysis import trace_pcc_path
 
 from .der_choices import feederChoices
 from .der_choices import solarChoices
