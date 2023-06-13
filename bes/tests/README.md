@@ -26,13 +26,13 @@ Figure 2, the autocorrelation coefficient (ACC), partial autocorrelation
 coefficient (PACC), and bi-modal probability density function reflect this 
 behavior.  
 
-[Figure 1](wind_plants.png)
+![Figure 1](wind_plants.png)
 
 *Figure 1: Three days of synthetic wind output for the MOST base case, seed=150*
 
-[Figure 2](test_wind.png)
+![Figure 2](test_wind.png)
 
-*Figure 2: Annual output for the largest wind plant, seed=150
+*Figure 2: Annual output for the largest wind plant, seed=150*
 
 Copyright 2022-2023, Battelle Memorial Institute
 
