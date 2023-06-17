@@ -11,6 +11,7 @@ import py_dss_interface
 from hca_utils import Logger, merge_configs
 import os
 
+
 SQRT3 = math.sqrt(3.0)
 
 def print_column_keys (label, d):
@@ -130,6 +131,9 @@ class HCA:
 
     ## create a set of voltage monitors throughout the feeder
     self.voltage_monitor()
+
+    # ## create energy monitors by element type
+    # self.element_meters(inputs["element_meter_location"])
 
   def update_basekv(self):
     for i,n in enumerate(self.dss.circuit.buses_names):
@@ -413,11 +417,110 @@ class HCA:
 
 
 class HCAMetrics:
-  def __init__(self):
-    pass
+  def __init__(self, res:dict, comp=None, tol=1e-3):
+    self.tests = {
+      "voltage": {
+      "vmin": self._vmin,
+      "vmax": self._vmax,
+      "vdiff": self._vdiff
+      },
+      "thermal": {
+      "ue": self._ue
+      },
+      "island": {
+        "pq": self._island_pq
+      } 
+    }
 
-  def voltage_check(self):
-    pass
+    self.comp = comp
+    self.load_res(res)
+    self.eval = {}
+    self.violation = {}
+    self.tol=tol
+  
+  def load_res(self, res:dict):
+    self.res = res
+    self.volt_stats = get_volt_stats(res["voltdict"])
+    self.pv_stats = get_volt_stats(res["pvdict"])
+    self.rec_stats = get_volt_stats(res["recdict"])
+  
+  # def _test(self, test:bool, margin, description:str) -> tuple[bool, str]:
+  def _test(self, val, lim, sense) -> tuple[bool, float, str]:
+    """
+    sense = 1 -> val should be greater than lim -> margin is positive if successful, negative is violation
+    sens = -1 -> val should be less than lim -> margin is still positive if successful (mult by -1), negative is violation
+    """
+    margin = sense*(val - lim)
+    return margin >= (0 - self.tol), margin
+    
+  def _vmin(self, val):
+    vmin = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "min", np.min)
+    return self._test(vmin, val, 1)
+  
+  def _vmax(self, val):
+    vmax = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "max", np.max)
+    return self._test(vmax, val, -1)
+  
+  def _vdiff(self, val):
+    vdiff = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "diff", np.max)
+    return self._test(vdiff, val, -1)
+  
+  def _ue(self, val):
+    return self._test(self.res["kWh_UE"], val, -1)
+  
+  def _all_comps(self, func, *args):
+    for i in self.res["compflows"].keys():
+      out = func(*args, i=i)
+      if not out[0]:
+        return out
+    return out
+  
+  def _island_dir(self, val, pq:str, i=None):
+    if i is not None:
+      test = np.abs(self.res["compflows"][i]["lims"].loc[["min", "max"], pq].apply(np.sign).sum()) - 1
+      return self._test(test, 0, 1)
+    else:
+      return self._all_comps(self._island_dir, val, pq)
+    
+  def _island_frac(self, val, pq:str, i=None):
+    if i is not None:
+      test = self.res["compflows"][i]["lims"].transpose().apply(lambda x: x.minabs/np.max([np.abs(x["min"]), np.abs(x["max"])]), axis=1)[pq]
+      return self._test(test, val, 1)
+    else:
+      return self._all_comps(self._island_frac, val, pq)
+  
+  def _island_test(self, val, pq:str):
+     test, margin = self._island_dir(val, pq, i=self.comp)
+     if not test:
+       return test, margin
+     
+     test, margin = self._island_frac(val, pq, i=self.comp)
+     return test, margin
+
+  def _island_pq(self, vals):
+      test, margin = self._island_test(vals[0], "p")
+      if test:
+        return test, margin
+
+      ## p test failed, check q as well
+      return self._island_test(vals[1], "q")
+
+  def calc_metrics(self, d:dict):
+    violation_count = 0
+    for metric_class, metrics in d.items():
+      self.eval[metric_class] = {}
+      for metric, val in metrics.items():
+        test, margin = self.tests[metric_class][metric](val)
+        self.eval[metric_class][metric] = margin
+        if not test:
+          if metric_class not in self.violation.keys():
+            self.violation[metric_class] = {}
+
+          self.violation[metric_class][metric] = margin
+          violation_count += 1
+    self.violation_count = violation_count
+        
+        
 
 
 def print_options():

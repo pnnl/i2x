@@ -21,5 +21,18 @@
 "remove_large_der": [],
 "explicit_storage": {},
 "explicit_pv": {},
-"redisp_gen": {}
+"redisp_gen": {},
+"metrics":{
+    "voltage": {
+        "vmin": 0.95,
+        "vmax": 1.05,
+        "vdiff": 3.0
+    },
+    "thermal": {
+        "ue": 0
+    },
+    "island":{
+        "pq": [0.3, 0.05]
+    }
+}
 }
