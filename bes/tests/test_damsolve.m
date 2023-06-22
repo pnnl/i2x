@@ -1,6 +1,9 @@
+t = cputime;
+t0 = clock();
+
 define_constants;
 % mpopt = mpoption('verbose', 3, 'out.all', 1, 'most.dc_model', 0, 'opf.dc.solver', 'GLPK');
-mpopt = mpoption('verbose', 1, 'out.all', 0, 'most.dc_model', 1, 'opf.dc.solver', 'GLPK');
+mpopt = mpoption('verbose', 2, 'out.all', 0, 'most.dc_model', 1, 'opf.dc.solver', 'GLPK');
 mpopt = mpoption(mpopt, 'most.uc.run', 1);
 mpopt = mpoption(mpopt, 'glpk.opts.msglev', 3);
 mpopt = mpoption(mpopt, 'glpk.opts.mipgap', 0);
@@ -23,3 +26,6 @@ mdo = most(mdi, mpopt);
 
 ms = most_summary(mdo);
 save('-text', 'msout.txt', 'ms');
+
+elapsed_time = etime (clock(), t0)
+cpu_time = cputime - t
