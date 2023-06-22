@@ -1,4 +1,4 @@
-function mpc = test_damcase
+function mpc = test_case
 %% MATPOWER/MOST base case from PNNL TESP, fncsTSO2.py, model name ercot_8
 mpc.version = '2';
 mpc.baseMVA = 100;

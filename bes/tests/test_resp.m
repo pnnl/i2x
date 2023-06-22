@@ -1,4 +1,4 @@
-function resp = test_damresp
+function resp = test_resp
   [PQ, PV, REF, NONE, BUS_I, BUS_TYPE, PD, QD, GS, BS, BUS_AREA, VM, ...
     VA, BASE_KV, ZONE, VMAX, VMIN, LAM_P, LAM_Q, MU_VMAX, MU_VMIN] = idx_bus;
   [CT_LABEL, CT_PROB, CT_TABLE, CT_TBUS, CT_TGEN, CT_TBRCH, CT_TAREABUS, ...
@@ -30,6 +30,6 @@ function resp = test_damresp
 
     # per answer to https://github.com/MATPOWER/matpower/issues/106
     #   apply scaling to the total of responsive plus unresponsive load
-    unresp = test_damunresp;
+    unresp = test_unresp;
     resp.values = resp.values + unresp.values;
 end

@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
   plt.rcParams['savefig.directory'] = os.getcwd()
 
-  d = mpow.read_matpower_casefile ('test_damcase.m')
+  d = mpow.read_matpower_casefile ('test_case.m')
   mpow.summarize_casefile (d, 'Input Data')
 
   f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP = mpow.read_most_solution('msout.txt')

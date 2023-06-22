@@ -10,14 +10,14 @@ mpopt = mpoption(mpopt, 'glpk.opts.mipgap', 0);
 mpopt = mpoption(mpopt, 'glpk.opts.tolint', 1e-10);
 mpopt = mpoption(mpopt, 'glpk.opts.tolobj', 1e-10);
 
-mpc = loadcase ('test_damcase.m');
+mpc = loadcase ('test_case.m');
 % turn on the wind turbines
 mpc.gen([14,15,16,17,18],GEN_STATUS)=1;
 
-xgd = loadxgendata('test_damxgd.m', mpc);
-profiles = getprofiles('test_damunresp.m');
-profiles = getprofiles('test_damresp.m', profiles);
-profiles = getprofiles('test_damwind.m', profiles);
+xgd = loadxgendata('test_xgd.m', mpc);
+profiles = getprofiles('test_unresp.m');
+profiles = getprofiles('test_resp.m', profiles);
+profiles = getprofiles('test_wind.m', profiles);
 
 nt = size(profiles(1).values, 1);
 

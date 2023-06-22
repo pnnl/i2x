@@ -78,8 +78,8 @@ if __name__ == '__main__':
   plt.close()
 
   # write the load profiles
-  fp = open('test_damunresp.m', 'w')
-  print('function unresp = test_damunresp', file=fp)
+  fp = open('test_unresp.m', 'w')
+  print('function unresp = test_unresp', file=fp)
   mpow.write_most_table_indices(fp)
   print("""  unresp = struct( ...
     'type', 'mpcData', ...
@@ -97,8 +97,8 @@ if __name__ == '__main__':
   print('end', file=fp)
   fp.close()
 
-  fp = open('test_damresp.m', 'w')
-  print('function resp = test_damresp', file=fp)
+  fp = open('test_resp.m', 'w')
+  print('function resp = test_resp', file=fp)
   mpow.write_most_table_indices(fp)
   print("""  resp = struct( ...
     'type', 'mpcData', ...
@@ -116,14 +116,14 @@ if __name__ == '__main__':
   print("""
     # per answer to https://github.com/MATPOWER/matpower/issues/106
     #   apply scaling to the total of responsive plus unresponsive load
-    unresp = test_damunresp;
+    unresp = test_unresp;
     resp.values = resp.values + unresp.values;""", file=fp)
   print('end', file=fp)
   fp.close()
 
   # write the wind plant profiles
-  fp = open('test_damwind.m', 'w')
-  print('function wind = test_damwind', file=fp)
+  fp = open('test_wind.m', 'w')
+  print('function wind = test_wind', file=fp)
   mpow.write_most_table_indices(fp)
   print("""  wind = struct( ...
     'type', 'mpcData', ...
