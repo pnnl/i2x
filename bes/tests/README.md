@@ -10,6 +10,7 @@ This repository contains Matpower and Python scripts for an
 ## Directory of Script and Data Files
 
 - **clean.bat** removes output and temporary files from executing scripts
+- **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
 - **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
 - **msout\_1day\_dcpf.txt** a saved 1-day MOST solution, network model included
 - **msout\_1day\_nopf.txt** a saved 1-day MOST solution, network model excluded
@@ -48,6 +49,23 @@ function all reflect this expected behavior.
 ![Figure 2](test_wind.png)
 
 *Figure 2: Annual output for the largest wind plant, seed=150*
+
+## Changes to MOST for Octave and GLPK
+
+The MOST file *miqps\_glpk.m* has been modified so that MOST handles the iteration limit
+for GLPK.  See Line 9 of *test\_solve.m* for an example. When the iteration limit is
+reached, the solution is sub-optimal but may still be useful. Summarizing the edits:
+
+- Lines 235-239: copy a few non-error GLPK return codes from https://docs.octave.org/interpreter/Linear-Programming.html
+- Line 246: allow the GLPK *msglev* parameter to be specified independently of MATPOWER's *verbose*
+- Lines 336-344: issue warnings if the iteration limit, time limit, or MIP gap tolerance is exceeded. Only the iteration limit seems useful at this time; the others either don't stop GLPK, or interfere with interpretation of the sub-optimal solution.
+
+To use these changes, copy *miqps\_glpk.m* into the MATPOWER installation directory,
+e.g., *c:\\matpower7.1\\mp-opt-model\\lib*. Alternatively, a solver other than GLPK
+may perform better on the following examples. Without an iteration limit, the 3-day unit 
+commitment example does not solve within 24 hours. The 1-day example solves without
+an iteration limit, but the optimal objective function value has been reached within
+20 iterations, within 5 significant digits.
 
 ## 1-day Unit Commitment Example
 
