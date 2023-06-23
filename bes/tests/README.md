@@ -11,8 +11,10 @@ This repository contains Matpower and Python scripts for an
 
 - **clean.bat** removes output and temporary files from executing scripts
 - **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
-- **msout.txt** a saved 3-day MOST solution, for which execution takes up to 1 hour
-- **plot\_most.py** plots the data from *msout.txt*
+- **msout\_1day\_dcpf.txt** a saved 1-day MOST solution, network model included
+- **msout\_1day\_nopf.txt** a saved 1-day MOST solution, network model excluded
+- **msout\_3day\_nopf.txt** a saved 3-day MOST solution, network model excluded
+- **plot\_most.py** plots the data from *msout.txt* or another MOST solution file specified on the command line
 - **prep\_most\_profiles.py** creates load and wind profiles for MOST in *test\_resp.m*, *test\_unresp.m*, and *test\_wind.m*. Requires *wind\_plants.dat*.
 - **test\_case.m** defines the 8-bus system model buses, branches, and generators
 - **test\_resp.m** defines responsive load variation by hour, also called dispatchable load. Overwritten by *prep\_most\_profiles.m*
@@ -47,27 +49,49 @@ function all reflect this expected behavior.
 
 *Figure 2: Annual output for the largest wind plant, seed=150*
 
-## Unit Commitment Example
+## 1-day Unit Commitment Example
 
-Figure 3 shows wind plant output and bus load variation over 3 days. 
-Figure 4 shows the result of a MOST solution of the unit commitment and 
+Figure 3 shows the result of a MOST solution of the unit commitment and economic
+dispatch problem, incorporating network losses and constraints with a DC power
+flow. Figure 4 shows a MOST solution with network losses and constraints
+ignored, i.e., with no power flow analysis. The solution in Figure 3 took
+639 seconds on a two-core laptop computer, while the solution in Figure 4 took only
+10 seconds on the same computer.
+
+![Figure 3](most_1day_dcpf.png)
+
+*Figure 3: Results of one-day unit commitment example in MOST, DC network power flow*
+
+![Figure 4](most_1day_nopf.png)
+
+*Figure 4: Results of one-day unit commitment example in MOST, no network power flow*
+
+## 3-day Unit Commitment Example
+
+Figure 5 shows wind plant output and bus load variation over 3 days.  
+Figure 6 shows the result of a MOST solution of the unit commitment and 
 economic dispatch problem, accounting for these variations. There is no 
-forecasting error in this example, so the results are optimistic. Steps 
-to run this example, assuming that *wind\_plants.dat* exists from the 
-previous section. 
+forecasting error in this example, so the results are optimistic. The 
+solution in Figure 6, ignoring network losses and constraints, took xxx 
+seconds on the two-core laptop computer. With the network included, this 
+problem did not solve within 24 hours on the same computer, using the GLPK 
+toolkit that comes with Octave. One would expect this problem to solve 
+successfully with a commercial solver, as suggested in the MATPOWER 
+manual. Steps to run this example, assuming that *wind\_plants.dat* 
+exists from the earlier section.
 
 - Run *python prep\_most\_profiles.py 72* to create 72-hour load and wind profiles and Figure 3.
 - Start Octave (or MATLAB), then change to this directory.
 - From the Octave command-line, run *test\_solve*. This will take several minutes to complete.
 - When Octave finishes, run *python plot\_most.py* to create Figure 4.
 
-![Figure 3](most_3day_profiles.png)
+![Figure 5](most_3day_profiles.png)
 
-*Figure 3: Three-days of wind and load variation for MOST example*
+*Figure 5: Three-days of wind and load variation for MOST example*
 
-![Figure 4](most_3day.png)
+![Figure 6](most_3day_nopf.png)
 
-*Figure 4: Results of three-day unit commitment example in MOST*
+*Figure 6: Results of three-day unit commitment example in MOST, no network power flow*
 
 Copyright 2022-2023, Battelle Memorial Institute
 

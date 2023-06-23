@@ -1,2 +1,2 @@
-rem del msout.txt
+del msout.txt
 rem del solve*.m

@@ -153,7 +153,7 @@ def next_matrix(fp, var):
   return mat
 
 def read_most_solution(fname='msout.txt'):
-  fp = open('msout.txt', 'r')
+  fp = open(fname, 'r')
 
   f = next_val(fp, 'f', False)
   nb = next_val(fp, 'nb')
