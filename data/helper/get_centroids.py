@@ -19,8 +19,12 @@ def get_centroids():
             centroids_county = pd.read_csv(file).drop(COUNTY_COLS, axis=1)
     # attach state and county columns to for the 'state_county' column
     centroids_county_geoid = centroids_county.rename(columns={"FIPS": "geo_id"})
+    #
     centroids_county_geoid['NAME'] = centroids_county_geoid['NAME'].apply(lambda x: x.split(' ')[0].lower())
+    #
     centroids_county_geoid['state_county'] = centroids_county_geoid.STATE_ABBR.str.cat(centroids_county_geoid.NAME, sep='_')
+    #
     selected_cenrtroids = centroids_county_geoid[['state_county', 'lat', 'lon']]
+    #
     selected_cenrtroids['state_county'] = selected_cenrtroids['state_county'].astype('string') # Change the type from object to string to use the string class.
     return selected_cenrtroids

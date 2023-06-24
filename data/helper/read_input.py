@@ -13,5 +13,8 @@ def read_input(input_str, sheet, header=None, index_col=None):
         if input_str in file.name: # Check if 'SolarTRACE' is in the file name
             xlsx = pd.ExcelFile(file)
             df = pd.read_excel(xlsx, sheet, header=header, index_col=index_col)
+            if header is None and index_col is None:
+                df = pd.read_excel(xlsx, sheet)
             return df
     return None
+
