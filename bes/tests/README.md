@@ -53,8 +53,9 @@ function all reflect this expected behavior.
 ## Changes to MOST for Octave and GLPK
 
 The MOST file *miqps\_glpk.m* has been modified so that MOST handles the iteration limit
-for GLPK.  See Line 9 of *test\_solve.m* for an example. When the iteration limit is
-reached, the solution is sub-optimal but may still be useful. Summarizing the edits:
+for GLPK. See Line 10 of *test\_solve.m* for an example. When the iteration limit is
+reached, the solution is sub-optimal and locational marginal prices (LMP) are not calculated.
+However, the output may still be useful for debugging the case. Summarizing the edits:
 
 - Lines 235-239: copy a few non-error GLPK return codes from https://docs.octave.org/interpreter/Linear-Programming.html
 - Line 246: allow the GLPK *msglev* parameter to be specified independently of MATPOWER's *verbose*
@@ -69,47 +70,53 @@ an iteration limit, but the optimal objective function value has been reached wi
 
 ## 1-day Unit Commitment Example
 
-Figure 3 shows the result of a MOST solution of the unit commitment and economic
-dispatch problem, incorporating network losses and constraints with a DC power
-flow. Figure 4 shows a MOST solution with network losses and constraints
-ignored, i.e., with no power flow analysis. The solution in Figure 3 took
-639 seconds on a two-core laptop computer, while the solution in Figure 4 took only
-10 seconds on the same computer.
+Figure 3 shows the result of a MOST solution of the unit commitment and 
+economic dispatch problem, incorporating network losses and constraints 
+with a DC power flow. There is no forecasting error in this example, so 
+the results are optimistic. Figure 4 shows a MOST solution with network 
+losses and constraints ignored, i.e., with no power flow analysis. The 
+solution in Figure 3 took several minutes on a two-core laptop computer, while 
+the solution in Figure 4 took less than 10 seconds on the same computer.  
 
-![Figure 3](most_1day_dcpf.png)
+![Figure 3](most_day1_dcpf.png)
 
-*Figure 3: Results of one-day unit commitment example in MOST, DC network power flow*
+*Figure 3: Results of day-one unit commitment example in MOST, DC network power flow, f=7.4935e6, Time=269.94s*
 
-![Figure 4](most_1day_nopf.png)
+![Figure 4](most_day1_nopf.png)
 
-*Figure 4: Results of one-day unit commitment example in MOST, no network power flow*
+*Figure 4: Results of day-one unit commitment example in MOST, no network power flow, f=6.7711e6, Time=6.70s*
 
 ## 3-day Unit Commitment Example
 
-Figure 5 shows wind plant output and bus load variation over 3 days.  
-Figure 6 shows the result of a MOST solution of the unit commitment and 
-economic dispatch problem, accounting for these variations. There is no 
-forecasting error in this example, so the results are optimistic. The 
-solution in Figure 6, ignoring network losses and constraints, took xxx 
-seconds on the two-core laptop computer. With the network included, this 
-problem did not solve within 24 hours on the same computer, using the GLPK 
-toolkit that comes with Octave. One would expect this problem to solve 
-successfully with a commercial solver, as suggested in the MATPOWER 
-manual. Steps to run this example, assuming that *wind\_plants.dat* 
-exists from the earlier section.
+Figure 5 shows wind plant output and bus load variation over 3 days. MOST 
+would not solve this as a 3-day unit commitment problem using GLPK, 
+although it may work with a commercial solver, as suggested in the 
+MATPOWER manual. Here, it is solved as a sequence of three 24-hour 
+problems. Steps to run this example, assuming that *wind\_plants.dat* 
+exists from the earlier section.  
 
-- Run *python prep\_most\_profiles.py 72* to create 72-hour load and wind profiles and Figure 3.
+- Run *python prep\_most\_profiles.py 0 24* to create the 24-hour load and wind profiles for day 1, beginning at hour 0.
 - Start Octave (or MATLAB), then change to this directory.
-- From the Octave command-line, run *test\_solve*. This will take several minutes to complete.
-- When Octave finishes, run *python plot\_most.py* to create Figure 4.
+- From the Octave command-line, run *test\_solve*.
+- When Octave finishes, run *python plot\_most.py*; results are the same as in Figure 3.
+- Run *python prep\_most\_profiles.py 24 24* to create the 24-hour load and wind profiles for day 2, beginning at hour 24.
+- From the Octave command-line, run *test\_solve*.
+- When Octave finishes, run *python plot\_most.py* to create Figure 6. Compared to Figure 3, the total cost (objective function) and LMPs are lower, while the responsive and total load served are higher, because the wind output his higher during day two.
+- Run *python prep\_most\_profiles.py 24 24* to create the 24-hour load and wind profiles for day 3, beginning at hour 48.
+- From the Octave command-line, run *test\_solve*.
+- When Octave finishes, run *python plot\_most.py* to create Figure 7.
 
 ![Figure 5](most_3day_profiles.png)
 
 *Figure 5: Three-days of wind and load variation for MOST example*
 
-![Figure 6](most_3day_nopf.png)
+![Figure 6](most_day2_dcpf.png)
 
-*Figure 6: Results of three-day unit commitment example in MOST, no network power flow*
+*Figure 6: Results of day-two unit commitment example in MOST, DC network power flow, f=4.65423e6, Time=103.02s*
+
+![Figure 7](most_day3_dcpf.png)
+
+*Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=8.20573e6, Time=54.57s*
 
 Copyright 2022-2023, Battelle Memorial Institute
 

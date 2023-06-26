@@ -2,6 +2,7 @@
 # file: wind_to_most.py
 # converts output from 5 synthetic wind plants to a MOST profile function
 # also prepares the responsive and fixed load profile functions
+# usage 'python prep_most_profiles.py [start=0] [hours=24]'
 
 import numpy as np
 import mpow_utilities as mpow
@@ -12,11 +13,15 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
   plt.rcParams['savefig.directory'] = os.getcwd()
-  hours = 72
+  start = 0
+  hours = 24
   load_scale = 1.0
   resp_scale = 1.0 / 3.0
   if len(sys.argv) > 1:
-    hours = int(sys.argv[1])
+    start = int(sys.argv[1])
+    if len(sys.argv) > 2:
+      hours = int(sys.argv[2])
+  end = start + hours
   wind_plants = np.array ([99.8, 1657.0, 2242.2, 3562.2, 8730.3])
   wind_plant_rows = [14, 15, 16, 17, 18]
   wind_plant_buses = [1, 3, 4, 6, 7]
@@ -36,20 +41,20 @@ if __name__ == '__main__':
   np.set_printoptions(precision=3)
   dat = np.loadtxt ('wind_plants.dat', delimiter=',')
   nwindpoints = np.shape(dat)[0]
-  if hours > nwindpoints:
-    print ('ERROR: requested hours={:d} is more than available wind hours={:d}'.format(hours, nwindpoints))
+  if end > nwindpoints:
+    print ('ERROR: requested last hour={:d} is more than available wind hours={:d}'.format(end, nwindpoints))
     print ('Modify and run wind_plants.py to create enough synthetic wind data')
     quit()
   else:
-    wind = dat[:hours,1:]
+    wind = dat[start:end,1:]
     print('wind data shape', np.shape(dat), 'using', np.shape(wind))
 
   # pad and plot the load profiles to cover requested number of hours
   fixed_load = base_load
-  while np.shape(fixed_load)[1] < hours:
+  while np.shape(fixed_load)[1] < end:
     fixed_load = np.hstack((fixed_load, base_load))
     print ('  stacking load shapes to', np.shape(fixed_load))
-  fixed_load = fixed_load[:,:hours]
+  fixed_load = fixed_load[:,start:end]
   print ('using fixed load shape', np.shape(fixed_load))
   responsive_load = resp_scale * fixed_load
 
@@ -57,7 +62,7 @@ if __name__ == '__main__':
           'gold', 'pink', 'tan', 'peru', 'darkgray']
 
   fig, ax = plt.subplots(1, 2, figsize=(18,10), constrained_layout=True)
-  fig.suptitle ('MOST Profiles for {:d} Hours, Load Scale = {:.3f}, Resp/Fixed = {:.3f}'.format (hours, load_scale, resp_scale))
+  fig.suptitle ('MOST Profiles for {:d} Hours from {:d}-{:d}, Load Scale = {:.3f}, Resp/Fixed = {:.3f}'.format (hours, start, end, load_scale, resp_scale))
   ax[0].set_title('Wind Plant Output')
   ax[1].set_title('Fixed Bus Loads')
   h = np.linspace (0, hours-1, hours)
