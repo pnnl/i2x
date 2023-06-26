@@ -1,2 +1,3 @@
 del msout.txt
-rem del solve*.m
+del solve*.m
+del uc_*.m

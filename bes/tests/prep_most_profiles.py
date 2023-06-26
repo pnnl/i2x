@@ -36,13 +36,7 @@ if __name__ == '__main__':
     print('wind data shape', np.shape(dat), 'using', np.shape(wind))
 
   # pad and plot the load profiles to cover requested number of hours
-  fixed_load = mpow.ercot8_base_load
-  while np.shape(fixed_load)[1] < end:
-    fixed_load = np.hstack((fixed_load, base_load))
-    print ('  stacking load shapes to', np.shape(fixed_load))
-  fixed_load = fixed_load[:,start:end]
-  print ('using fixed load shape', np.shape(fixed_load))
-  responsive_load = resp_scale * fixed_load
+  fixed_load, responsive_load = mpow.ercot_daily_loads (start, end, resp_scale)
 
   cset = ['red', 'blue', 'green', 'magenta', 'cyan', 'orange', 'lime', 'silver',
           'gold', 'pink', 'tan', 'peru', 'darkgray']

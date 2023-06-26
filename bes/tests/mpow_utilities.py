@@ -2,7 +2,13 @@
 # file: mpow_utilities.py
 # reads MATPOWER and MOST cases/results into Python
 
+# sample code from TESP that automates Matpower in Octave
+# https://github.com/pnnl/tesp/blob/develop/examples/capabilities/ercot/case8/tso_most.py
+
 import numpy as np
+import subprocess
+import sys
+import os
 
 # Matpower column numbers
 
@@ -122,6 +128,15 @@ ercot8_base_load = np.array ([[7182.65, 6831.0, 6728.83, 6781.1, 6985.44, 7291.9
 [2650.16, 2535.62, 2503.87, 2529.95, 2610.47, 2727.27, 2864.48, 3034.58, 3187.67, 3315.82, 3425.81, 3527.87, 3636.74, 3766.01, 3911.17, 4055.18, 4170.85, 4212.81, 4159.51, 4043.84, 3947.45, 3827.25, 3612.92, 3213.76],
 [56.55, 51.95, 50.65, 50.57, 51.68, 53.72, 56.25, 59.4, 62.76, 65.57, 67.97, 70.06, 72.15, 74.53, 77.34, 80.29, 83.0, 84.73, 84.61, 82.72, 80.5, 78.53, 75.32, 69.74]])
 
+def run_matpower_and_wait (fscript):
+  if sys.platform == 'win32':
+    octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
+  else:
+    octave = 'octave'
+  cmdline = '{:s} {:s}'.format(octave, fscript)
+  print ('running', cmdline)
+  proc = subprocess.Popen(cmdline, shell=True)
+  proc.wait()
 
 ###################################################
 # from tesp_support package, parse_msout.py
@@ -336,10 +351,10 @@ def write_responsive_load_profile (root, rows, data, scale, fixed_root):
     mvals = vals.replace(',', ';')
     print("""  resp.values(:, 1, {:d}) = scale * {:s};""".format(rownum, mvals), file=fp)
   print("""
-    # per answer to https://github.com/MATPOWER/matpower/issues/106
-    #   apply scaling to the total of responsive plus unresponsive load
-    unresp = {:s};
-    resp.values = resp.values + unresp.values;""".format(fixed_root), file=fp)
+  # per answer to https://github.com/MATPOWER/matpower/issues/106
+  #   apply scaling to the total of responsive plus unresponsive load
+  unresp = {:s};
+  resp.values = resp.values + unresp.values;""".format(fixed_root), file=fp)
   print('end', file=fp)
   fp.close()
 
@@ -361,6 +376,129 @@ def write_wind_profile (root, rows, data):
   print('end', file=fp)
   fp.close()
 
+# minup, mindown
+def get_plant_min_up_down_hours(fuel, gencosts, gen):
+  if fuel == 'nuclear':
+    return 24, 24
+  if fuel == 'coal':
+    return 12, 12
+  if fuel == 'gas':
+    if gencosts[4] < 57.0:
+      return 6, 6
+  return 1, 1
 
+# paPrice, naPrice, pdPrice, ndPrice, plfPrice, nlfPrice
+def get_plant_prices(fuel, gencosts, gen):
+  return 0.0001, 0.0001, 0.0001, 0.0001, 0.1, 0.1
+
+def get_plant_reserve(fuel, gencosts, gen):
+  if len(fuel) < 1:
+    return 10000.0
+  return abs(float(gen[PMAX]))
+
+def get_plant_commit_key(fuel, gencosts, gen, use_wind):
+  if len(fuel) > 0:
+    if fuel == 'wind':
+      if use_wind:
+        return 1
+      else:
+        return -1
+    elif fuel == 'dl':
+      return 2
+    else:
+      return 1
+  return 2
+
+def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True):
+  fp = open('{:s}.m'.format(root), 'w')
+  print("""function [xgd_table] = {:s} (mpc)
+  xgd_table.colnames = {{
+    'CommitKey', ...
+    'InitialState',...
+    'MinUp', ...
+    'MinDown', ...
+    'PositiveActiveReservePrice', ...
+    'PositiveActiveReserveQuantity', ...
+    'NegativeActiveReservePrice', ...
+    'NegativeActiveReserveQuantity', ...
+    'PositiveActiveDeltaPrice', ...
+    'NegativeActiveDeltaPrice', ...
+    'PositiveLoadFollowReservePrice', ...
+    'PositiveLoadFollowReserveQuantity', ...
+    'NegativeLoadFollowReservePrice', ...
+    'NegativeLoadFollowReserveQuantity', ...
+  }};
+  xgd_table.data = [""".format(root), file=fp)
+  print ('gen', gen)
+  print ('gencost', gencost)
+  print ('genfuel', genfuel)
+  print ('unit_states', unit_state)
+  ngen = 0
+  nwind = 0
+  nresp = 0
+  for i in range(len(genfuel)):
+    if genfuel[i] == 'wind':
+      nwind += 1
+    elif genfuel[i] == 'dl':
+      nresp += 1
+    else:
+      ngen += 1
+    commit = get_plant_commit_key(genfuel[i], gencost[i], gen[i], use_wind)
+    reserve = get_plant_reserve(genfuel[i], gencost[i], gen[i])
+    minup, mindown = get_plant_min_up_down_hours(genfuel[i], gencost[i], gen[i])
+    paPrice, naPrice, pdPrice, ndPrice, plfPrice, nlfPrice = get_plant_prices(genfuel[i], gencost[i], gen[i])
+    print(' {:2d} {:4d} {:2d} {:2d} {:f} {:.2f} {:f} {:.2f} {:f} {:f} {:f} {:.2f} {:f} {:.2f};'
+        .format(commit, int(unit_state[i]), minup, mindown, paPrice, reserve, naPrice, reserve,
+            pdPrice, ndPrice, plfPrice, reserve, nlfPrice, reserve), file=fp)
+  print('];', file=fp)
+  print('end', file=fp)
+  fp.close()
+  print ('configured {:d} generators, {:d} wind plants, {:d} responsive loads'.format(ngen, nwind, nresp))
+
+def ercot_daily_loads (start, end, resp_scale):
+  # pad the load profiles to cover requested number of hours
+  fixed_load = ercot8_base_load
+  while np.shape(fixed_load)[1] < end:
+    fixed_load = np.hstack((fixed_load, base_load))
+    print ('  stacking load shapes to', np.shape(fixed_load))
+  fixed_load = fixed_load[:,start:end]
+  print ('using fixed load shape', np.shape(fixed_load))
+  responsive_load = resp_scale * fixed_load
+  return fixed_load, responsive_load
+
+def write_matpower_solve_file (root, load_scale):
+  fscript = 'solve{:s}.m'.format(root)
+  fsolved = '{:s}solved.m'.format(root)
+  fsummary = '{:s}summary.txt'.format(root)
+# fbus = '{:s}bus.txt'.format(root.lower())
+# fgen = '{:s}gen.txt'.format(root.lower())
+# fbranch = '{:s}branch.txt'.format(root.lower())
+  fp = open (fscript, 'w')
+  print ("""clear;""", file=fp)
+  print ("""cd {:s}""".format (os.getcwd()), file=fp)
+  print ("""mpc = loadcase({:s});""".format (root), file=fp)
+# print ("""case_info(mpc);""", file=fp)
+  print ("""mpc = scale_load({:.5f},mpc);""".format (load_scale), file=fp)
+  print ("""opt1 = mpoption('out.all', 0, 'verbose', 0);""", file=fp)
+  print ("""results=runpf(mpc, opt1);""", file=fp)
+  print ("""define_constants;""", file=fp)
+# print ("""codes=matpower_gen_type(results.gentype);""", file=fp)
+# print ("""mgen=[results.gen(:,GEN_BUS),results.gen(:,PG),results.gen(:,QG),codes];""", file=fp)
+# print ("""mbus=[results.bus(:,VM),results.bus(:,VA),results.bus(:,PD),results.bus(:,QD)];""", file=fp)
+# print ("""mbranch=[results.branch(:,F_BUS),results.branch(:,T_BUS),results.branch(:,TAP),results.branch(:,SHIFT),results.branch(:,PF),results.branch(:,QF),results.branch(:,PT),results.branch(:,QT)];""", file=fp)
+# print ("""csvwrite('{:s}',mgen);""".format (fgen), file=fp)
+# print ("""csvwrite('{:s}',mbus);""".format (fbus), file=fp)
+# print ("""csvwrite('{:s}',mbranch);""".format (fbranch), file=fp)
+  print ("""opt2 = mpoption('out.sys_sum', 1, 'out.bus', 0, 'out.branch', 0);""", file=fp)
+  print ("""fd = fopen('{:s}', 'w');""".format (fsummary), file=fp)
+  print ("""fprintf(fd,'results.success = %d\\n', results.success);""", file=fp)
+  print ("""fprintf(fd,'results.iterations = %d\\n', results.iterations);""", file=fp)
+  print ("""fprintf(fd,'results.et = %.4f\\n', results.et);""", file=fp)
+  print ("""printpf(results, fd, opt2);""", file=fp)
+  print ("""fclose(fd);""", file=fp)
+  print ("""savecase('{:s}', results);""".format (fsolved), file=fp)
+  print ("""exit;""", file=fp)
+  fp.close()
+  return fscript, fsolved, fsummary
 
 

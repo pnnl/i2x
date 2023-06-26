@@ -11,6 +11,7 @@ This repository contains Matpower and Python scripts for an
 
 - **clean.bat** removes output and temporary files from executing scripts
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
+- **most\_3day.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
 - **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
 - **msout\_1day\_dcpf.txt** a saved 1-day MOST solution, network model included
 - **msout\_1day\_nopf.txt** a saved 1-day MOST solution, network model excluded
@@ -119,6 +120,8 @@ exists from the earlier section.
 *Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=8.20573e6, Time=54.57s*
 
 ## 3-day Unit Commitment Example: Scripted Solution
+
+- Run *python most\_3day.py*
 
 
 Copyright 2022-2023, Battelle Memorial Institute
