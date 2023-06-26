@@ -7,8 +7,18 @@ define_constants;
 mpopt = mpoption('verbose', 0, 'out.all', 0, 'most.dc_model', 0, 'opf.dc.solver', 'GLPK');
 mpopt = mpoption(mpopt, 'most.uc.run', 1);
 mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);
-mpopt = mpoption(mpopt, 'glpk.opts.outfrq', 50);
-mpopt = mpoption(mpopt, 'glpk.opts.itlim', 1000);
+mpopt = mpoption(mpopt, 'glpk.opts.itlim', 10);
+
+%% see https://docs.octave.org/interpreter/Linear-Programming.html for GLPK options
+%% these do not allow GLPK to solve a 72-day unit commitment problem on the ERCOT 8-bus network,
+%%  so it will be solved in a sequence of 24-hour problems from uc_days.py
+%% mpopt = mpoption(mpopt, 'glpk.opts.outfrq', 50);
+%% mpopt = mpoption(mpopt, 'glpk.opts.lpsolver', 1);  %% default 1, range 1..2
+%% mpopt = mpoption(mpopt, 'glpk.opts.btrack', 4);  %% default 4, range 1..4
+%% mpopt = mpoption(mpopt, 'glpk.opts.branch', 4);  %% default 4, range 1..5
+%% mpopt = mpoption(mpopt, 'glpk.opts.price', 34);  %% default 34, range 17, 34
+%% mpopt = mpoption(mpopt, 'glpk.opts.dual', 1);  %% default 1, range 1..3
+%% mpopt = mpoption(mpopt, 'glpk.opts.scale', 16);  %% default 16, range 1, 16, 32, 64, 128, bitor
 %% mipgap is either not passed to GLPK or does not affect this example
 %% tmlim will stop the solution in GLPK, but not return usable output                                               
 %% mpopt = mpoption(mpopt, 'glpk.opts.tmlim', 60000);
@@ -35,6 +45,11 @@ mdo = most(mdi, mpopt);
 ms = most_summary(mdo);
 save('-text', 'msout.txt', 'ms');
 
-elapsed_time = etime (clock(), t0)
-cpu_time = cputime - t
-ms.f
+elapsed_time = etime (clock(), t0);
+cpu_time = cputime - t;
+printf('Objective Function Value = %.5e\n', ms.f);
+printf('  Elapsed Time=%.4f\n', elapsed_time);
+printf('  CPU Time=    %.4f\n', cpu_time);
+printf('  Setup Time=  %.4f\n', mdo.results.SetupTime);
+printf('  Solve Time=  %.4f\n', mdo.results.SolveTime);
+
