@@ -86,7 +86,7 @@ the solution in Figure 4 took less than 10 seconds on the same computer.
 
 *Figure 4: Results of day-one unit commitment example in MOST, no network power flow, f=6.7711e6, Time=6.70s*
 
-## 3-day Unit Commitment Example
+## 3-day Unit Commitment Example: Separate Days
 
 Figure 5 shows wind plant output and bus load variation over 3 days. MOST 
 would not solve this as a 3-day unit commitment problem using GLPK, 
@@ -101,10 +101,10 @@ exists from the earlier section.
 - When Octave finishes, run *python plot\_most.py*; results are the same as in Figure 3.
 - Run *python prep\_most\_profiles.py 24 24* to create the 24-hour load and wind profiles for day 2, beginning at hour 24.
 - From the Octave command-line, run *test\_solve*.
-- When Octave finishes, run *python plot\_most.py* to create Figure 6. Compared to Figure 3, the total cost (objective function) and LMPs are lower, while the responsive and total load served are higher, because the wind output his higher during day two.
+- When Octave finishes, run *python plot\_most.py* to create Figure 6. Compared to Figure 3, the total cost (objective function) and average LMPs are lower, while the responsive and total load served are higher, because the wind output is higher during day two.
 - Run *python prep\_most\_profiles.py 24 24* to create the 24-hour load and wind profiles for day 3, beginning at hour 48.
 - From the Octave command-line, run *test\_solve*.
-- When Octave finishes, run *python plot\_most.py* to create Figure 7.
+- When Octave finishes, run *python plot\_most.py* to create Figure 7. Compared to Figure 6, wind power is curtailed for a longer time on day 3, so the total cost is higher and the time of high LMPs is longer.
 
 ![Figure 5](most_3day_profiles.png)
 
@@ -117,6 +117,9 @@ exists from the earlier section.
 ![Figure 7](most_day3_dcpf.png)
 
 *Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=8.20573e6, Time=54.57s*
+
+## 3-day Unit Commitment Example: Scripted Solution
+
 
 Copyright 2022-2023, Battelle Memorial Institute
 
