@@ -118,6 +118,20 @@ ercot8_wind_plant_rows = [14, 15, 16, 17, 18]
 ercot8_wind_plant_buses = [1, 3, 4, 6, 7]
 ercot8_load_rows = [1, 2, 3, 4, 5, 6, 7, 8]
 
+# read the LARIMA model profiles from a data file, col0=hour, col1..n=MW output
+def ercot_wind_profile (fname, start, end):
+  wind = []
+  np.set_printoptions(precision=3)
+  dat = np.loadtxt (fname, delimiter=',')
+  nwindpoints = np.shape(dat)[0]
+  if end > nwindpoints:
+    print ('ERROR: requested last hour={:d} is more than available wind hours={:d}'.format(end, nwindpoints))
+    print ('Modify and run wind_plants.py to create enough synthetic wind data')
+  else:
+    wind = np.transpose(dat[start:end,1:])
+    print ('Wind data shape', np.shape(dat), 'transformed to', np.shape(wind))
+  return wind
+
 # archived load data from TESP example of ERCOT8
 ercot8_base_load = np.array ([[7182.65, 6831.0, 6728.83, 6781.1, 6985.44, 7291.94, 7650.72, 8104.54, 8522.71, 8874.36, 9173.74, 9446.98, 9736.85, 10078.99, 10466.28, 10855.94, 11179.08, 11319.26, 11200.46, 10893.96, 10630.22, 10326.1, 9781.99, 8810.21],
 [7726.69, 6840.09, 6637.09, 6603.94, 6719.95, 6972.67, 7295.82, 7693.55, 8140.99, 8518.01, 8837.02, 9114.6, 9383.9, 9686.33, 10046.77, 10436.22, 10800.8, 11053.52, 11078.38, 10862.95, 10560.51, 10311.93, 9930.77, 9255.46],

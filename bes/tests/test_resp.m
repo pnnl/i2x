@@ -28,8 +28,8 @@ function resp = test_resp
   resp.values(:, 1, 7) = scale * [883.39; 845.21; 834.62; 843.32; 870.16; 909.09; 954.83; 1011.53; 1062.56; 1105.27; 1141.94; 1175.96; 1212.25; 1255.34; 1303.72; 1351.73; 1390.28; 1404.27; 1386.5; 1347.95; 1315.82; 1275.75; 1204.31; 1071.25];
   resp.values(:, 1, 8) = scale * [18.85; 17.32; 16.88; 16.86; 17.23; 17.91; 18.75; 19.8; 20.92; 21.86; 22.66; 23.35; 24.05; 24.84; 25.78; 26.76; 27.67; 28.24; 28.2; 27.57; 26.83; 26.18; 25.11; 23.25];
 
-    # per answer to https://github.com/MATPOWER/matpower/issues/106
-    #   apply scaling to the total of responsive plus unresponsive load
-    unresp = test_unresp;
-    resp.values = resp.values + unresp.values;
+  # per answer to https://github.com/MATPOWER/matpower/issues/106
+  #   apply scaling to the total of responsive plus unresponsive load
+  unresp = test_unresp;
+  resp.values = resp.values + unresp.values;
 end

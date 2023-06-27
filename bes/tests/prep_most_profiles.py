@@ -23,17 +23,11 @@ if __name__ == '__main__':
       hours = int(sys.argv[2])
   end = start + hours
 
-  # read the LARIMA model profiles, col0=hour, col1..n=MW output
-  np.set_printoptions(precision=3)
-  dat = np.loadtxt ('wind_plants.dat', delimiter=',')
-  nwindpoints = np.shape(dat)[0]
-  if end > nwindpoints:
-    print ('ERROR: requested last hour={:d} is more than available wind hours={:d}'.format(end, nwindpoints))
-    print ('Modify and run wind_plants.py to create enough synthetic wind data')
+  # read the hourly wind plant output into rows
+  wind = mpow.ercot_wind_profile ('wind_plants.dat', start, end)
+  if len(wind) == 0:
+    print ('failed to read wind data')
     quit()
-  else:
-    wind = dat[start:end,1:]
-    print('wind data shape', np.shape(dat), 'using', np.shape(wind))
 
   # pad and plot the load profiles to cover requested number of hours
   fixed_load, responsive_load = mpow.ercot_daily_loads (start, end, resp_scale)
@@ -49,7 +43,7 @@ if __name__ == '__main__':
   ld = np.transpose(fixed_load)
   for i in range(len(mpow.ercot8_wind_plant_buses)):
     bus = mpow.ercot8_wind_plant_buses[i]
-    ax[0].plot (h, wind[:,i], label='Bus {:d}'.format(bus), color=cset[bus-1])
+    ax[0].plot (h, wind[i,:], label='Bus {:d}'.format(bus), color=cset[bus-1])
   for i in range(len(mpow.ercot8_load_rows)):
     bus = mpow.ercot8_load_rows[i]
     ax[1].plot (h, ld[:,i], label='Bus {:d}'.format(bus), color=cset[bus-1])
@@ -65,5 +59,5 @@ if __name__ == '__main__':
   # write the load and wind profiles
   mpow.write_unresponsive_load_profile ('test_unresp', mpow.ercot8_load_rows, fixed_load[:,:hours], load_scale)
   mpow.write_responsive_load_profile ('test_resp', mpow.ercot8_load_rows, responsive_load[:,:hours], load_scale, 'test_unresp')
-  mpow.write_wind_profile ('test_wind', mpow.ercot8_wind_plant_rows, np.transpose(wind[:hours,:]))
+  mpow.write_wind_profile ('test_wind', mpow.ercot8_wind_plant_rows, wind[:,:hours])
 
