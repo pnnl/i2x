@@ -44,13 +44,14 @@ if __name__ == '__main__':
   d = mpow.read_matpower_casefile ('test_case.m')
   mpow.summarize_casefile (d, 'Input Data')
 
-  f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP = mpow.read_most_solution(fname)
+  f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP, muF = mpow.read_most_solution(fname)
   print ('f={:.4e}, nb={:d}, ng={:d}, nl={:d}, ns={:d}, nt={:d}, nj_max={:d}, nc_max={:d}'.format(f, nb, ng, nl, ns, nt, nj_max, nc_max))
   print ('Pg', np.shape(Pg))
   print ('Pd', np.shape(Pd))
   print ('Pf', np.shape(Pf))
   print ('u', np.shape(u))
   print ('lamP', np.shape(lamP))
+  print ('muF', np.shape(muF))
 
   np.set_printoptions(precision=3)
   h = np.linspace (1.0, 24.0, num=nt) - 0.5

@@ -218,7 +218,7 @@ def read_most_solution(fname='msout.txt'):
   muF = next_matrix(fp, 'muF')
   fp.close()
 
-  return f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP
+  return f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP, muF
 ###################################################
 
 def read_matpower_array(fp, bStrings):
@@ -515,4 +515,50 @@ def write_matpower_solve_file (root, load_scale):
   fp.close()
   return fscript, fsolved, fsummary
 
+def write_most_solve_file (root, solver='GLPK'):
+  fscript = 'solve_{:s}.m'.format(root)
+  fsummary = '{:s}_summary.txt'.format(root)
+  fp = open(fscript, 'w')
+  print("""clear;""", file=fp)
+  print("""define_constants;""", file=fp)
+  print("""mpopt = mpoption('verbose', 0, 'out.all', 0, 'most.dc_model', 1, 'most.solver', '{:s}');""".format(solver), file=fp)
+  print("""mpopt = mpoption(mpopt, 'most.uc.run', 1);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
+  print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
+  print("""xgd = loadxgendata('{:s}_xgd.m', mpc);""".format(root), file=fp)
+  print("""profiles = getprofiles('{:s}_unresp.m');""".format(root), file=fp)
+  print("""profiles = getprofiles('{:s}_resp.m', profiles);""".format(root), file=fp)
+  print("""profiles = getprofiles('{:s}_wind.m', profiles);""".format(root), file=fp)
+  print("""nt = size(profiles(1).values, 1);""", file=fp)
+  print("""mdi = loadmd(mpc, nt, xgd, [], [], profiles);""", file=fp)
+  print("""mdo = most(mdi, mpopt);""", file=fp)
+  print("""ms = most_summary(mdo);""", file=fp)
+  print("""save('-text', '{:s}', 'ms');""".format(fsummary), file=fp)
+  print("""total_time = mdo.results.SolveTime + mdo.results.SetupTime""", file=fp)
+  fp.close()
+  return fscript, fsummary
+
+def final_unit_state_history (row):
+  hours_run = np.sum(row)
+  retval = row[-1]
+  if (hours_run > 23.5) and (row[-1] > 0.0):
+    retval += 24.0
+  elif (hours_run < 0.5) and (row[-1] < 0.0):
+    retval -= 24.0
+  else:  # the unit turned ON or OFF sometime during the day
+    if row[-1] > 0.5:  # will end the day ON, how many hours will it have been ON?
+      retval = 1
+      for j in range(22, -1, -1):
+        if row[j] > 0.0:
+          retval += 1.0
+        else:
+          break
+    else:  # will end the day OFF, how many hours will it have been OFF?
+      retval = -1
+      for j in range(22, -1, -1):
+        if row[j] < 0.5:
+          retval -= 1
+        else:
+          break
+  return retval
 

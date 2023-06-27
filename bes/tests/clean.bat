@@ -1,3 +1,7 @@
 del msout.txt
 del solve*.m
-del uc_*.m
+del uc_resp.m
+del uc_unresp.m
+del uc_wind.m
+del uc_xgd.m
+

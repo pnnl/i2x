@@ -35,13 +35,49 @@ if __name__ == '__main__':
   if len(sys.argv) > 1:
     load_scale = float(sys.argv[1])
   d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))
-  mpow.summarize_casefile (d, 'Input')
-  unit_states = np.ones(len(d['gen'])) * 24.0
-  mpow.write_xgd_function ('uc_xgd', d['gen'], d['gencost'], d['genfuel'], unit_states)
+#  mpow.summarize_casefile (d, 'Input')
 
-  fixed_load, responsive_load = mpow.ercot_daily_loads (start=0, end=24, resp_scale=1.0/3.0)
-  mpow.write_unresponsive_load_profile ('uc_unresp', mpow.ercot8_load_rows, fixed_load[:,:24], load_scale)
-  mpow.write_responsive_load_profile ('uc_resp', mpow.ercot8_load_rows, responsive_load[:,:24], load_scale, 'uc_unresp')
+  # set up and run day 1
+# unit_states = np.ones(len(d['gen'])) * 24.0
+# mpow.write_xgd_function ('uc_xgd', d['gen'], d['gencost'], d['genfuel'], unit_states)
+# fixed_load, responsive_load = mpow.ercot_daily_loads (start=0, end=24, resp_scale=1.0/3.0)
+# wind = mpow.ercot_wind_profile ('wind_plants.dat', 0, 24)
+# mpow.write_unresponsive_load_profile ('uc_unresp', mpow.ercot8_load_rows, fixed_load[:,:24], load_scale)
+# mpow.write_responsive_load_profile ('uc_resp', mpow.ercot8_load_rows, responsive_load[:,:24], load_scale, 'uc_unresp')
+# mpow.write_wind_profile ('uc_wind', mpow.ercot8_wind_plant_rows, wind[:,:24])
+  fscript, fsummary = mpow.write_most_solve_file ('uc')
+  print ('Running {:s} and saving results to {:s}'.format (fscript, fsummary))
+# mpow.run_matpower_and_wait (fscript)
+
+  # analyze day 1
+  f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP, muF = mpow.read_most_solution(fsummary)
+  print ('f={:.4e}, nb={:d}, ng={:d}, nl={:d}, ns={:d}, nt={:d}, nj_max={:d}, nc_max={:d}'.format(f, nb, ng, nl, ns, nt, nj_max, nc_max))
+  print ('Pg', np.shape(Pg), Pg.dtype)
+  print ('Pd', np.shape(Pd), Pd.dtype)
+  print ('Pf', np.shape(Pf), Pf.dtype)
+  print ('u', np.shape(u), u.dtype)
+  print ('lamP', np.shape(lamP), lamP.dtype)
+  print ('muF', np.shape(muF), muF.dtype)
+
+  bus = d['bus']
+  print ('Bus Summary')
+  print ('Idx  MaxLMP  AvgLMP')
+  for i in range (nb):
+    print ('{:3d} {:7.2f} {:7.2f}'.format(i+1, np.max(lamP[i,:]), np.mean(lamP[i,:])))
+
+  br = d['branch']
+  print ('Branch Summary')
+  print ('Idx Frm  To  Rating  PkFlow Avg muF')
+  for i in range (nl):
+    print ('{:3d} {:3d} {:3d} {:7.1f} {:7.1f} {:7.2f}'.format(i+1, int(float(br[i][mpow.F_BUS])), int(float(br[i][mpow.T_BUS])), 
+                                                              float(br[i][mpow.RATE_A]), np.max(np.abs(Pf[i,:])), 
+                                                              np.mean(muF[i,:])))
+  gen = d['gen']
+  print ('Generator States')
+  print ('Idx  At Fuel    Now Fnl History')
+  for i in range (ng):
+    fnl = mpow.final_unit_state_history (u[i])
+    print ('{:3d} {:3d} {:7s} {:3d} {:3d}'.format(i+1, int(float (gen[i][mpow.GEN_BUS])), d['genfuel'][i], int(u[i,-1]), int(fnl)), u[i])
 
 #  quit()
 

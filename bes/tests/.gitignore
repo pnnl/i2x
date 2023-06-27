@@ -1,3 +1,7 @@
 archive
 msout.txt
-uc_*.m
+uc_resp.m
+uc_unresp.m
+uc_wind.m
+uc_xgd.m
+
