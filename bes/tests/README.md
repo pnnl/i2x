@@ -13,9 +13,10 @@ This repository contains Matpower and Python scripts for an
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
 - **most\_mday.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
 - **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
-- **msout\_1day\_dcpf.txt** a saved 1-day MOST solution, network model included
-- **msout\_1day\_nopf.txt** a saved 1-day MOST solution, network model excluded
-- **msout\_3day\_nopf.txt** a saved 3-day MOST solution, network model excluded
+- **msout\_day1\_dcpf.txt** a saved MOST solution for day 1, network model included
+- **msout\_day1\_nopf.txt** a saved MOST solution for day 1, network model excluded
+- **msout\_day2\_dcpf.txt** a saved MOST solution for day 2, network model included
+- **msout\_day3\_dcpf.txt** a saved MOST solution for day 3, network model included
 - **plot\_mday.py** plots the data created from *most\_mday.py*
 - **plot\_most.py** plots the data from *msout.txt* or another MOST solution file specified on the command line
 - **prep\_most\_profiles.py** creates load and wind profiles for MOST in *test\_resp.m*, *test\_unresp.m*, and *test\_wind.m*. Requires *wind\_plants.dat*.
@@ -39,8 +40,8 @@ This repository contains Matpower and Python scripts for an
 
 Figure 1 shows a snapshot of three days hourly wind plant output for use 
 in MOST. The system-level capacity factor (CF) in this three-day window 
-is 0.4873 on a total capacity of 16291.50 MW, with a coefficient of 
-variation (COV)=0.4366. Figure 2 shows a full year of hourly output from 
+is 0.4979 on a total capacity of 16309.30 MW, with a coefficient of 
+variation (COV)=0.3803. Figure 2 shows a full year of hourly output from 
 the largest wind plant, using the same seed value for randomization. The 
 CF over the whole year is less than for the three-day window in Figure 1. 
 Wind plant output varies, but is correlated with recent values in the time 
@@ -84,15 +85,16 @@ with a DC power flow. There is no forecasting error in this example, so
 the results are optimistic. Figure 4 shows a MOST solution with network 
 losses and constraints ignored, i.e., with no power flow analysis. The 
 solution in Figure 3 took several minutes on a two-core laptop computer, while 
-the solution in Figure 4 took less than 10 seconds on the same computer.  
+the solution in Figure 4 took less than 10 seconds on the same computer. However,
+there is no differentiation between bus LMPs in Figure 4.
 
 ![Figure 3](most_day1_dcpf.png)
 
-*Figure 3: Results of day-one unit commitment example in MOST, DC network power flow, f=7.4935e6, Time=269.94s*
+*Figure 3: Results of day-one unit commitment example in MOST, DC network power flow, f=7.17020e6, Time=250.46s*
 
 ![Figure 4](most_day1_nopf.png)
 
-*Figure 4: Results of day-one unit commitment example in MOST, no network power flow, f=6.7711e6, Time=6.70s*
+*Figure 4: Results of day-one unit commitment example in MOST, no network power flow, f=6.36002e6, Time=6.18s*
 
 ## 3-day Unit Commitment Example: Separate Days
 
@@ -110,7 +112,7 @@ exists from the earlier section.
 - Run *python prep\_most\_profiles.py 24 24* to create the 24-hour load and wind profiles for day 2, beginning at hour 24.
 - From the Octave command-line, run *test\_solve*.
 - When Octave finishes, run *python plot\_most.py* to create Figure 6. Compared to Figure 3, the total cost (objective function) and average LMPs are lower, while the responsive and total load served are higher, because the wind output is higher during day two.
-- Run *python prep\_most\_profiles.py 24 24* to create the 24-hour load and wind profiles for day 3, beginning at hour 48.
+- Run *python prep\_most\_profiles.py 48 24* to create the 24-hour load and wind profiles for day 3, beginning at hour 48.
 - From the Octave command-line, run *test\_solve*.
 - When Octave finishes, run *python plot\_most.py* to create Figure 7. Compared to Figure 6, wind power is curtailed for a longer time on day 3, so the total cost is higher and the time of high LMPs is longer.
 
@@ -120,16 +122,22 @@ exists from the earlier section.
 
 ![Figure 6](most_day2_dcpf.png)
 
-*Figure 6: Results of day-two unit commitment example in MOST, DC network power flow, f=4.65423e6, Time=103.02s*
+*Figure 6: Results of day-two unit commitment example in MOST, DC network power flow, f=5.82962e6, Time=50.53s*
 
 ![Figure 7](most_day3_dcpf.png)
 
-*Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=8.20573e6, Time=54.57s*
+*Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=6.24780e6, Time=206.18s*
 
 ## 3-day Unit Commitment Example: Scripted Solution
 
-- Run *python most\_3day.py*
+Execute the following two commands to produce Figure 8 (TODO: fix the dispatchable load response).
 
+- Run *python most\_mday.py*
+- Run *python plot\_mday.py*
+
+![Figure 8](most_mday.png)
+
+*Figure 8: Sequence of scripted 1-day solutions in MOST, f=2.067e7, Time=31.91s*
 
 Copyright 2022-2023, Battelle Memorial Institute
 

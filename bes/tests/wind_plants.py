@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import math
 import os
 import sys
+import mpow_utilities as mpow
 
 if __name__ == '__main__':
   plt.rcParams['savefig.directory'] = os.getcwd()
@@ -24,7 +25,8 @@ if __name__ == '__main__':
   Pnorm = 165.6
 
   # create normalized LARIMA models for the wind plants
-  wind_plants = np.array ([99.8, 1657.0, 2242.2, 3562.2, 8730.3])
+  wind_plants = mpow.ercot8_wind_plants
+  buses = mpow.ercot8_wind_plant_buses
 
   nplants = wind_plants.shape[0]
   n = 24 * days + 1
@@ -40,7 +42,7 @@ if __name__ == '__main__':
   Ylim = np.ones (nplants)
 
   print ('Simulating', days, 'days with seed', seed)
-  print (' #      MW   scale  Theta0  Theta1  StdDev    Psi1    Ylim')
+  print (' # Bus      MW   scale  Theta0  Theta1  StdDev    Psi1    Ylim')
   for j in range (nplants):
     scale = wind_plants [j] / Pnorm
     Theta0[j] = 0.05 * math.sqrt (scale)
@@ -50,7 +52,15 @@ if __name__ == '__main__':
     Ylim[j] = math.sqrt (wind_plants[j])
     alag[j] = Theta0[j]
     ylag[j] = Ylim[j]
-    print ('{:2d} {:7.2f} {:7.4f} {:7.4f} {:7.4f} {:7.4f} {:7.4f} {:7.2f}'.format(j+1, wind_plants[j], scale, Theta0[j], Theta1[j], StdDev[j], Psi1[j], Ylim[j]))
+    print ('{:2d} {:3d} {:7.2f} {:7.4f} {:7.4f} {:7.4f} {:7.4f} {:7.4f} {:7.2f}'.format(j+1, 
+                                                                                        buses[j], 
+                                                                                        wind_plants[j], 
+                                                                                        scale, 
+                                                                                        Theta0[j], 
+                                                                                        Theta1[j], 
+                                                                                        StdDev[j], 
+                                                                                        Psi1[j], 
+                                                                                        Ylim[j]))
 
   # time-stepping to generate the hourly plant outputs
   i = 0
@@ -98,7 +108,7 @@ if __name__ == '__main__':
     sys_capacity += wind_plants[j]
     sys_average += p_avg
     sys_variance += (p_std*p_std)
-    msg[j] = '{:.1f}'.format (wind_plants[j]) + ' MW, CF = ' + '{:.2f}'.format (CF[j]) + ', COV = ' + '{:.2f}'.format (COV[j])  
+    msg[j] = 'Bus {:d} Wind={:.1f}'.format (buses[j], wind_plants[j]) + ' MW, CF = ' + '{:.2f}'.format (CF[j]) + ', COV = ' + '{:.2f}'.format (COV[j])  
     print ('{:2d} {:7.2f} {:7.4f} {:7.4f}'.format(j+1, wind_plants[j], CF[j], COV[j]))
   sys_CF = sys_average/sys_capacity
   sys_COV = math.sqrt(sys_variance)/sys_average

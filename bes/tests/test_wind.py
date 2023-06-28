@@ -17,7 +17,7 @@ def acf(x, t=1):
 if __name__ == '__main__':
   print ('usage: python test_wind.py [seed=None] [MW=8730.3]')
   print ('  normalization plant size is 165.6 MW')
-  print ('  ERCOT equivalent plant sizes are 99.8, 1675.0, 2242.2, 3562.2 and 8730.3 MW')
+  print ('  ERCOT equivalent plant sizes are 99.8, 1674.8, 2242.2, 3562.2 and 8730.3 MW')
   seed = None
   Pnorm = 165.6
   Pmax = 8730.3

@@ -113,9 +113,10 @@ DCL_MU_QMAXF=21-1
 DCL_MU_QMINT=22-1
 DCL_MU_QMAXT=23-1
 
-ercot8_wind_plants = np.array ([99.8, 1657.0, 2242.2, 3562.2, 8730.3])
-ercot8_wind_plant_rows = [14, 15, 16, 17, 18]
+# Table 3 of the APEN paper shows 2442.2 wind at bus 3, but the text gives correct value of 2242.2
+ercot8_wind_plants = np.array ([1674.8, 2242.2, 8730.3, 99.8, 3562.2])
 ercot8_wind_plant_buses = [1, 3, 4, 6, 7]
+ercot8_wind_plant_rows = [14, 15, 16, 17, 18]
 ercot8_load_rows = [1, 2, 3, 4, 5, 6, 7, 8]
 
 # read the LARIMA model profiles from a data file, col0=hour, col1..n=MW output
@@ -473,7 +474,7 @@ def ercot_daily_loads (start, end, resp_scale):
   # pad the load profiles to cover requested number of hours
   fixed_load = ercot8_base_load
   while np.shape(fixed_load)[1] < end:
-    fixed_load = np.hstack((fixed_load, base_load))
+    fixed_load = np.hstack((fixed_load, ercot8_base_load))
     print ('  stacking load shapes to', np.shape(fixed_load))
   fixed_load = fixed_load[:,start:end]
   print ('using fixed load shape', np.shape(fixed_load))
