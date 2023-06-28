@@ -11,11 +11,12 @@ This repository contains Matpower and Python scripts for an
 
 - **clean.bat** removes output and temporary files from executing scripts
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
-- **most\_3day.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
+- **most\_mday.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
 - **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
 - **msout\_1day\_dcpf.txt** a saved 1-day MOST solution, network model included
 - **msout\_1day\_nopf.txt** a saved 1-day MOST solution, network model excluded
 - **msout\_3day\_nopf.txt** a saved 3-day MOST solution, network model excluded
+- **plot\_mday.py** plots the data created from *most\_mday.py*
 - **plot\_most.py** plots the data from *msout.txt* or another MOST solution file specified on the command line
 - **prep\_most\_profiles.py** creates load and wind profiles for MOST in *test\_resp.m*, *test\_unresp.m*, and *test\_wind.m*. Requires *wind\_plants.dat*.
 - **test\_case.m** defines the 8-bus system model buses, branches, and generators
@@ -25,6 +26,12 @@ This repository contains Matpower and Python scripts for an
 - **test\_wind.m** defines wind plant output variation by hour. Overwritten by *prep\_most\_profiles.m*
 - **test\_xgd.m** supplemental parameters for MOST example.
 - **test\_wind.py** tests the capacity factor, coefficient of variation, autocorrelation coefficient, and probability density function for synthetic wind
+- **uc\_case\_Pd.txt** saved bus demand from a 3-day sequence of MOST solutions. Overwritten by *most\_mday.py*
+- **uc\_case\_Pf.txt** saved branch flows from a 3-day sequence of MOST solutions. Overwritten by *most\_mday.py*
+- **uc\_case\_Pg.txt** saved generation outputs from a 3-day sequence of MOST solutions. Overwritten by *most\_mday.py*
+- **uc\_case\_lamP.txt** saved bus shadow prices (locational marginal prices) from a 3-day sequence of MOST solutions. Overwritten by *most\_mday.py*
+- **uc\_case\_muF.txt** saved branch shadow prices from a 3-day sequence of MOST solutions. Overwritten by *most\_mday.py*
+- **uc\_case\_u.txt** saved generation on/off states from a 3-day sequence of MOST solutions. Overwritten by *most\_mday.py*
 - **wind\_plants.dat** contains three days of hourly wind output for MOST. Overwritten by *wind\_plants.py*.
 - **wind\_plants.py** creates hourly output data in *wind\_plants.dat* for the 5 wind plants of different sizes
 

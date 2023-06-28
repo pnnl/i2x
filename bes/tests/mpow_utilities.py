@@ -443,10 +443,10 @@ def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True):
     'NegativeLoadFollowReserveQuantity', ...
   }};
   xgd_table.data = [""".format(root), file=fp)
-  print ('gen', gen)
-  print ('gencost', gencost)
-  print ('genfuel', genfuel)
-  print ('unit_states', unit_state)
+# print ('gen', gen)
+# print ('gencost', gencost)
+# print ('genfuel', genfuel)
+# print ('unit_states', unit_state)
   ngen = 0
   nwind = 0
   nresp = 0
@@ -538,12 +538,12 @@ def write_most_solve_file (root, solver='GLPK'):
   fp.close()
   return fscript, fsummary
 
-def final_unit_state_history (row):
+def update_unit_state (old, row):
   hours_run = np.sum(row)
-  retval = row[-1]
-  if (hours_run > 23.5) and (row[-1] > 0.0):
+  retval = old
+  if (hours_run > 23.5) and (old > 0.0):
     retval += 24.0
-  elif (hours_run < 0.5) and (row[-1] < 0.0):
+  elif (hours_run < 0.5) and (old < 0.0):
     retval -= 24.0
   else:  # the unit turned ON or OFF sometime during the day
     if row[-1] > 0.5:  # will end the day ON, how many hours will it have been ON?
@@ -562,3 +562,38 @@ def final_unit_state_history (row):
           break
   return retval
 
+def write_most_summary (d, lamP, Pf, muF, unit_states, u, show_hours_run=False):
+  bus = d['bus']
+  nb = len(bus)
+  print ('Bus Summary')
+  print ('Idx  MaxLMP  AvgLMP')
+  for i in range (nb):
+    print ('{:3d} {:7.2f} {:7.2f}'.format(i+1, np.max(lamP[i,:]), np.mean(lamP[i,:])))
+
+  br = d['branch']
+  nl = len(br)
+  print ('Branch Summary')
+  print ('Idx Frm  To  Rating  PkFlow Avg muF')
+  for i in range (nl):
+    print ('{:3d} {:3d} {:3d} {:7.1f} {:7.1f} {:7.2f}'.format(i+1, int(float(br[i][F_BUS])), int(float(br[i][T_BUS])), 
+                                                            float(br[i][RATE_A]), np.max(np.abs(Pf[i,:])), 
+                                                            np.mean(muF[i,:])))
+  gen = d['gen']
+  ng = len(gen)
+  print ('Generator States')
+  if show_hours_run:
+    print ('Idx Bus Fuel    Now Ust Hrs')
+    for i in range (ng):
+      print ('{:3d} {:3d} {:7s} {:3d} {:3d} {:3d}'.format(i+1, int(float (gen[i][GEN_BUS])), d['genfuel'][i], 
+                                                          int(u[i,-1]), int(unit_states[i]), int(np.sum(u[i]))))
+  else:
+    print ('Idx Bus Fuel    Now Ust History')
+    for i in range (ng):
+      print ('{:3d} {:3d} {:7s} {:3d} {:3d}'.format(i+1, int(float (gen[i][GEN_BUS])), d['genfuel'][i], int(u[i,-1]), int(unit_states[i])), u[i])
+
+def concatenate_MOST_result (total, new):
+  if total is None:
+    total = new
+  else:
+    total = np.hstack ((total, new))
+  return total
