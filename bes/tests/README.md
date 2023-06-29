@@ -9,7 +9,7 @@ This repository contains Matpower and Python scripts for an
 
 ## Directory of Script and Data Files
 
-- **__init__.py** allows the use of *mpow\_utilities.py* as a module from the parent directory
+- **\_\_init\_\_.py** allows the use of *mpow\_utilities.py* as a module from the parent directory
 - **cat\_most.py** concatenates saved MOST solutions from the *msout.txt* format to numpy arrays, saved in *txt* files for *plot\_mday.py*
 - **clean.bat** removes output and temporary files from executing scripts
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
