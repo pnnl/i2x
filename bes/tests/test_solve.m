@@ -3,7 +3,8 @@ t0 = clock();
 
 define_constants;
 
-mpopt = mpoption('verbose', 0, 'out.all', 0, 'opf.dc.solver', 'GLPK');
+mpopt = mpoption('verbose', 0, 'out.all', 0);
+mpopt = mpoption(mpopt, 'most.solver', 'GLPK');
 mpopt = mpoption(mpopt, 'most.dc_model', 1);
 mpopt = mpoption(mpopt, 'most.uc.run', 1);
 mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);
