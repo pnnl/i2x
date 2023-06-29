@@ -9,6 +9,7 @@ This repository contains Matpower and Python scripts for an
 
 ## Directory of Script and Data Files
 
+- **cat\_most.py** concatenates saved MOST solutions from the *msout.txt* format to numpy arrays, saved in *txt* files for *plot\_mday.py*
 - **clean.bat** removes output and temporary files from executing scripts
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
 - **most\_mday.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
@@ -141,6 +142,29 @@ congestion.
 
 *Figure 8: Sequence of scripted 1-day solutions in MOST, f=1.9255e7, Time=25.348s*
 
+For comparison, Figure 9 plots the solutions from Figures 3, 6, and 7 on the same
+graph. To reproduce this plot:
+
+- Run *python cat\_most.py*
+- Run *python plot\_mday.py test\_case*
+
+![Figure 9](most_concat.png)
+
+*Figure 9: Sequence of concatenated 1-day solutions in MOST, f=1.9248e7, Time=507.17s*
+
+## Simulating Branch Upgrades and Contingencies
+
+The summary of branch data and base-case muF follows. Each 345-kV line
+is rated for 1086 MVA, so each of these branches represents a transmission
+corridor of 2-6 lines in parallel. The corridor from bus 1 to bus 2 has
+a positive muF, so it could be increased from 2 lines in parallel to 3
+in parallel. The same reasoning applies to line 11, from bus 3 to bus 4.
+To implement these grid upgrades, we should multiply the line ratings
+(*RATE\_A*, *RATE\_B*, *RATE\_C*) and line charging (*Bpu*) by **1.5**, then
+divide the branch impedance (*Rpu*, *Xpu*) by **1.5**. If any of these branches
+happened to be transformers, the *TAP* and *SHIFT* parameters would be
+unchanged. 
+
     Branch Summary
     Idx Frm  To  Rating  PkFlow Avg muF        Rpu       Xpu      Bpu
       1   5   6  2168.0   874.2    0.00  0.0042376 0.0358982  2.48325
@@ -156,6 +180,11 @@ congestion.
      11   3   4  2168.0  2168.0    2.74  0.0043923 0.0372097  2.57398
      12   5   7  2168.0  1913.3    0.00  0.0049678 0.0420845  2.91120
      13   1   3  3252.0  3051.9    0.00  0.0042162 0.0357173  5.55918
+
+To reduce the number of parallel lines, the scaling factor would be less than 1.
+For example, scale by **0.8333** to change branch 9, between buses 2 and 5, from
+6 lines in parallel to 5 lines in parallel. To remove a branch completely, the
+scaling factor would be **0.0**, to be impliemented by setting *BR\_STATUS* to 0.
 
 Copyright 2022-2023, Battelle Memorial Institute
 
