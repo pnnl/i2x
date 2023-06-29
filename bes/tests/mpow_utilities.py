@@ -9,6 +9,7 @@ import numpy as np
 import subprocess
 import sys
 import os
+import math
 
 # Matpower column numbers
 
@@ -152,6 +153,32 @@ def run_matpower_and_wait (fscript):
   print ('running', cmdline)
   proc = subprocess.Popen(cmdline, shell=True)
   proc.wait()
+
+# some data and utilities from CIMHub/BES/mpow.py
+
+FUELS = {
+  'hydro':  {'c2':1.0e-5, 'c1': 1.29, 'c0': 0.0},
+  'wind':   {'c2':1.0e-5, 'c1': 0.01, 'c0': 0.0},
+  'solar':  {'c2':1.0e-5, 'c1': 0.01, 'c0': 0.0},
+  'coal':   {'c2':0.0009, 'c1': 19.0, 'c0': 2128.0},
+  'ng':     {'c2':0.0060, 'c1': 45.0, 'c0': 2230.0},
+  'nuclear':{'c2':0.00019, 'c1': 8.0, 'c0': 1250.0}
+}
+
+# global constants
+SQRT3 = math.sqrt(3.0)
+RAD_TO_DEG = 180.0 / math.pi
+MVA_BASE = 100.0
+
+def get_gencosts(fuel):
+  c2 = 0.0
+  c1 = 0.0
+  c0 = 0.0
+  if fuel in FUELS:
+    c2 = FUELS[fuel]['c2']
+    c1 = FUELS[fuel]['c1']
+    c0 = FUELS[fuel]['c0']
+  return c2, c1, c0
 
 ###################################################
 # from tesp_support package, parse_msout.py
@@ -397,20 +424,20 @@ def get_plant_min_up_down_hours(fuel, gencosts, gen):
     return 24, 24
   if fuel == 'coal':
     return 12, 12
-  if fuel == 'gas':
-    if gencosts[4] < 57.0:
+  if fuel == 'ng':
+    if float(gencosts[4]) < 57.0:
       return 6, 6
   return 1, 1
 
 # paPrice, naPrice, pdPrice, ndPrice, plfPrice, nlfPrice
 def get_plant_prices(fuel, gencosts, gen):
-  return 0.0001, 0.0001, 0.0001, 0.0001, 0.1, 0.1
+  return 0.001, 0.001, 0.001, 0.001, 0.1, 0.1
 
 def get_plant_reserve(fuel, gencosts, gen):
   if len(fuel) < 1:
     return 10000.0
   if fuel == 'dl':
-    return 10000.0
+    return abs(float(gen[PMIN]))
   return abs(float(gen[PMAX]))
 
 def get_plant_commit_key(fuel, gencosts, gen, use_wind):

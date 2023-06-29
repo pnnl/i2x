@@ -149,20 +149,3 @@ mpc.genfuel = {
   'dl';
 };
 
-%%-----  Reserve Data  -----%%
-%% reserve zones, element i, j is 1 if gen j is in zone i, 0 otherwise
-%% all steam units in zone, wind and resp are not
-%mpc.reserves.zones = [
-% 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0;
-%];
-
-%% reserve requirements for each zone in MW
-%mpc.reserves.req = 1500;
-
-%% reserve costs in $/MW for each gen that belongs to at least 1 zone
-%% (same order as gens, but skipping any gen that does not belong to any zone)
-%mpc.reserves.cost = [2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2; 2];
-
-%% OPTIONAL max reserve quantities for each gen that belongs to at least 1 zone
-%% (same order as gens, but skipping any gen that does not belong to any zone)
-%mpc.reserves.qty = [2000;	1000;	100; 2000; 1000; 100; 10; 100; 1000; 2000; 1000; 2000; 100];

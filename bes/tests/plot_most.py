@@ -34,9 +34,13 @@ def unit_width(d, key):
   return 1.0
 
 if __name__ == '__main__':
+  plot_branch_prices = False
   fname = 'msout.txt'
   if len(sys.argv) > 1:
     fname = sys.argv[1]
+    if len(sys.argv) > 2:
+      if int(sys.argv[2]) > 0:
+        plot_branch_prices = True
   use_wind = True
 
   plt.rcParams['savefig.directory'] = os.getcwd()
@@ -122,10 +126,17 @@ if __name__ == '__main__':
   ax[0,1].set_ylabel ('$/MWhr')
   ax[0,1].legend()
 
-  ax[0,2].set_title ('Branch Flows')
-  for i in range(nl):
-    ax[0,2].plot(h, 0.001 * np.abs(Pf[i,:]), label='Ln{:d}'.format (i+1), color = cset[i])
-  ax[0,2].set_ylabel ('GW')
+  if plot_branch_prices:
+    ax[0,2].set_title ('Branch Shadow Prices (muF)')
+    for i in range(nl):
+      ax[0,2].plot(h, muF[i,:], label='Ln{:d}'.format (i+1), color = cset[i])
+    ax[0,2].set_ylabel ('$/MWhr')
+    ax[0,2].legend()
+  else:
+    ax[0,2].set_title ('Branch Flows')
+    for i in range(nl):
+      ax[0,2].plot(h, 0.001 * np.abs(Pf[i,:]), label='Ln{:d}'.format (i+1), color = cset[i])
+    ax[0,2].set_ylabel ('GW')
 
   ax[1,0].set_title ('Unit Dispatch (in Bus Colors)')
   for i in range(resp_start):

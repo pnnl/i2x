@@ -18,6 +18,8 @@ the required Python packages and versions.
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
 - **most\_mday.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
 - **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
+- **msout\_3days\_dcpf.txt** a saved MOST solution for 3 days, network model included
+- **msout\_3days\_nopf.txt** a saved MOST solution for 3 days, network model excluded
 - **msout\_day1\_dcpf.txt** a saved MOST solution for day 1, network model included
 - **msout\_day1\_nopf.txt** a saved MOST solution for day 1, network model excluded
 - **msout\_day2\_dcpf.txt** a saved MOST solution for day 2, network model included
@@ -96,11 +98,11 @@ there is no differentiation between bus LMPs in Figure 4.
 
 ![Figure 3](most_day1_dcpf.png)
 
-*Figure 3: Results of day-one unit commitment example in MOST, DC network power flow, f=7.17020e6, Time=250.46s*
+*Figure 3: Results of day-one unit commitment example in MOST, DC network power flow, f=7.20328e6, Time=5.50s*
 
 ![Figure 4](most_day1_nopf.png)
 
-*Figure 4: Results of day-one unit commitment example in MOST, no network power flow, f=6.36002e6, Time=6.18s*
+*Figure 4: Results of day-one unit commitment example in MOST, no network power flow, f=6.39348e6, Time=4.62s*
 
 ## 3-day Unit Commitment Example: Separate Days
 
@@ -128,34 +130,42 @@ exists from the earlier section.
 
 ![Figure 6](most_day2_dcpf.png)
 
-*Figure 6: Results of day-two unit commitment example in MOST, DC network power flow, f=5.82962e6, Time=50.53s*
+*Figure 6: Results of day-two unit commitment example in MOST, DC network power flow, f=5.77992e6, Time=6.15s*
 
 ![Figure 7](most_day3_dcpf.png)
 
-*Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=6.24780e6, Time=206.18s*
+*Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=6.28228e6, Time=5.07s*
+
+![Figure 8](most_3days_dcpf.png)
+
+*Figure 8: Results of three-day unit commitment example in MOST, DC network power flow, f=1.92671e7, Time=1294.87s*
+
+![Figure 9](most_3days_nopf.png)
+
+*Figure 9: Results of three-day unit commitment example in MOST, no network power flow, f=1.73367e7, Time=36.18s*
 
 ## 3-day Unit Commitment Example: Scripted Solution
 
-Execute the following two commands to produce Figure 8. In this plot, branches with
+Execute the following two commands to produce Figure 10. In this plot, branches with
 positive shadow prices have reached their capacity for some period, which indicates
 congestion.
 
 - Run *python most\_mday.py*
 - Run *python plot\_mday.py*
 
-![Figure 8](most_mday.png)
+![Figure 10](most_mday.png)
 
-*Figure 8: Sequence of scripted 1-day solutions in MOST, f=1.9255e7, Time=25.348s*
+*Figure 10: Sequence of scripted 1-day solutions in MOST, f=1.9265e7, Time=16.69s*
 
-For comparison, Figure 9 plots the solutions from Figures 3, 6, and 7 on the same
+For comparison, Figure 11 plots the solutions from Figures 3, 6, and 7 on the same
 graph. To reproduce this plot:
 
 - Run *python cat\_most.py*
 - Run *python plot\_mday.py test\_case*
 
-![Figure 9](most_concat.png)
+![Figure 11](most_concat.png)
 
-*Figure 9: Sequence of concatenated 1-day solutions in MOST, f=1.9248e7, Time=507.17s*
+*Figure 11: Sequence of concatenated 1-day solutions in MOST, f=1.9265e7, Time=16.72s*
 
 ## Simulating Branch Upgrades and Contingencies
 
@@ -172,18 +182,18 @@ unchanged.
 
     Branch Summary
     Idx Frm  To  Rating  PkFlow Avg muF        Rpu       Xpu      Bpu
-      1   5   6  2168.0   874.2    0.00  0.0042376 0.0358982  2.48325
+      1   5   6  2168.0   960.0    0.00  0.0042376 0.0358982  2.48325
       2   4   5  6504.0  4169.2    0.00  0.0024809 0.0210167 13.08450
       3   4   6  2168.0  1662.3    0.00  0.0059792 0.0506525  3.50388
-      4   1   2  2168.0  2168.0   15.24  0.0061586 0.0521727  3.60905
-      5   2   7  2168.0   756.5    0.00  0.0062152 0.0526516  3.64217
+      4   1   2  2168.0  2168.0   15.29  0.0061586 0.0521727  3.60905
+      5   2   7  2168.0   919.9    0.00  0.0062152 0.0526516  3.64217
       6   1   5  2168.0  1892.7    0.00  0.0058505 0.0495622  3.42847
       7   4   8  2168.0   113.0    0.00  0.0063891 0.0541249  3.74409
       8   6   7  2168.0  1230.9    0.00  0.0059465 0.0503755  3.48473
-      9   2   5  6504.0  3807.6    0.00  0.0014728 0.0124769  7.76783
+      9   2   5  6504.0  3819.0    0.00  0.0014728 0.0124769  7.76783
      10   1   4  2168.0  1795.5    0.00  0.0078791 0.0667473  4.61724
-     11   3   4  2168.0  2168.0    2.74  0.0043923 0.0372097  2.57398
-     12   5   7  2168.0  1913.3    0.00  0.0049678 0.0420845  2.91120
+     11   3   4  2168.0  2168.0    2.84  0.0043923 0.0372097  2.57398
+     12   5   7  2168.0  2168.0    0.00  0.0049678 0.0420845  2.91120
      13   1   3  3252.0  3051.9    0.00  0.0042162 0.0357173  5.55918
 
 To reduce the number of parallel lines, the scaling factor would be less than 1.
