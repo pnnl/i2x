@@ -1,6 +1,6 @@
 # ERCOT 8-Bus Test System for i2x 
 
-This repository contains Matpower and Python scripts for an
+This repository contains MATPOWER and Python scripts for an
 8-bus ERCOT test system with 5 equivalent wind plants. References: 
  
 - [Test System Description](https://doi.org/10.1016/j.apenergy.2020.115182).
