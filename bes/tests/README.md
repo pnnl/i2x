@@ -91,10 +91,9 @@ Figure 3 shows the result of a MOST solution of the unit commitment and
 economic dispatch problem, incorporating network losses and constraints 
 with a DC power flow. There is no forecasting error in this example, so 
 the results are optimistic. Figure 4 shows a MOST solution with network 
-losses and constraints ignored, i.e., with no power flow analysis. The 
-solution in Figure 3 took several minutes on a two-core laptop computer, while 
-the solution in Figure 4 took less than 10 seconds on the same computer. However,
-there is no differentiation between bus LMPs in Figure 4.
+losses and constraints ignored, i.e., with no power flow analysis and no 
+differentiation between bus LMPs. However, the no-powerflow solution runs
+faster and can sometimes provide useful information.
 
 ![Figure 3](most_day1_dcpf.png)
 
@@ -107,11 +106,11 @@ there is no differentiation between bus LMPs in Figure 4.
 ## 3-day Unit Commitment Example: Separate Days
 
 Figure 5 shows wind plant output and bus load variation over 3 days. MOST 
-would not solve this as a 3-day unit commitment problem using GLPK, 
-although it may work with a commercial solver, as suggested in the 
+had some difficulty solving this as a 3-day unit commitment problem using 
+GLPK. It may work better with a commercial solver, as suggested in the 
 MATPOWER manual. Here, it is solved as a sequence of three 24-hour 
-problems. Steps to run this example, assuming that *wind\_plants.dat* 
-exists from the earlier section.  
+problems, which run much faster. Steps to run this example, assuming that 
+*wind\_plants.dat* exists from the earlier section.  
 
 - Run *python prep\_most\_profiles.py 0 24* to create the 24-hour load and wind profiles for day 1, beginning at hour 0.
 - Start Octave (or MATLAB), then change to this directory.
@@ -135,6 +134,20 @@ exists from the earlier section.
 ![Figure 7](most_day3_dcpf.png)
 
 *Figure 7: Results of day-three unit commitment example in MOST, DC network power flow, f=6.28228e6, Time=5.07s*
+
+To simulate three days in a single MOST problem:
+
+- Run *python prep\_most\_profiles.py 0 72* to create the 72-hour load and wind profiles.
+- From the Octave command-line, run *test\_solve*. This takes several minutes to solve with a DC optimal power flow.
+- When Octave finishes, run *python plot\_most.py* to generate Figure 8.
+- At line 8 of *test\_solve.m*, change *most.dc\_model* from 0 to 1.
+- From the Octave command-line, run *test\_solve*. This takes about 30 seconds to solve with no network model.
+- When Octave finishes, run *python plot\_most.py* to generate Figure 9.
+
+For certain choices of parameter, e.g., the generator minimum up time, 
+minimum down time, and reserve quantities, the three-day problem doesn't 
+solve in MOST at all. It's faster to solve the three-day problem in
+separate one-day problems, concatenating the results.
 
 ![Figure 8](most_3days_dcpf.png)
 
@@ -166,6 +179,14 @@ graph. To reproduce this plot:
 ![Figure 11](most_concat.png)
 
 *Figure 11: Sequence of concatenated 1-day solutions in MOST, f=1.9265e7, Time=16.72s*
+
+The results in Figures 10 and 11 match. However, the three-day solution 
+from Figure 8 differs slightly, and it takes nearly 80 times longer to 
+solve. Figure 3-9 and Table 6-7 of the MOST manual indicate why this may 
+happen, as the problem complexity multiplies by the number of time periods 
+in the planning horizon, *nt*. In this example, we have one scenario, 
+*nj*, and no contingencies, *nc*, so they don't influence the 
+computational complexity.  
 
 ## Simulating Branch Upgrades and Contingencies
 
