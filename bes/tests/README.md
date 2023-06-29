@@ -7,6 +7,9 @@ This repository contains Matpower and Python scripts for an
 
 - [Synthetic Wind Output Methodology](https://doi.org/10.1109/TPWRS.2009.2033277).
 
+Testing has been done with MATPOWER/MOST 7.1, Octave 8.2.0, and Python 3.10.5. See *requirements.txt* for
+the required Python packages and versions.
+
 ## Directory of Script and Data Files
 
 - **\_\_init\_\_.py** allows the use of *mpow\_utilities.py* as a module from the parent directory
@@ -22,6 +25,7 @@ This repository contains Matpower and Python scripts for an
 - **plot\_mday.py** plots the data created from *most\_mday.py*
 - **plot\_most.py** plots the data from *msout.txt* or another MOST solution file specified on the command line
 - **prep\_most\_profiles.py** creates load and wind profiles for MOST in *test\_resp.m*, *test\_unresp.m*, and *test\_wind.m*. Requires *wind\_plants.dat*.
+- **requirements.txt** lists the required Python packages for scripts in this repository, e.g., use with *pip install -r requirements.txt*
 - **test\_case.m** defines the 8-bus system model buses, branches, and generators
 - **test\_resp.m** defines responsive load variation by hour, also called dispatchable load. Overwritten by *prep\_most\_profiles.m*
 - **test\_solve.m** script that solves an example in MOST. Tested with Octave.
@@ -163,7 +167,7 @@ in parallel. The same reasoning applies to line 11, from bus 3 to bus 4.
 To implement these grid upgrades, we should multiply the line ratings
 (*RATE\_A*, *RATE\_B*, *RATE\_C*) and line charging (*Bpu*) by **1.5**, then
 divide the branch impedance (*Rpu*, *Xpu*) by **1.5**. If any of these branches
-happened to be transformers, the *TAP* and *SHIFT* parameters would be
+happened to be transformers, their *TAP* and *SHIFT* parameters would be
 unchanged. 
 
     Branch Summary
@@ -185,7 +189,7 @@ unchanged.
 To reduce the number of parallel lines, the scaling factor would be less than 1.
 For example, scale by **0.8333** to change branch 9, between buses 2 and 5, from
 6 lines in parallel to 5 lines in parallel. To remove a branch completely, the
-scaling factor would be **0.0**, to be impliemented by setting *BR\_STATUS* to 0.
+scaling factor would be **0.0**, to be implemented by setting *BR\_STATUS* to 0.
 
 Copyright 2022-2023, Battelle Memorial Institute
 
