@@ -409,6 +409,8 @@ def get_plant_prices(fuel, gencosts, gen):
 def get_plant_reserve(fuel, gencosts, gen):
   if len(fuel) < 1:
     return 10000.0
+  if fuel == 'dl':
+    return 10000.0
   return abs(float(gen[PMAX]))
 
 def get_plant_commit_key(fuel, gencosts, gen, use_wind):

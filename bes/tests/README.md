@@ -130,14 +130,16 @@ exists from the earlier section.
 
 ## 3-day Unit Commitment Example: Scripted Solution
 
-Execute the following two commands to produce Figure 8 (TODO: fix the dispatchable load response).
+Execute the following two commands to produce Figure 8. In this plot, branches with
+positive shadow prices have reached their capacity for some period, which indicates
+congestion.
 
 - Run *python most\_mday.py*
 - Run *python plot\_mday.py*
 
 ![Figure 8](most_mday.png)
 
-*Figure 8: Sequence of scripted 1-day solutions in MOST, f=2.067e7, Time=31.91s*
+*Figure 8: Sequence of scripted 1-day solutions in MOST, f=1.9255e7, Time=25.348s*
 
 Copyright 2022-2023, Battelle Memorial Institute
 

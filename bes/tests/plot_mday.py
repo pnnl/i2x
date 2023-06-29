@@ -67,7 +67,7 @@ if __name__ == '__main__':
     fuel_Pg[fuel] += gen
     if fuel != 'dl':
       dl_start = i+1
-  print (dl_start)
+#  print (dl_start)
 
   Presp = np.abs(fuel_Pg['dl'])
   Pfixed = np.sum(Pd, axis=0)
@@ -141,7 +141,7 @@ if __name__ == '__main__':
   ax[1,1].set_ylabel ('GW')
   ax[1,1].legend()
 
-  ax[1,2].set_title ('Responsive Bus Loads')
+  ax[1,2].set_title ('Dispatchable Bus Loads')
   for i in range(nb):
     ax[1,2].plot(h, 0.001 * np.abs(Pg[i+dl_start,:]), label='Bus{:d}'.format (i+1), color = cset[i])
   ax[1,2].set_ylabel ('GW')
