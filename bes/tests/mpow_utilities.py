@@ -456,6 +456,41 @@ def write_contab (root, d, scales):
   fp.close()
   print ('wrote {:d} changes labeled {:d} to {:s}'.format (n, label, fname))
 
+def write_contab_list (root, d, conts):
+  br = d['branch']
+  fname = '{:s}.m'.format(root)
+  fp = open(fname, 'w')
+  print('function chgtab = {:s}'.format(root), file=fp)
+  write_most_table_indices(fp)
+  print('  %	label	prob	table	row	col	chgtype	newval', file=fp)
+#  1	0	CT_TBRCH	1	BR_STATUS	CT_REP	0;
+  print('  chgtab = [', file=fp)
+  n = len(conts)
+  prob = 0.5 / n
+  for i in range(n):
+    label = i+1
+    idx = conts[i]['branch']
+    val = conts[i]['scale']
+    if val > 0.0:
+      r = float(br[idx-1][BR_R]) / val
+      x = float(br[idx-1][BR_X]) / val
+      b = float(br[idx-1][BR_B]) * val
+      sa = float(br[idx-1][RATE_A]) * val
+      sb = float(br[idx-1][RATE_B]) * val
+      sc = float(br[idx-1][RATE_C]) * val
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_R      CT_REP {:11.7f};'.format (label, prob, idx, r), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_X      CT_REP {:11.7f};'.format (label, prob, idx, x), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_B      CT_REP {:11.5f};'.format (label, prob, idx, b), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} RATE_A    CT_REP {:11.3f};'.format (label, prob, idx, sa), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} RATE_B    CT_REP {:11.3f};'.format (label, prob, idx, sb), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} RATE_C    CT_REP {:11.3f};'.format (label, prob, idx, sc), file=fp)
+    else:
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_STATUS CT_REP         0.0;'.format (label, prob, idx), file=fp)
+  print('  ];', file=fp)
+  print('end', file=fp)
+  fp.close()
+  print ('wrote {:d} labeled contingencies to {:s}'.format (n, fname))
+
 # minup, mindown
 def get_plant_min_up_down_hours(fuel, gencosts, gen):
   if fuel == 'nuclear':
