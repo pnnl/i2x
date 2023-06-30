@@ -222,5 +222,9 @@ For example, scale by **0.8333** to change branch 9, between buses 2 and 5, from
 6 lines in parallel to 5 lines in parallel. To remove a branch completely, the
 scaling factor would be **0.0**, to be implemented by setting *BR\_STATUS* to 0.
 
+![Figure 12](most_mday_upgrades.png)
+
+*Figure 12: 3-day solution with line upgrades in MOST, f=1.7524e7*
+
 Copyright 2022-2023, Battelle Memorial Institute
 

@@ -5,6 +5,7 @@ import mpow_utilities as mpow
 if __name__ == '__main__':
   total_days = 3
   write_daily_output = False
+  upgrade_grid = False
   sys_name = 'uc_case'
   load_scale = 1.0
   if len(sys.argv) > 1:
@@ -12,8 +13,12 @@ if __name__ == '__main__':
   d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))
 #  mpow.summarize_casefile (d, 'Input')
 
-  br_scales = {4:3.0, 6:2.0, 11:1.5}
-  mpow.write_contab ('uc_contab', d, br_scales)
+  chgtab_name = None
+  if upgrade_grid:
+    chgtab_name = 'uc_contab'
+    #  br_scales = {4:3.0, 6:2.0, 11:1.5}
+    br_scales = {4:1.5, 11:1.5}
+    mpow.write_contab (chgtab_name, d, br_scales)
 
   # set up the case and loads for day 1
   # assume all units have been on for 24 hours to start, so MOST can leave them on or switch them off without restriction
@@ -21,7 +26,7 @@ if __name__ == '__main__':
   fixed_load, responsive_load = mpow.ercot_daily_loads (start=0, end=24, resp_scale=1.0/3.0)
   mpow.write_unresponsive_load_profile ('uc_unresp', mpow.ercot8_load_rows, fixed_load[:,:24], load_scale)
   mpow.write_responsive_load_profile ('uc_resp', mpow.ercot8_load_rows, responsive_load[:,:24], load_scale, 'uc_unresp')
-  fscript, fsummary = mpow.write_most_solve_file ('uc', chgtab='uc_contab')
+  fscript, fsummary = mpow.write_most_solve_file ('uc', chgtab=chgtab_name)
 
   total_f = 0.0
   total_Pg = None
