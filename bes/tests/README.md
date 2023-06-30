@@ -222,9 +222,26 @@ For example, scale by **0.8333** to change branch 9, between buses 2 and 5, from
 6 lines in parallel to 5 lines in parallel. To remove a branch completely, the
 scaling factor would be **0.0**, to be implemented by setting *BR\_STATUS* to 0.
 
+The upgrades to branches 4 and 11 comprise 359 miles of new 345-kV line, and
+they reduce the 3-day operating cost, *f*, by 3.1%. They also reduce the average 
+*muF* on branch 4 by 31%. With further grid upgrade factors of **3.0** for branch 4,
+**2.0** for branch 6, and **1.5** for branch 11, the value of *f* is reduced
+by 9% compared to the base case, and the average *muF* on branch 4 is reduced
+by 87%. Figure 12 shows the MOST result for these additional grid upgrades, which
+comprise 1185 miles of new 345-kV line. The following table shows that in addition
+to reducing *f* and *muF*, the grid upgrades result in more customer load served.
+The fixed load does not change; all the increase comes from dispatchable load.
+
+    Upgrades     New Line         f  muF(4)   Total Load   Disp Load
+                    miles         $  $/MWhr           MW          MW
+    ----------------------------------------------------------------
+    none                0  1.9265e7   15.29     35511.99     6782.64
+    4:1.5,11:1.5      359  1.8668e7   10.51     35825.20     7195.85
+    4:3,6:2,11:1.5   1185  1.7524e7    2.06     37774.85     9045.50
+
 ![Figure 12](most_mday_upgrades.png)
 
-*Figure 12: 3-day solution with line upgrades in MOST, f=1.7524e7*
+*Figure 12: 3-day solution with 1385 miles of new lines in MOST, f=1.7524e7*
 
 Copyright 2022-2023, Battelle Memorial Institute
 
