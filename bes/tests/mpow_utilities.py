@@ -344,6 +344,9 @@ def unit_color_label(genfuel):
 def write_most_table_indices(fp):
   print("""  [PQ, PV, REF, NONE, BUS_I, BUS_TYPE, PD, QD, GS, BS, BUS_AREA, VM, ...
     VA, BASE_KV, ZONE, VMAX, VMIN, LAM_P, LAM_Q, MU_VMAX, MU_VMIN] = idx_bus;
+  [F_BUS, T_BUS, BR_R, BR_X, BR_B, RATE_A, RATE_B, RATE_C, TAP, SHIFT, ...
+    BR_STATUS, ANGMIN, ANGMAX, PF, QF, PT, QT, MU_SF, MU_ST, MU_ANGMIN, ...
+    MU_ANGMAX] = idx_brch;
   [CT_LABEL, CT_PROB, CT_TABLE, CT_TBUS, CT_TGEN, CT_TBRCH, CT_TAREABUS, ...
     CT_TAREAGEN, CT_TAREABRCH, CT_ROW, CT_COL, CT_CHGTYPE, CT_REP, ...
     CT_REL, CT_ADD, CT_NEWVAL, CT_TLOAD, CT_TAREALOAD, CT_LOAD_ALL_PQ, ...
@@ -417,6 +420,41 @@ def write_wind_profile (root, rows, data):
     print("""  wind.values(:, 1, {:d}) = {:s};""".format(i+1, mvals), file=fp)
   print('end', file=fp)
   fp.close()
+
+def write_contab (root, d, scales):
+  br = d['branch']
+  fname = '{:s}.m'.format(root)
+  fp = open(fname, 'w')
+  print('function chgtab = {:s}'.format(root), file=fp)
+  write_most_table_indices(fp)
+  print('  %	label	prob	table	row	col	chgtype	newval', file=fp)
+#  1	0	CT_TBRCH	1	BR_STATUS	CT_REP	0;
+  print('  chgtab = [', file=fp)
+  n = 0
+  prob = 1.0
+  label = 1
+  for idx, val in scales.items():
+    if val > 0.0:
+      r = float(br[idx-1][BR_R]) / val
+      x = float(br[idx-1][BR_X]) / val
+      b = float(br[idx-1][BR_B]) * val
+      sa = float(br[idx-1][RATE_A]) * val
+      sb = float(br[idx-1][RATE_B]) * val
+      sc = float(br[idx-1][RATE_C]) * val
+      n += 6
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_R      CT_REP {:11.7f};'.format (label, prob, idx, r), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_X      CT_REP {:11.7f};'.format (label, prob, idx, x), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_B      CT_REP {:11.5f};'.format (label, prob, idx, b), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} RATE_A    CT_REP {:11.3f};'.format (label, prob, idx, sa), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} RATE_B    CT_REP {:11.3f};'.format (label, prob, idx, sb), file=fp)
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} RATE_C    CT_REP {:11.3f};'.format (label, prob, idx, sc), file=fp)
+    else:
+      n += 1
+      print ('   {:3d} {:9.7f} CT_TBRCH {:3d} BR_STATUS CT_REP         0.0;'.format (label, prob, idx), file=fp)
+  print('  ];', file=fp)
+  print('end', file=fp)
+  fp.close()
+  print ('wrote {:d} changes labeled {:d} to {:s}'.format (n, label, fname))
 
 # minup, mindown
 def get_plant_min_up_down_hours(fuel, gencosts, gen):
@@ -545,7 +583,7 @@ def write_matpower_solve_file (root, load_scale):
   fp.close()
   return fscript, fsolved, fsummary
 
-def write_most_solve_file (root, solver='GLPK'):
+def write_most_solve_file (root, solver='GLPK', chgtab=None):
   fscript = 'solve_{:s}.m'.format(root)
   fsummary = '{:s}_summary.txt'.format(root)
   fp = open(fscript, 'w')
@@ -556,7 +594,12 @@ def write_most_solve_file (root, solver='GLPK'):
   print("""mpopt = mpoption(mpopt, 'most.uc.run', 1);""", file=fp)
   print("""mpopt = mpoption(mpopt, 'most.solver', '{:s}');""".format(solver), file=fp)
   print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
-  print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
+  if chgtab is None:
+    print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
+  else:
+    print("""mpcbase = loadcase ('{:s}_case.m');""".format(root), file=fp)
+    print("""chgtab = {:s};""".format(chgtab), file=fp)
+    print("""mpc = apply_changes (1, mpcbase, chgtab);""", file=fp)
   print("""xgd = loadxgendata('{:s}_xgd.m', mpc);""".format(root), file=fp)
   print("""profiles = getprofiles('{:s}_unresp.m');""".format(root), file=fp)
   print("""profiles = getprofiles('{:s}_resp.m', profiles);""".format(root), file=fp)
