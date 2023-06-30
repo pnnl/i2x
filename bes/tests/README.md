@@ -228,7 +228,7 @@ they reduce the 3-day operating cost, *f*, by 3.1%. They also reduce the average
 **2.0** for branch 6, and **1.5** for branch 11, the value of *f* is reduced
 by 9% compared to the base case, and the average *muF* on branch 4 is reduced
 by 87%. Figure 12 shows the MOST result for these additional grid upgrades, which
-comprise 1185 miles of new 345-kV line. The following table shows that in addition
+comprise 1385 miles of new 345-kV line. The following table shows that in addition
 to reducing *f* and *muF*, the grid upgrades result in more customer load served.
 The fixed load does not change; all the increase comes from dispatchable load.
 
@@ -237,7 +237,7 @@ The fixed load does not change; all the increase comes from dispatchable load.
     ----------------------------------------------------------------
     none                0  1.9265e7   15.29     35511.99     6782.64
     4:1.5,11:1.5      359  1.8668e7   10.51     35825.20     7195.85
-    4:3,6:2,11:1.5   1185  1.7524e7    2.06     37774.85     9045.50
+    4:3,6:2,11:1.5   1385  1.7524e7    2.06     37774.85     9045.50
 
 ![Figure 12](most_mday_upgrades.png)
 
