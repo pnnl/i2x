@@ -6,7 +6,7 @@ if __name__ == '__main__':
   write_daily_output = False
   upgrade_grid = False
   sys_name = 'hca'
-  load_scale = 1.0
+  load_scale = 2.75
   if len(sys.argv) > 1:
     load_scale = float(sys.argv[1])
   d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name))
@@ -36,22 +36,58 @@ if __name__ == '__main__':
 # print ('  lamP', np.shape(lamP), lamP.dtype)
 # print ('  muF', np.shape(muF), muF.dtype)
 
-  print ('Mean Pg over contingencies\n', np.mean(Pg[:,0,0,:], axis=1))
-  print ('Mean Pd over contingencies\n', np.mean(Pd[:,0,0,:], axis=1))
-  print ('Mean Pf over contingencies\n', np.mean(Pf[:,0,0,:], axis=1))
-  print ('Mean lamP over contingencies\n', np.mean(lamP[:,0,0,:], axis=1))
-  print ('Mean muF over contingencies\n', np.mean(muF[:,0,0,:], axis=1))
+  meanPg = np.mean(Pg[:,0,0,:], axis=1)
+  meanPd = np.mean(Pd[:,0,0,:], axis=1)
+  meanPf = np.mean(Pf[:,0,0,:], axis=1)
+  meanlamP = np.mean(lamP[:,0,0,:], axis=1)
+  meanmuF = np.mean(muF[:,0,0,:], axis=1)
+  baselamP = lamP[:,0,0,0]
+  basemuF = muF[:,0,0,0]
+
+# print ('Mean Pg over contingencies\n', meanPg)
+# print ('Mean Pd over contingencies\n', meanPd)
+# print ('Mean Pf over contingencies\n', meanPf)
+# print ('Base lamP\n', baselamP)
+# print ('Mean lamP over contingencies\n', meanlamP)
+# print ('Base muF\n', basemuF)
+# print ('Mean muF over contingencies\n', meanmuF)
+# print ('Worst muF\n', muF[3,0,0,:])
 
   gen = np.array (d['gen'], dtype=float)
   bus = np.array (d['bus'], dtype=float)
+  branch = np.array (d['branch'], dtype=float)
   nominalPd = np.sum (bus[:,mpow.PD])
   scaledPd = load_scale * nominalPd
   actualPd = np.sum(np.mean(Pd[:,0,0,:], axis=1))
   nominalPmax = np.sum (gen[:,mpow.PMAX])
-  actualPgen = np.sum(np.mean(Pg[:,0,0,:], axis=1))
-  print ('Nominal Generation = {:.2f} MW'.format (nominalPmax))
-  print (' Actual Generation = {:.2f} MW'.format (actualPgen))
-  print ('Nominal Bus Load = {:.2f} MW'.format (nominalPd))
-  print (' Scaled Bus Load = {:.2f} MW'.format (scaledPd))
-  print (' Actual Bus Load = {:.2f} MW'.format (actualPd))
+  meanPgen = np.mean(Pg[:,0,0,:], axis=1)
+  actualPgen = np.sum(meanPgen)
+# print ('Nominal Generation = {:.2f} MW'.format (nominalPmax))
+# print (' Actual Generation = {:.2f} MW'.format (actualPgen))
+# print ('Nominal Bus Load = {:.2f} MW'.format (nominalPd))
+# print (' Scaled Bus Load = {:.2f} MW'.format (scaledPd))
+# print (' Actual Bus Load = {:.2f} MW'.format (actualPd))
+
+  fuel_Pg = {}
+  for fuel in ['ng', 'wind', 'solar', 'coal', 'nuclear', 'dl']:
+    fuel_Pg[fuel] = 0.0
+  for i in range(ng):
+    fuel = d['genfuel'][i]
+    fuel_Pg[fuel] += meanPgen[i]
+  print ('Generation Usage:')
+  print (' Fuel      Mean MW       %')
+  for fuel in ['ng', 'wind', 'solar', 'coal', 'nuclear', 'dl']:
+    print (' {:8s} {:8.2f} {:7.3f}'.format (fuel, fuel_Pg[fuel], 100.0 * fuel_Pg[fuel] / actualPgen))
+
+  print ('Branches Overloaded:')
+  print (' idx     muF     MVA     kV1     kV2')
+  for i in range(nl):
+    if meanmuF[i] > 0.0:
+      rating = branch[i][mpow.RATE_A]
+      fbus = int(branch[i][mpow.F_BUS])
+      tbus = int(branch[i][mpow.T_BUS])
+      kv1 = bus[fbus-1][mpow.BASE_KV]
+      kv2 = bus[tbus-1][mpow.BASE_KV]
+      print ('{:4d} {:7.4f} {:7.2f} {:7.2f} {:7.2f}'.format(i, meanmuF[i], rating, kv1, kv2))
+
 

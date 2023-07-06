@@ -245,8 +245,26 @@ The fixed load does not change; all the increase comes from dispatchable load.
 
 ## Simulating Contingencies in a Single Period
 
-*hca\_xgd.m* contains the reserve requirements, minimum up time, and minimum down time for 18 generators
-*hca\_case.m* is the ERCOT 8-bus system with 13 conventional and 5 wind plants, but no dispatchable loads
+To emulate Network Resource Interconnection Service (NRIS):
+
+- Nuclear units must run at full rated output
+- Coal units must run, at minimum 50% of full rated output
+
+All other units have Energy Resource Interconnection Service (ERIS):
+
+- Includes natural gas, wind, and solar
+- ERIS generators compete economically during the security-constrained unit commitment (SCUC) and security-constrained economic dispatch (SCED) evaluations
+
+The proposed new renewable resource is connected to one bus at a time:
+
+- It's represented as a dispatchable load, *dl*. TODO: could also use *other* or *unknown* so that *dl* may be used for actual dispatchable/responsive loads.
+- The maximum size is 30 GW.
+- Its cost is below all other ERIS generators.
+- After the SCUC/SCED solution, its actual output is the security-constrained injection capacity at its bus.
+- The hosting capacity is determined for a single peak load scenario.  In the ERCOT 8-bus test system, the load is about 66 GW at a nominal load scaling factor of 2.75.
+
+*hca\_xgd.m* contains the reserve requirements, minimum up time, and minimum down time for all generators. Set coal and nuclear *CommitKey* values at 2 for *must run*
+*hca\_case.m* is the ERCOT 8-bus system with 13 conventional plants, 5 wind plants, and 1 dispatchable load representing new injection. Set *Pmin=Pmax* for nuclear must-run units, and *Pmin=0.5 Pmax* for coal must-run units.
 *hca\_prep.py* creates *hca\_contab.m* with N-1 branch contingencies
 *hca\_solve.m* solves a single-period, single-scenario, Nc-contingency MOST problem. It reads *hca\_case.m*, *hca\_xgd.m* and *hca\_contab.m*. It writes *hca\_summary.txt*
 *hca\_summary.txt* contains the MOST summary output. The last dimension of its output matrices is Nc, the first dimension matches content of *hca\_base.m*, and any interior dimensions are 1.
