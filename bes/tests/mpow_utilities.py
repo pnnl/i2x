@@ -213,15 +213,32 @@ def next_matrix(fp, var):
       return mat
     if ln.strip() == match:
       looking = False
-      fp.readline()
       toks = fp.readline().strip().split()
-      rows = int(toks[2])
+      if toks[2] != 'matrix':
+        print ('variable {:s} has invalid type {:s} in next_matrix'.format (var, toks[2]))
+        return None
       toks = fp.readline().strip().split()
-      cols = int(toks[2])
-      # print ('{:s} [{:d}x{:d}]'.format (var, rows, cols))
-      mat = np.empty((rows, cols))
-      for i in range(rows):
-        mat[i] = np.fromstring(fp.readline().strip(), sep=' ')
+      if toks[1] == 'rows:': # a 2x2 matrix
+        rows = int(toks[2])
+        toks = fp.readline().strip().split()
+        cols = int(toks[2])
+        # print ('{:s} [{:d}x{:d}]'.format (var, rows, cols))
+        mat = np.empty((rows, cols))
+        for i in range(rows):
+          mat[i] = np.fromstring(fp.readline().strip(), sep=' ')
+      elif toks[1] == 'ndims:': # a generalized matrix
+        ndims = int(toks[2])
+        toks = fp.readline().strip().split()
+        dims=tuple([int(i) for i in toks])
+        nvals = 1
+        for i in range (ndims):
+          nvals *= dims[i]
+#        print ('variable {:s} has ndims={:d} and dimension {:s} in next_matrix, reading {:d} elements'.format (var, ndims, str(dims), nvals))
+        vals = np.empty (nvals)
+        for i in range (nvals):
+          vals[i] = np.fromstring(fp.readline().strip(), sep=' ')
+        mat = np.reshape (vals, dims, order='F')
+
   return mat
 
 def read_most_solution(fname='msout.txt'):
@@ -240,13 +257,14 @@ def read_most_solution(fname='msout.txt'):
   Pd = next_matrix(fp, 'Pd')
   Rup = next_matrix(fp, 'Rup')
   Rdn = next_matrix(fp, 'Rdn')
+  SoC = next_matrix(fp, 'SoC')
   Pf = next_matrix(fp, 'Pf')
   u = next_matrix(fp, 'u')
   lamP = next_matrix(fp, 'lamP')
   muF = next_matrix(fp, 'muF')
   fp.close()
 
-  return f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP, muF
+  return f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF
 ###################################################
 
 def read_matpower_array(fp, bStrings):
@@ -466,7 +484,8 @@ def write_contab_list (root, d, conts):
 #  1	0	CT_TBRCH	1	BR_STATUS	CT_REP	0;
   print('  chgtab = [', file=fp)
   n = len(conts)
-  prob = 0.5 / n
+  prob = 0.5 / n # contingencies combine for 50% of the probability
+  prob = 1.0 / (n+1.0)  # contingencies and base case all weighted equally
   for i in range(n):
     label = i+1
     idx = conts[i]['branch']
@@ -583,7 +602,35 @@ def ercot_daily_loads (start, end, resp_scale):
   responsive_load = resp_scale * fixed_load
   return fixed_load, responsive_load
 
-def write_matpower_solve_file (root, load_scale):
+def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None):
+  fscript = 'solve_{:s}.m'.format(root)
+  fsummary = '{:s}_summary.txt'.format(root)
+  fp = open(fscript, 'w')
+  print("""clear;""", file=fp)
+  print("""define_constants;""", file=fp)
+  print("""mpopt = mpoption('verbose', 0, 'out.all', 0);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'most.dc_model', 1);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'most.uc.run', 1);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'most.solver', '{:s}');""".format(solver), file=fp)
+  print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
+  if upgrades is None:
+    print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
+  else:
+    print("""mpcbase = loadcase ('{:s}_case.m');""".format(root), file=fp)
+    print("""upgrades = {:s};""".format(upgrades), file=fp)
+    print("""mpc = apply_changes (1, mpcbase, upgrades);""", file=fp)
+  if load_scale is not None:
+    print ("""mpc = scale_load({:.5f},mpc);""".format (load_scale), file=fp)
+  print("""xgd = loadxgendata('{:s}_xgd.m', mpc);""".format(root), file=fp)
+  print("""mdi = loadmd(mpc, [], xgd, [], '{:s}_contab.m');""".format(root), file=fp)
+  print("""mdo = most(mdi, mpopt);""", file=fp)
+  print("""ms = most_summary(mdo);""", file=fp)
+  print("""save('-text', '{:s}', 'ms');""".format(fsummary), file=fp)
+  print("""total_time = mdo.results.SolveTime + mdo.results.SetupTime""", file=fp)
+  fp.close()
+  return fscript, fsummary
+
+def write_matpower_solve_file (root, load_scale): # this one is not used
   fscript = 'solve{:s}.m'.format(root)
   fsolved = '{:s}solved.m'.format(root)
   fsummary = '{:s}summary.txt'.format(root)

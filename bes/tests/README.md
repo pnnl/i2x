@@ -245,6 +245,11 @@ The fixed load does not change; all the increase comes from dispatchable load.
 
 ## Simulating Contingencies in a Single Period
 
+*hca\_xgd.m* contains the reserve requirements, minimum up time, and minimum down time for 18 generators
+*hca\_case.m* is the ERCOT 8-bus system with 13 conventional and 5 wind plants, but no dispatchable loads
+*hca\_prep.py* creates *hca\_contab.m* with N-1 branch contingencies
+*hca\_solve.m* solves a single-period, single-scenario, Nc-contingency MOST problem. It reads *hca\_case.m*, *hca\_xgd.m* and *hca\_contab.m*. It writes *hca\_summary.txt*
+*hca\_summary.txt* contains the MOST summary output. The last dimension of its output matrices is Nc, the first dimension matches content of *hca\_base.m*, and any interior dimensions are 1.
 
 
 Copyright 2022-2023, Battelle Memorial Institute

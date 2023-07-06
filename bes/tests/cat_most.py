@@ -22,7 +22,7 @@ if __name__ == '__main__':
   unit_states = np.ones(ng) * 24.0
 
   for fname in summaries:
-    f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP, muF = mpow.read_most_solution(fname)
+    f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF = mpow.read_most_solution(fname)
     print ('f={:.4e} from {:s}'.format(f, fname))
     total_f += f
     total_Pg = mpow.concatenate_MOST_result (total_Pg, Pg)

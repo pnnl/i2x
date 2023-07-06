@@ -47,7 +47,7 @@ if __name__ == '__main__':
     mpow.run_matpower_and_wait (fscript)
 
     # analyze day 1
-    f, nb, ng, nl, ns, nt, nj_max, nc_max, Pg, Pd, Pf, u, lamP, muF = mpow.read_most_solution(fsummary)
+    f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF = mpow.read_most_solution(fsummary)
     print ('*** f={:.4e} on day {:d}'.format(f, day+1))
     total_f += f
     total_Pg = mpow.concatenate_MOST_result (total_Pg, Pg)
