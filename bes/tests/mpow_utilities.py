@@ -148,7 +148,7 @@ def run_matpower_and_wait (fscript):
   if sys.platform == 'win32':
     octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
   else:
-    octave = 'octave'
+    octave = 'octave --no-gui'
   cmdline = '{:s} {:s}'.format(octave, fscript)
   print ('running', cmdline)
   proc = subprocess.Popen(cmdline, shell=True)
