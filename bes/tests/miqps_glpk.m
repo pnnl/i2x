@@ -330,7 +330,7 @@ if mi && eflag == 1 && (~isfield(opt, 'skip_prices') || ~opt.skip_prices)
     if have_feature('octave') && have_feature('octave', 'vnum') >= 3.007
         opt.glpk_opt.dual = 1;      %% primal simplex
     end
-    
+
     [x_, f_, eflag_, output_, lambda] = qps_glpk(H, c, A, l, u, xmin, xmax, x0, opt);
     if eflag ~= eflag_
         if eflag_ == GLP_EITLIM
@@ -349,8 +349,8 @@ if mi && eflag == 1 && (~isfield(opt, 'skip_prices') || ~opt.skip_prices)
     xn = x;
     xn(abs(xn)<1) = 1;
     [mx, k] = max(abs(x - x_) ./ xn);
-    if mx > tol
-        warning('miqps_glpk: max relative mismatch in x from price computation stage = %g (%g)', mx, x(k));
+    if (mx > tol) && (verbose > 0)
+        warning('miqps_glpk: max relative mismatch in x from price computation stage = %g (%g) verbose (%g)', mx, x(k), verbose);
     end
     output.price_stage = output_;
 end

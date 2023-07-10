@@ -144,13 +144,14 @@ ercot8_base_load = np.array ([[7182.65, 6831.0, 6728.83, 6781.1, 6985.44, 7291.9
 [2650.16, 2535.62, 2503.87, 2529.95, 2610.47, 2727.27, 2864.48, 3034.58, 3187.67, 3315.82, 3425.81, 3527.87, 3636.74, 3766.01, 3911.17, 4055.18, 4170.85, 4212.81, 4159.51, 4043.84, 3947.45, 3827.25, 3612.92, 3213.76],
 [56.55, 51.95, 50.65, 50.57, 51.68, 53.72, 56.25, 59.4, 62.76, 65.57, 67.97, 70.06, 72.15, 74.53, 77.34, 80.29, 83.0, 84.73, 84.61, 82.72, 80.5, 78.53, 75.32, 69.74]])
 
-def run_matpower_and_wait (fscript):
+def run_matpower_and_wait (fscript, quiet=False):
   if sys.platform == 'win32':
     octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
   else:
-    octave = 'octave --no-gui'
+    octave = 'octave --no-window-system --no-gui >octave.log 2>&1 '
   cmdline = '{:s} {:s}'.format(octave, fscript)
-  print ('running', cmdline)
+  if not quiet:
+    print ('running', cmdline)
   proc = subprocess.Popen(cmdline, shell=True)
   proc.wait()
 
@@ -602,7 +603,7 @@ def ercot_daily_loads (start, end, resp_scale):
   responsive_load = resp_scale * fixed_load
   return fixed_load, responsive_load
 
-def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None):
+def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, cmd=None, quiet=False):
   fscript = 'solve_{:s}.m'.format(root)
   fsummary = '{:s}_summary.txt'.format(root)
   fp = open(fscript, 'w')
@@ -612,7 +613,11 @@ def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None):
   print("""mpopt = mpoption(mpopt, 'most.dc_model', 1);""", file=fp)
   print("""mpopt = mpoption(mpopt, 'most.uc.run', 1);""", file=fp)
   print("""mpopt = mpoption(mpopt, 'most.solver', '{:s}');""".format(solver), file=fp)
-  print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'glpk.opts.dual', 1);""", file=fp)
+  if quiet:
+    print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 0);""", file=fp)
+  else:
+    print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
   if upgrades is None:
     print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
   else:
@@ -621,12 +626,15 @@ def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None):
     print("""mpc = apply_changes (1, mpcbase, upgrades);""", file=fp)
   if load_scale is not None:
     print ("""mpc = scale_load({:.5f},mpc);""".format (load_scale), file=fp)
+  if cmd is not None:
+    print (cmd, file=fp)
   print("""xgd = loadxgendata('{:s}_xgd.m', mpc);""".format(root), file=fp)
   print("""mdi = loadmd(mpc, [], xgd, [], '{:s}_contab.m');""".format(root), file=fp)
   print("""mdo = most(mdi, mpopt);""", file=fp)
   print("""ms = most_summary(mdo);""", file=fp)
   print("""save('-text', '{:s}', 'ms');""".format(fsummary), file=fp)
-  print("""total_time = mdo.results.SolveTime + mdo.results.SetupTime""", file=fp)
+  if not quiet:
+    print("""total_time = mdo.results.SolveTime + mdo.results.SetupTime""", file=fp)
   fp.close()
   return fscript, fsummary
 

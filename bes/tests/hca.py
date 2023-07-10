@@ -2,6 +2,8 @@ import sys
 import numpy as np
 import mpow_utilities as mpow
 
+fuel_list = ['ng', 'wind', 'solar', 'coal', 'nuclear', 'hydro', 'dl', 'hca']
+
 if __name__ == '__main__':
   write_daily_output = False
   upgrade_grid = False
@@ -69,14 +71,14 @@ if __name__ == '__main__':
 # print (' Actual Bus Load = {:.2f} MW'.format (actualPd))
 
   fuel_Pg = {}
-  for fuel in ['ng', 'wind', 'solar', 'coal', 'nuclear', 'dl']:
+  for fuel in fuel_list:
     fuel_Pg[fuel] = 0.0
   for i in range(ng):
     fuel = d['genfuel'][i]
     fuel_Pg[fuel] += meanPgen[i]
   print ('Generation Usage:')
   print (' Fuel      Mean MW       %')
-  for fuel in ['ng', 'wind', 'solar', 'coal', 'nuclear', 'dl']:
+  for fuel in fuel_list:
     print (' {:8s} {:8.2f} {:7.3f}'.format (fuel, fuel_Pg[fuel], 100.0 * fuel_Pg[fuel] / actualPgen))
 
   print ('Branches Overloaded:')

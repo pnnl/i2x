@@ -115,6 +115,6 @@ mpc.genfuel = {
   'wind';
   'wind';
   'wind';
-  'dl';
+  'hca';
 };
 

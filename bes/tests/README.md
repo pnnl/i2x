@@ -270,5 +270,36 @@ The proposed new renewable resource is connected to one bus at a time:
 *hca\_summary.txt* contains the MOST summary output. The last dimension of its output matrices is Nc, the first dimension matches content of *hca\_base.m*, and any interior dimensions are 1.
 
 
+Sample results from *hca\_loop.py*
+
+    tom@uvm:~/src/i2x/bes/tests$ python3 hca_loop.py
+    HCA generator index = 19
+    Bus Generation by Fuel[GW]
+            hca    wind   solar nuclear   hydro    coal      ng      dl
+      1  15.514  14.635   0.000   5.139   0.000  15.759  15.039   0.000
+      2  27.363  16.309   0.000   5.139   0.000  17.273   0.000   0.000
+      3   5.335  14.067   0.000   5.139   0.000  21.566  19.978   0.000
+      4  17.293   7.579   0.000   5.139   0.000  21.591  14.483   0.000
+      5  17.577  16.309   0.000   5.139   0.000  18.339   8.720   0.000
+      6   5.000  16.210   0.000   5.139   0.000  21.926  17.810   0.000
+      7  11.704  12.747   0.000   5.139   0.000  21.614  14.880   0.000
+      8   2.246  16.309   0.000   5.139   0.000  21.926  20.465   0.000
+    Branches Overloaded:
+     idx     muF     MVA     kV1     kV2
+       0  0.6087 2168.00  345.00  345.00
+       1  0.4707 6504.00  345.00  345.00
+       2  0.7436 2168.00  345.00  345.00
+       3  2.0927 2168.00  345.00  345.00
+       4  1.5872 2168.00  345.00  345.00
+       5  0.3000 2168.00  345.00  345.00
+       6  0.3754 2168.00  345.00  345.00
+       7  0.4484 2168.00  345.00  345.00
+       8  1.2633 6504.00  345.00  345.00
+       9  0.0498 2168.00  345.00  345.00
+      10  0.6602 2168.00  345.00  345.00
+      11  0.3359 2168.00  345.00  345.00
+      12  0.1519 3252.00  345.00  345.00
+
+
 Copyright 2022-2023, Battelle Memorial Institute
 
