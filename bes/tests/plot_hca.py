@@ -100,6 +100,90 @@ def get_node_mnemonic(nclass):
     return nodeTypes[nclass]['tag']
   return 'Unknown'
 
+def plot_hca_graph (G, sys_name, case_name, plot_labels, buses, branches):
+  reset_type_counts()
+  plotNodes = []
+  nodeColors = []
+  nodeSizes = []
+  max_hc = 0.0
+  max_muF = 0.0
+  for key, val in buses.items():
+    if val > max_hc:
+      max_hc = val
+  for key, val in branches.items():
+    if val > max_muF:
+      max_muF = val
+
+  for n in G.nodes():
+    plotNodes.append(n)
+    nodeColors.append ('green')
+    hc = buses[n]
+    hc_size = 200.0 * hc / max_hc
+    nodeSizes.append (hc_size)
+
+  # assign edge colors
+  plotEdges = []
+  edgeWidths = []
+  edgeColors = []
+  for n1, n2, data in G.edges(data=True):
+    plotEdges.append ((n1, n2))
+    ename = data['ename']
+    muF = branches[ename]
+    mva = data['edata']['rating']
+    npar = data['edata']['npar']
+    width = 2.0
+    congestion = muF / max_muF
+    red = congestion
+    green = 0.0
+    blue = 1.0 - congestion
+    color = (red, green, blue)
+    edgeWidths.append (width)
+    edgeColors.append (color)
+
+  # construct XY coordinates for plotting the network
+  xy = {}
+  xyLbl = {}
+  lblNode = {}
+  bMissing = False
+  for n, data in G.nodes(data=True):
+    ndata = data['ndata']
+    if ('x' in ndata) and ('y' in ndata):
+      busx = float(ndata['x'])
+      busy = float(ndata['y'])
+      xy[n] = [busx, busy]
+      lblNode[n] = n.upper()
+      xyLbl[n] = [busx, busy + lblDeltaY]
+    else:
+      bMissing = True
+      break
+  if bMissing:
+    print ('Missing some node XY data, generating default coordinates')
+    xy = nx.kamada_kawai_layout (G, weight='km')
+
+  # create the plot
+  fig, ax = plt.subplots(figsize=(10,8))
+
+  nx.draw_networkx_nodes (G, xy, nodelist=plotNodes, node_color=nodeColors, node_size=nodeSizes, ax=ax)
+  nx.draw_networkx_edges (G, xy, edgelist=plotEdges, edge_color=edgeColors, width=edgeWidths, alpha=0.8, ax=ax)
+  if plot_labels:
+    nx.draw_networkx_labels (G, xyLbl, lblNode, font_size=8, font_color='k', horizontalalignment='left', 
+                             verticalalignment='baseline', ax=ax)
+
+  plt.title ('{:s} Network, {:s} case, Max Hosting Capacity={:.3f} GW, Max Branch muF={:.3f}'.format(sys_name, case_name, max_hc, max_muF))
+  plt.xlabel ('X coordinate')
+  plt.ylabel ('Y coordinate')
+  ax.grid(linestyle='dotted')
+  xdata = [0, 1]
+  ydata = [1, 0]
+  legendEdges = filter_types_used (edgeTypes)
+  legendNodes = filter_types_used (nodeTypes)
+  lns = [lines.Line2D(xdata, ydata, color=get_edge_color(e)) for e in legendEdges] + \
+    [lines.Line2D(xdata, ydata, color=get_node_color(n), marker='o') for n in legendNodes]
+  labs = [get_edge_mnemonic (e) for e in legendEdges] + [get_node_mnemonic (n) for n in legendNodes]
+  ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
+  ax.legend(lns, labs, loc='lower left')
+  plt.show()
+
 def plot_system_graph (G, sys_name, plot_labels):
   reset_type_counts()
   # assign node colors
@@ -175,16 +259,43 @@ def load_system_graph (fname):
   G = nx.readwrite.json_graph.node_link_graph(mdl)
   return G
 
+def load_hca_results (case_name):
+  buses = {}
+  branches = {}
+  fp = open ('{:s}.txt'.format(case_name), 'r')
+  lines = fp.readlines()
+  inBuses = False
+  inBranches = False
+  for ln in lines:
+    if 'hca    wind   solar' in ln:
+      inBuses = True
+    elif 'Branches Overloaded' in ln:
+      inBuses = False
+    elif 'idx From   To     muF' in ln:
+      inBranches = True
+    else:
+      toks = ln.strip().split()
+      if inBuses:
+        buses[toks[0]] = float(toks[1])
+      elif inBranches:
+        branches[toks[0]] = float(toks[3])
+  fp.close()
+  return buses, branches
+
 if __name__ == '__main__':
   case_id = 0
   plot_labels = False
   sys_name = 'hca'
+  case_name = 'hca_all'
+  buses, branches = load_hca_results (case_name)
+#  print (buses)
+#  print (branches)
   if len(sys.argv) > 1:
     sys_name = sys.argv[1]
     if len(sys.argv) > 2:
       if int(sys.argv[2]) > 0:
         plot_labels = True
   G = load_system_graph ('{:s}_network.json'.format(sys_name))
-  plot_system_graph (G, sys_name, plot_labels)
+  plot_hca_graph (G, sys_name, case_name, plot_labels, buses, branches)
 
 

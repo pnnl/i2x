@@ -317,5 +317,10 @@ increase in hosting capacity at bus 3, after adding parallel lines to branches
       12    5    7  0.1496 2168.00  345.00  345.00
       13    1    3  0.5603 3252.00  345.00  345.00
 
+
+![Figure 13](hca_all.png)
+
+*Figure 13: Plotted hca\_all results; nodes weighted by hosting capacity, branches colored by muF*
+
 Copyright 2022-2023, Battelle Memorial Institute
 
