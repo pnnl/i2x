@@ -474,7 +474,7 @@ def write_contab (root, d, scales):
   print('  ];', file=fp)
   print('end', file=fp)
   fp.close()
-  print ('wrote {:d} changes labeled {:d} to {:s}'.format (n, label, fname))
+# print ('wrote {:d} changes labeled {:d} to {:s}'.format (n, label, fname))
 
 def write_contab_list (root, d, conts):
   br = d['branch']

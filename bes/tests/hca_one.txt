@@ -1,4 +1,4 @@
-wrote 12 changes labeled 1 to hca_upgrades.m
+System: hca with nominal load=24.031 GW, actual load=66.084 GW, existing generation=105.607 GW
 HCA generator index = 19, load_scale=2.7500, checking 1 buses with 2 grid upgrades
 Bus Generation by Fuel[GW]
         hca    wind   solar nuclear   hydro    coal      ng      dl

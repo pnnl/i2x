@@ -56,6 +56,11 @@ if __name__ == '__main__':
   for i in range(ng):
     if d['genfuel'][i] == 'hca':
       hca_gen_idx = i + 1
+      nominalPmax -= gen[i,mpow.PMAX]
+  nominalPmax *= 0.001
+  nominalPd *= 0.001
+  scaledPd *= 0.001
+  print ('System: {:s} with nominal load={:.3f} GW, actual load={:.3f} GW, existing generation={:.3f} GW'.format(sys_name, nominalPd, scaledPd, nominalPmax))
   print ('HCA generator index = {:d}, load_scale={:.4f}, checking {:d} buses with {:d} grid upgrades'.format(hca_gen_idx, load_scale, len(hca_buses), nupgrades))
 
   print ('Bus Generation by Fuel[GW]')
