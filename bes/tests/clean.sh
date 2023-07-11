@@ -1,3 +1,4 @@
+#!/bin/bash
 rm msout.txt
 rm solve*.m
 rm *upgrades.m

@@ -314,6 +314,30 @@ def read_matpower_casefile(fname):
   fp.close()
   return d
 
+def write_matpower_string_vector (tag, d, fp):
+  print ("""mpc.{:s} = {{""".format(tag), file=fp)
+  for val in d:
+    print ("""  '{:s}';""".format(val), file=fp)
+  print ("""};""", file=fp)
+
+def write_matpower_matrix (tag, d, fp):
+  print ("""mpc.{:s} = [""".format(tag), file=fp)
+  for row in d:
+    line = ' '.join (['{:12.6f}'.format(float(x)) for x in row])
+    print ("""  {:s};""".format(line), file=fp)
+  print ("""];""", file=fp)
+
+def write_matpower_casefile(d, fname):
+  fp = open(fname+'.m', 'w')
+  print ("""function mpc = {:s}""".format(fname), file=fp)
+  print ("""mpc.version = "{:s}";""".format(d['version']), file=fp)
+  print ("""mpc.baseMVA = {:.2f};""".format(float(d['baseMVA'])), file=fp)
+  for tag in ['bus', 'gen', 'branch', 'gencost']:
+    write_matpower_matrix (tag, d[tag], fp)
+  for tag in ['gentype', 'genfuel']:
+    write_matpower_string_vector (tag, d[tag], fp)
+  fp.close()
+
 def print_solution_summary (fname, details=False):
   fp = open(fname, 'r')
   converged = False
