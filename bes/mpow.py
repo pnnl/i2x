@@ -185,7 +185,7 @@ def read_matpower_casefile(fname):
 if sys.platform == 'win32':
   octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
 else:
-  octave = 'octave'
+  octave = 'octave --no-window-system --no-gui'
 
 def write_solve_file (root, load_scale):
   fscript = 'solve{:s}.m'.format(root)
