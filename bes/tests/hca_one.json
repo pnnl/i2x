@@ -1,0 +1,6 @@
+{
+    "sys_name": "hca",
+    "load_scale": 2.75,
+    "hca_buses": [3],
+    "upgrades": {"4":1.5, "11":1.5}
+}

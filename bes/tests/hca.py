@@ -1,95 +1,105 @@
 import sys
 import numpy as np
 import mpow_utilities as mpow
+import json
 
-fuel_list = ['ng', 'wind', 'solar', 'coal', 'nuclear', 'hydro', 'dl', 'hca']
+fuel_list = ['hca', 'wind', 'solar', 'nuclear', 'hydro', 'coal', 'ng', 'dl']
+
+def cfg_assign (cfg, tag, val):
+  if tag in cfg:
+    val = cfg[tag]
+  return val
 
 if __name__ == '__main__':
-  write_daily_output = False
-  upgrade_grid = False
   sys_name = 'hca'
   load_scale = 2.75
+  hca_buses = None
+  upgrades = None
   if len(sys.argv) > 1:
-    load_scale = float(sys.argv[1])
+    fp = open (sys.argv[1], 'r')
+    cfg = json.loads(fp.read())
+    fp.close()
+    sys_name = cfg_assign (cfg, 'sys_name', sys_name)
+    hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
+    upgrades = cfg_assign (cfg, 'upgrades', upgrades)
+    load_scale = cfg_assign (cfg, 'load_scale', load_scale)
+
+  # nominal quantities for the base case, hca generation at zero
   d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name))
-#  mpow.summarize_casefile (d, 'Input')
-  fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale)
-
-  chgtab_name = None
-  if upgrade_grid:
-    chgtab_name = 'upgrades'
-    #  br_scales = {4:3.0, 6:2.0, 11:1.5}
-    br_scales = {4:1.5, 11:1.5}
-    mpow.write_contab (chgtab_name, d, br_scales)
-
-  mpow.run_matpower_and_wait (fscript)
-
-  f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF = mpow.read_most_solution(fsummary)
-  print ('read HCA solution from {:s}, cost={:.2f}'.format (fsummary, f))
-  print ('  nb={:d}, ng={:d}, nl={:d}, ns={:d}, nt={:d}, nj_max={:d}, nc_max={:d}'.format(nb, ng, nl, ns, nt, nj_max, nc_max))
-# print ('  psi', np.shape(psi), psi.dtype)
-# print ('  Pg', np.shape(Pg), Pg.dtype)
-# print ('  Pd', np.shape(Pd), Pd.dtype)
-# print ('  Rup', np.shape(Rup), Rup.dtype)
-# print ('  Rdn', np.shape(Rdn), Rdn.dtype)
-# print ('  SoC', np.shape(SoC), SoC.dtype)
-# print ('  Pf', np.shape(Pf), Pf.dtype)
-# print ('  u', np.shape(u), u.dtype)
-# print ('  lamP', np.shape(lamP), lamP.dtype)
-# print ('  muF', np.shape(muF), muF.dtype)
-
-  meanPg = np.mean(Pg[:,0,0,:], axis=1)
-  meanPd = np.mean(Pd[:,0,0,:], axis=1)
-  meanPf = np.mean(Pf[:,0,0,:], axis=1)
-  meanlamP = np.mean(lamP[:,0,0,:], axis=1)
-  meanmuF = np.mean(muF[:,0,0,:], axis=1)
-  baselamP = lamP[:,0,0,0]
-  basemuF = muF[:,0,0,0]
-
-# print ('Mean Pg over contingencies\n', meanPg)
-# print ('Mean Pd over contingencies\n', meanPd)
-# print ('Mean Pf over contingencies\n', meanPf)
-# print ('Base lamP\n', baselamP)
-# print ('Mean lamP over contingencies\n', meanlamP)
-# print ('Base muF\n', basemuF)
-# print ('Mean muF over contingencies\n', meanmuF)
-# print ('Worst muF\n', muF[3,0,0,:])
+  nb = len(d['bus'])
+  ng = len(d['gen'])
+  nl = len(d['branch'])
 
   gen = np.array (d['gen'], dtype=float)
   bus = np.array (d['bus'], dtype=float)
   branch = np.array (d['branch'], dtype=float)
   nominalPd = np.sum (bus[:,mpow.PD])
   scaledPd = load_scale * nominalPd
-  actualPd = np.sum(np.mean(Pd[:,0,0,:], axis=1))
   nominalPmax = np.sum (gen[:,mpow.PMAX])
-  meanPgen = np.mean(Pg[:,0,0,:], axis=1)
-  actualPgen = np.sum(meanPgen)
-# print ('Nominal Generation = {:.2f} MW'.format (nominalPmax))
-# print (' Actual Generation = {:.2f} MW'.format (actualPgen))
-# print ('Nominal Bus Load = {:.2f} MW'.format (nominalPd))
-# print (' Scaled Bus Load = {:.2f} MW'.format (scaledPd))
-# print (' Actual Bus Load = {:.2f} MW'.format (actualPd))
 
-  fuel_Pg = {}
-  for fuel in fuel_list:
-    fuel_Pg[fuel] = 0.0
+  # make sure we have a bus list
+  if not hca_buses:
+    hca_buses = np.arange(1, nb+1, dtype=int)
+  if hca_buses[0] < 1:
+    hca_buses = np.arange(1, nb+1, dtype=int)
+
+  chgtab_name = None
+  nupgrades = 0
+  if upgrades:
+    chgtab_name = '{:s}_upgrades'.format(sys_name)
+    nupgrades = len(upgrades)
+    mpow.write_contab (chgtab_name, d, upgrades)
+
+  hca_gen_idx = 0
+
+  muFtotal = np.zeros (nl)
   for i in range(ng):
-    fuel = d['genfuel'][i]
-    fuel_Pg[fuel] += meanPgen[i]
-  print ('Generation Usage:')
-  print (' Fuel      Mean MW       %')
-  for fuel in fuel_list:
-    print (' {:8s} {:8.2f} {:7.3f}'.format (fuel, fuel_Pg[fuel], 100.0 * fuel_Pg[fuel] / actualPgen))
+    if d['genfuel'][i] == 'hca':
+      hca_gen_idx = i + 1
+  print ('HCA generator index = {:d}, load_scale={:.4f}, checking {:d} buses with {:d} grid upgrades'.format(hca_gen_idx, load_scale, len(hca_buses), nupgrades))
 
+  print ('Bus Generation by Fuel[GW]')
+  print ('   ', ' '.join(['{:>7s}'.format(x) for x in fuel_list]))
+  for hca_bus in hca_buses:
+    cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
+    fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, quiet=True)
+
+    mpow.run_matpower_and_wait (fscript, quiet=True)
+
+    f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF = mpow.read_most_solution(fsummary)
+    meanPg = np.mean(Pg[:,0,0,:], axis=1)
+    meanPd = np.mean(Pd[:,0,0,:], axis=1)
+    meanPf = np.mean(Pf[:,0,0,:], axis=1)
+    meanlamP = np.mean(lamP[:,0,0,:], axis=1)
+    meanmuF = np.mean(muF[:,0,0,:], axis=1)
+    baselamP = lamP[:,0,0,0]
+    basemuF = muF[:,0,0,0]
+    actualPd = np.sum(np.mean(Pd[:,0,0,:], axis=1))
+    meanPgen = np.mean(Pg[:,0,0,:], axis=1)
+    actualPgen = np.sum(meanPgen)
+
+    fuel_Pg = {}
+    for fuel in fuel_list:
+      fuel_Pg[fuel] = 0.0
+    for i in range(ng):
+      fuel = d['genfuel'][i]
+      fuel_Pg[fuel] += meanPgen[i]
+    for fuel in fuel_list:
+      fuel_Pg[fuel] *= 0.001
+    fuel_str = ' '.join(['{:7.3f}'.format(fuel_Pg[x]) for x in fuel_list])
+    print ('{:3d} {:s}'.format(hca_bus, fuel_str))
+
+    muFtotal += meanmuF
+
+  muFtotal /= nb
   print ('Branches Overloaded:')
-  print (' idx     muF     MVA     kV1     kV2')
+  print (' idx From   To     muF     MVA     kV1     kV2')
   for i in range(nl):
-    if meanmuF[i] > 0.0:
+    if muFtotal[i] > 0.0:
       rating = branch[i][mpow.RATE_A]
       fbus = int(branch[i][mpow.F_BUS])
       tbus = int(branch[i][mpow.T_BUS])
       kv1 = bus[fbus-1][mpow.BASE_KV]
       kv2 = bus[tbus-1][mpow.BASE_KV]
-      print ('{:4d} {:7.4f} {:7.2f} {:7.2f} {:7.2f}'.format(i, meanmuF[i], rating, kv1, kv2))
-
+      print ('{:4d} {:4d} {:4d} {:7.4f} {:7.2f} {:7.2f} {:7.2f}'.format(i+1, fbus, tbus, muFtotal[i], rating, kv1, kv2))
 

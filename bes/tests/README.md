@@ -270,10 +270,10 @@ The proposed new renewable resource is connected to one bus at a time:
 *hca\_summary.txt* contains the MOST summary output. The last dimension of its output matrices is Nc, the first dimension matches content of *hca\_base.m*, and any interior dimensions are 1.
 
 
-Sample results from *hca\_loop.py*
+Sample results from *hca.py hca\_all.json* follow. The same output results
+from *hca.py* without any command line argument.
 
-    tom@uvm:~/src/i2x/bes/tests$ python3 hca_loop.py
-    HCA generator index = 19
+    HCA generator index = 19, load_scale=2.7500, checking 8 buses with 0 grid upgrades
     Bus Generation by Fuel[GW]
             hca    wind   solar nuclear   hydro    coal      ng      dl
       1  15.514  14.635   0.000   5.139   0.000  15.759  15.039   0.000
@@ -285,21 +285,37 @@ Sample results from *hca\_loop.py*
       7  11.704  12.747   0.000   5.139   0.000  21.614  14.880   0.000
       8   2.246  16.309   0.000   5.139   0.000  21.926  20.465   0.000
     Branches Overloaded:
-     idx     muF     MVA     kV1     kV2
-       0  0.6087 2168.00  345.00  345.00
-       1  0.4707 6504.00  345.00  345.00
-       2  0.7436 2168.00  345.00  345.00
-       3  2.0927 2168.00  345.00  345.00
-       4  1.5872 2168.00  345.00  345.00
-       5  0.3000 2168.00  345.00  345.00
-       6  0.3754 2168.00  345.00  345.00
-       7  0.4484 2168.00  345.00  345.00
-       8  1.2633 6504.00  345.00  345.00
-       9  0.0498 2168.00  345.00  345.00
-      10  0.6602 2168.00  345.00  345.00
-      11  0.3359 2168.00  345.00  345.00
-      12  0.1519 3252.00  345.00  345.00
+     idx From   To     muF     MVA     kV1     kV2
+       1    5    6  0.6087 2168.00  345.00  345.00
+       2    4    5  0.4707 6504.00  345.00  345.00
+       3    4    6  0.7436 2168.00  345.00  345.00
+       4    1    2  2.0927 2168.00  345.00  345.00
+       5    2    7  1.5872 2168.00  345.00  345.00
+       6    1    5  0.3000 2168.00  345.00  345.00
+       7    4    8  0.3754 2168.00  345.00  345.00
+       8    6    7  0.4484 2168.00  345.00  345.00
+       9    2    5  1.2633 6504.00  345.00  345.00
+      10    1    4  0.0498 2168.00  345.00  345.00
+      11    3    4  0.6602 2168.00  345.00  345.00
+      12    5    7  0.3359 2168.00  345.00  345.00
+      13    1    3  0.1519 3252.00  345.00  345.00
 
+Sample results from *hca.py hca\_one.json* follow. This example quantifies an
+increase in hosting capacity at bus 3, after adding parallel lines to branches
+4 and 11. However, the increase in hosting capacity may not be as high as expected.
+
+    HCA generator index = 19, load_scale=2.7500, checking 1 buses with 2 grid upgrades
+    Bus Generation by Fuel[GW]
+            hca    wind   solar nuclear   hydro    coal      ng      dl
+      3   6.326  14.067   0.000   5.139   0.000  21.566  18.987   0.000
+    Branches Overloaded:
+     idx From   To     muF     MVA     kV1     kV2
+       3    4    6  0.0151 2168.00  345.00  345.00
+       4    1    2  0.5031 2168.00  345.00  345.00
+       9    2    5  0.0118 6504.00  345.00  345.00
+      11    3    4  0.1677 2168.00  345.00  345.00
+      12    5    7  0.1496 2168.00  345.00  345.00
+      13    1    3  0.5603 3252.00  345.00  345.00
 
 Copyright 2022-2023, Battelle Memorial Institute
 

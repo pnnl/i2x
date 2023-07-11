@@ -452,7 +452,8 @@ def write_contab (root, d, scales):
   n = 0
   prob = 1.0
   label = 1
-  for idx, val in scales.items():
+  for key, val in scales.items():
+    idx = int(key)
     if val > 0.0:
       r = float(br[idx-1][BR_R]) / val
       x = float(br[idx-1][BR_X]) / val
@@ -613,7 +614,6 @@ def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, c
   print("""mpopt = mpoption(mpopt, 'most.dc_model', 1);""", file=fp)
   print("""mpopt = mpoption(mpopt, 'most.uc.run', 1);""", file=fp)
   print("""mpopt = mpoption(mpopt, 'most.solver', '{:s}');""".format(solver), file=fp)
-  print("""mpopt = mpoption(mpopt, 'glpk.opts.dual', 1);""", file=fp)
   if quiet:
     print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 0);""", file=fp)
   else:
