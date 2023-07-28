@@ -38,8 +38,8 @@ To test these installations:
 1. Open a **Command Prompt** from the Start / Windows System menu.
 2. Change to the **python** subdirectory of your local copy of this repository.
 3. Enter the command **jupyter notebook cplot.ipynb** from the command prompt. Your browser should start display some code and saved text results, but no plot.
-4. Click the **run** button on the toolbar **3 times**.  A plot should appear at the bottom of the browser.
-5. When finished, enter **Ctrl-C** in the **Command Prompt** window, which shuts down the browser.
+4. Click the **run** button on the notebook's toolbar **3 times**.  A plot should appear at the bottom of the browser.
+5. When finished, enter **Ctrl-C** in the **Command Prompt** window, which shuts down the notebook server.
 
 Copyright 2022-2023, Battelle Memorial Institute
 
