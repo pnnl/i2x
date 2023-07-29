@@ -1,0 +1,68 @@
+<Meta name="SMIB">
+  <messagelist>
+    <message status="normal" label="build" groupid="400002" scope="SMIB" id="382167157" classid="MessageObj"><![CDATA[Begin compiling with PSCAD Version 5.0.2]]></message>
+    <message status="normal" label="build" groupid="100006" link="1560678536" id="1560678536" classid="FileNavigator"><![CDATA[Generating 'C:\src\i2x\emt-bootcamp\PSCAD\Gen.if18_x86\Gen.map'.]]><file scope="SMIB">C:\src\i2x\emt-bootcamp\PSCAD\Gen.if18_x86\Gen.map</file></message>
+    <message status="normal" label="build" groupid="100015" scope="SMIB" id="1190238210" classid="MessageObj"><![CDATA[The total number of live nodes: 12]]></message>
+    <message status="normal" label="build" groupid="0" link="1318240352" id="1318240352" classid="FileNavigator"><![CDATA[Coding .mak file: 'C:\src\i2x\emt-bootcamp\PSCAD\Gen.if18_x86\\Gen.mak']]><file scope="SMIB">C:\src\i2x\emt-bootcamp\PSCAD\Gen.if18_x86\\Gen.mak</file></message>
+    <message status="normal" label="build" groupid="400000" scope="SMIB" id="2027599001" classid="MessageObj"><![CDATA[Time for Compile: 0ms  Make: 0ms]]></message>
+    <message status="normal" label="build" groupid="400000" scope="SMIB" id="2023616111" classid="MessageObj"><![CDATA[Solve Time = 47ms]]></message>
+    <message status="normal" label="build" groupid="100016" scope="SMIB" id="853507999" classid="MessageObj"><![CDATA[Will execute (1): call C:\Program Files (x86)\Intel\oneAPI\compiler\2023.1.0\windows\..\..\..\setvars.bat  ia32]]></message>
+    <message status="normal" label="build" groupid="100016" scope="SMIB" id="404368908" classid="MessageObj"><![CDATA[Will execute (1): call "C:\Program Files (x86)\Intel\oneAPI\compiler\2023.1.0\windows\..\..\..\setvars.bat"  ia32]]></message>
+    <message status="normal" label="build" groupid="100016" scope="SMIB" id="2074465127" classid="MessageObj"><![CDATA[Will execute (2): nmake -f Gen.mak]]></message>
+    <message status="normal" label="build" groupid="100016" scope="SMIB" id="1319287532" classid="MessageObj"><![CDATA[Will execute (2): "C:\src\i2x\emt-bootcamp\PSCAD\Gen.if18_x86\Gen_mak.bat"]]></message>
+    <message status="normal" label="build" groupid="100005" scope="SMIB" id="1234413275" classid="MessageObj"><![CDATA[Creating EMTDC executable...]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1102663849" classid="MessageObj"><![CDATA[C:\src\i2x\emt-bootcamp\PSCAD\Gen.if18_x86>call "C:\Program Files (x86)\Intel\oneAPI\compiler\2023.1.0\windows\..\..\..\setvars.bat"  ia32 ]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="152854846" classid="MessageObj"><![CDATA[:: initializing oneAPI environment...]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1529859419" classid="MessageObj"><![CDATA[   Initializing Visual Studio command-line environment...]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="708854257" classid="MessageObj"><![CDATA[   Visual Studio version 16.7.5 environment configured.]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1705788841" classid="MessageObj"><![CDATA[   "C:\MSVS\2019\BuildTools\"]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1156965275" classid="MessageObj"><![CDATA[   Visual Studio command-line environment initialized for: 'x86']]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1117179537" classid="MessageObj"><![CDATA[:  advisor -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1737492028" classid="MessageObj"><![CDATA[:  compiler -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1651847290" classid="MessageObj"><![CDATA[:  dal -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1170019392" classid="MessageObj"><![CDATA[:  debugger -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1561627611" classid="MessageObj"><![CDATA[:  dnnl -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="383559094" classid="MessageObj"><![CDATA[:  dpcpp-ct -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1711629679" classid="MessageObj"><![CDATA[ Visual Studio is configured for 32-bit development environment.]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="201081404" classid="MessageObj"><![CDATA[ The compatibility tool requires a 64-bit development environment.]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="79309517" classid="MessageObj"><![CDATA[:  dpl -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1388268272" classid="MessageObj"><![CDATA[:  inspector -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="470367752" classid="MessageObj"><![CDATA[:  ipp -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1009040988" classid="MessageObj"><![CDATA[:  ippcp -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1992272422" classid="MessageObj"><![CDATA[:  itac -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1239455656" classid="MessageObj"><![CDATA[:  mkl -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="965112397" classid="MessageObj"><![CDATA[:  mpi -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1993640596" classid="MessageObj"><![CDATA[:  tbb -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1863260270" classid="MessageObj"><![CDATA[:  vtune -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1151680832" classid="MessageObj"><![CDATA[:: oneAPI environment initialized ::]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="1830438020" classid="MessageObj"><![CDATA[Microsoft (R) Program Maintenance Utility Version 14.27.29112.0]]></message>
+    <message status="normal" label="build" groupid="0" scope="SMIB" id="568345945" classid="MessageObj"><![CDATA[Copyright (C) Microsoft Corporation.  All rights reserved.]]></message>
+    <message status="normal" label="build" groupid="100013" scope="SMIB" id="1745578984" classid="MessageObj"><![CDATA[Linking objects and libraries into binary 'Gen.exe']]></message>
+    <message status="normal" label="build" groupid="400003" scope="SMIB" id="2118464312" classid="MessageObj"><![CDATA[Finished compiling with PSCAD Version 5.0.2]]></message>
+    <message status="normal" label="runtime" groupid="100014" id="1628964163" classid="CmpNavigator">
+      <User scope="Gen" name="master:recorder2_0" status="normal" link="56545060" /><![CDATA[Progress 39%: Recorder writing temporary file: Rank_00001\Run_00001\playback.tmp]]></message>
+    <message status="normal" label="runtime" groupid="100014" id="1038413887" classid="CmpNavigator">
+      <User scope="Gen" name="master:recorder2_0" status="normal" link="56545060" /><![CDATA[Progress 99%: Recording ended.]]></message>
+    <message status="normal" label="runtime" groupid="100014" id="704079563" classid="CmpNavigator">
+      <User scope="Gen" name="master:recorder2_0" status="normal" link="56545060" /><![CDATA[Progress 99%: Writing COMTRADE files playback.hdr, playback.cfg and playback.dat. Please wait...]]></message>
+  </messagelist>
+  <ViewContext>
+    <Window defn="Gen:Main" call="0" />
+  </ViewContext>
+  <List classid="View">
+    <View name="Main" zoomscale="1.5" scrollx="0" scrolly="324" />
+  </List>
+  <Output device="EMTDC" version="2010" date="2023/07/28" time="20:43:39.000000">
+    <Domain name="Time" unit="s" mult="0.0" skew="0.0">
+      <Sample rate="5000.0" end="50500" />
+    </Domain>
+    <List classid="Analog">
+      <Analog name="Main(0):Iinst_BPS" index="1" gindex="100663297" id="975087770:0" label="" dim="3" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0):Vinst_BPS" index="4" gindex="100663300" id="1383296277:0" label="" dim="3" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0):Vrms_BPS" index="7" gindex="100663303" id="97578819:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0):Q_BPS" index="8" gindex="100663304" id="1175279801:0" label="" dim="1" unit="" min="-100.0" max="80.0" />
+      <Analog name="Main(0):P_BPS" index="9" gindex="100663305" id="1447702505:0" label="" dim="1" unit="" min="-100.0" max="80.0" />
+    </List>
+    <List classid="Digital" />
+  </Output>
+</Meta>
