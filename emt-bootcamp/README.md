@@ -29,9 +29,8 @@ examples in this bootcamp. To prepare your computer for these examples:
 1. Install Python 3 if necessary. This is available from [Python Site](https://python.org), 
    [Anaconda/Miniconda](https://www.anaconda.com/), or the 
    [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5).
-2. On the second panel of Python 3's installer, select the option that
-   adds Python variables to your system environment, which includes the **path**.
-3. Install the Python support packages as necessary:
+   - On the second panel of Python 3's installer, **select the option** that adds Python variables to your system environment, which includes the **path**.
+2. Install the Python support packages as necessary:
    - Open a **Command Prompt** from the Start / Windows System menu.
    - Enter **pip install jupyter** for a browser-based interface to Python, see [Jupyter Notebook](https://jupyter.org).
    - Enter **pip install matplotlib** for plotting and numerical support, see [Matplotlib](https://matplotlib.org/) and [numpy](https://numpy.org/doc/stable/user/index.html).
