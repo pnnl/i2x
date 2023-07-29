@@ -31,7 +31,10 @@ examples in this bootcamp. To prepare your computer for these examples:
    [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5).
 2. On the second panel of Python 3's installer, select the option that
    adds Python variables to your system environment, which includes the **path**.
-3. Install [Jupyter Notebook](https://jupyter.org/install) if necessary.
+3. Install the Python support packages as necessary:
+   - Open a **Command Prompt** from the Start / Windows System menu.
+   - Enter **pip install jupyter** for a browser-based interface to Python, see [Jupyter Notebook](https://jupyter.org).
+   - Enter **pip install matplotlib** for plotting and numerical support, see [Matplotlib](https://matplotlib.org/) and [numpy](https://numpy.org/doc/stable/user/index.html).
 
 To test these installations:
 
