@@ -1,8 +1,12 @@
-# Materials for EMT Bootcamps 
+# PSCAD Materials for EMT Bootcamps 
 
 This repository contains presentations and examples for the NERC/i2X
 bootcamps in electromagnetic transient (EMT) modeling of inverter-based
 resources (IBR).
+
+- use py test.py or python test.py after taking the following two steps
+- C:\Users\Public\Documents\Manitoba Hydro International\Python\Packages>pip install  mhi\_common-2.3.9-py3-none-any.whl
+- C:\Users\Public\Documents\Manitoba Hydro International\Python\Packages>pip install mhi\_pscad-2.9.0-py3-none-any.whl
 
 ## Pre-session Slides
 
@@ -33,7 +37,7 @@ examples in this bootcamp. To prepare your computer for these examples:
 2. Install the Python support packages as necessary:
    - Open a **Command Prompt** from the Start / Windows System menu.
    - Enter **pip install jupyter** for a browser-based interface to Python, see [Jupyter Notebook](https://jupyter.org).
-   - Enter **pip install matplotlib scipy** for plotting and numerical support, see [Matplotlib](https://matplotlib.org/), [numpy](https://numpy.org/doc/stable/user/index.html), and [scipy](https://scipy.org/).
+   - Enter **pip install matplotlib** for plotting and numerical support, see [Matplotlib](https://matplotlib.org/) and [numpy](https://numpy.org/doc/stable/user/index.html).
 
 To test these installations:
 
