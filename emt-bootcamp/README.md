@@ -8,7 +8,7 @@ resources (IBR).
 
 - [Introductory slides](EMT_Bootcamp_July_27.pdf)
 - [EMTP slides](EMTP/EMTP_training_session_1.pdf)
-- [PSCAD slides](PSCAD)
+- PSCAD slides will be posted later
 
 ## Obtaining Models and Data Files
 
@@ -42,6 +42,11 @@ To test these installations:
 3. Enter the command **jupyter notebook cplot.ipynb** from the command prompt. Your browser should start display some code and saved text results, but no plot.
 4. Click the **run** button on the notebook's toolbar **3 times**.  A plot should appear at the bottom of the browser.
 5. When finished, enter **Ctrl-C** in the **Command Prompt** window, which shuts down the notebook server.
+
+Some hints in case of trouble:
+
+1. When installing packages without admin privilege, pip tries to install them in user directories. Users can encounter SSL certificate errors, which may be resolved following [these instructions](https://jhooq.com/pip-install-connection-error/).
+2. Python directories may be added to the PATH, without admin privileges, using [Rapid Environment Editor](https://www.rapidee.com/en/about).
 
 Copyright 2022-2023, Battelle Memorial Institute
 
