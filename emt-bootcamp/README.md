@@ -32,16 +32,17 @@ examples in this bootcamp. To prepare your computer for these examples:
    - On the second panel of Python 3's installer, **select the option** that adds Python variables to your system environment, which includes the **path**.
 2. Install the Python support packages as necessary:
    - Open a **Command Prompt** from the Start / Windows System menu.
-   - Enter **pip install jupyter** for a browser-based interface to Python, see [Jupyter Notebook](https://jupyter.org).
    - Enter **pip install matplotlib scipy** for plotting and numerical support, see [Matplotlib](https://matplotlib.org/), [numpy](https://numpy.org/doc/stable/user/index.html), and [scipy](https://scipy.org/).
+   - Enter **pip install jupyter ipympl** for a browser-based interface to Python, see [Jupyter Notebook](https://jupyter.org).
 
 To test these installations:
 
-1. Open a **Command Prompt** from the Start / Windows System menu.
-2. Change to the **python** subdirectory of your local copy of this repository.
-3. Enter the command **jupyter notebook cplot.ipynb** from the command prompt. Your browser should start display some code and saved text results, but no plot.
-4. Click the **run** button on the notebook's toolbar **3 times**.  A plot should appear at the bottom of the browser.
-5. When finished, enter **Ctrl-C** in the **Command Prompt** window, which shuts down the notebook server.
+1. In Windows Explorer, double-click on the batch script **notebook.bat**, which you'll find in the **python** subdirectory of your local copy of this repository. This will open a command prompt in the background, which starts the notebook server.
+   - Alternatively, you may open a Command Prompt from the Start / Windows System menu, change to the python subdirectory in your local copy of this repository, and enter **jupyter notebook cplot.ipynb** from the command prompt.
+2. Your browser should start display some code from the notebook, and possibly some saved text results, but no plot.
+3. Click the **run** button on the notebook's toolbar **4 times**.  A plot should appear at the bottom of the browser.
+4. When finished, close the browser's notebook tab.
+5. To shut down the notebook server, enter **Ctrl-C** in the **Command Prompt** window, or just close that window.
 
 Some hints in case of trouble:
 
