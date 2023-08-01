@@ -33,7 +33,7 @@ examples in this bootcamp. To prepare your computer for these examples:
 2. Install the Python support packages as necessary:
    - Open a **Command Prompt** from the Start / Windows System menu.
    - Enter **pip install matplotlib scipy plotly** for plotting and numerical support, see [Matplotlib](https://matplotlib.org/), [numpy](https://numpy.org/doc/stable/user/index.html), and [scipy](https://scipy.org/), [plotly](https://plotly.com/python/getting-started/).
-   - Enter **pip install jupyter ipympl** for a browser-based interface to Python, see [Jupyter Notebook](https://jupyter.org).
+   - Enter **pip install jupyter ipympl ipywidgets** for a browser-based interface to Python, see [Jupyter Notebook](https://jupyter.org).
 
 To test these installations:
 
