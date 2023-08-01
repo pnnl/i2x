@@ -1,0 +1,105 @@
+<Meta name="Average">
+  <messagelist>
+    <message status="normal" label="build" groupid="400002" scope="Average" id="156389788" classid="MessageObj"><![CDATA[Begin compiling with PSCAD Version 5.0.2]]></message>
+    <message status="normal" label="build" groupid="100006" id="2113299934" classid="CmpNavigator">
+      <User scope="Average" name="std_SMIB_test_sample_lib:SimpleSF_1" status="normal" link="26626685" /><![CDATA[Compiling 'SimpleSF_1'. Generating network and data files.]]></message>
+    <message status="normal" label="build" groupid="100006" link="1817884944" id="1817884944" classid="FileNavigator"><![CDATA[Generating 'C:\src\i2x\emt-bootcamp\PSCAD\Average.if18_x86\Average.map'.]]><file scope="Average">C:\src\i2x\emt-bootcamp\PSCAD\Average.if18_x86\Average.map</file></message>
+    <message status="normal" label="build" groupid="100015" scope="Average" id="1180551330" classid="MessageObj"><![CDATA[The total number of live nodes: 49]]></message>
+    <message status="normal" label="build" groupid="0" link="916626817" id="916626817" classid="FileNavigator"><![CDATA[Coding .mak file: 'C:\src\i2x\emt-bootcamp\PSCAD\Average.if18_x86\\Average.mak']]><file scope="Average">C:\src\i2x\emt-bootcamp\PSCAD\Average.if18_x86\\Average.mak</file></message>
+    <message status="normal" label="build" groupid="400000" scope="Average" id="1082448325" classid="MessageObj"><![CDATA[Time for Compile: 11281ms  Make: 15ms]]></message>
+    <message status="normal" label="build" groupid="400000" scope="Average" id="2098670874" classid="MessageObj"><![CDATA[Solve Time = 93ms]]></message>
+    <message status="normal" label="build" groupid="100016" scope="Average" id="1212978191" classid="MessageObj"><![CDATA[Will execute (1): call C:\Program Files (x86)\Intel\oneAPI\compiler\2023.1.0\windows\..\..\..\setvars.bat  ia32]]></message>
+    <message status="normal" label="build" groupid="100016" scope="Average" id="561025406" classid="MessageObj"><![CDATA[Will execute (1): call "C:\Program Files (x86)\Intel\oneAPI\compiler\2023.1.0\windows\..\..\..\setvars.bat"  ia32]]></message>
+    <message status="normal" label="build" groupid="100016" scope="Average" id="292765339" classid="MessageObj"><![CDATA[Will execute (2): nmake -f Average.mak]]></message>
+    <message status="normal" label="build" groupid="100016" scope="Average" id="1450310732" classid="MessageObj"><![CDATA[Will execute (2): "C:\src\i2x\emt-bootcamp\PSCAD\Average.if18_x86\Average_mak.bat"]]></message>
+    <message status="normal" label="build" groupid="100005" scope="Average" id="1440662040" classid="MessageObj"><![CDATA[Creating EMTDC executable...]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1000871145" classid="MessageObj"><![CDATA[C:\src\i2x\emt-bootcamp\PSCAD\Average.if18_x86>call "C:\Program Files (x86)\Intel\oneAPI\compiler\2023.1.0\windows\..\..\..\setvars.bat"  ia32 ]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="648996736" classid="MessageObj"><![CDATA[:: initializing oneAPI environment...]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="13132657" classid="MessageObj"><![CDATA[   Initializing Visual Studio command-line environment...]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="839718634" classid="MessageObj"><![CDATA[   Visual Studio version 16.7.5 environment configured.]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="2123988483" classid="MessageObj"><![CDATA[   "C:\MSVS\2019\BuildTools\"]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1043698537" classid="MessageObj"><![CDATA[   Visual Studio command-line environment initialized for: 'x86']]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="837234763" classid="MessageObj"><![CDATA[:  advisor -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="2034410235" classid="MessageObj"><![CDATA[:  compiler -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="128490589" classid="MessageObj"><![CDATA[:  dal -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="197369461" classid="MessageObj"><![CDATA[:  debugger -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="713391599" classid="MessageObj"><![CDATA[:  dnnl -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="215273635" classid="MessageObj"><![CDATA[:  dpcpp-ct -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1727248835" classid="MessageObj"><![CDATA[ Visual Studio is configured for 32-bit development environment.]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="2058976664" classid="MessageObj"><![CDATA[ The compatibility tool requires a 64-bit development environment.]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1551658074" classid="MessageObj"><![CDATA[:  dpl -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1225874710" classid="MessageObj"><![CDATA[:  inspector -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1077221859" classid="MessageObj"><![CDATA[:  ipp -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1236019361" classid="MessageObj"><![CDATA[:  ippcp -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="613742398" classid="MessageObj"><![CDATA[:  itac -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="2062513288" classid="MessageObj"><![CDATA[:  mkl -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1762039797" classid="MessageObj"><![CDATA[:  mpi -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="870675216" classid="MessageObj"><![CDATA[:  tbb -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1104727813" classid="MessageObj"><![CDATA[:  vtune -- latest]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1472438830" classid="MessageObj"><![CDATA[:: oneAPI environment initialized ::]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1998201899" classid="MessageObj"><![CDATA[Microsoft (R) Program Maintenance Utility Version 14.27.29112.0]]></message>
+    <message status="normal" label="build" groupid="0" scope="Average" id="1847624162" classid="MessageObj"><![CDATA[Copyright (C) Microsoft Corporation.  All rights reserved.]]></message>
+    <message status="normal" label="build" groupid="100013" scope="Average" id="585063226" classid="MessageObj"><![CDATA[Linking objects and libraries into binary 'Average.exe']]></message>
+    <message status="normal" label="build" groupid="400003" scope="Average" id="1073378468" classid="MessageObj"><![CDATA[Finished compiling with PSCAD Version 5.0.2]]></message>
+  </messagelist>
+  <ViewContext>
+    <Window defn="std_SMIB_test_sample_lib:SimpleSF_1" call="0" />
+  </ViewContext>
+  <List classid="View">
+    <View name="Main" zoomscale="1.5" scrollx="0" scrolly="0" />
+  </List>
+  <Output device="EMTDC" version="2010" date="2023/08/01" time="10:39:03.000000">
+    <Domain name="Time" unit="s" mult="0.0" skew="0.0">
+      <Sample rate="5000.0" end="1250" />
+    </Domain>
+    <List classid="Analog">
+      <Analog name="Main(0):Iinst_BPS" index="1" gindex="100663297" id="975087770:0" label="" dim="3" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0):Vinst_BPS" index="4" gindex="100663300" id="1383296277:0" label="" dim="3" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0):Vrms_BPS" index="7" gindex="100663303" id="97578819:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0):Q_BPS" index="8" gindex="100663304" id="1175279801:0" label="" dim="1" unit="" min="-100.0" max="80.0" />
+      <Analog name="Main(0):P_BPS" index="9" gindex="100663305" id="1447702505:0" label="" dim="1" unit="" min="-100.0" max="80.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Vdc_Base" index="10" gindex="100663306" id="1290097731:0" label="" dim="1" unit="kV" min="0.0" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):V_dc" index="11" gindex="100663307" id="1504498168:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Vdc_Base" index="12" gindex="100663308" id="426013062:0" label="" dim="1" unit="kV" min="0.0" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):Qpu" index="13" gindex="100663309" id="1538963215:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):P_dc" index="14" gindex="100663310" id="167340113:0" label="" dim="1" unit="" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):P_PV" index="15" gindex="100663311" id="394594708:0" label="" dim="1" unit="" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ref_Boost" index="16" gindex="100663312" id="43254716:0" label="" dim="1" unit="kV" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):I_dc" index="17" gindex="100663313" id="1115871311:0" label="" dim="1" unit="kA" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):V_dc" index="18" gindex="100663314" id="721234821:0" label="" dim="1" unit="kV" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ipv" index="19" gindex="100663315" id="529894604:0" label="" dim="1" unit="kA" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):Vpv" index="20" gindex="100663316" id="1535650331:0" label="" dim="1" unit="kV" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):VrefMPPT" index="21" gindex="100663317" id="216229954:0" label="" dim="1" unit="kV" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):Iq Reference" index="22" gindex="100663318" id="657503120:0" label="" dim="1" unit="pu" min="-0.12" max="0.02" />
+      <Analog name="Main(0)\SimpleSF_1(0):Iq  Measured" index="23" gindex="100663319" id="2139934192:0" label="" dim="1" unit="pu" min="-0.12" max="0.12" />
+      <Analog name="Main(0)\SimpleSF_1(0):Id  Measured" index="24" gindex="100663320" id="1671054802:0" label="" dim="1" unit="pu" min="-0.2" max="0.2" />
+      <Analog name="Main(0)\SimpleSF_1(0):RT_60" index="25" gindex="100663321" id="183957368:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Id Reference" index="26" gindex="100663322" id="108805253:0" label="" dim="1" unit="pu" min="-0.1" max="0.2" />
+      <Analog name="Main(0)\SimpleSF_1(0):Igrid" index="27" gindex="100663323" id="1474788782:0" label="" dim="3" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Vq Measured" index="30" gindex="100663326" id="1094026005:0" label="" dim="1" unit="V" min="-300" max="300" />
+      <Analog name="Main(0)\SimpleSF_1(0):Vd Measured" index="31" gindex="100663327" id="171810785:0" label="" dim="1" unit="V" min="-300" max="300" />
+      <Analog name="Main(0)\SimpleSF_1(0):Vgrid" index="32" gindex="100663328" id="1083396036:0" label="" dim="3" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):PLL Theta" index="35" gindex="100663331" id="823108608:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):PLL_f" index="36" gindex="100663332" id="1579467102:0" label="" dim="1" unit="Hz" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):P_MPPT" index="37" gindex="100663333" id="1857489727:0" label="" dim="1" unit="MW" min="-0.3" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):Vrms" index="38" gindex="100663334" id="120513790:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ref_a" index="39" gindex="100663335" id="1793988991:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Q" index="40" gindex="100663336" id="2100687205:0" label="" dim="1" unit="MVAR" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ppu1" index="41" gindex="100663337" id="686239350:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):P" index="42" gindex="100663338" id="1659150422:0" label="" dim="1" unit="MW" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Delta" index="43" gindex="100663339" id="348557719:0" label="" dim="1" unit="o" min="-90" max="90" />
+      <Analog name="Main(0)\SimpleSF_1(0):P ref" index="44" gindex="100663340" id="1680183300:0" label="" dim="1" unit="MW" min="0.0" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):Q ref" index="45" gindex="100663341" id="1566196989:0" label="" dim="1" unit="MVAr" min="0.0" max="0.4" />
+      <Analog name="Main(0)\SimpleSF_1(0):m*" index="46" gindex="100663342" id="2007909251:0" label="" dim="1" unit="" min="0" max="1" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ec" index="47" gindex="100663343" id="2086885989:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Eb" index="48" gindex="100663344" id="172159127:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ref_c" index="49" gindex="100663345" id="1066705011:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ea" index="50" gindex="100663346" id="2126296079:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):IBOOST" index="51" gindex="100663347" id="1728515003:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ref_b" index="52" gindex="100663348" id="1360840573:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):VBOOST" index="53" gindex="100663349" id="316507172:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+      <Analog name="Main(0)\SimpleSF_1(0):Ref_a" index="54" gindex="100663350" id="1759755958:0" label="" dim="1" unit="" min="-2.0" max="2.0" />
+    </List>
+    <List classid="Digital" />
+  </Output>
+</Meta>

@@ -21,7 +21,7 @@
     <param name="Warn" value="0" />
     <param name="Check" value="0" />
     <param name="description" value="" />
-    <param name="revisor" value="mcde601, 1690591437" />
+    <param name="revisor" value="mcde601, 1690765237" />
     <param name="startup_filename" value="" />
     <param name="sparsity_threshold" value="200" />
     <param name="Debug" value="0" />
@@ -293,6 +293,177 @@
       <paramlist>
         <param name="ymin" value="0.000000" />
         <param name="ymax" value="20.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="1111100001" link="1161394194">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1.0" />
+        <param name="xmax" value="1.0" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="61727470" link="653349597">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1720796259" link="934223566">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1473835267" link="396188995">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="2056099551" link="1408554962">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="1668245391" link="348115254">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1.0" />
+        <param name="xmax" value="1.0" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1695408548" link="1402051917">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1576184927" link="1895934187">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1108231053" link="746818526">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="790485460" link="969885339">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1.0" />
+        <param name="xmax" value="1.0" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="156356263" link="318048812">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="344487528" link="775584678">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="16755436" link="821924647">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1.0" />
+        <param name="xmax" value="1.0" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1576459072" link="1864215670">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1432320829" link="1815592180">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1147512543" link="907474597">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="1387471132" link="164734815">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1.0" />
+        <param name="xmax" value="1.0" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1226212530" link="392317112">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1707137463" link="404787951">
+      <path>
+        <ref link="535988013" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
       </paramlist>
     </Settings>
   </List>
@@ -11894,7 +12065,7 @@ Based on "best practices" guidelines]]></Sticky>
         <grouping />
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Main" id="469267275" group="" url="" version="" build="" crc="101330499" view="false" date="1690591342">
+    <Definition classid="UserCmpDefn" name="Main" id="469267275" group="" url="" version="" build="" crc="130369109" view="false" date="1690765197">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -12865,7 +13036,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="36" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:const" id="26243362" x="90" y="558" w="76" h="35" z="150" orient="0" defn="master:const" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:const" id="26243362" x="90" y="558" w="76" h="35" z="140" orient="0" defn="master:const" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="10628662">
             <param name="Name" value="kV" />
             <param name="Value" value="138" />
@@ -13129,7 +13300,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="Q_POC" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:gain" id="660055127" x="630" y="504" w="80" h="36" z="140" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:gain" id="660055127" x="630" y="504" w="80" h="36" z="150" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="34173863">
             <param name="G" value="1" />
             <param name="COM" value="Gain" />
@@ -13203,14 +13374,14 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:const" id="1153011002" x="90" y="720" w="76" h="22" z="250" orient="0" defn="master:const" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:const" id="1153011002" x="90" y="720" w="76" h="22" z="240" orient="0" defn="master:const" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="10628662">
             <param name="Name" value="" />
             <param name="Value" value="1.0" />
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:const" id="22029798" x="90" y="756" w="76" h="22" z="310" orient="0" defn="master:const" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:const" id="22029798" x="90" y="756" w="76" h="22" z="250" orient="0" defn="master:const" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="10628662">
             <param name="Name" value="" />
             <param name="Value" value="1e-3" />
@@ -13244,179 +13415,6 @@ Based on "best practices" guidelines]]></Sticky>
           </paramlist>
         </User>
         <grouping />
-        <User classid="UserCmp" id="56545060" name="master:recorder2_0" x="576" y="774" w="245" h="133" z="420" orient="0" defn="master:recorder2_0" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="75979185">
-            <param name="Name" value="" />
-            <param name="FName" value="playback" />
-            <param name="FFMT" value="2" />
-            <param name="Rstep" value="50" />
-            <param name="Mfilter" value="0" />
-            <param name="FREQ" value="1" />
-            <param name="StnN" value="EMTDC_Simulation" />
-            <param name="DevNo" value="1" />
-            <param name="NChA" value="6" />
-            <param name="NChD" value="0" />
-            <param name="MFILE" value="0" />
-            <param name="NxHdr" value="0" />
-            <param name="AMin" value="0" />
-            <param name="AMax" value="4096" />
-            <param name="ENTCAP" value="0" />
-            <param name="Hdr1" value="Extra_Line_1" />
-            <param name="Hdr2" value="Extra_Line_2" />
-            <param name="Hdr3" value="Extra_Line_3" />
-            <param name="Hdr4" value="Extra_Line_4" />
-            <param name="Hdr5" value="Extra_Line_5" />
-            <param name="NA1" value="A1" />
-            <param name="DA1" value="VA" />
-            <param name="VS1" value="0" />
-            <param name="VT1" value="0" />
-            <param name="UN1" value="A1" />
-            <param name="PH1" value="0" />
-            <param name="TR1" value="1" />
-            <param name="CT1" value="A1" />
-            <param name="NA2" value="A2" />
-            <param name="DA2" value="VB" />
-            <param name="VS2" value="0" />
-            <param name="VT2" value="0" />
-            <param name="UN2" value="A2" />
-            <param name="PH2" value="1" />
-            <param name="TR2" value="1" />
-            <param name="CT2" value="A2" />
-            <param name="NA3" value="A3" />
-            <param name="DA3" value="VC" />
-            <param name="VS3" value="0" />
-            <param name="VT3" value="0" />
-            <param name="UN3" value="A3" />
-            <param name="PH3" value="2" />
-            <param name="TR3" value="1" />
-            <param name="CT3" value="A3" />
-            <param name="NA4" value="A4" />
-            <param name="DA4" value="IA" />
-            <param name="VS4" value="0" />
-            <param name="VT4" value="1" />
-            <param name="UN4" value="A4" />
-            <param name="PH4" value="0" />
-            <param name="TR4" value="1" />
-            <param name="CT4" value="A4" />
-            <param name="NA5" value="A5" />
-            <param name="DA5" value="IB" />
-            <param name="VS5" value="0" />
-            <param name="VT5" value="1" />
-            <param name="UN5" value="A5" />
-            <param name="PH5" value="1" />
-            <param name="TR5" value="1" />
-            <param name="CT5" value="A5" />
-            <param name="NA6" value="A6" />
-            <param name="DA6" value="IC" />
-            <param name="VS6" value="0" />
-            <param name="VT6" value="1" />
-            <param name="UN6" value="A6" />
-            <param name="PH6" value="2" />
-            <param name="TR6" value="1" />
-            <param name="CT6" value="A6" />
-            <param name="NA7" value="A7" />
-            <param name="DA7" value="A7" />
-            <param name="VS7" value="0" />
-            <param name="VT7" value="0" />
-            <param name="UN7" value="A7" />
-            <param name="PH7" value="0" />
-            <param name="TR7" value="1" />
-            <param name="CT7" value="A7" />
-            <param name="NA8" value="A8" />
-            <param name="DA8" value="A8" />
-            <param name="VS8" value="0" />
-            <param name="VT8" value="0" />
-            <param name="UN8" value="A8" />
-            <param name="PH8" value="0" />
-            <param name="TR8" value="1" />
-            <param name="CT8" value="A8" />
-            <param name="NA9" value="A9" />
-            <param name="DA9" value="A9" />
-            <param name="VS9" value="0" />
-            <param name="VT9" value="0" />
-            <param name="UN9" value="A9" />
-            <param name="PH9" value="0" />
-            <param name="TR9" value="1" />
-            <param name="CT9" value="A9" />
-            <param name="NA10" value="A10" />
-            <param name="DA10" value="A10" />
-            <param name="VS10" value="0" />
-            <param name="VT10" value="0" />
-            <param name="UN10" value="A10" />
-            <param name="PH10" value="0" />
-            <param name="TR10" value="1" />
-            <param name="CT10" value="A10" />
-            <param name="NA11" value="A11" />
-            <param name="DA11" value="A11" />
-            <param name="VS11" value="0" />
-            <param name="VT11" value="0" />
-            <param name="UN11" value="A11" />
-            <param name="PH11" value="0" />
-            <param name="TR11" value="1" />
-            <param name="CT11" value="A11" />
-            <param name="NA12" value="A12" />
-            <param name="DA12" value="A12" />
-            <param name="VS12" value="0" />
-            <param name="VT12" value="0" />
-            <param name="UN12" value="A12" />
-            <param name="PH12" value="0" />
-            <param name="TR12" value="1.0" />
-            <param name="CT12" value="A12" />
-            <param name="ND1" value="D1" />
-            <param name="DD1" value="D1" />
-            <param name="NT1" value="0" />
-            <param name="ND2" value="D2" />
-            <param name="DD2" value="D2" />
-            <param name="NT2" value="0" />
-            <param name="ND3" value="D3" />
-            <param name="DD3" value="D3" />
-            <param name="NT3" value="0" />
-            <param name="ND4" value="D4" />
-            <param name="DD4" value="D4" />
-            <param name="NT4" value="0" />
-            <param name="ND5" value="D5" />
-            <param name="DD5" value="D5" />
-            <param name="NT5" value="0" />
-            <param name="ND6" value="D6" />
-            <param name="DD6" value="D6" />
-            <param name="NT6" value="0" />
-            <param name="ND7" value="D7" />
-            <param name="DD7" value="D7" />
-            <param name="NT7" value="0" />
-            <param name="ND8" value="D8" />
-            <param name="DD8" value="D8" />
-            <param name="NT8" value="0" />
-            <param name="ND9" value="D9" />
-            <param name="DD9" value="D9" />
-            <param name="NT9" value="0" />
-            <param name="ND10" value="D10" />
-            <param name="DD10" value="D10" />
-            <param name="NT10" value="0" />
-            <param name="ND11" value="D11" />
-            <param name="DD11" value="D11" />
-            <param name="NT11" value="0" />
-            <param name="ND12" value="D12" />
-            <param name="DD12" value="D12" />
-            <param name="NT12" value="0" />
-            <param name="ND13" value="D13" />
-            <param name="DD13" value="D13" />
-            <param name="NT13" value="0" />
-            <param name="ND14" value="D14" />
-            <param name="DD14" value="D14" />
-            <param name="NT14" value="0" />
-            <param name="ND15" value="D15" />
-            <param name="DD15" value="D15" />
-            <param name="NT15" value="0" />
-            <param name="ND16" value="D16" />
-            <param name="DD16" value="D16" />
-            <param name="NT16" value="0" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="2019623517" name="master:datalabel" x="432" y="684" w="60" h="23" z="1" orient="0" defn="master:datalabel" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="127230955">
-            <param name="Name" value="Vinst_BPS" />
-          </paramlist>
-        </User>
         <User classid="UserCmp" id="1383296277" name="master:pgb" x="1386" y="198" w="72" h="40" z="480" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="55341900">
             <param name="Name" value="Vinst_BPS" />
@@ -13470,105 +13468,6 @@ Based on "best practices" guidelines]]></Sticky>
         <Wire classid="WireOrthogonal" id="1241660878" name="" x="1332" y="252" w="82" h="10" orient="0" disable="false">
           <vertex x="0" y="0" />
           <vertex x="72" y="0" />
-        </Wire>
-        <User classid="UserCmp" id="1174280613" name="master:consti" x="432" y="774" w="76" h="22" z="320" orient="0" defn="master:consti" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="74846674">
-            <param name="Name" value="" />
-            <param name="Value" value="4" />
-            <param name="Dim" value="1" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="189271867" name="master:consti" x="432" y="810" w="76" h="22" z="330" orient="0" defn="master:consti" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="74846674">
-            <param name="Name" value="" />
-            <param name="Value" value="10" />
-            <param name="Dim" value="1" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="1959262117" name="master:datatap" x="504" y="702" w="28" h="26" z="280" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="38224701">
-            <param name="Name" value="" />
-            <param name="Index" value="1" />
-            <param name="Dim" value="1" />
-            <param name="Type" value="2" />
-            <param name="Style" value="0" />
-            <param name="Disp" value="1" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="1128636234" name="master:datatap" x="540" y="702" w="28" h="26" z="290" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="38224701">
-            <param name="Name" value="" />
-            <param name="Index" value="2" />
-            <param name="Dim" value="1" />
-            <param name="Type" value="2" />
-            <param name="Style" value="0" />
-            <param name="Disp" value="1" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="532892503" name="master:datatap" x="576" y="702" w="28" h="26" z="300" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="38224701">
-            <param name="Name" value="" />
-            <param name="Index" value="3" />
-            <param name="Dim" value="1" />
-            <param name="Type" value="2" />
-            <param name="Style" value="0" />
-            <param name="Disp" value="1" />
-          </paramlist>
-        </User>
-        <Wire classid="WireOrthogonal" id="1376842071" name="" x="432" y="684" w="136" h="10" orient="0" disable="false">
-          <vertex x="0" y="0" />
-          <vertex x="126" y="0" />
-        </Wire>
-        <User classid="UserCmp" id="843727402" name="master:datalabel" x="540" y="648" w="56" h="23" z="1" orient="0" defn="master:datalabel" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="127230955">
-            <param name="Name" value="Iinst_BPS" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="774380838" name="master:datatap" x="612" y="666" w="28" h="26" z="240" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="38224701">
-            <param name="Name" value="" />
-            <param name="Index" value="1" />
-            <param name="Dim" value="1" />
-            <param name="Type" value="2" />
-            <param name="Style" value="0" />
-            <param name="Disp" value="1" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="1588355331" name="master:datatap" x="648" y="666" w="28" h="26" z="260" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="38224701">
-            <param name="Name" value="" />
-            <param name="Index" value="2" />
-            <param name="Dim" value="1" />
-            <param name="Type" value="2" />
-            <param name="Style" value="0" />
-            <param name="Disp" value="1" />
-          </paramlist>
-        </User>
-        <User classid="UserCmp" id="974933705" name="master:datatap" x="684" y="666" w="28" h="26" z="270" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
-          <paramlist name="" link="-1" crc="38224701">
-            <param name="Name" value="" />
-            <param name="Index" value="3" />
-            <param name="Dim" value="1" />
-            <param name="Type" value="2" />
-            <param name="Style" value="0" />
-            <param name="Disp" value="1" />
-          </paramlist>
-        </User>
-        <Wire classid="WireOrthogonal" id="1797185061" name="" x="540" y="648" w="136" h="10" orient="0" disable="false">
-          <vertex x="0" y="0" />
-          <vertex x="126" y="0" />
-        </Wire>
-        <Wire classid="WireOrthogonal" id="1206469432" name="" x="612" y="666" w="10" h="46" orient="0" disable="false">
-          <vertex x="0" y="0" />
-          <vertex x="0" y="36" />
-        </Wire>
-        <Wire classid="WireOrthogonal" id="615838759" name="" x="648" y="666" w="10" h="46" orient="0" disable="false">
-          <vertex x="0" y="0" />
-          <vertex x="0" y="36" />
-        </Wire>
-        <Wire classid="WireOrthogonal" id="808567102" name="" x="684" y="666" w="10" h="46" orient="0" disable="false">
-          <vertex x="0" y="0" />
-          <vertex x="0" y="36" />
         </Wire>
         <Wire classid="WireOrthogonal" id="414658800" name="" x="774" y="360" w="100" h="10" orient="0" disable="false">
           <vertex x="0" y="0" />
@@ -14379,6 +14278,289 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="S2M" />
           </paramlist>
         </User>
+        <User classid="UserCmp" id="972352282" name="master:recorder2_0" x="558" y="828" w="255" h="169" z="420" orient="0" defn="master:recorder2_0" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="75979185">
+            <param name="Name" value="" />
+            <param name="FName" value="playback" />
+            <param name="FFMT" value="2" />
+            <param name="Rstep" value="50" />
+            <param name="Mfilter" value="0" />
+            <param name="FREQ" value="1" />
+            <param name="StnN" value="EMTDC_Simulation" />
+            <param name="DevNo" value="1" />
+            <param name="NChA" value="9" />
+            <param name="NChD" value="0" />
+            <param name="MFILE" value="0" />
+            <param name="NxHdr" value="0" />
+            <param name="AMin" value="0" />
+            <param name="AMax" value="4096" />
+            <param name="ENTCAP" value="0" />
+            <param name="Hdr1" value="Extra_Line_1" />
+            <param name="Hdr2" value="Extra_Line_2" />
+            <param name="Hdr3" value="Extra_Line_3" />
+            <param name="Hdr4" value="Extra_Line_4" />
+            <param name="Hdr5" value="Extra_Line_5" />
+            <param name="NA1" value="A1" />
+            <param name="DA1" value="VA" />
+            <param name="VS1" value="0" />
+            <param name="VT1" value="0" />
+            <param name="UN1" value="A1" />
+            <param name="PH1" value="0" />
+            <param name="TR1" value="1" />
+            <param name="CT1" value="A1" />
+            <param name="NA2" value="A2" />
+            <param name="DA2" value="VB" />
+            <param name="VS2" value="0" />
+            <param name="VT2" value="0" />
+            <param name="UN2" value="A2" />
+            <param name="PH2" value="1" />
+            <param name="TR2" value="1" />
+            <param name="CT2" value="A2" />
+            <param name="NA3" value="A3" />
+            <param name="DA3" value="VC" />
+            <param name="VS3" value="0" />
+            <param name="VT3" value="0" />
+            <param name="UN3" value="A3" />
+            <param name="PH3" value="2" />
+            <param name="TR3" value="1" />
+            <param name="CT3" value="A3" />
+            <param name="NA4" value="A4" />
+            <param name="DA4" value="IA" />
+            <param name="VS4" value="0" />
+            <param name="VT4" value="1" />
+            <param name="UN4" value="A4" />
+            <param name="PH4" value="0" />
+            <param name="TR4" value="1" />
+            <param name="CT4" value="A4" />
+            <param name="NA5" value="A5" />
+            <param name="DA5" value="IB" />
+            <param name="VS5" value="0" />
+            <param name="VT5" value="1" />
+            <param name="UN5" value="A5" />
+            <param name="PH5" value="1" />
+            <param name="TR5" value="1" />
+            <param name="CT5" value="A5" />
+            <param name="NA6" value="A6" />
+            <param name="DA6" value="IC" />
+            <param name="VS6" value="0" />
+            <param name="VT6" value="1" />
+            <param name="UN6" value="A6" />
+            <param name="PH6" value="2" />
+            <param name="TR6" value="1" />
+            <param name="CT6" value="A6" />
+            <param name="NA7" value="A7" />
+            <param name="DA7" value="Vrms" />
+            <param name="VS7" value="0" />
+            <param name="VT7" value="2" />
+            <param name="UN7" value="A7" />
+            <param name="PH7" value="0" />
+            <param name="TR7" value="1" />
+            <param name="CT7" value="A7" />
+            <param name="NA8" value="A8" />
+            <param name="DA8" value="P" />
+            <param name="VS8" value="0" />
+            <param name="VT8" value="2" />
+            <param name="UN8" value="A8" />
+            <param name="PH8" value="0" />
+            <param name="TR8" value="1" />
+            <param name="CT8" value="A8" />
+            <param name="NA9" value="A9" />
+            <param name="DA9" value="Q" />
+            <param name="VS9" value="0" />
+            <param name="VT9" value="2" />
+            <param name="UN9" value="A9" />
+            <param name="PH9" value="0" />
+            <param name="TR9" value="1" />
+            <param name="CT9" value="A9" />
+            <param name="NA10" value="A10" />
+            <param name="DA10" value="A10" />
+            <param name="VS10" value="0" />
+            <param name="VT10" value="0" />
+            <param name="UN10" value="A10" />
+            <param name="PH10" value="0" />
+            <param name="TR10" value="1" />
+            <param name="CT10" value="A10" />
+            <param name="NA11" value="A11" />
+            <param name="DA11" value="A11" />
+            <param name="VS11" value="0" />
+            <param name="VT11" value="0" />
+            <param name="UN11" value="A11" />
+            <param name="PH11" value="0" />
+            <param name="TR11" value="1" />
+            <param name="CT11" value="A11" />
+            <param name="NA12" value="A12" />
+            <param name="DA12" value="A12" />
+            <param name="VS12" value="0" />
+            <param name="VT12" value="0" />
+            <param name="UN12" value="A12" />
+            <param name="PH12" value="0" />
+            <param name="TR12" value="1.0" />
+            <param name="CT12" value="A12" />
+            <param name="ND1" value="D1" />
+            <param name="DD1" value="D1" />
+            <param name="NT1" value="0" />
+            <param name="ND2" value="D2" />
+            <param name="DD2" value="D2" />
+            <param name="NT2" value="0" />
+            <param name="ND3" value="D3" />
+            <param name="DD3" value="D3" />
+            <param name="NT3" value="0" />
+            <param name="ND4" value="D4" />
+            <param name="DD4" value="D4" />
+            <param name="NT4" value="0" />
+            <param name="ND5" value="D5" />
+            <param name="DD5" value="D5" />
+            <param name="NT5" value="0" />
+            <param name="ND6" value="D6" />
+            <param name="DD6" value="D6" />
+            <param name="NT6" value="0" />
+            <param name="ND7" value="D7" />
+            <param name="DD7" value="D7" />
+            <param name="NT7" value="0" />
+            <param name="ND8" value="D8" />
+            <param name="DD8" value="D8" />
+            <param name="NT8" value="0" />
+            <param name="ND9" value="D9" />
+            <param name="DD9" value="D9" />
+            <param name="NT9" value="0" />
+            <param name="ND10" value="D10" />
+            <param name="DD10" value="D10" />
+            <param name="NT10" value="0" />
+            <param name="ND11" value="D11" />
+            <param name="DD11" value="D11" />
+            <param name="NT11" value="0" />
+            <param name="ND12" value="D12" />
+            <param name="DD12" value="D12" />
+            <param name="NT12" value="0" />
+            <param name="ND13" value="D13" />
+            <param name="DD13" value="D13" />
+            <param name="NT13" value="0" />
+            <param name="ND14" value="D14" />
+            <param name="DD14" value="D14" />
+            <param name="NT14" value="0" />
+            <param name="ND15" value="D15" />
+            <param name="DD15" value="D15" />
+            <param name="NT15" value="0" />
+            <param name="ND16" value="D16" />
+            <param name="DD16" value="D16" />
+            <param name="NT16" value="0" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="1135945186" name="master:datalabel" x="414" y="738" w="60" h="23" z="1" orient="0" defn="master:datalabel" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="127230955">
+            <param name="Name" value="Vinst_BPS" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="476736189" name="master:consti" x="414" y="828" w="76" h="22" z="320" orient="0" defn="master:consti" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="74846674">
+            <param name="Name" value="" />
+            <param name="Value" value="4" />
+            <param name="Dim" value="1" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="81626709" name="master:consti" x="414" y="864" w="76" h="22" z="330" orient="0" defn="master:consti" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="74846674">
+            <param name="Name" value="" />
+            <param name="Value" value="10" />
+            <param name="Dim" value="1" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="75639733" name="master:datatap" x="486" y="756" w="28" h="26" z="260" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="38224701">
+            <param name="Name" value="" />
+            <param name="Index" value="1" />
+            <param name="Dim" value="1" />
+            <param name="Type" value="2" />
+            <param name="Style" value="0" />
+            <param name="Disp" value="1" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="333184494" name="master:datatap" x="522" y="756" w="28" h="26" z="270" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="38224701">
+            <param name="Name" value="" />
+            <param name="Index" value="2" />
+            <param name="Dim" value="1" />
+            <param name="Type" value="2" />
+            <param name="Style" value="0" />
+            <param name="Disp" value="1" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="1625701992" name="master:datatap" x="558" y="756" w="28" h="26" z="280" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="38224701">
+            <param name="Name" value="" />
+            <param name="Index" value="3" />
+            <param name="Dim" value="1" />
+            <param name="Type" value="2" />
+            <param name="Style" value="0" />
+            <param name="Disp" value="1" />
+          </paramlist>
+        </User>
+        <Wire classid="WireOrthogonal" id="484884645" name="" x="414" y="738" w="136" h="10" orient="0" disable="false">
+          <vertex x="0" y="0" />
+          <vertex x="126" y="0" />
+        </Wire>
+        <User classid="UserCmp" id="1370393662" name="master:datalabel" x="720" y="738" w="56" h="23" z="1" orient="0" defn="master:datalabel" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="127230955">
+            <param name="Name" value="Iinst_BPS" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="1294017257" name="master:datatap" x="594" y="756" w="28" h="26" z="290" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="38224701">
+            <param name="Name" value="" />
+            <param name="Index" value="1" />
+            <param name="Dim" value="1" />
+            <param name="Type" value="2" />
+            <param name="Style" value="0" />
+            <param name="Disp" value="1" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="1512090847" name="master:datatap" x="630" y="756" w="28" h="26" z="300" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="38224701">
+            <param name="Name" value="" />
+            <param name="Index" value="2" />
+            <param name="Dim" value="1" />
+            <param name="Type" value="2" />
+            <param name="Style" value="0" />
+            <param name="Disp" value="1" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="501350503" name="master:datatap" x="666" y="756" w="28" h="26" z="310" orient="0" defn="master:datatap" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="38224701">
+            <param name="Name" value="" />
+            <param name="Index" value="3" />
+            <param name="Dim" value="1" />
+            <param name="Type" value="2" />
+            <param name="Style" value="0" />
+            <param name="Disp" value="1" />
+          </paramlist>
+        </User>
+        <Wire classid="WireOrthogonal" id="987656170" name="" x="576" y="738" w="154" h="10" orient="0" disable="false">
+          <vertex x="0" y="0" />
+          <vertex x="144" y="0" />
+        </Wire>
+        <User classid="UserCmp" name="master:datalabel" defn="master:datalabel" id="1928198527" x="594" y="684" w="44" h="23" z="1" orient="6" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="127230955">
+            <param name="Name" value="Q_POC" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" name="master:datalabel" defn="master:datalabel" id="966897617" x="630" y="702" w="42" h="23" z="1" orient="6" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="127230955">
+            <param name="Name" value="P_POC" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" name="master:datalabel" defn="master:datalabel" id="1575451214" x="666" y="720" w="62" h="23" z="1" orient="6" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="127230955">
+            <param name="Name" value="Vrms_POC" />
+          </paramlist>
+        </User>
+        <Wire classid="WireOrthogonal" id="1823260741" name="" x="594" y="684" w="10" h="46" orient="0" disable="false">
+          <vertex x="0" y="0" />
+          <vertex x="0" y="36" />
+        </Wire>
+        <Wire classid="WireOrthogonal" id="1271926542" name="" x="630" y="702" w="10" h="28" orient="0" disable="false">
+          <vertex x="0" y="0" />
+          <vertex x="0" y="18" />
+        </Wire>
       </schematic>
       <references>
         <using namespace="master" />
@@ -14422,7 +14604,7 @@ Based on "best practices" guidelines]]></Sticky>
     </paramlist>
   </GlobalSubstitutions>
   <hierarchy>
-    <call link="336858193" name="Gen:Station" z="-1" view="false" instance="0">
+    <call link="1855136719" name="Gen:Station" z="-1" view="false" instance="0">
       <call link="535988013" name="Gen:Main" z="-1" view="true" instance="0" />
     </call>
   </hierarchy>
