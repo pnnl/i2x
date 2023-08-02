@@ -15,7 +15,7 @@ The models and data located here include:
 
 - **SMIB.pscx**; a switching-model of a 100-MW solar plant
 - **std\_SMIB\_test\_sample\_lib.pslx**; components and subsystems to support IBR plant models
-- **COMTRADE/test**; a directory of saved COMTRADE output for post-processing exercises
+- **COMTRADEtest/**; a directory of saved COMTRADE output for post-processing exercises
 
 These models are under development and not yet supported:
 
