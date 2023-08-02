@@ -8,7 +8,7 @@ inverter-based resources (IBR).
 
 ## Plant-Level Session
 
-In the August 3 session, we will use an example called **EPRI_Benchmark_FSC_v4**,
+In the August 3 session, we will use an example called **EPRI\_Benchmark\_FSC\_v4**,
 which comes with EMTP. It includes a 75-MW wind plant, Type IV, connected to
 a 4-bus, 120-kV system. You can find this example under the Renewables Toolbox
 as shown below:
@@ -23,6 +23,11 @@ recorder to the system.
 More detail on the test system and applications is available in a free report:
 
 - [EPRI Benchmark Report](https://www.epri.com/research/products/3002000347)
+
+Also, there is a newer **EPRI\_Aggregated\_Park\_WECC\_WP\_V1** example 
+that comes with EMTP, two spaces above *EPRI\_Benchmark\_FSC\_v4* in the 
+screenshot.  We may use this model in the session to highlight some 
+differences and improvements.  
 
 Copyright 2022-2023, Battelle Memorial Institute
 
