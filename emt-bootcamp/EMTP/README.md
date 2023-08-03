@@ -8,15 +8,15 @@ inverter-based resources (IBR).
 
 ## Plant-Level Session
 
-In the August 3 session, we will use an example called **EPRI\_Benchmark\_FSC\_v4**,
-which comes with EMTP. It includes a 75-MW wind plant, Type IV, connected to
-a 4-bus, 120-kV system. You can find this example under the Renewables Toolbox
-as shown below:
+In the August 3 session, we will use an example called 
+**EPRI\_Aggregated\_Park\_WECC\_WP\_V1** which comes with EMTP.  It 
+includes a 75-MW wind plant, Type IV, connected to a 4-bus, 120-kV system.  
+You can find this example under the Renewables Toolbox as shown below: 
 
-![image](FSC_v4.png)
+![image](WECC_V1.png)
 
 If you open this case and double-click on the wind park icon, the **Help** tab
-provides access to a 61-page PDF manual on the Type IV model features. During
+provides access to a 23-page PDF manual on the various model features. During
 the session, we will exercise various features of the model, and add a COMTRADE
 recorder to the system.
 
@@ -24,10 +24,10 @@ More detail on the test system and applications is available in a free report:
 
 - [EPRI Benchmark Report](https://www.epri.com/research/products/3002000347)
 
-Also, there is a newer **EPRI\_Aggregated\_Park\_WECC\_WP\_V1** example 
-that comes with EMTP, two spaces above *EPRI\_Benchmark\_FSC\_v4* in the 
-screenshot.  We may use this model in the session to highlight some 
-differences and improvements.  
+Also, there is an older **EPRI\_Benchmark\_FSC\_v4**, example that comes 
+with EMTP, two spaces below *EPRI\_Aggregated\_Park\_WECC\_WP\_V1* in the 
+screenshot.  This model's help document is longer, at 61 pages, and it
+provides additional background information.  
 
 Copyright 2022-2023, Battelle Memorial Institute
 
