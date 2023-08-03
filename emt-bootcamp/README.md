@@ -9,7 +9,7 @@ resources (IBR).
 - [Introductory slides](EMT_Bootcamp_July_27.pdf)
 - [Plant-Level slides](EMT_Bootcamp_Aug_3.pdf)
 - [EMTP slides](EMTP/EMTP_training_session_1.pdf)
-- [PSCAD slides](PSCAD/EMT-largescale simulations.pdf)
+- [PSCAD slides](PSCAD/EMT-largescale-simulations.pdf)
 
 ## Obtaining Models and Data Files
 
