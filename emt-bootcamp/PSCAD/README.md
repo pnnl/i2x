@@ -9,18 +9,25 @@ above this one:
  
 - [Plant-Level Session](../Plant-Level.zip) 
 
-## Directory
+## Directory of PSCAD Files
 
-The models and data located here include:
+The PSCAD **Version 5** models located here include:
 
-- **SMIB.pscx**; a switching-model of a 100-MW solar plant
-- **std\_SMIB\_test\_sample\_lib.pslx**; components and subsystems to support IBR plant models
+- **EMT\_Boot\_Camp\_WS.pswx**; a workspace for the examples
+- **Solar\_SMIB\_S?\*.pscx**; a series of 6 example cases, where **?** numbers them sequentially from 0 to 5. These contain a switching-model of a 100-MW solar plant.
+- **Solar\_Lib.pslx**; components and subsystems to support the IBR plant models.
+- **Backup/**; a baseline copy of the 6 example cases, used to restore from your local changes if needed.
+
+The PSCAD **Version 4.6** models are at:
+
+- **PSCAD\_V4\\EMT\_Boot\_Camp\_WS.pswx**; a workspace for the examples
+- **PSCAD\_V4\\Solar\_SMIB\_S?\*\_V4.pscx**; a series of 6 example cases, where **?** numbers them sequentially from 0 to 5. These contain a switching-model of a 100-MW solar plant.
+- **PSCAD\_V4\\Solar\_Lib.pslx**; components and subsystems to support the IBR plant models.
+- **PSCAD\_V4\\Backup/**; a baseline copy of the 6 example cases, used to restore from your local changes if needed.
+
+In addition, data located here includes:
+
 - **COMTRADEtest/**; a directory of saved COMTRADE output for post-processing exercises
-
-These models are under development and not yet supported:
-
-- **Average.pscx**; an average-model version of *SMIB.pscx*
-- **Gen.pscx**; a rotating machine connected in place of the 100-MW solar plant in *SMIB.pscx*
 
 Copyright 2022-2023, Battelle Memorial Institute
 

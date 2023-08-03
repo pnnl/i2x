@@ -1,0 +1,21 @@
+<workspace name="EMT_Boot_Camp_WS" version="5.0.1" crc="80312853">
+  <projects>
+    <project type="library" name="Solar_Lib" filepath=".\Solar_Lib.pslx" />
+	<project type="project" name="Solar_SMIB_S0_FLAT" filepath=".\Solar_SMIB_S0_FLAT.pscx" />
+    <project type="project" name="Solar_SMIB_S1_FRT" filepath=".\Solar_SMIB_S1_FRT.pscx" />
+    <project type="project" name="Solar_SMIB_S2_P_Step" filepath=".\Solar_SMIB_S2_P_Step.pscx" />
+    <project type="project" name="Solar_SMIB_S3_V_Step" filepath=".\Solar_SMIB_S3_V_Step.pscx" />
+    <project type="project" name="Solar_SMIB_S4_V_Disturbance" filepath=".\Solar_SMIB_S4_V_Disturbance.pscx" />
+    <project type="project" name="Solar_SMIB_S5_F_Disturbance" filepath=".\Solar_SMIB_S5_F_Disturbance.pscx" />
+
+  </projects>
+  <simulations />
+  <pmr />
+  <messagegrid expanded="">
+    <column name="Icon" />
+    <column name="Id" />
+    <column name="Component" />
+    <column name="Namespace" />
+    <column name="Description" />
+  </messagegrid>
+</workspace>
