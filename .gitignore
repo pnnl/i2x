@@ -2,3 +2,4 @@ __pycache__
 src/i2x.egg-info/
 dist/
 .idea
+result.pkl
