@@ -57,7 +57,10 @@ series of output values. Wind plant output is also limited by the cut-in
 and cut-out speeds of the wind turbine, and the nature of its power curve. 
 In Figure 2, the autocorrelation coefficient (ACC), partial 
 autocorrelation coefficient (PACC), and bi-modal probability density 
-function all reflect this expected behavior. 
+function all reflect this expected behavior.
+ 
+- **python wind\_plants.py 150** produces Figure 1 
+- **python test\_wind.py 150** produces Figure 2 
 
 ![Figure 1](wind_plants.png)
 
@@ -94,6 +97,8 @@ the results are optimistic. Figure 4 shows a MOST solution with network
 losses and constraints ignored, i.e., with no power flow analysis and no 
 differentiation between bus LMPs. However, the no-powerflow solution runs
 faster and can sometimes provide useful information.
+
+- See the next section for instructions to reproduce the results in Figures 3 and 4
 
 ![Figure 3](most_day1_dcpf.png)
 
@@ -137,10 +142,10 @@ problems, which run much faster. Steps to run this example, assuming that
 
 To simulate three days in a single MOST problem:
 
-- Run *python prep\_most\_profiles.py 0 72* to create the 72-hour load and wind profiles.
+- Run *python prep\_most\_profiles.py 0 72* to create the 72-hour load and wind profiles, as shown in Figure 5.
 - From the Octave command-line, run *test\_solve*. This takes several minutes to solve with a DC optimal power flow.
 - When Octave finishes, run *python plot\_most.py* to generate Figure 8.
-- At line 8 of *test\_solve.m*, change *most.dc\_model* from 0 to 1.
+- At line 8 of *test\_solve.m*, change *most.dc\_model* from 1 to 0.
 - From the Octave command-line, run *test\_solve*. This takes about 30 seconds to solve with no network model.
 - When Octave finishes, run *python plot\_most.py* to generate Figure 9.
 
@@ -171,7 +176,7 @@ congestion.
 *Figure 10: Sequence of scripted 1-day solutions in MOST, f=1.9265e7, Time=16.69s*
 
 For comparison, Figure 11 plots the solutions from Figures 3, 6, and 7 on the same
-graph. To reproduce this plot:
+graph. To reproduce this plot from saved 1-day solutions:
 
 - Run *python cat\_most.py*
 - Run *python plot\_mday.py test\_case*
@@ -195,11 +200,11 @@ is rated for 1086 MVA, so each of these branches represents a transmission
 corridor of 2-6 lines in parallel. The corridor from bus 1 to bus 2 has
 a positive muF, so it could be increased from 2 lines in parallel to 3
 in parallel. The same reasoning applies to line 11, from bus 3 to bus 4.
-To implement these grid upgrades, we should multiply the line ratings
-(*RATE\_A*, *RATE\_B*, *RATE\_C*) and line charging (*Bpu*) by **1.5**, then
-divide the branch impedance (*Rpu*, *Xpu*) by **1.5**. If any of these branches
-happened to be transformers, their *TAP* and *SHIFT* parameters would be
-unchanged. 
+To implement these grid upgrades, we should:
+
+- **Multiply** the line ratings (*RATE\_A*, *RATE\_B*, *RATE\_C*) and line charging value (*Bpu*) by **1.5**.
+- **Divide** the branch impedances (*Rpu*, *Xpu*) by **1.5**. 
+- If any of these branches happened to be transformers, their *TAP* and *SHIFT* parameters would be left unchanged. 
 
     Branch Summary
     Idx Frm  To  Rating  PkFlow Avg muF        Rpu       Xpu      Bpu  N  Miles
@@ -217,10 +222,11 @@ unchanged.
      12   5   7  2168.0  2168.0    0.00  0.0049678 0.0420845  2.91120  2 168.94
      13   1   3  3252.0  3051.9    0.00  0.0042162 0.0357173  5.55918  3 215.07
 
-To reduce the number of parallel lines, the scaling factor would be less than 1.
-For example, scale by **0.8333** to change branch 9, between buses 2 and 5, from
-6 lines in parallel to 5 lines in parallel. To remove a branch completely, the
-scaling factor would be **0.0**, to be implemented by setting *BR\_STATUS* to 0.
+To reduce the number of parallel lines, the scaling factor would be less 
+than 1. For example, scale by **0.8333** to change branch 9, between buses 
+2 and 5, from 6 lines in parallel to 5 lines in parallel. To remove a 
+branch completely, the scaling factor would be **0.0**, to be implemented 
+by setting *BR\_STATUS* to 0. 
 
 The upgrades to branches 4 and 11 comprise 359 miles of new 345-kV line, and
 they reduce the 3-day operating cost, *f*, by 3.1%. They also reduce the average 
@@ -257,7 +263,7 @@ All other units have Energy Resource Interconnection Service (ERIS):
 
 The proposed new renewable resource is connected to one bus at a time:
 
-- It's represented as a dispatchable load, *dl*. TODO: could also use *other* or *unknown* so that *dl* may be used for actual dispatchable/responsive loads.
+- It's represented as a dispatchable load, *dl*. **TODO**: could also use *other* or *unknown* so that *dl* may be used for actual dispatchable/responsive loads.
 - The maximum size is 30 GW.
 - Its cost is below all other ERIS generators.
 - After the SCUC/SCED solution, its actual output is the security-constrained injection capacity at its bus.
