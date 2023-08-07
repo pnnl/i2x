@@ -81,8 +81,8 @@ if __name__ == '__main__':
   for fuel in fuel_list:
     print (' {:8s} {:8.2f} {:7.3f}'.format (fuel, fuel_Pg[fuel], 100.0 * fuel_Pg[fuel] / actualPgen))
 
-  print ('Branches Overloaded:')
-  print (' idx     muF     MVA     kV1     kV2')
+  print ('Branches At Limit:')
+  print (' idx From   To     muF     MVA     kV1     kV2')
   for i in range(nl):
     if meanmuF[i] > 0.0:
       rating = branch[i][mpow.RATE_A]
@@ -90,6 +90,6 @@ if __name__ == '__main__':
       tbus = int(branch[i][mpow.T_BUS])
       kv1 = bus[fbus-1][mpow.BASE_KV]
       kv2 = bus[tbus-1][mpow.BASE_KV]
-      print ('{:4d} {:7.4f} {:7.2f} {:7.2f} {:7.2f}'.format(i, meanmuF[i], rating, kv1, kv2))
+      print ('{:4d} {:4d} {:4d} {:7.4f} {:7.2f} {:7.2f} {:7.2f}'.format(i, fbus, tbus, meanmuF[i], rating, kv1, kv2))
 
 

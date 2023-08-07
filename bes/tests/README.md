@@ -15,6 +15,11 @@ the required Python packages and versions.
 - **\_\_init\_\_.py** allows the use of *mpow\_utilities.py* as a module from the parent directory
 - **cat\_most.py** concatenates saved MOST solutions from the *msout.txt* format to numpy arrays, saved in *txt* files for *plot\_mday.py*
 - **clean.bat** removes output and temporary files from executing scripts
+- **hca.py** runs a systematic N-1 hosting capacity analysis for each bus. A JSON configuration file name may be supplied on the command line. 
+- **hca_all.json** is a sample hosting capacity analysis configuration file that specifies a load scaling of 2.75, no grid upgrades, and all buses to be considered.
+- **hca_one.json** is a sample hosting capacity analysis configuration file that specifies a load scaling of 2.75, two grid branch upgrades, and one bus to be considered.
+- **hca\_prep.py** creates a table of N-1 branch contingencies for a systematic hosting capacity analysis; no grid upgrades are includes
+- **hca\_test.py** performs a trial hosting-capacity analysis at bus 1 with two branches upgraded
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
 - **most\_mday.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
 - **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
@@ -24,6 +29,7 @@ the required Python packages and versions.
 - **msout\_day1\_nopf.txt** a saved MOST solution for day 1, network model excluded
 - **msout\_day2\_dcpf.txt** a saved MOST solution for day 2, network model included
 - **msout\_day3\_dcpf.txt** a saved MOST solution for day 3, network model included
+- **plot\_hca.py** plots the bus hosting capacity and branch congestion levels on a network layout, based on the solution in *hca\_all.txt*.
 - **plot\_mday.py** plots the data created from *most\_mday.py*
 - **plot\_most.py** plots the data from *msout.txt* or another MOST solution file specified on the command line
 - **prep\_most\_profiles.py** creates load and wind profiles for MOST in *test\_resp.m*, *test\_unresp.m*, and *test\_wind.m*. Requires *wind\_plants.dat*.
@@ -269,12 +275,13 @@ The proposed new renewable resource is connected to one bus at a time:
 - After the SCUC/SCED solution, its actual output is the security-constrained injection capacity at its bus.
 - The hosting capacity is determined for a single peak load scenario.  In the ERCOT 8-bus test system, the load is about 66 GW at a nominal load scaling factor of 2.75.
 
-*hca\_xgd.m* contains the reserve requirements, minimum up time, and minimum down time for all generators. Set coal and nuclear *CommitKey* values at 2 for *must run*
-*hca\_case.m* is the ERCOT 8-bus system with 13 conventional plants, 5 wind plants, and 1 dispatchable load representing new injection. Set *Pmin=Pmax* for nuclear must-run units, and *Pmin=0.5 Pmax* for coal must-run units.
-*hca\_prep.py* creates *hca\_contab.m* with N-1 branch contingencies
-*hca\_solve.m* solves a single-period, single-scenario, Nc-contingency MOST problem. It reads *hca\_case.m*, *hca\_xgd.m* and *hca\_contab.m*. It writes *hca\_summary.txt*
-*hca\_summary.txt* contains the MOST summary output. The last dimension of its output matrices is Nc, the first dimension matches content of *hca\_base.m*, and any interior dimensions are 1.
+Input and output files include:
 
+- *hca\_xgd.m* contains the reserve requirements, minimum up time, and minimum down time for all generators. Set coal and nuclear *CommitKey* values at 2 for *must run*
+- *hca\_case.m* is the ERCOT 8-bus system with 13 conventional plants, 5 wind plants, and 1 dispatchable load representing new injection. Set *Pmin=Pmax* for nuclear must-run units, and *Pmin=0.5 Pmax* for coal must-run units.
+- *hca\_prep.py* creates *hca\_contab.m* with N-1 branch contingencies
+- *hca\_solve.m* solves a single-period, single-scenario, Nc-contingency MOST problem. It reads *hca\_case.m*, *hca\_xgd.m* and *hca\_contab.m*. It writes *hca\_summary.txt*
+- *hca\_summary.txt* contains the MOST summary output. The last dimension of its output matrices is Nc, the first dimension matches content of *hca\_base.m*, and any interior dimensions are 1.
 
 Sample results from *hca.py hca\_all.json* follow. The same output results
 from *hca.py* without any command line argument.
@@ -290,7 +297,7 @@ from *hca.py* without any command line argument.
       6   5.000  16.210   0.000   5.139   0.000  21.926  17.810   0.000
       7  11.704  12.747   0.000   5.139   0.000  21.614  14.880   0.000
       8   2.246  16.309   0.000   5.139   0.000  21.926  20.465   0.000
-    Branches Overloaded:
+    Branches At Limit:
      idx From   To     muF     MVA     kV1     kV2
        1    5    6  0.6087 2168.00  345.00  345.00
        2    4    5  0.4707 6504.00  345.00  345.00
@@ -306,6 +313,11 @@ from *hca.py* without any command line argument.
       12    5    7  0.3359 2168.00  345.00  345.00
       13    1    3  0.1519 3252.00  345.00  345.00
 
+Figure 13 depicts the hosting capacity results graphically for this case. 
+The size of each green dot indicates the relative hosting capacity level 
+at the bus. The branches are color-coded, with congested branches more
+red, and uncongested branches more blue. 
+
 Sample results from *hca.py hca\_one.json* follow. This example quantifies an
 increase in hosting capacity at bus 3, after adding parallel lines to branches
 4 and 11. However, the increase in hosting capacity may not be as high as expected.
@@ -314,7 +326,7 @@ increase in hosting capacity at bus 3, after adding parallel lines to branches
     Bus Generation by Fuel[GW]
             hca    wind   solar nuclear   hydro    coal      ng      dl
       3   6.326  14.067   0.000   5.139   0.000  21.566  18.987   0.000
-    Branches Overloaded:
+    Branches At Limit:
      idx From   To     muF     MVA     kV1     kV2
        3    4    6  0.0151 2168.00  345.00  345.00
        4    1    2  0.5031 2168.00  345.00  345.00
