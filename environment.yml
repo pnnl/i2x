@@ -39,7 +39,7 @@ dependencies:
   # - ipython_genutils=0.2.0=pyhd3eb1b0_1
   # - jedi=0.18.1=py310haa95532_1
   # - jinja2=3.1.2=py310haa95532_0
-  - json
+  # - json
   # - jsonschema=4.17.3=py310haa95532_0
   # - jupyter_client=7.4.9=py310haa95532_0
   # - jupyter_core=5.2.0=py310haa95532_0
