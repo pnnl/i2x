@@ -7,3 +7,4 @@ rem del *results.txt
 del solve*.m
 del *solved.m
 del *summary.txt
+del *.log

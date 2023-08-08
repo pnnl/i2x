@@ -7,4 +7,4 @@
 solve*.m
 *solved.m
 *summary.txt
-
+*.log

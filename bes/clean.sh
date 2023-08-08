@@ -8,3 +8,4 @@
 rm solve*.m
 rm *solved.m
 rm *summary.txt
+rm *.log

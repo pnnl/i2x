@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-import mpow_utilities as mpow
+from tests import mpow_utilities as mpow
 import json
 
 fuel_list = ['hca', 'wind', 'solar', 'nuclear', 'hydro', 'coal', 'ng', 'dl']
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     load_scale = cfg_assign (cfg, 'load_scale', load_scale)
 
   # nominal quantities for the base case, hca generation at zero
-  d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name))
+  d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))
   nb = len(d['bus'])
   ng = len(d['gen'])
   nl = len(d['branch'])
