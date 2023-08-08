@@ -16,12 +16,12 @@ The test systems are based on [CIMHub/BES](https://github.com/GRIDAPPSD/CIMHub/b
 
 To run HCA on the IEEE 118-bus test system:
 
-- **python3 hca\_prep.py 0**
+- **python3 hca\_prep.py IEEE118 200.0**
 - **python3 hca.py hca\_118.json**
 
 To run HCA on the WECC 240-bus test system:
 
-- **python3 hca\_prep.py 1**
+- **python3 hca\_prep.py WECC240 4000.0**
 - **python3 hca.py hca\_240.json**
 
 ## Directory of Script and Data Files

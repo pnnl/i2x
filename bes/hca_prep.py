@@ -31,6 +31,8 @@ if __name__ == '__main__':
   sys_name = 'IEEE118'
   if len(sys.argv) > 1:
     sys_name = sys.argv[1]
+    if len(sys.argv) > 2:
+      HCA_MIN_BR_CONTINGENCY_MVA = float(sys.argv[2])
   cfg = {}
   cfg['sys_name'] = sys_name
   cfg['load_scale'] = 1.0
