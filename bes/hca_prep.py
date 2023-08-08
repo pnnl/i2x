@@ -4,6 +4,10 @@ import numpy as np
 import json
 from tests import mpow_utilities as mpow
 
+HCA_PMAX = 30000.0
+HCA_QMAX = 10000.0
+HCA_MIN_BR_CONTINGENCY_MVA = 200.0
+
 def get_default_line_mva (kv):
   if kv <= 121.0:
     return 131.0
@@ -82,7 +86,8 @@ if __name__ == '__main__':
         mva = get_default_line_mva (kv1)
         reset_mva (d, i, mva)
         #print ('Scap {:3d}-{:3d} {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, xpu, mva))
-      branch_contingencies.append({'branch':i+1, 'scale':scale})
+      if mva >= HCA_MIN_BR_CONTINGENCY_MVA:
+        branch_contingencies.append({'branch':i+1, 'scale':scale})
   print ('{:d} of {:d} branch contingencies'.format(len(branch_contingencies), nl))
   cfg['branch_contingencies'] = branch_contingencies
 
@@ -90,26 +95,35 @@ if __name__ == '__main__':
   print ('Writing base case updates to {:s}.m'.format(wmva_name))
   mpow.write_matpower_casefile (d, wmva_name)
 
-# chgtab_name = 'hca_contab'
-# contingencies = [{'branch':1, 'scale':0.5},
-#                  {'branch':2, 'scale':0.8333},
-#                  {'branch':3, 'scale':0.5},
-#                  {'branch':4, 'scale':0.5},
-#                  {'branch':5, 'scale':0.5},
-#                  {'branch':6, 'scale':0.5},
-#                  {'branch':7, 'scale':0.5},
-#                  {'branch':8, 'scale':0.5},
-#                  {'branch':9, 'scale':0.8333},
-#                  {'branch':10, 'scale':0.5},
-#                  {'branch':11, 'scale':0.5},
-#                  {'branch':12, 'scale':0.5},
-#                  {'branch':13, 'scale':0.6667}
-#                  ]
-# mpow.write_contab_list (chgtab_name, d, contingencies)
+  # write the branch contingency table
+  chgtab_name = 'hca_contab'
+  mpow.write_contab_list (chgtab_name, d, branch_contingencies)
+
+  # write the hosting capacity base case, including a new hca generator and fuel-dependent linear generator costs
+#  %% bus  Pg     Qg    Qmax     Qmin   Vg  mBase status     Pmax   Pmin  Pc1 Pc2 Qc1min  Qc1max  Qc2min  Qc2max  ramp_agc  ramp_10 ramp_30 ramp_q  apf
+#   1.0     0.0  0.0 10000.0 -10000.0  1.0   1000.0  0.0  30000.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0  Inf Inf Inf Inf  0.0;
+# gencost = 2.0 10.0 10.0  2.0   0.51   5.0;
+  d['gen'].append (np.array([1.0,0.0,0.0,HCA_QMAX,-HCA_QMAX,1.0,1000.0,0.0,HCA_PMAX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]))
+  d['gentype'].append('DL')
+  d['genfuel'].append('hca')
+  d['gencost'].append(mpow.get_hca_gencosts('hca'))
+  ng = len(d['gen'])
+  for i in range(ng):
+    d['gencost'][i] = mpow.get_hca_gencosts(d['genfuel'][i])
+  print ('Writing the hosting capacity analysis base case to hca_case.m')
+  # write the branch contingency table and extra generator data (xgd) for matpower
+  chgtab_name = 'hca_contab'
+  mpow.write_contab_list (chgtab_name, d, branch_contingencies)
+
+  # extra generator data (xgd) including the new one for HCA
+  # assume all units have been on for 24 hours to start, so MOST can leave them on or switch them off without restriction
+  unit_states = np.ones(len(d['gen'])) * 24.0
+  mpow.write_xgd_function ('hca_xgd', d['gen'], d['gencost'], d['genfuel'], unit_states)
+  mpow.write_matpower_casefile (d, 'hca_case')
 
   cfg_name = '{:s}_prep.json'.format(sys_name)
   fp = open (cfg_name, 'w')
-  print ('Writing HCA buses and contingencies to {:s}.m'.format(cfg_name))
+  print ('Writing HCA buses and contingencies to {:s}'.format(cfg_name))
   json.dump (cfg, fp, indent=2)
   fp.close()
 

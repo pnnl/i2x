@@ -9,3 +9,6 @@ rm solve*.m
 rm *solved.m
 rm *summary.txt
 rm *.log
+rm hca_case.m
+rm hca_contab.m
+rm hca_xgd.m

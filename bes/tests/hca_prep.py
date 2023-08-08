@@ -7,6 +7,7 @@ if __name__ == '__main__':
   d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))
 
   chgtab_name = 'hca_contab'
+  # due to rounding, 0.8333*6504=5419.783 instead of 5420 MVA for two of the path contingencies
   contingencies = [{'branch':1, 'scale':0.5},
                    {'branch':2, 'scale':0.8333},
                    {'branch':3, 'scale':0.5},

@@ -157,7 +157,7 @@ def run_matpower_and_wait (fscript, quiet=False):
 
 # some data and utilities from CIMHub/BES/mpow.py
 
-FUELS = {
+CIMHUB_FUELS = {
   'hydro':  {'c2':1.0e-5, 'c1': 1.29, 'c0': 0.0},
   'wind':   {'c2':1.0e-5, 'c1': 0.01, 'c0': 0.0},
   'solar':  {'c2':1.0e-5, 'c1': 0.01, 'c0': 0.0},
@@ -166,20 +166,34 @@ FUELS = {
   'nuclear':{'c2':0.00019, 'c1': 8.0, 'c0': 1250.0}
 }
 
+HCA_FUELS = {
+  'hydro':  {'startup':10.0, 'shutdown':10.0, 'c1':  1.3, 'c0':   20.0},
+  'wind':   {'startup':10.0, 'shutdown':10.0, 'c1':  1.0, 'c0':   10.0},
+  'solar':  {'startup':10.0, 'shutdown':10.0, 'c1':  1.0, 'c0':   10.0},
+  'coal':   {'startup':20.0, 'shutdown':10.0, 'c1': 19.0, 'c0': 2128.0},
+  'ng':     {'startup':20.0, 'shutdown':10.0, 'c1': 45.0, 'c0': 2230.0},
+  'nuclear':{'startup':20.0, 'shutdown':10.0, 'c1':  8.0, 'c0': 1250.0},
+  'hca':    {'startup':20.0, 'shutdown':10.0, 'c1':  0.5, 'c0':    5.0}
+}
+
 # global constants
 SQRT3 = math.sqrt(3.0)
 RAD_TO_DEG = 180.0 / math.pi
 MVA_BASE = 100.0
 
-def get_gencosts(fuel):
-  c2 = 0.0
+def get_hca_gencosts(fuel):
+  model = 2.0
+  startup = 0.0
+  shutdown = 0.0
+  ncost = 2.0
   c1 = 0.0
   c0 = 0.0
-  if fuel in FUELS:
-    c2 = FUELS[fuel]['c2']
-    c1 = FUELS[fuel]['c1']
-    c0 = FUELS[fuel]['c0']
-  return c2, c1, c0
+  if fuel in HCA_FUELS:
+    startup = HCA_FUELS[fuel]['startup']
+    shutdown = HCA_FUELS[fuel]['shutdown']
+    c1 = HCA_FUELS[fuel]['c1']
+    c0 = HCA_FUELS[fuel]['c0']
+  return np.array([model, startup, shutdown, ncost, c1, c0])
 
 ###################################################
 # from tesp_support package, parse_msout.py

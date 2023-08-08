@@ -8,3 +8,6 @@ solve*.m
 *solved.m
 *summary.txt
 *.log
+hca_case.m
+hca_contab.m
+hca_xgd.m

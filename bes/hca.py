@@ -12,6 +12,7 @@ def cfg_assign (cfg, tag, val):
 
 if __name__ == '__main__':
   sys_name = 'hca'
+  base_name = 'hca'
   load_scale = 2.75
   hca_buses = None
   upgrades = None
@@ -19,6 +20,7 @@ if __name__ == '__main__':
     fp = open (sys.argv[1], 'r')
     cfg = json.loads(fp.read())
     fp.close()
+    base_name = cfg_assign (cfg, 'base_name', base_name)
     sys_name = cfg_assign (cfg, 'sys_name', sys_name)
     hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
     upgrades = cfg_assign (cfg, 'upgrades', upgrades)
@@ -63,8 +65,15 @@ if __name__ == '__main__':
   print ('System: {:s} with nominal load={:.3f} GW, actual load={:.3f} GW, existing generation={:.3f} GW'.format(sys_name, nominalPd, scaledPd, nominalPmax))
   print ('HCA generator index = {:d}, load_scale={:.4f}, checking {:d} buses with {:d} grid upgrades'.format(hca_gen_idx, load_scale, len(hca_buses), nupgrades))
 
+  results = {'system': sys_name,
+             'base': base_name,
+             'load_scale': load_scale,
+             'upgrades': upgrades,
+             'buses': {},
+             'branches': {}}
+
   print ('Bus Generation by Fuel[GW]')
-  print ('   ', ' '.join(['{:>7s}'.format(x) for x in fuel_list]))
+  print ('   ', ' '.join(['{:>7s}'.format(x) for x in fuel_list]), ' Max muF on Branch')
   for hca_bus in hca_buses:
     cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
     fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, quiet=True)
@@ -92,9 +101,12 @@ if __name__ == '__main__':
     for fuel in fuel_list:
       fuel_Pg[fuel] *= 0.001
     fuel_str = ' '.join(['{:7.3f}'.format(fuel_Pg[x]) for x in fuel_list])
-    print ('{:3d} {:s}'.format(hca_bus, fuel_str))
+
+    print ('{:3d} {:s} {:s}'.format(hca_bus, fuel_str, branch_str))
 
     muFtotal += meanmuF
+
+    quit()
 
   muFtotal /= nb
   print ('Branches At Limit:')
@@ -107,4 +119,10 @@ if __name__ == '__main__':
       kv1 = bus[fbus-1][mpow.BASE_KV]
       kv2 = bus[tbus-1][mpow.BASE_KV]
       print ('{:4d} {:4d} {:4d} {:7.4f} {:7.2f} {:7.2f} {:7.2f}'.format(i+1, fbus, tbus, muFtotal[i], rating, kv1, kv2))
+
+  out_name = '{:s}_out.json'.format(base_name)
+  fp = open (out_name, 'w')
+  print ('Writing HCA results to {:s}'.format(out_name))
+  json.dump (results, fp, indent=2)
+  fp.close()
 

@@ -5,7 +5,7 @@ import subprocess
 import numpy as np
 from tests import mpow_utilities as mpow
 
-# some data and utilities from CIMHub/BES/mpow.py
+# some data from CIMHub/BES/mpow.py
 
 CASES = [
   {'id': '1783D2A8-1204-4781-A0B4-7A73A2FA6038', 
@@ -18,29 +18,10 @@ CASES = [
    'load_scale':1.0425},
 ]
 
-FUELS = {
-  'hydro':  {'c2':1.0e-5, 'c1': 1.29, 'c0': 0.0},
-  'wind':   {'c2':1.0e-5, 'c1': 0.01, 'c0': 0.0},
-  'solar':  {'c2':1.0e-5, 'c1': 0.01, 'c0': 0.0},
-  'coal':   {'c2':0.0009, 'c1': 19.0, 'c0': 2128.0},
-  'ng':     {'c2':0.0060, 'c1': 45.0, 'c0': 2230.0},
-  'nuclear':{'c2':0.00019, 'c1': 8.0, 'c0': 1250.0}
-}
-
 # global constants
 SQRT3 = math.sqrt(3.0)
 RAD_TO_DEG = 180.0 / math.pi
 MVA_BASE = 100.0
-
-def get_gencosts(fuel):
-  c2 = 0.0
-  c1 = 0.0
-  c0 = 0.0
-  if fuel in FUELS:
-    c2 = FUELS[fuel]['c2']
-    c1 = FUELS[fuel]['c1']
-    c0 = FUELS[fuel]['c0']
-  return c2, c1, c0
 
 # sample code from TESP that automates Matpower in Octave
 # https://github.com/pnnl/tesp/blob/develop/examples/capabilities/ercot/case8/tso_most.py

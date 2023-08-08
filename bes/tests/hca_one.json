@@ -1,4 +1,5 @@
 {
+    "case_title": "upgraded_hca",
     "sys_name": "hca",
     "load_scale": 2.75,
     "hca_buses": [3],
