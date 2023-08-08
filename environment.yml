@@ -39,8 +39,8 @@ dependencies:
   # - ipython_genutils=0.2.0=pyhd3eb1b0_1
   # - jedi=0.18.1=py310haa95532_1
   # - jinja2=3.1.2=py310haa95532_0
-  - json5=0.9.6=pyhd3eb1b0_0
-  - jsonschema=4.17.3=py310haa95532_0
+  - json
+  # - jsonschema=4.17.3=py310haa95532_0
   # - jupyter_client=7.4.9=py310haa95532_0
   # - jupyter_core=5.2.0=py310haa95532_0
   # - jupyter_server=1.23.4=py310haa95532_0
@@ -68,12 +68,12 @@ dependencies:
   # - notebook=6.5.2=py310haa95532_0
   # - notebook-shim=0.2.2=py310haa95532_0
   # - numexpr=2.8.4=py310hd213c9f_0
-  - numpy=1.23.5=py310h60c9a35_0
-  - numpy-base=1.23.5=py310h04254f7_0
-  - openpyxl=3.0.10=py310h2bbff1b_0
+  - numpy
+  # - numpy-base
+  # - openpyxl
   # - openssl=1.1.1t=h2bbff1b_0
   # - packaging=22.0=py310haa95532_0
-  - pandas=1.5.2=py310h4ed8f06_0
+  - pandas
   # - pandocfilters=1.5.0=pyhd3eb1b0_0
   # - parso=0.8.3=pyhd3eb1b0_0
   # - pickleshare=0.7.5=pyhd3eb1b0_1003
@@ -96,7 +96,7 @@ dependencies:
   # - pywin32=305=py310h2bbff1b_0
   # - pywinpty=2.0.2=py310h5da7b33_0
   # - pyzmq=23.2.0=py310hd77b12b_0
-  - requests=2.28.1=py310haa95532_0
+  - requests
   # - scipy=1.10.0=py310hb9afe5d_1
   # - send2trash=1.8.0=pyhd3eb1b0_1
   # - setuptools=65.6.3=py310haa95532_0
