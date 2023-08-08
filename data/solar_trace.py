@@ -30,20 +30,20 @@ def st_driver():
     full_df = add_state_full(full_df)
     # print('full_df ', full_df)
     # start = time.time()
-    # api_df = api_call(full_df)
+    api_df = api_call(full_df)
     # end = time.time()
     # print('API CALL TIME: ',end-start)
-    # final_df = final_processing(api_df,weighted_df)
+    final_df = final_processing(api_df,weighted_df)
     
     #TESTING CODE
     # Writing to a file
     # with open('result.pkl', 'wb') as file:
     #     pickle.dump(final_df, file)
     # Reading from a file
-    with open('result.pkl', 'rb') as file:
-        loaded_result = pickle.load(file)
-    write_output(loaded_result, OUTPUT_DIR)
+    # with open('result.pkl', 'rb') as file:
+    #     loaded_result = pickle.load(file)
+    # write_output(loaded_result, OUTPUT_DIR)
     # print(loaded_result['lat'])
     
-    # write_output(final_df, OUTPUT_DIR)
+    write_output(final_df, OUTPUT_DIR)
     
