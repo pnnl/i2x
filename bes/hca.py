@@ -97,7 +97,7 @@ if __name__ == '__main__':
     muFtotal += meanmuF
 
   muFtotal /= nb
-  print ('Branches Overloaded:')
+  print ('Branches At Limit:')
   print (' idx From   To     muF     MVA     kV1     kV2')
   for i in range(nl):
     if muFtotal[i] > 0.0:
