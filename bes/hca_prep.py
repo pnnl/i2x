@@ -34,7 +34,8 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
       HCA_MIN_BR_CONTINGENCY_MVA = float(sys.argv[2])
   cfg = {}
-  cfg['sys_name'] = sys_name
+  cfg['case_title'] = sys_name
+  cfg['sys_name'] = 'hca'
   cfg['load_scale'] = 1.0
   cfg['upgrades'] = None
 
