@@ -5,7 +5,7 @@
 # usage 'python prep_most_profiles.py [start=0] [hours=24]'
 
 import numpy as np
-import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 import sys
 import os
 

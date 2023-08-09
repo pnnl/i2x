@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import math
 import os
 import sys
-import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 
 def bus_color(key):
   if key == '1':

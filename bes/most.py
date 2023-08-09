@@ -3,7 +3,7 @@ import os
 import math
 import subprocess
 import numpy as np
-from tests import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 
 # some data from CIMHub/BES/mpow.py
 

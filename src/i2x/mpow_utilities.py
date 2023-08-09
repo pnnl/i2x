@@ -1,9 +1,8 @@
 # Copyright (C) 2020-2023 Battelle Memorial Institute
 # file: mpow_utilities.py
-# reads MATPOWER and MOST cases/results into Python
+"""reads MATPOWER and MOST cases/results into Python
 
-# sample code from TESP that automates Matpower in Octave
-# https://github.com/pnnl/tesp/blob/develop/examples/capabilities/ercot/case8/tso_most.py
+"""
 
 import numpy as np
 import subprocess

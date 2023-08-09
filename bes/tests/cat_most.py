@@ -3,7 +3,7 @@
 # concatenates MOST solutions and saves to numpy arrays
 
 import numpy as np
-import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 
 if __name__ == '__main__':
   summaries = ['msout_day1_dcpf.txt', 'msout_day2_dcpf.txt', 'msout_day3_dcpf.txt']

@@ -33,5 +33,7 @@ from .der_choices import inverterChoices
 from .der_choices import solutionModeChoices
 from .der_choices import controlModeChoices
 
+from .bes_hca import bes_hca
+
 from .version import __version__
 

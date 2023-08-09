@@ -8,5 +8,6 @@ rm uc_wind.m
 rm uc_xgd.m
 rm uc_contab.m
 rm *.log
+rm hca_out.json
 
 

@@ -15,14 +15,14 @@ the required Python packages and versions.
 - **\_\_init\_\_.py** allows the use of *mpow\_utilities.py* as a module from the parent directory
 - **cat\_most.py** concatenates saved MOST solutions from the *msout.txt* format to numpy arrays, saved in *txt* files for *plot\_mday.py*
 - **clean.bat** removes output and temporary files from executing scripts
-- **hca.py** runs a systematic N-1 hosting capacity analysis for each bus. A JSON configuration file name may be supplied on the command line. 
+- **hca.py** call the HCA function, as configured by a JSON file name supplied as the first command-line argument
 - **hca_all.json** is a sample hosting capacity analysis configuration file that specifies a load scaling of 2.75, no grid upgrades, and all buses to be considered.
 - **hca_one.json** is a sample hosting capacity analysis configuration file that specifies a load scaling of 2.75, two grid branch upgrades, and one bus to be considered.
 - **hca\_prep.py** creates a table of N-1 branch contingencies for a systematic hosting capacity analysis; no grid upgrades are includes
 - **hca\_test.py** performs a trial hosting-capacity analysis at bus 1 with two branches upgraded
+- **make_case8_network.py** creates *hca\_network.json* from archival data files for the ERCOT 8-bus test case
 - **miqps\_glpk.m** edited source file for MOST 1.1 / MATPOWER 7.1
 - **most\_mday.py** scripted solution of linked 24-hour unit commitment problems, for a sequence of days, in MOST
-- **mpow\_utilities.py** functions to load input and output from MATPOWER/MOST into Python dictionaries
 - **msout\_3days\_dcpf.txt** a saved MOST solution for 3 days, network model included
 - **msout\_3days\_nopf.txt** a saved MOST solution for 3 days, network model excluded
 - **msout\_day1\_dcpf.txt** a saved MOST solution for day 1, network model included
@@ -282,6 +282,14 @@ Input and output files include:
 - *hca\_prep.py* creates *hca\_contab.m* with N-1 branch contingencies
 - *hca\_solve.m* solves a single-period, single-scenario, Nc-contingency MOST problem. It reads *hca\_case.m*, *hca\_xgd.m* and *hca\_contab.m*. It writes *hca\_summary.txt*
 - *hca\_summary.txt* contains the MOST summary output. The last dimension of its output matrices is Nc, the first dimension matches content of *hca\_base.m*, and any interior dimensions are 1.
+
+Steps to produce the sample results for the next section:
+
+- Run *python3 hca\_prep.py* to create the N-1 branch contingency table for MOST
+- Run *python3 hca.py hca\_all.json*, or just *python3 hca.py*, to create the base-case results with no grid upgrades
+- Run *python3 hca.py hca\_one.json* to repeat the analysis for one selected bus, with two branch upgrades to the grid
+
+## BES Hosting Capacity Analysis Results
 
 Sample results from *hca.py hca\_all.json* follow. The same output results
 from *hca.py* without any command line argument.

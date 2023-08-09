@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 
 if __name__ == '__main__':
   sys_name = 'hca_case'

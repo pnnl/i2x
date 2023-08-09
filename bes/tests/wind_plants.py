@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import math
 import os
 import sys
-import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 
 if __name__ == '__main__':
   plt.rcParams['savefig.directory'] = os.getcwd()

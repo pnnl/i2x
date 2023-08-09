@@ -2,7 +2,7 @@ import sys
 import math
 import numpy as np
 import json
-from tests import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 
 HCA_PMAX = 30000.0
 HCA_QMAX = 10000.0

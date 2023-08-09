@@ -17,21 +17,24 @@ The test systems are based on [CIMHub/BES](https://github.com/GRIDAPPSD/CIMHub/b
 To run HCA on the IEEE 118-bus test system:
 
 - **python3 hca\_prep.py IEEE118 200.0**
-- **python3 hca.py IEEE118\_prep.json**
+- Full N-1 HCA: **python3 hca.py IEEE118\_prep.json**
+- Faster 1-bus, N-0 test case: **python3 hca.py test\_118.json**
 
 To run HCA on the WECC 240-bus test system:
 
 - **python3 hca\_prep.py WECC240 4000.0**
-- **python3 hca.py WECC240\_prep.json**
+- Full N-1 HCA: **python3 hca.py WECC240\_prep.json**
+- Faster 1-bus, N-0 test case: **python3 hca.py test\_240.json**
+
+To run a single-bus HCA:
+
 
 ## Directory of Script and Data Files
 
 - **clean.bat** removes temporary output files on Windows
 - **clean.sh** removes temporary output files on Linux and Mac OS X
-- **hca\_118.json** configures load scaling, buses of interest, grid upgrades, and branch contingencies for hosting capacity analysis for a 1-bus test case on the IEEE 118-bus system
-- **hca\_240.json** configures load scaling, buses of interest, grid upgrades, and branch contingencies for hosting capacity analysis for a 1-bus test case on the WECC 240-bus system
+- **hca.py** call the HCA function, as configured by a JSON file name supplied as the first command-line argument
 - **hca\_prep.py** reads a Matpower base case file, outputs the *wmva.m* with branch ratings and *\_prep.json* file with contingencies and buses for hosting capacity analysis.
-- **hca.py** 
 - **IEEE118.m** defines the IEEE 118-bus base case for Matpower
 - **IEEE118\_Network.json** defines the network layout for plotting; file comes from CIMHub
 - **IEEE118\_prep.json** defines the buses, branch contingencies, grid upgrades and load scaling for hosting capacity analysis of the IEEE 118-bus test system.  Overwritten by *hca\_prep.py*
@@ -41,6 +44,8 @@ To run HCA on the WECC 240-bus test system:
 - **mpow.py** solves Matpower base case for IEEE 118-bus (default, or argument=0) or WECC 240-bus test system (argument=1).
 - **plot\_bes.py** plots the network layout of the bulk electric system for IEEE 118-bus test system (default, or argument=0) or the WECC 240-bus test system (argument=1)
 - **plot\_hca.py** plots the bus hosting capacity and branch congestion levels on a network layout
+- **test\_118.json** configures load scaling, buses of interest, grid upgrades, and branch contingencies for hosting capacity analysis for a 1-bus test case on the IEEE 118-bus system
+- **test\_240.json** configures load scaling, buses of interest, grid upgrades, and branch contingencies for hosting capacity analysis for a 1-bus test case on the WECC 240-bus system
 - **WECC240.m** defines the WECC 240-bus base case for Matpower
 - **WECC240\_Network.json** defines the network layout for plotting; file comes from CIMHub
 - **WECC240\_prep.json** defines the buses, branch contingencies, grid upgrades and load scaling for hosting capacity analysis of the WECC 240-bus test system.  Overwritten by *hca\_prep.py*

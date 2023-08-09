@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-import mpow_utilities as mpow
+import i2x.mpow_utilities as mpow
 
 fuel_list = ['ng', 'wind', 'solar', 'coal', 'nuclear', 'hydro', 'dl', 'hca']
 
