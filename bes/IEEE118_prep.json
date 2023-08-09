@@ -125,66 +125,6 @@
   ],
   "branch_contingencies": [
     {
-      "branch": 2,
-      "scale": 0.5
-    },
-    {
-      "branch": 17,
-      "scale": 0.5
-    },
-    {
-      "branch": 26,
-      "scale": 0.5
-    },
-    {
-      "branch": 41,
-      "scale": 0.5
-    },
-    {
-      "branch": 42,
-      "scale": 0.5
-    },
-    {
-      "branch": 43,
-      "scale": 0.5
-    },
-    {
-      "branch": 46,
-      "scale": 0.5
-    },
-    {
-      "branch": 47,
-      "scale": 0.0
-    },
-    {
-      "branch": 54,
-      "scale": 0.0
-    },
-    {
-      "branch": 60,
-      "scale": 0.5
-    },
-    {
-      "branch": 66,
-      "scale": 0.0
-    },
-    {
-      "branch": 96,
-      "scale": 0.5
-    },
-    {
-      "branch": 107,
-      "scale": 0.5
-    },
-    {
-      "branch": 112,
-      "scale": 0.0
-    },
-    {
-      "branch": 113,
-      "scale": 0.0
-    },
-    {
       "branch": 114,
       "scale": 0.5
     },
@@ -197,88 +137,12 @@
       "scale": 0.5
     },
     {
-      "branch": 118,
-      "scale": 0.5
-    },
-    {
-      "branch": 119,
-      "scale": 0.5
-    },
-    {
-      "branch": 120,
-      "scale": 0.5
-    },
-    {
-      "branch": 132,
-      "scale": 0.5
-    },
-    {
-      "branch": 134,
-      "scale": 0.5
-    },
-    {
-      "branch": 142,
-      "scale": 0.5
-    },
-    {
-      "branch": 143,
-      "scale": 0.5
-    },
-    {
-      "branch": 152,
-      "scale": 0.5
-    },
-    {
-      "branch": 154,
-      "scale": 0.0
-    },
-    {
       "branch": 155,
-      "scale": 0.5
-    },
-    {
-      "branch": 163,
       "scale": 0.5
     },
     {
       "branch": 170,
       "scale": 0.5
-    },
-    {
-      "branch": 201,
-      "scale": 0.0
-    },
-    {
-      "branch": 204,
-      "scale": 0.0
-    },
-    {
-      "branch": 211,
-      "scale": 0.0
-    },
-    {
-      "branch": 226,
-      "scale": 0.0
-    },
-    {
-      "branch": 227,
-      "scale": 0.0
-    },
-    {
-      "branch": 229,
-      "scale": 0.0
-    },
-    {
-      "branch": 231,
-      "scale": 0.0
-    },
-    {
-      "branch": 243,
-      "scale": 0.0
-    },
-    {
-      "branch": 249,
-      "scale": 0.0
     }
   ]
 }
