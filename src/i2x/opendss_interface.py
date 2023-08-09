@@ -80,7 +80,8 @@ def get_event_log (dss):
 
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
-                change_lines=None, debug_output=True, dss=None, output=True, **kwargs):
+                change_lines=None, debug_output=True, dss=None, output=True,
+                demandinterval=False, **kwargs):
 
   # dss = py_dss_interface.DSS()
   # fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
@@ -123,10 +124,23 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   pvnames = dss.pvsystems.names
   ## add pq and vi monitors to all pv systems
   for pvname in pvnames: # don't need to log all these
-    dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
-    dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
-  dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output)
+    if f"{pvname}_pq" not in dss.monitors.names:
+      dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
+    if f"{pvname}_vi" not in dss.monitors.names:
+      dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
+  
+  if demandinterval:
+    ## add voltage and thermal reporting
+    dss_line(dss, 'set overloadreport=true', debug_output) #activate the overload (thermal) report
+    dss_line(dss, 'set voltexceptionreport=true', debug_output) #voltage violation
+    dss_line(dss, 'set DemandInterval=TRUE', debug_output)
+    dss_line(dss, 'set DIVerbose=TRUE', debug_output)
+  
+    dss_line(dss, f'set DataPath="{os.getcwd()}"', debug_output)
 
+  dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output)
+  if demandinterval:
+    dss_line(dss, 'closedi', debug_output)
   if output:
     return opendss_output(dss, solnmode, pvnames, debug_output=debug_output, **kwargs)
   

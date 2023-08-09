@@ -21,18 +21,27 @@
 "remove_large_der": [],
 "explicit_storage": {},
 "explicit_pv": {},
+"redisp_pv":{},
+"explicit_gen": {},
 "redisp_gen": {},
 "metrics":{
-    "voltage": {
-        "vmin": 0.95,
-        "vmax": 1.05,
-        "vdiff": 3.0
+    "limits":{
+        "voltage": {
+            "vmin": 0.95,
+            "vmax": 1.05,
+            "vdiff": 3.0
+        },
+        "thermal": {
+            "emerg": 0
+        },
+        "island":{
+            "pq": [0.3, 0.05]
+        }
     },
-    "thermal": {
-        "ue": 0
-    },
-    "island":{
-        "pq": [0.3, 0.05]
+    "tolerances":{
+        "voltage": 1e-3,
+        "thermal": 1e-2,
+        "island": 1e-2
     }
 }
 }

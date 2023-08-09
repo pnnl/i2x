@@ -10,6 +10,9 @@ import numpy as np
 import py_dss_interface
 from hca_utils import Logger, merge_configs
 import os
+import pandas as pd
+import copy
+import hashlib
 
 
 SQRT3 = math.sqrt(3.0)
@@ -109,15 +112,48 @@ def summary_outputs (d, pvbases, print=print):
                                                                                               row['vmin'], row['vmax'],
                                                                                               row['imin'], row['imax']))
 
+def calc_total_een_ue(ditotals:pd.DataFrame) -> pd.Series:
+  """perform integration of EEN and UE in the demand interval totals result"""
+  return ditotals.transpose().dot(np.diff(np.insert(ditotals.index, 0, [0])))
+
+def calc_di_voltage_stats(di_voltexception:pd.DataFrame, vmin=0.95, vmax=1.05, worst_case=False, **kwargs) -> pd.DataFrame:
+  """calculate the voltage range for the time series data.
+  Also calculates an integral of the deviation from the specified limits
+  If Worst case is True, then limits are min(vmin_calc, vmin), max(vmax_calc, vmax) rather
+  than simply reporting the limits directly.
+  """
+  vlimmin = di_voltexception.loc[:, ["MinVoltage", "MinLVVoltage"]].min()
+  vlimmax = di_voltexception.loc[:, ["MaxVoltage", "MaxLVVoltage"]].max()
+  if worst_case:
+    vlimmin = vlimmin.apply(lambda x: min(vmin, x))
+    vlimmax = vlimmax.apply(lambda x: max(vmax, x))
+      
+  return pd.concat([
+            pd.concat([vlimmin, vlimmax]).rename("limits"),
+            pd.concat([
+                di_voltexception.loc[:, ["MinVoltage", "MinLVVoltage"]].applymap(lambda x: max(0, vmin - x)).transpose().dot(np.diff(np.insert(di_voltexception.index, 0, [0]))),
+                di_voltexception.loc[:, ["MaxVoltage", "MaxLVVoltage"]].applymap(lambda x: max(0, x-vmax)).transpose().dot(np.diff(np.insert(di_voltexception.index, 0, [0])))
+            ]).rename("integral")
+          ], axis= 1)
+
+
 class HCA:
   def __init__(self, inputs):
     self.inputs = inputs
     self.change_lines = []
     self.change_lines_noprint = []
+    self.change_lines_history = []
+    self.dss_reset = False
     self.logger = Logger(inputs["hca_log"]["logname"], 
                          level=inputs["hca_log"]["loglevel"], format=inputs["hca_log"]["format"])
     if inputs["hca_log"]["logtofile"]:
       self.logger.set_logfile()
+
+    ## establish a random seed for reproducibility
+    # generate a 32bit seed based on the choice of feeder
+    seed = int.from_bytes(hashlib.sha256(f'{inputs["choice"]}'.encode()).digest()[:4], 'little')
+    # random.seed(hash(inputs["choice"]))
+    self.random_state = np.random.RandomState(seed)
 
     ## load networkx graph
     self.load_graph()
@@ -132,8 +168,74 @@ class HCA:
     ## create a set of voltage monitors throughout the feeder
     self.voltage_monitor()
 
-    # ## create energy monitors by element type
-    # self.element_meters(inputs["element_meter_location"])
+    ## initialize structure for HCA analysis
+    self.visited_buses = []
+    self.exauhsted_buses = {"pv": [], "bat": [], "der": []}
+    self.active_bus = None
+    self.active_bus_kv = None
+    self.cnt = 0 # iteration
+    # Stotal is keyed by cnt (steps through HCA process)
+    # Sij, hc, and eval are keyed by type -> node (i) -> cnt (step through HCA process)
+    #      |--> note that these will be sparse since we only have info on a node if it is being altered 
+    self.data = {"Stotal": {}, "Sij": {}, "hc": {}, "eval": {}}
+    
+    self.metrics = HCAMetrics(inputs["metrics"]["limits"], 
+                              tol=inputs["metrics"]["tolerances"],
+                              logger=self.logger)
+
+  def collect_stats(self):
+    self.data["Stotal"][self.cnt] = pd.DataFrame({
+      "pv": {k: sum(v[k] for v in self.graph_dirs["pvder"].values()) for k in ["kw", "kva"]},
+      "bat": {k: sum(v[k] for v in self.graph_dirs["batder"].values()) for k in ["kw", "kva", "kwh"]},
+      "der": {k: sum(v[k] for v in self.graph_dirs["gender"].values()) for k in ["kw", "kva"]}
+    }).transpose()
+
+  def update_data(self, key:str, typ:str, vals:dict):
+    """Update the data storage values"""
+
+    if key not in ["Sij", "hc", "eval"]:
+      raise ValueError("key must be Sij, hc, or eval")
+    if typ not in ["pv", "bat", "der"]:
+      raise ValueError("Currently Only differentiating on pv, bat, der")
+    
+    if typ not in self.data[key]:
+      self.data[key][typ] = {}  
+    if self.active_bus not in self.data[key][typ]:
+      self.data[key][typ][self.active_bus] = {}
+    self.data[key][typ][self.active_bus][self.cnt] = copy.deepcopy(vals)
+    
+  def set_active_bus(self, bus):
+    self.logger.info(f"Setting bus {bus} as active bus")
+    self.active_bus = bus
+    self.active_bus_kv = self.G.nodes[bus]["ndata"]["nomkv"]
+    self.visited_buses.append(self.active_bus)
+
+  def unset_active_bus(self):
+    self.active_bus = None
+    self.active_bus_kv = None
+  
+  def save_dss_state(self, tmp=False):
+    """save the dss state, i.e. all the change lines"""
+    # key = "tmp" if tmp else "nontmp"
+    # self.change_lines_history[key]["print"].extend(copy.deepcopy(self.change_lines))
+    # self.change_lines_history[key]["noprint"].extend(copy.deepcopy(self.change_lines_noprint))
+    self.change_lines_history.extend(copy.deepcopy(self.change_lines + self.change_lines_noprint))
+    self.clear_changelines()
+  # def dss_state_nontmp2tmp(self):
+  #   self.change_lines_history["tmp"] = copy.deepcopy(self.change_lines_history["nontmp"])
+
+  def reset_dss(self, tmp=False):
+    """recompile feeder and load changes from history"""
+    # key = "tmp" if tmp else "nontmp"
+    self.clear_changelines()
+    self.dss = i2x.initialize_opendss(**self.inputs)
+    for l in self.change_lines_history:
+      self.dss.text(l)
+
+  def clear_changelines(self):
+    """clear change lines. Call between successive calls to rundss"""
+    self.change_lines_noprint = []
+    self.change_lines = []
 
   def update_basekv(self):
     for i,n in enumerate(self.dss.circuit.buses_names):
@@ -166,7 +268,8 @@ class HCA:
           continue
       
       
-      ns = np.random.choice(n, 1)[0] # sample one of the nodes with a shunt element 
+      # ns = np.random.choice(n, 1)[0] 
+      ns = n[self.random_state.randint(0, len(n))] 
       elem = self.G.nodes[ns]["ndata"]["shunts"][0] # select the first shunt
       self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal=1 mode=96") # add a voltage monitor
       depth += 1 
@@ -230,15 +333,11 @@ class HCA:
     This function adds appropriately sized PV to 100*pu_roofs % of the residential loads.
     The optional seed argument for the random number generator can take either: 
       - None (default): Operating system defaults will be used
-      - 'hash': the hash of graph G, will be used as the seed.
-                          As a result, calls on exactly the same graph will be reproducible.
       - Int: any integer value will be passed directly to the seed function.
     """
 
-    if seed == 'hash':
-      random.seed(hash(self.G))
-    else:
-      random.seed(seed)
+    if seed is not None:
+      self.random_state.seed(seed)
 
     if pu_roofs is None:
       pu_roofs = self.inputs["res_pv_frac"]
@@ -250,7 +349,7 @@ class HCA:
     else:
       self.logger.info (f'\nAdding PV to {self.inputs["res_pv_frac"]*100}% of the residential rooftops that don\'t already have PV')
       for key, row in self.graph_dirs["resloads"].items():
-        if random.random() <= pu_roofs:
+        if self.random_state.random() <= pu_roofs:
           bus = row['bus']
           kv = row['kv']
           kw = row['derkw']
@@ -267,13 +366,18 @@ class HCA:
     self.parse_graph()
     self.pv_voltage_base_list()
 
-  def remove_large_der (self, key):
-    try:
-      row = self.graph_dirs["largeder"][key]
-    except KeyError:
-      ## if der was already removed by some other method
-      ## we could end up here
-      return 
+  def remove_der(self, key, typ, bus):
+    row = {"type": typ, "bus": bus}
+    self.remove_large_der(key, row=row)
+
+  def remove_large_der (self, key, row=None):
+    if row is None:
+      try:
+        row = self.graph_dirs["largeder"][key]
+      except KeyError:
+        ## if der was already removed by some other method
+        ## we could end up here
+        return 
     if row['type'] == 'solar':
       self.change_lines.append('edit pvsystem.{:s} enabled=no'.format(key))
       self.G.nodes[row["bus"]]["ndata"]["pvkva"] = 0
@@ -305,6 +409,20 @@ class HCA:
         d["ndata"]["shunts"] = shunts_new
         d["nclass"] = self.update_node_class(n)
 
+  def sample_buslist(self, buslist:list, seed=None):
+    """
+    Sample list of buses.
+    The optional seed argument for the random number generator can take either: 
+      - None (default): Operating system defaults will be used
+      - Int: any integer value will be passed directly to the seed function.
+    """
+
+    if seed is not None:
+      self.random_state.seed(seed)
+
+    return buslist[self.random_state.randint(0, len(buslist))]
+    # return random.choice(buslist)
+
   def append_large_pv(self, key):
     self._append_large_pv(key, **self.inputs["explicit_pv"][key])
 
@@ -315,7 +433,7 @@ class HCA:
     self.G.nodes[bus]["ndata"]["pvkva"] = kva
     self.G.nodes[bus]["ndata"]["pvkw"] = kw
     self.G.nodes[bus]["ndata"]["nomkv"] = kv
-    self.G.nodes[bus]["ndata"]["shunts"].append(f"pvsystem.{key}")
+    self.G.nodes[bus]["ndata"]["shunts"].insert(0, f"pvsystem.{key}") #prepend to shunt list (make sure this is the first element found)
 
   def append_large_storage(self, key):
     self._append_large_storage(key, **self.inputs["explicit_storage"][key])
@@ -327,30 +445,30 @@ class HCA:
     self.G.nodes[bus]["ndata"]["batkw"] = kw
     self.G.nodes[bus]["ndata"]["batkwh"] = kwh
     self.G.nodes[bus]["ndata"]["nomkv"] = kv
-    self.G.nodes[bus]["ndata"]["shunts"].append(f"storage.{key}")
+    self.G.nodes[bus]["ndata"]["shunts"].insert(0, f"storage.{key}") #prepend to shunt list (make sure this is the first element found)
 
   def append_large_generator(self, key):
     self._append_large_generator(self, key, **self.inputs["explicit_generator"][key])
-  def append_large_generator (self, key, bus, kv, kva, kw):
+  def _append_large_generator (self, key, bus, kv, kva, kw):
     self.change_lines.append('new generator.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f}'.format(key, bus, kv, kva, kw))
     self.G.nodes[bus]["nclass"] = 'generator' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
     self.G.nodes[bus]["ndata"]["genkva"] = kva
     self.G.nodes[bus]["ndata"]["genkw"] = kw
     self.G.nodes[bus]["ndata"]["nomkv"] = kv
-    self.G.nodes[bus]["ndata"]["shunts"].append(f"generator.{key}")
+    self.G.nodes[bus]["ndata"]["shunts"].insert(0, f"generator.{key}") #prepend to shunt list (make sure this is the first element found)
 
   def redispatch_large_pv(self, key):
     self._redispatch_large_pv(key, **self.inputs["redisp_pv"][key])
   def _redispatch_large_pv (self, key, kva, kw):
-    self.change_lines.append('edit pvsystem.{:s} kva={:.2f} pmpp={:.2f}'.format(key, kva, kw))
+    self.change_lines.append('edit pvsystem.{:s} kva={:.3f} pmpp={:.3f}'.format(key, kva, kw))
     bus = self.get_node_from_classkey("pvsystem", key)
     self.G.nodes[bus]["ndata"]["pvkva"] = kva
     self.G.nodes[bus]["ndata"]["pvkw"] = kw
   
   def redispatch_large_storage(self, key):
     self._redispatch_large_storage(key, **self.inputs["redisp_storage"][key])
-  def _redispatch_large_storage (self, key, kva, kw):
-    self.change_lines.append('edit storage.{:s} kva={:.2f} kw={:.2f}'.format(key, kva, kw))
+  def _redispatch_large_storage (self, key, kva, kw, kwh):
+    self.change_lines.append('edit storage.{:s} kva={:.3f} kw={:.3f} kwhrated={:.3f}'.format(key, kva, kw, kwh))
     bus = self.get_node_from_classkey("storage", key)
     self.G.nodes[bus]["ndata"]["batkva"] = kva
     self.G.nodes[bus]["ndata"]["batkw"] = kw
@@ -374,6 +492,16 @@ class HCA:
           return n
       except KeyError:
         pass
+  
+  def get_classkey_from_node(self, nclass, node):
+    """Retrive the name of the object of type <nclass> connected at the given node
+    Returns None if none is found
+    """
+
+    for s in self.G.nodes[node]["ndata"]["shunts"]:
+      if s.split(".")[0] == nclass:
+        return s.split(".")[1]
+    return None
 
   def deterministic_changes(self):
     self.logger.info('Making some deterministic changes')
@@ -397,27 +525,344 @@ class HCA:
       self.append_large_pv(key)
       self.parse_graph()
       self.pv_voltage_base_list()
+    ### redispatch existing pv
+    for key in self.inputs["redisp_pv"]:
+      self.redispatch_large_pv(key)
+    self.parse_graph()
 
     ### redispatch existing generators
     for key in self.inputs["redisp_gen"]:
       self.redispatch_large_generator(key)
-    
     self.parse_graph()
+
     for ln in self.change_lines:
       self.logger.info (f' {ln}')    
 
   def rundss(self):
     pwd = os.getcwd()
-    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint, "dss": self.dss}, **self.inputs} )  
+    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint, 
+                                         "dss": self.dss, "demandinterval": True}, 
+                                         **self.inputs} )  
     self.lastres["compflows"] = isl.all_island_flows(self.comp2rec, self.lastres["recdict"])
     os.chdir(pwd)
-  
+    self.read_di_outputs()
+
   def summary_outputs(self):
     summary_outputs(self.lastres, self.pvbases, print=self.logger.info)
 
+  def read_di_outputs(self):
+    path = os.path.join(self.dss.dssinterface.datapath, self.dss.circuit.name, "DI_yr_0")
+    ### Thermal overloads
+    df, cols = self._load_di(path, "DI_Overloads_1.CSV")
+    cols.remove("Hour")
+    cols.remove("Element")
+    self.lastres["di_overloads"] = df.groupby("Element").agg('max').loc[:, cols]
+    ### Voltage violations
+    df, cols = self._load_di(path, "DI_VoltExceptions_1.CSV")
+    self.lastres["di_voltexceptions"] = df.set_index("Hour")
+    ### Totals (just use to keep finer grain track of EEN and UE for now)
+    df, cols = self._load_di(path, "DI_Totals_1.CSV")
+    cols = ["LoadEEN", "LoadUE"]
+    self.lastres["di_totals"] = df.set_index("Time").loc[:, cols]
 
+  def calc_total_een_ue(self, ditotals:pd.DataFrame):
+    """perform integration of EEN and UE in the totals result"""
+    return ditotals.transpose().dot(np.diff(np.insert(ditotals.index, 0, [0])))
+
+  def _load_di(self, path:str, name:str) -> tuple[pd.DataFrame, list]:
+    df = pd.read_csv(os.path.join(path, name))
+    cols = [c.replace('"','').replace(' ','') for c in df.columns] # some cleanup
+    df.columns = cols
+    return df, cols
+  
+  def sample_capacity(self, typ):
+    """sample unit capacity based on typ"""
+    if typ == "pv":
+      return self._sample_pv()
+    elif typ == "bat":
+      return self._sample_bat()
+    elif typ == 'der':
+      return self._sample_der()
+    else:
+      raise ValueError("Can only handle pv, bat, and der (gen) currently")
+
+  def _sample_pv(self):
+    """return a PV system with capacity between 50 kW and 1000 kW and pf 0.8"""
+    kw = float(self.random_state.randint(50, 1001))
+    kva = kw/0.8
+    return {"kw": kw, "kva": kva}
+  
+  def _sample_bat(self):
+    """return a 2 or 4 hour battery with capacity between 50 kW and 1000 kW and kVA"""
+    kw = float(self.random_state.randint(50, 1001))
+    kva = kw
+    kwh = [2,4][self.random_state.randint(0,2)]
+    # kwh = random.choice([2,4])*kw
+    return {"kw": kw, "kva": kva, "kwh": kwh}
+
+  def _sample_der(self):
+    """TODO: for now just same as PV"""
+    return self._sample_pv()
+
+  def new_capacity(self, typ, key, **kwargs):
+    """create new capacity during hca round"""
+    if typ == "pv":
+      self._append_large_pv(key, self.active_bus, self.active_bus_kv, **kwargs)
+    elif typ == "bat":
+      self._append_large_storage(key, self.active_bus, self.active_bus_kv, **kwargs)
+    elif typ == "der":
+      self._append_large_generator(key, self.active_bus, self.active_bus_kv, **kwargs)
+
+  def alter_capacity(self, typ, key, **kwargs):
+    """alter existing capacity during hca round"""
+    if typ == "pv":
+      self._redispatch_large_pv(key, **kwargs)
+    elif typ == "bat":
+      self._redispatch_large_storage(key, **kwargs)
+    elif typ == "der":
+      self._redispatch_large_generator(key, **kwargs)
+
+  def get_hc(self, typ, bus, cnt=None):
+    """Retrieve the hosting capacity stored for the given bus for the given type
+    if no iteration counter is given the process works itself backwards from the
+    current count until a viable index is found.
+    """
+    if cnt is not None:
+      try:
+        return self.data["hc"][typ][bus][cnt], cnt
+      except KeyError:
+        return None, cnt
+    else:
+      cnt = self.cnt
+      while cnt >= 0:
+        hc, cnt =  self.get_hc(typ, bus, cnt)
+        if hc is None:
+          cnt -= 1
+        else:
+          return hc, cnt
+
+  def hca_round(self, typ, bus=None, Sij=None):
+    """perform a single round of hca"""
+    
+    #### some mappings
+    nclass = {"pv": "pvsystem", "bat": "storage", "der": "generator"}
+    graphdir = {"pv": "pvder", "bat": "batder", "der": "gender"}
+    typmap = {"pv": "solar", "bat": "storage", "der": "generator"}
+
+    # prep for new dss run
+    self.save_dss_state()
+    self.reset_dss()
+
+     
+    # first iteration of this round
+    #### increment the count
+    self.cnt +=1
+    self.logger.info(f"========= HCA Round {self.cnt} ({typ})=================")
+  
+    #### Step 1: select a bus. Viable options (for now) are:
+    # * graph_dirs["bus3phase"]: 3phase buses with nothing on them
+    # * any bus already considered in a previous round (since the capacity added may not have been the limit)
+    # * **exclude** buses that have zero hosting capacity
+    if bus is None:
+      buslist = [b for b in list(self.graph_dirs["bus3phase"]) + self.visited_buses if b not in self.exauhsted_buses[typ]]
+      
+      self.set_active_bus(self.sample_buslist(buslist))
+    else:
+      self.set_active_bus(bus)
+
+    #### Step 2: Select new capacity, 
+    ## there are two options:
+    ## 1. this bus an evaluated hc -> use this value as the starting point
+    ## 2. this has not been visited -> sample a capacity (add to existing (0 or otherwise))
+    if Sij is None:
+      Sij = self.sample_capacity(typ)
+      self.logger.debug(f"\tsampled {Sij}")
+    else:
+      self.logger.info(f"Specified capacity: {Sij}")
+    keyexist = self.get_classkey_from_node(nclass[typ], self.active_bus)
+    if keyexist is not None: 
+      ## Option 1: check if bus already has resource of this type
+      self.logger.debug(f"\tFound resource {keyexist}, at bus {bus}")
+      hc, hc_cnt = self.get_hc(typ, self.active_bus)
+      if hc is not None:
+        # use the hc value
+        self.logger.debug(f"\tLast hc info from round {hc_cnt}: {hc}")
+        Sij = hc
+      else:
+        self.logger.debug(f"\tNo hc available, using sampled value")
+        # for k in Sij.keys():
+        #   Sij[k] += self.graph_dirs[graphdir[typ]][key][k]
+        # self.logger.debug(f"\tNew sampled capacity: {Sij}")
+
+      # self.alter_capacity(typ, key, **Sij)
+    # else:
+    #   ## Option 2: first time resource at this node
+    key = f"{typ}-init-cnt{self.cnt}"
+    self.logger.info(f"Creating new {typ} resource {key} with S = {Sij}")
+    self.new_capacity(typ, key, **Sij)
+    
+    ### update graph structure and log changes
+    self.parse_graph()
+    for ln in self.change_lines:
+      self.logger.debug (f' {ln}')
+
+    ### Step 3: Solve
+    self.rundss()
+    if not self.lastres["converged"]:
+      raise ValueError("Open DSS Run did not converge")
+
+    ### Step 4: evaluate
+    # evaluate the run with following options:
+    # 1. no violations: fix capaity Sij, increment until violations occure to determine hc
+    # 2. violations: decrease capacity until no violations. set hc=0 (mark bus as exauhsted)
+    self.metrics.load_res(self.lastres)
+    self.metrics.calc_metrics()
+    if self.metrics.violation_count == 0:
+      # no violations
+      self.logger.info(f"No violations with capacity {Sij}. Iterating to find HC")
+      self.update_data("Sij", typ, Sij)  # save installed capacity
+      Sijlim = self.hc_bisection(typ, key, Sij, None) # find limit via bisection search
+      hc = {k: Sijlim[k] - Sij[k] for k in ["kw", "kva"]}
+      self.update_data("hc", typ, hc)
+      self.update_data("eval", typ, self.metrics.eval)
+    else:
+      # violations: decrease capacity to find limit
+      self.logger.info(f"Violations with capacity {Sij}. Iterating to find Limit.")
+      self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
+      Sij = self.hc_bisection(typ, key, None, Sij)
+      if Sij["kw"] == 0: 
+        # no capacity at this bus (not just no *additional*, none at all)
+        # remove the object from the graph
+        self.logger.info(f"\tNo capacity at bus {self.active_bus}. Disabling resource {key}.")
+        self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
+        self.reset_dss() # reset state to last good solution
+      hc = {k: 0 for k in ["kw", "kva"]}
+      self.update_data("Sij", typ, Sij) # update with intalled capacity
+      self.update_data("hc", typ, hc)
+      self.update_data("eval", typ, self.metrics.eval)
+      # mark bus as exauhsted
+      self.exauhsted_buses[typ].append(self.active_bus)
+
+    ### Step 5: final run with the actual capacity
+    self.logger.info(f"*******Results for bus {self.active_bus} ({typ})\nSij = {Sij}\nhc = {hc}")
+    self.reset_dss()
+    if Sij["kw"] > 0:
+      self.new_capacity(typ, key, **Sij)
+    ### update graph structure and log changes
+    self.parse_graph()
+    for ln in self.change_lines:
+      self.logger.info (f' {ln}')
+    self.rundss()
+    if not self.lastres["converged"]:
+      raise ValueError("Open DSS Run did not converge")
+
+    ### cleanup
+    self.unset_active_bus()
+    self.collect_stats()
+
+  def hc_bisection(self, typ, key, Sij1=None, Sij2=None, kwtol=5, kwmin=30):
+    
+    typmap = {"pv": "solar", "bat": "storage", "der": "generator"}
+    #prep for new run
+    self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
+    self.reset_dss()
+
+    if (Sij1 is None) and (Sij2 is None):
+      raise ValueError("At least one of lower or upper bound must be provided")
+
+    if (Sij1 is not None) and (Sij2 is not None):
+      # apply bisection on the kw value
+      Sijnew = {"kw": (Sij1["kw"] + Sij2["kw"])/2}
+      factor = Sijnew["kw"]/Sij1["kw"]
+      for k in Sij1.keys():
+        if k != "kw":
+          Sijnew[k] = Sij1[k]*factor # apply to other properties proportionally 
+    elif Sij2 is None:
+      # unknown upperbound, double lower bound
+      Sijnew = {k: 2*v for k, v in Sij1.items()}
+    elif Sij1 is None:
+      # unknown lower bound, half the upper bound
+      Sijnew = {k: 0.5*v for k, v in Sij2.items()}
+    
+    self.new_capacity(typ, key, **Sijnew) #add the new capacity
+
+    ### update graph structure and log changes
+    self.parse_graph()
+    for ln in self.change_lines:
+      self.logger.debug (f' {ln}')
+
+    ### Solve
+    self.rundss()
+    if not self.lastres["converged"]:
+      raise ValueError("Open DSS Run did not converge")
+    
+    self.metrics.load_res(self.lastres)
+    self.metrics.calc_metrics()
+    if self.metrics.violation_count == 0:
+      self.logger.info(f"\tNo violations with capacity {Sijnew}. Iterating to find HC")
+      if Sij2 is None:
+        # still uknown upper bound
+        return self.hc_bisection(typ, key, Sijnew, None, kwtol, kwmin)
+      elif Sij2["kw"] - Sijnew["kw"] < kwtol:
+        # End criterion: no violations and search band within tolerance
+        if Sijnew ["kw"] < kwmin:
+          # if capacity is below a minimum threshold set to 0
+          Sijnew = {k: 0 for k in Sijnew.keys()}
+        return Sijnew
+      else:
+        # recurse and increase
+        return self.hc_bisection(typ, key, Sijnew, Sij2, kwtol, kwmin)
+    else:
+      self.logger.info(f"\tViolations with capacity {Sijnew}. Iterating to find Limit.")
+      self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
+      if Sijnew["kw"] < kwmin:
+        # End criterion: upperbound is below minimum threshold set to 0 and exit
+        return {k: 0 for k in Sijnew.keys()}
+      elif Sij1 is None:
+        # still unkonwn lower bound
+        return self.hc_bisection(typ, key, None, Sijnew, kwtol, kwmin)
+      else:
+        # recurse and decrease
+        return self.hc_bisection(typ, key, Sij1, Sijnew, kwtol, kwmin)
+  
+  def runbase(self, verbose=0):
+    """runs an initial version of the feeder to establish a baseline.
+    Metrics, for example will be evaluated w.r.t to this baseline as opposed
+    to just the hard limits
+    """
+    ###########################################################################
+    ##### Initialization
+    ###########################################################################
+    ### deterministic changes
+    self.deterministic_changes()
+    if verbose > 1:
+      self.logger.info(f"\nFeeder description following deterministic changes:")
+      self.print_parsed_graph()
+
+
+    ### rooftop solar
+    self.append_rooftop_pv()
+    if verbose > 0:
+      self.logger.info(f"\nFeeder description following intialization changes:")
+      self.print_parsed_graph()
+
+    if verbose > 1:
+      self.logger.info('\nIslanding Considerations:\n')
+      self.logger.info(f'{len(self.comps)} components found based on recloser positions')
+      for i, c in enumerate(self.comps):
+        self.show_component(i, printvals=True, printheader=i==0, plot=False)
+
+    self.rundss()
+    if verbose > 1:
+      self.summary_outputs()
+
+    self.collect_stats() #get intial loading
+    self.metrics.set_base(self.lastres) # set baseline for metrics
+
+  def plot(self, **kwargs):
+    i2x.plot_opendss_feeder(self.G, **kwargs)
 class HCAMetrics:
-  def __init__(self, res:dict, comp=None, tol=1e-3):
+  def __init__(self, lims:dict, comp=None, tol=None, logger=None):
     self.tests = {
       "voltage": {
       "vmin": self._vmin,
@@ -425,94 +870,219 @@ class HCAMetrics:
       "vdiff": self._vdiff
       },
       "thermal": {
-      "ue": self._ue
+      "emerg": self._thermal
       },
       "island": {
         "pq": self._island_pq
       } 
     }
+    if tol is None:
+      tol = {k: 1e-3 for k in self.tests.keys()}
 
+    if logger is not None:
+      self.logger = logger
+    self.base = None
     self.comp = comp
-    self.load_res(res)
+    self.load_lims(lims)
     self.eval = {}
     self.violation = {}
+    self.violation_count = 0
     self.tol=tol
   
-  def load_res(self, res:dict):
-    self.res = res
-    self.volt_stats = get_volt_stats(res["voltdict"])
-    self.pv_stats = get_volt_stats(res["pvdict"])
-    self.rec_stats = get_volt_stats(res["recdict"])
+  def set_base(self, res:dict):
+    self.base = HCAMetrics(self.lims, self.comp, self.tol)
+    self.base.load_res(res, worst_case=True)
+
+  def load_lims(self, lims:dict):
+    self.lims = copy.deepcopy(lims)
+
+  def clear_res(self):
+    self.eval = {}
+    self.violation = {}
+    self.violation_count = 0
+
+  def load_res(self, res:dict, **kwargs):
+    self.clear_res()
+    self.res = {k:copy.deepcopy(v) for k, v in res.items() if k != "dss"}
+    self.volt_stats = calc_di_voltage_stats(res["di_voltexceptions"], **self.lims["voltage"], **kwargs)
+    self.vdiff = dict_key_comp([get_volt_stats(res[k]) for k in ["voltdict", "pvdict", "recdict"]], "diff", np.max)
+    # self.volt_stats = get_volt_stats(res["voltdict"])
+    # self.pv_stats = get_volt_stats(res["pvdict"])
+    # self.rec_stats = get_volt_stats(res["recdict"])
   
   # def _test(self, test:bool, margin, description:str) -> tuple[bool, str]:
-  def _test(self, val, lim, sense) -> tuple[bool, float, str]:
+  def _test(self, val, lim, sense, tol) -> tuple[bool, float, str]:
     """
     sense = 1 -> val should be greater than lim -> margin is positive if successful, negative is violation
-    sens = -1 -> val should be less than lim -> margin is still positive if successful (mult by -1), negative is violation
+    
+    sense = -1 -> val should be less than lim -> margin is still positive if successful (mult by -1), negative is violation
     """
     margin = sense*(val - lim)
-    return margin >= (0 - self.tol), margin
+    return margin >= (0 - tol), margin
     
   def _vmin(self, val):
-    vmin = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "min", np.min)
-    return self._test(vmin, val, 1)
+    vmin = self.volt_stats.loc[self.volt_stats.index.str.contains("Min"), :]
+    # vmin = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "min", np.min)
+    test, margin = self._test(vmin["limits"], val, 1, self.tol["voltage"])
+    if test.all() or (self.base is None):
+      # test passed
+      return test, margin
+    else:
+      # test didn't pass, compare to base result
+      lims = self.base.volt_stats.loc[self.base.volt_stats.index.str.contains("Min"),:]
+      test1, margin1 = self._test(vmin["limits"], lims["limits"], 1, self.tol["voltage"]) #new vmin should be >= base solution
+      test2, margin2 = self._test(vmin["integral"], lims["integral"], -1, self.tol["voltage"]) #integral of vmin violation should be <= base solution
+      return pd.concat([test1, test2], axis=1), pd.concat([margin1, margin2], axis=1)
   
   def _vmax(self, val):
-    vmax = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "max", np.max)
-    return self._test(vmax, val, -1)
+    # vmax = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "max", np.max)
+    vmax = self.volt_stats.loc[self.volt_stats.index.str.contains("Max"), :]
+    test, margin = self._test(vmax["limits"], val, -1, self.tol["voltage"])
+    if test.all() or (self.base is None):
+      # test passed
+      return test, margin
+    else:
+      # test didn't pass, compare to base result
+      lims = self.base.volt_stats.loc[self.base.volt_stats.index.str.contains("Max"),:]
+      test1, margin1 = self._test(vmax["limits"], lims["limits"], -1, self.tol["voltage"]) #new vamx should be <= base solution
+      test2, margin2 = self._test(vmax["integral"], lims["integral"], -1, self.tol["voltage"]) #integral of vmax violation should be <= base solution
+      return pd.concat([test1, test2], axis=1), pd.concat([margin1, margin2], axis=1)
   
   def _vdiff(self, val):
-    vdiff = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "diff", np.max)
-    return self._test(vdiff, val, -1)
+    if self.base is not None:
+      val = max(val, self.base.vdiff)
+    return self._test(self.vdiff, val, -1, self.tol["voltage"])
   
   def _ue(self, val):
-    return self._test(self.res["kWh_UE"], val, -1)
+    # verifies that the total ue d
+    return self._test(self.res["kWh_UE"], val, -1, self.tol["thermal"])
   
+  def _thermal(self, val):
+    if self.base is None:
+      ## test 2: no new overloaded branches (i.e. no loading > 100% emergency)
+      ov2 = self.res["di_overloads"].loc[:, "%Emerg"]  #<-- should be empty
+      if ov2.empty:
+        return True, 0 #no real margin to speak of in this case
+      else:
+        return self._test(self.res["di_overloads"]["%Emerg"], 100, -1, self.tol["thermal"])
+    else:
+      mask = self.res["di_overloads"].index.isin(self.base.res["di_overloads"].index)
+      ## test 1: any of the overloaded branches in base solution are not *more* overloaded
+      ov1 = self.base.res["di_overloads"]["%Emerg"].subtract(self.res["di_overloads"].loc[:,"%Emerg"]).dropna()
+      test1, margin1 = self._test(ov1, 0, 1, self.tol["thermal"])
+      ## test 2: no new overloaded branches (i.e. no loading > 100% emergency)
+      ov2 = self.res["di_overloads"].loc[~mask, "%Emerg"]  #<-- should be empty
+      test2, margin2 = self._test(ov2, 100, -1, self.tol["thermal"])
+      return pd.concat([test1, test2]), pd.concat([margin1, margin2])
+
   def _all_comps(self, func, *args):
+    """Loop through all components, return first error"""
     for i in self.res["compflows"].keys():
       out = func(*args, i=i)
       if not out[0]:
         return out
     return out
   
-  def _island_dir(self, val, pq:str, i=None):
+  # def _island_dir(self, val, pq:str, i=None):
+  def _island_dir(self):
+    """Test if flow in/out of component is in total in same direction"""
+    # igonroing i and pq for now
+    # self.res["compflows"][i]["lims"].loc[["min", "max"], pq] -> the minimum and maximum p or q flow for component
+      #   \-> take the sign -> leads to array of [1, -1, etc.] of length 2
+      #   \-> take the sum: options are 2, -2 (both in same direction), 0 (opposite direction), 1 or -1 (unlikely, one element is exactly 0)
+      #   \-> take abs and subtract 1. If this is greater than 0 then both were in the same direction.
+    test = pd.concat([ 
+      pd.Series({i: np.abs(self.res["compflows"][i]["lims"].loc[["min", "max"], pq].apply(np.sign).sum()) 
+                 for i in self.res["compflows"].keys()}, name=f"{pq}_dir")
+                 for pq in ["p", "q"]], axis=1)
+    return self._test(test, 0, 1, self.tol["island"])
     if i is not None:
+      # self.res["compflows"][i]["lims"].loc[["min", "max"], pq] -> the minimum and maximum p or q flow for component
+      #   \-> take the sign -> leads to array of [1, -1, etc.] of length 2
+      #   \-> take the sum: options are 2, -2 (both in same direction), 0 (opposite direction), 1 or -1 (unlikely, one element is exactly 0)
+      #   \-> take abs and subtract 1. If this is greater than 0 then both were in the same direction.
       test = np.abs(self.res["compflows"][i]["lims"].loc[["min", "max"], pq].apply(np.sign).sum()) - 1
-      return self._test(test, 0, 1)
+      return self._test(test, 0, 1, self.tol["island"])
     else:
       return self._all_comps(self._island_dir, val, pq)
     
-  def _island_frac(self, val, pq:str, i=None):
+  # def _island_frac(self, val:list[float], pq:str, i=None):
+  def _island_frac(self, val:list[float]):
+    """get the ratio between the minimum magnitude flow in/out of region to the maximum flow
+    val = [p_frac_limit, q_frac_limit]
+    """
+    test = pd.concat([
+      pd.Series({i: self.res["compflows"][i]["lims"].transpose().apply(lambda x: x.minabs/np.max([np.abs(x["min"]), np.abs(x["max"])]), axis=1)[pq] 
+                 for i in self.res["compflows"].keys()}, name=f"{pq}_frac")
+                 for pq in ["p", "q"]], axis=1)
+    # Note that test is a comp x 2 sized DataFrame. when we subtract a list lenght 2
+    # from this, it will subract the first entry from the first colum and the second from the second column.
+    return self._test(test, val, 1, self.tol["island"])
     if i is not None:
       test = self.res["compflows"][i]["lims"].transpose().apply(lambda x: x.minabs/np.max([np.abs(x["min"]), np.abs(x["max"])]), axis=1)[pq]
-      return self._test(test, val, 1)
+      return self._test(test, val, 1, self.tol["island"])
     else:
       return self._all_comps(self._island_frac, val, pq)
   
   def _island_test(self, val, pq:str):
      test, margin = self._island_dir(val, pq, i=self.comp)
-     if not test:
+     if np.all(test):
+       # all direction tests passed, no need to continue
        return test, margin
      
      test, margin = self._island_frac(val, pq, i=self.comp)
      return test, margin
 
-  def _island_pq(self, vals):
-      test, margin = self._island_test(vals[0], "p")
-      if test:
-        return test, margin
+  def _island_pq_old(self, vals):
+      ptest, pmargin = self._island_test(vals[0], "p")
+      if np.all(ptest):
+        # p tests passed, no need to check q
+        return ptest, pmargin
 
       ## p test failed, check q as well
       return self._island_test(vals[1], "q")
+  
+  def _island_pq(self, vals):
+    """
+    Screen for potential islanding
+    screen 1: p flows never reverse for any component
+    screen 2: (if 1 fails) the ratio of minimum to maximum p flow 
+              is above threshold, i.e. component is not too close to being an island
+    screen 3: same as screen 1 but for q
+    screen 4: same as screen 2 but for q
+    """
+    dirtest, dirmargin = self._island_dir()
+    fractest, fracmargin = self._island_frac(vals)
+    test = pd.concat([dirtest, fractest], axis=1)
+    margin = pd.concat([dirmargin, fracmargin], axis=1)
 
-  def calc_metrics(self, d:dict):
+    if np.all(test["p_dir"]):
+      # screen 1 passes : p never reverses direction
+      return True, margin
+    elif np.all(test["p_frac"]):
+      # screen 2 passes: p is always sufficiently large in magnitude
+      return True, margin
+    elif np.all(test["q_dir"]):
+      # screen 3 passes : q never reverses direction
+      return True, margin
+    elif np.all(test["q_frac"]):
+      # screen 4 passes: q is always suffiently large in magnitude
+      return True, margin
+    else:
+      # test failed
+      return False, margin
+
+
+  def calc_metrics(self, verbose=0):
     violation_count = 0
-    for metric_class, metrics in d.items():
+    for metric_class, metrics in self.lims.items():
       self.eval[metric_class] = {}
       for metric, val in metrics.items():
         test, margin = self.tests[metric_class][metric](val)
+        if (self.logger is not None) and (verbose > 0):
+          self.logger.debug(f"metric={metric}, val={val}, test result = {test}, margin = {margin}")
         self.eval[metric_class][metric] = margin
-        if not test:
+        if not np.all(test):
           if metric_class not in self.violation.keys():
             self.violation[metric_class] = {}
 
