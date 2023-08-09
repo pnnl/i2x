@@ -29,6 +29,10 @@ class Logger(logging.Logger):
     def __init__(self, name, level=logging.INFO, format=None):
         self.name = name
         self.logger = logging.getLogger(name)
+        ## remove any handlers
+        if self.logger.hasHandlers():
+            for h in self.logger.handlers:
+                self.logger.removeHandler(h)
         if type(level) == str:
             self.logger.setLevel(level.upper())
         else:
@@ -48,6 +52,14 @@ class Logger(logging.Logger):
         self.formattoggle = False
         self.currentformat = 'normal'
     
+    def setlevel(self, level):
+        """change the logging level"""
+        if type(level) == str:
+            level = level.upper()
+        self.logger.setLevel(level)
+        for h in self.logger.handlers:
+            h.setLevel(level)
+
     def set_logfile(self, file=None, mode="w"):
         if file is None:
             file = self.name + ".log"
@@ -97,3 +109,10 @@ class Logger(logging.Logger):
     def set_terminator(self, char='\n'):
         for h in self.logger.handlers:
             h.terminator = char
+
+    def close(self):
+        handlers = self.logger.handlers[:]
+        for h in handlers:
+            self.logger.removeHandler(h)
+            h.close()
+            

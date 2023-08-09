@@ -1,0 +1,8 @@
+{
+"res_pv_frac": 0,
+"remove_all_pv": true,
+"hca_log": {
+    "logtofile": true,
+    "format": "{message}"
+}
+}
