@@ -16,7 +16,14 @@ def cfg_assign (cfg, tag, val):
     val = cfg[tag]
   return val
 
-def bes_hca (cfg_filename=None, log_output=True, write_json=True):
+def write_json_results_file (out_name, results, log_output):
+  fp = open (out_name, 'w')
+  if log_output == True:
+    print ('Writing HCA results to {:s}'.format(out_name))
+  json.dump (results, fp, indent=2)
+  fp.close()
+
+def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency=20):
   sys_name = 'hca'
   case_title = 'hca'
   load_scale = 2.75
@@ -31,6 +38,8 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True):
     load_scale = cfg_assign (cfg, 'load_scale', load_scale)
     hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
     upgrades = cfg_assign (cfg, 'upgrades', upgrades)
+  out_name = '{:s}_out.json'.format(case_title)
+  saved_iteration = 0
 
   # nominal quantities for the base case, hca generation at zero
   d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name))
@@ -50,6 +59,7 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True):
     hca_buses = np.arange(1, nb+1, dtype=int)
   if hca_buses[0] < 1:
     hca_buses = np.arange(1, nb+1, dtype=int)
+  nhca = len(hca_buses)
 
   chgtab_name = None
   nupgrades = 0
@@ -70,7 +80,7 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True):
   scaledPd *= 0.001
   if log_output == True:
     print ('System: {:s} with nominal load={:.3f} GW, actual load={:.3f} GW, existing generation={:.3f} GW'.format(sys_name, nominalPd, scaledPd, nominalPmax))
-    print ('HCA generator index = {:d}, load_scale={:.4f}, checking {:d} buses with {:d} grid upgrades'.format(hca_gen_idx, load_scale, len(hca_buses), nupgrades))
+    print ('HCA generator index = {:d}, load_scale={:.4f}, checking {:d} buses with {:d} grid upgrades'.format(hca_gen_idx, load_scale, nhca, nupgrades))
 
   results = {'system': sys_name,
              'case_title': case_title,
@@ -82,7 +92,9 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True):
   if log_output == True:
     print ('Bus Generation by Fuel[GW]')
     print ('   ', ' '.join(['{:>7s}'.format(x) for x in fuel_list]), ' [Max muF Branch] [Mean muF Branch]')
+  iteration = 0
   for hca_bus in hca_buses:
+    iteration += 1
     cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
     fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, quiet=True)
 
@@ -138,6 +150,9 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True):
     results['buses'][int(hca_bus)] = {'fuels':fuel_Pg, 
                                  'max_max_muF':{'branch':max_i+1, 'muF':max_max_muF}, 
                                  'max_mean_muF':{'branch':mean_i+1, 'muF':max_mean_muF}}
+    if write_json == True and (iteration % json_frequency == 0):
+      write_json_results_file (out_name, results, log_output)
+      saved_iteration = iteration
 
   muFtotal /= nb
   if log_output == True:
@@ -154,13 +169,9 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True):
         print ('{:4d} {:4d} {:4d} {:7.4f} {:7.2f} {:7.2f} {:7.2f}'.format(i+1, fbus, tbus, muFtotal[i], rating, kv1, kv2))
       results['branches'][i+1] = {'from':fbus, 'to':tbus, 'muF':muFtotal[i], 'rating':rating, 'kv1':kv1, 'kv2':kv2}
 
-  if write_json == True:
-    out_name = '{:s}_out.json'.format(case_title)
-    fp = open (out_name, 'w')
-    if log_output == True:
-      print ('Writing HCA results to {:s}'.format(out_name))
-    json.dump (results, fp, indent=2)
-    fp.close()
-
+  # The branch results are always going to be newer than bus results inside the loop,
+  # so the iteration count does not indicate whether the json file needs to be updated.
+  if write_json == True: # and iteration > saved_iteration:
+    write_json_results_file (out_name, results, log_output)
   return results
 
