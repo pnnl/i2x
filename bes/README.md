@@ -26,9 +26,6 @@ To run HCA on the WECC 240-bus test system:
 - Full N-1 HCA: **python hca.py WECC240\_prep.json**
 - Faster 1-bus, N-0 test case: **python hca.py test\_240.json**
 
-To run a single-bus HCA:
-
-
 ## Directory of Script and Data Files
 
 - **clean.bat** removes temporary output files on Windows
