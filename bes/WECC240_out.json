@@ -1,0 +1,3749 @@
+{
+  "system": "hca",
+  "case_title": "WECC240",
+  "load_scale": 1.0425,
+  "upgrades": null,
+  "buses": {
+    "1": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "2": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "3": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "4": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "7": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "8": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "10": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "11": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "13": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "14": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "15": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "18": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "19": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "20": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "22": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "24": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "26": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "27": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "28": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "30": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "31": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "33": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "34": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "35": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "36": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "37": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "38": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "39": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "40": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "41": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "42": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "43": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "44": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "49": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "50": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "51": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "53": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "54": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "55": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "56": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "57": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "58": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "59": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "60": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "61": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "62": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "63": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "64": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "65": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "66": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "67": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "68": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "69": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "70": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "71": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "72": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "73": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "74": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "80": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "81": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "82": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "83": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "84": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "85": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "86": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "89": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "90": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "91": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "92": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "93": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "95": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "96": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "97": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "98": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "99": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "101": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "102": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "103": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "104": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "105": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "108": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "110": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "112": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "114": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "115": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "116": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "117": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "118": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "119": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "123": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "124": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "125": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "126": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "127": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "128": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "129": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "130": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "131": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "132": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "133": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "134": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "135": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "136": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "137": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "138": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "139": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "140": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "141": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "142": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "143": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "144": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "145": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "146": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "147": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "148": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "149": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "150": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "151": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "152": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "153": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "154": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "155": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "159": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "160": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "161": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "162": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "163": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "164": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "165": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "166": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "167": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "168": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "172": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "173": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "174": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "175": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "176": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "177": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "178": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "179": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "180": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "181": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "182": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "183": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "186": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "187": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "188": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "189": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "192": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "193": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "194": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "195": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "198": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "199": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "200": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "201": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "203": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "204": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "205": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "206": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "207": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "210": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "211": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "212": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "213": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "214": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "217": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "218": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "219": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "220": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "222": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "223": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "224": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "225": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "226": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "227": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "228": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "229": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "230": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "231": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "233": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "234": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "237": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "238": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "239": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "240": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    },
+    "241": {
+      "fuels": {
+        "hca": 0.0,
+        "wind": 8.565999,
+        "solar": 20.190264000000003,
+        "nuclear": 3.255,
+        "hydro": 27.753802,
+        "coal": 0.0,
+        "ng": 80.527552,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 0,
+        "muF": 0.0
+      },
+      "max_mean_muF": {
+        "branch": 0,
+        "muF": 0.0
+      }
+    }
+  },
+  "branches": {}
+}

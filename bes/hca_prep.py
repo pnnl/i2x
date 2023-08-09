@@ -28,15 +28,20 @@ def reset_mva (d, i, mva):
   d['branch'][i][mpow.RATE_C] = newval
 
 if __name__ == '__main__':
+  load_scale = 1.0
   sys_name = 'IEEE118'
+
   if len(sys.argv) > 1:
     sys_name = sys.argv[1]
     if len(sys.argv) > 2:
       HCA_MIN_BR_CONTINGENCY_MVA = float(sys.argv[2])
+      if len(sys.argv) > 3:
+        load_scale = float(sys.argv[3])
+
   cfg = {}
   cfg['case_title'] = sys_name
   cfg['sys_name'] = 'hca'
-  cfg['load_scale'] = 1.0
+  cfg['load_scale'] = load_scale
   cfg['upgrades'] = None
 
   d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))

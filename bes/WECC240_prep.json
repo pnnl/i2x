@@ -1,6 +1,7 @@
 {
-  "sys_name": "WECC240",
-  "load_scale": 1.0,
+  "case_title": "WECC240",
+  "sys_name": "hca",
+  "load_scale": 1.0425,
   "upgrades": null,
   "hca_buses": [
     1,
@@ -193,84 +194,8 @@
   ],
   "branch_contingencies": [
     {
-      "branch": 4,
-      "scale": 0.25
-    },
-    {
-      "branch": 5,
-      "scale": 0.25
-    },
-    {
-      "branch": 11,
-      "scale": 0.3333333333333333
-    },
-    {
-      "branch": 13,
-      "scale": 0.3333333333333333
-    },
-    {
-      "branch": 185,
-      "scale": 0.3333333333333333
-    },
-    {
-      "branch": 222,
-      "scale": 0.3333333333333333
-    },
-    {
-      "branch": 264,
-      "scale": 0.25
-    },
-    {
-      "branch": 266,
-      "scale": 0.25
-    },
-    {
       "branch": 268,
       "scale": 0.1111111111111111
-    },
-    {
-      "branch": 277,
-      "scale": 0.3333333333333333
-    },
-    {
-      "branch": 294,
-      "scale": 0.25
-    },
-    {
-      "branch": 295,
-      "scale": 0.25
-    },
-    {
-      "branch": 300,
-      "scale": 0.25
-    },
-    {
-      "branch": 301,
-      "scale": 0.25
-    },
-    {
-      "branch": 302,
-      "scale": 0.25
-    },
-    {
-      "branch": 303,
-      "scale": 0.25
-    },
-    {
-      "branch": 305,
-      "scale": 0.2
-    },
-    {
-      "branch": 306,
-      "scale": 0.2
-    },
-    {
-      "branch": 359,
-      "scale": 0.0
-    },
-    {
-      "branch": 418,
-      "scale": 0.0
     }
   ]
 }

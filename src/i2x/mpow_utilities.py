@@ -210,9 +210,15 @@ def next_val(fp, var, bInteger=True):
       looking = False
       fp.readline()
       if bInteger:
-        val = int(fp.readline().strip())
+        try:
+          val = int(fp.readline().strip())
+        except:
+          val = 0
       else:
-        val = float(fp.readline().strip())
+        try:
+          val = float(fp.readline().strip())
+        except:
+          val = 0.0
   # print(var, '=', val)
   return val
 
