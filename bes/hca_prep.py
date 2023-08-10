@@ -3,29 +3,11 @@ import math
 import numpy as np
 import json
 import i2x.mpow_utilities as mpow
+import i2x.bes_upgrades as bes
 
 HCA_PMAX = 30000.0
 HCA_QMAX = 10000.0
 HCA_MIN_BR_CONTINGENCY_MVA = 200.0
-
-def get_default_line_mva (kv):
-  if kv <= 121.0:
-    return 131.0
-  elif kv <= 145.0:
-    return 157.0
-  elif kv <= 242.0:
-    return 600.0
-  elif kv <= 362.0:
-    return 1084.0
-  elif kv <= 550.0:
-    return 1800.0
-  return -1.0 # force an error
-
-def reset_mva (d, i, mva):
-  newval = '{:.2f}'.format(mva)
-  d['branch'][i][mpow.RATE_A] = newval
-  d['branch'][i][mpow.RATE_B] = newval
-  d['branch'][i][mpow.RATE_C] = newval
 
 if __name__ == '__main__':
   load_scale = 1.0
@@ -61,41 +43,9 @@ if __name__ == '__main__':
   cfg['hca_buses'] = hca_buses
 
   branch_contingencies = []
-  for i in range(nl):
-    bus1 = int(branch[i,mpow.F_BUS])
-    bus2 = int(branch[i,mpow.T_BUS])
-    kv1 = bus[bus1-1,mpow.BASE_KV]
-    kv2 = bus[bus2-1,mpow.BASE_KV]
-    if kv1 > 100.0 and kv2 > 100.0:
-      scale = 0.0
-      # mva = branch[i,mpow.RATE_A] these are invalid for IEEE118 and WECC240
-      xpu = branch[i,mpow.BR_X]
-      if branch[i,mpow.TAP] > 0.0:
-        mva = 100.0 * 0.10 / xpu
-        reset_mva (d, i, mva)
-        #print ('Xfmr {:3d}-{:3d} {:7.2f} / {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, kv2, xpu, mva))
-      elif xpu > 0.0:
-        bpu = branch[i,mpow.BR_B]
-        npar = 1
-        if bpu > 0.0:
-          zbase = kv1*kv1/100.0
-          x = xpu*zbase
-          xc = zbase / branch[i,mpow.BR_B]
-          z = math.sqrt(x * xc)
-          npar = int (0.5 + 400.0 / z)
-          if npar < 1:
-            npar = 1
-          if npar > 1:
-            scale = 1.0 / float(npar)
-        mva = npar * get_default_line_mva (kv1)
-        reset_mva (d, i, mva)
-        #print ('Line {:3d}-{:3d} {:7.2f} kV x={:.4f}, z={:6.2f} ohms, npar={:d}, mva={:.2f}'.format (bus1, bus2, kv1, xpu, z, npar, mva))
-      elif xpu < 0.0:
-        mva = get_default_line_mva (kv1)
-        reset_mva (d, i, mva)
-        #print ('Scap {:3d}-{:3d} {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, xpu, mva))
-      if mva >= HCA_MIN_BR_CONTINGENCY_MVA:
-        branch_contingencies.append({'branch':i+1, 'scale':scale})
+  bes.set_estimated_branch_ratings (matpower_dictionary=d, 
+                                    branch_contingencies=branch_contingencies, 
+                                    contingency_mva_threshold=HCA_MIN_BR_CONTINGENCY_MVA)
   print ('{:d} of {:d} branch contingencies'.format(len(branch_contingencies), nl))
   cfg['branch_contingencies'] = branch_contingencies
 

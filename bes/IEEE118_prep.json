@@ -1,7 +1,7 @@
 {
   "case_title": "IEEE118",
   "sys_name": "hca",
-  "load_scale": 1.0,
+  "load_scale": 0.6748,
   "upgrades": null,
   "hca_buses": [
     1,

@@ -17,12 +17,14 @@ The test systems are based on [CIMHub/BES](https://github.com/GRIDAPPSD/CIMHub/b
 To run HCA on the IEEE 118-bus test system:
 
 - **python hca\_prep.py IEEE118 200.0 0.6748**
+    - use 2000.0 threshold to consider only 5 contingencies
 - Full N-1 HCA: **python hca.py IEEE118\_prep.json**
 - Faster 1-bus, N-0 test case: **python hca.py test\_118.json**
 
 To run HCA on the WECC 240-bus test system:
 
 - **python hca\_prep.py WECC240 4000.0 1.0425**
+    - use 8000.0 threshold to consider only 1 contingency
 - Full N-1 HCA: **python hca.py WECC240\_prep.json**
 - Faster 1-bus, N-0 test case: **python hca.py test\_240.json**
 

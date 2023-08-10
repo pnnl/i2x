@@ -194,8 +194,8 @@
   ],
   "branch_contingencies": [
     {
-      "branch": 268,
-      "scale": 0.1111111111111111
+      "branch": 359,
+      "scale": 0.045454545454545456
     }
   ]
 }
