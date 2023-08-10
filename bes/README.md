@@ -39,7 +39,7 @@ To run HCA on the WECC 240-bus test system:
 - **IEEE118\_prep.json** defines the buses, branch contingencies, grid upgrades and load scaling for hosting capacity analysis of the IEEE 118-bus test system.  Overwritten by *hca\_prep.py*
 - **IEEE118\_wmva.m** base case with branch MVA ratings. Overwritten by *hca\_prep.py*
 - **matpower\_gen\_type.m** Matpower support function identifying solar and wind generators from type codes PV and WT. Not currently used.
-- **most.py** functions like *mpow.py* but uses the *mpow\_utilities* module to replace local functions.
+- **most.py** solves MOST base case for IEEE 118-bus (default, or argument=0) or WECC 240-bus test system (argument=1).
 - **mpow.py** solves Matpower base case for IEEE 118-bus (default, or argument=0) or WECC 240-bus test system (argument=1).
 - **plot\_bes.py** plots the network layout of the bulk electric system for IEEE 118-bus test system (default, or argument=0) or the WECC 240-bus test system (argument=1)
 - **plot\_hca.py** plots the bus hosting capacity and branch congestion levels on a network layout

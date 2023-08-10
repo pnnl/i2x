@@ -272,7 +272,10 @@ def read_most_solution(fname='msout.txt'):
   nt = next_val(fp, 'nt')
   nj_max = next_val(fp, 'nj_max')
   nc_max = next_val(fp, 'nc_max')
-  psi = next_matrix(fp, 'psi')
+  if nc_max > 0:
+    psi = next_matrix(fp, 'psi')
+  else:
+    psi = next_val(fp, 'psi')
   Pg = next_matrix(fp, 'Pg')
   Pd = next_matrix(fp, 'Pd')
   Rup = next_matrix(fp, 'Rup')

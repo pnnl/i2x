@@ -4,6 +4,7 @@ import math
 import subprocess
 import numpy as np
 import i2x.mpow_utilities as mpow
+import i2x.bes_upgrades as bes
 
 # some data from CIMHub/BES/mpow.py
 
@@ -18,53 +19,36 @@ CASES = [
    'load_scale':1.0425},
 ]
 
-# global constants
-SQRT3 = math.sqrt(3.0)
-RAD_TO_DEG = 180.0 / math.pi
-MVA_BASE = 100.0
-
-# sample code from TESP that automates Matpower in Octave
-# https://github.com/pnnl/tesp/blob/develop/examples/capabilities/ercot/case8/tso_most.py
-
 if sys.platform == 'win32':
   octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
 else:
   octave = 'octave --no-window-system --no-gui'
 
-def write_solve_file (root, load_scale):
-  fscript = 'solve{:s}.m'.format(root)
-  fsolved = '{:s}solved.m'.format(root)
-  fsummary = '{:s}summary.txt'.format(root)
-# fbus = '{:s}bus.txt'.format(root.lower())
-# fgen = '{:s}gen.txt'.format(root.lower())
-# fbranch = '{:s}branch.txt'.format(root.lower())
-  fp = open (fscript, 'w')
-  print ("""clear;""", file=fp)
-  print ("""cd {:s}""".format (os.getcwd()), file=fp)
-  print ("""mpc = loadcase({:s});""".format (root.upper()), file=fp)
-# print ("""case_info(mpc);""", file=fp)
-  print ("""mpc = scale_load({:.5f},mpc);""".format (load_scale), file=fp)
-  print ("""opt1 = mpoption('out.all', 0, 'verbose', 0);""", file=fp)
-  print ("""results=runpf(mpc, opt1);""", file=fp)
-  print ("""define_constants;""", file=fp)
-# print ("""codes=matpower_gen_type(results.gentype);""", file=fp)
-# print ("""mgen=[results.gen(:,GEN_BUS),results.gen(:,PG),results.gen(:,QG),codes];""", file=fp)
-# print ("""mbus=[results.bus(:,VM),results.bus(:,VA),results.bus(:,PD),results.bus(:,QD)];""", file=fp)
-# print ("""mbranch=[results.branch(:,F_BUS),results.branch(:,T_BUS),results.branch(:,TAP),results.branch(:,SHIFT),results.branch(:,PF),results.branch(:,QF),results.branch(:,PT),results.branch(:,QT)];""", file=fp)
-# print ("""csvwrite('{:s}',mgen);""".format (fgen), file=fp)
-# print ("""csvwrite('{:s}',mbus);""".format (fbus), file=fp)
-# print ("""csvwrite('{:s}',mbranch);""".format (fbranch), file=fp)
-  print ("""opt2 = mpoption('out.sys_sum', 1, 'out.bus', 0, 'out.branch', 0);""", file=fp)
-  print ("""fd = fopen('{:s}', 'w');""".format (fsummary), file=fp)
-  print ("""fprintf(fd,'results.success = %d\\n', results.success);""", file=fp)
-  print ("""fprintf(fd,'results.iterations = %d\\n', results.iterations);""", file=fp)
-  print ("""fprintf(fd,'results.et = %.4f\\n', results.et);""", file=fp)
-  print ("""printpf(results, fd, opt2);""", file=fp)
-  print ("""fclose(fd);""", file=fp)
-  print ("""savecase('{:s}', results);""".format (fsolved), file=fp)
-  print ("""exit;""", file=fp)
+def write_local_solve_file (root, load_scale=1.0, quiet=False):
+  fscript = 'solve_{:s}.m'.format(root)
+  fsummary = '{:s}_summary.txt'.format(root)
+  fp = open(fscript, 'w')
+  print("""clear;""", file=fp)
+  print("""define_constants;""", file=fp)
+  print("""mpopt = mpoption('verbose', 0, 'out.all', 0);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'most.dc_model', 1);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'most.uc.run', 1);""", file=fp)
+  print("""mpopt = mpoption(mpopt, 'most.solver', 'GLPK');""", file=fp)
+  if quiet:
+    print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 0);""", file=fp)
+  else:
+    print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
+  print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
+  print("""mpc = scale_load({:.5f},mpc);""".format (load_scale), file=fp)
+  print("""xgd = loadxgendata('{:s}_xgd.m', mpc);""".format(root), file=fp)
+  print("""mdi = loadmd(mpc, [], xgd, []);""", file=fp)
+  print("""mdo = most(mdi, mpopt);""", file=fp)
+  print("""ms = most_summary(mdo);""", file=fp)
+  print("""save('-text', '{:s}', 'ms');""".format(fsummary), file=fp)
+  if not quiet:
+    print("""total_time = mdo.results.SolveTime + mdo.results.SetupTime""", file=fp)
   fp.close()
-  return fscript, fsolved, fsummary
+  return fscript, fsummary
 
 if __name__ == '__main__':
   case_id = 0
@@ -72,25 +56,27 @@ if __name__ == '__main__':
     case_id = int(sys.argv[1])
   sys_name = CASES[case_id]['name']
   load_scale = CASES[case_id]['load_scale']
+
   d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))
-  mpow.summarize_casefile (d, 'Input')
-  fscript, fsolved, fsummary = write_solve_file (sys_name, load_scale)
-  cmdline = '{:s} {:s}'.format(octave, fscript)
-  print ('running', cmdline)
-  proc = subprocess.Popen(cmdline, shell=True)
-  proc.wait()
-  mpow.print_solution_summary (fsummary, details=True)
-  r = mpow.read_matpower_casefile (fsolved)
-  for tag in ['bus', 'gen', 'branch', 'gencost']:
-    r[tag] = np.array(r[tag], dtype=float)
-  mpow.summarize_casefile (r, 'Solved')
-  print ('Min and max bus voltages=[{:.4f},{:.4f}]'.format (np.min(r['bus'][:,mpow.VM]),np.max(r['bus'][:,mpow.VM])))
-  print ('Load = {:.3f} + j{:.3f} MVA'.format (np.sum(r['bus'][:,mpow.PD]),np.sum(r['bus'][:,mpow.QD])))
-  print ('Gen =  {:.3f} + j{:.3f} MVA'.format (np.sum(r['gen'][:,mpow.PG]),np.sum(r['gen'][:,mpow.QG])))
-  gen_online = np.array(r['gen'][:,mpow.GEN_STATUS]>0)
-  print ('{:d} of {:d} generators on line'.format (int(np.sum(gen_online)),r['gen'].shape[0]))
-  pgmax = np.sum(r['gen'][:,mpow.PMAX], where=gen_online)
-  qgmax = np.sum(r['gen'][:,mpow.QMAX], where=gen_online)
-  qgmin = np.sum(r['gen'][:,mpow.QMIN], where=gen_online)
-  print ('Online capacity = {:.2f} MW, {:.2f} to {:.2f} MVAR'.format (pgmax, qgmin, qgmax))
+  # assign sensible ratings
+  bes.set_estimated_branch_ratings (matpower_dictionary=d)
+  # assign linear cost functions
+  ng = len(d['gen'])
+  for i in range(ng):
+    d['gencost'][i] = mpow.get_hca_gencosts(d['genfuel'][i])
+  # Write extra generator data (xgd), assuming all units have been on for 24 hours to start, 
+  # so MOST can leave them on or switch them off without restriction
+  unit_states = np.ones(len(d['gen'])) * 24.0
+  mpow.write_xgd_function ('most_xgd', d['gen'], d['gencost'], d['genfuel'], unit_states)
+
+  # write the modified Matpower case with attributes customized for MOST
+  mpow.write_matpower_casefile (d, 'most_case')
+
+  # run the MOST case
+  fscript, fsummary = write_local_solve_file ('most', load_scale=load_scale)
+  mpow.run_matpower_and_wait (fscript, quiet=False)
+  f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF = mpow.read_most_solution(fsummary)
+  print ('MOST cost = {:.2f}'.format (f))
+
+
 

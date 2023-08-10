@@ -12,3 +12,6 @@ rm *.log
 rm hca_case.m
 rm hca_contab.m
 rm hca_xgd.m
+rm most_case.m
+rm most_xgd.m
+

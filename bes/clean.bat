@@ -8,3 +8,9 @@ del solve*.m
 del *solved.m
 del *summary.txt
 del *.log
+del hca_case.m
+del hca_contab.m
+del hca_xgd.m
+del most_case.m
+del most_xgd.m
+

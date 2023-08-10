@@ -11,3 +11,5 @@ solve*.m
 hca_case.m
 hca_contab.m
 hca_xgd.m
+most_case.m
+most_xgd.m
