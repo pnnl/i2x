@@ -348,5 +348,45 @@ increase in hosting capacity at bus 3, after adding parallel lines to branches
 
 *Figure 13: Plotted hca\_all results; nodes weighted by hosting capacity, branches colored by muF*
 
+## Estimating Grid Upgrade Costs
+
+Functions have been provided to estimate the sizes and lengths of branches at
+the limit during hosting capacity analysis.  This information may be used
+to estimate the costs of upgrading those branches:
+
+- length, voltage level, and MVA rating of transmission lines
+- voltage levels and MVA rating of transformers
+- voltage level and impedance of series capacitors
+
+Sample output is shown below, from the command **python grid\_upgrades.py**
+
+```
+ Bus   HC[GW]
+   1   15.514
+       Max Mu Branch:    4 (  12.168) Line   2-  7  345.00 kV x=0.0527, z=143.11 ohms, npar=2, mva=2168.00, mi=208.90
+      Mean Mu Branch:    4 (   8.298) Line   2-  7  345.00 kV x=0.0527, z=143.11 ohms, npar=2, mva=2168.00, mi=208.90
+   2   27.363
+       Max Mu Branch:    5 (  24.043) Line   1-  5  345.00 kV x=0.0496, z=143.11 ohms, npar=2, mva=2168.00, mi=196.64
+      Mean Mu Branch:    5 (   2.866) Line   1-  5  345.00 kV x=0.0496, z=143.11 ohms, npar=2, mva=2168.00, mi=196.64
+   3    5.335
+       Max Mu Branch:   12 (  16.801) Line   1-  3  345.00 kV x=0.0357, z= 95.41 ohms, npar=3, mva=3252.00, mi=212.56
+      Mean Mu Branch:   11 (   5.282) Line   5-  7  345.00 kV x=0.0421, z=143.11 ohms, npar=2, mva=2168.00, mi=166.97
+   4   17.293
+       Max Mu Branch:    3 (  29.081) Line   1-  2  345.00 kV x=0.0522, z=143.11 ohms, npar=2, mva=2168.00, mi=207.00
+      Mean Mu Branch:    3 (   5.949) Line   1-  2  345.00 kV x=0.0522, z=143.11 ohms, npar=2, mva=2168.00, mi=207.00
+   5   17.577
+       Max Mu Branch:   12 (   6.714) Line   1-  3  345.00 kV x=0.0357, z= 95.41 ohms, npar=3, mva=3252.00, mi=212.56
+      Mean Mu Branch:    9 (   5.142) Line   1-  4  345.00 kV x=0.0667, z=143.11 ohms, npar=2, mva=2168.00, mi=264.82
+   6    5.000
+       Max Mu Branch:    1 (   6.448) Line   4-  5  345.00 kV x=0.0210, z= 47.70 ohms, npar=6, mva=6504.00, mi=250.15
+      Mean Mu Branch:    1 (   4.869) Line   4-  5  345.00 kV x=0.0210, z= 47.70 ohms, npar=6, mva=6504.00, mi=250.15
+   7   11.704
+       Max Mu Branch:    5 (  14.651) Line   1-  5  345.00 kV x=0.0496, z=143.11 ohms, npar=2, mva=2168.00, mi=196.64
+      Mean Mu Branch:    5 (   9.520) Line   1-  5  345.00 kV x=0.0496, z=143.11 ohms, npar=2, mva=2168.00, mi=196.64
+   8    2.246
+       Max Mu Branch:   12 (   8.882) Line   1-  3  345.00 kV x=0.0357, z= 95.41 ohms, npar=3, mva=3252.00, mi=212.56
+      Mean Mu Branch:    7 (   3.003) Line   6-  7  345.00 kV x=0.0504, z=143.11 ohms, npar=2, mva=2168.00, mi=199.86
+```
+
 Copyright 2022-2023, Battelle Memorial Institute
 
