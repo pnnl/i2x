@@ -201,7 +201,7 @@ computational complexity.
 
 ## Simulating Branch Upgrades and Contingencies
 
-The summary of branch data and base-case muF follows. Each 345-kV line
+The summary of branch data and base-case *muF* follows. Each 345-kV line
 is rated for 1086 MVA, so each of these branches represents a transmission
 corridor of 2-6 lines in parallel. The corridor from bus 1 to bus 2 has
 a positive muF, so it could be increased from 2 lines in parallel to 3
@@ -212,6 +212,8 @@ To implement these grid upgrades, we should:
 - **Divide** the branch impedances (*Rpu*, *Xpu*) by **1.5**. 
 - If any of these branches happened to be transformers, their *TAP* and *SHIFT* parameters would be left unchanged. 
 
+
+```
     Branch Summary
     Idx Frm  To  Rating  PkFlow Avg muF        Rpu       Xpu      Bpu  N  Miles
       1   5   6  2168.0   960.0    0.00  0.0042376 0.0358982  2.48325  2 144.11
@@ -227,6 +229,7 @@ To implement these grid upgrades, we should:
      11   3   4  2168.0  2168.0    2.84  0.0043923 0.0372097  2.57398  2 149.37
      12   5   7  2168.0  2168.0    0.00  0.0049678 0.0420845  2.91120  2 168.94
      13   1   3  3252.0  3051.9    0.00  0.0042162 0.0357173  5.55918  3 215.07
+```
 
 To reduce the number of parallel lines, the scaling factor would be less 
 than 1. For example, scale by **0.8333** to change branch 9, between buses 
