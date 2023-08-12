@@ -70,7 +70,7 @@ dependencies:
   # - numexpr=2.8.4=py310hd213c9f_0
   - numpy
   # - numpy-base
-  # - openpyxl
+  - openpyxl
   # - openssl=1.1.1t=h2bbff1b_0
   # - packaging=22.0=py310haa95532_0
   - pandas
