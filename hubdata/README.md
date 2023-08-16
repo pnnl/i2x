@@ -15,18 +15,18 @@ We propose twelve new metrics for tracking the outcomes of DER
 interconnection processes (units or selection choices are shown in square 
 brackets): 
 
-1.	Rated Power \[kW\]: (This is a single measure of the project size.
-2.	Technology \[PV, Gas, Diesel, Wind, CSP, BESS, LFG, H2, Hydro, Other\]: Some of these have more output variability than others.
-3.	Stored Energy \[kWh\]: Applicable to BESS.
-4.	IEEE 1547 Reactive Power Category \[A, B, legacy\]: Commonly referred to as voltage and reactive power capability. “Legacy” applies to pre-2018 version of the standard. Category A is a minimum performance level required of all new DER in states that adopted IEEE 1547-2018. Category B adds capability for areas with “high” adoption of DER, or for DER subject to “large” variations in output.
-5.	IEEE 1547 Disturbance Category \[I, II, III, legacy\]: Commonly referred to as voltage and frequency ride-through capability. “Legacy” applies to pre-2018 version of the standard. Category I is a minimum performance level required of all new DER in states that adopted IEEE 1547-2018; its requirements were derived from a German grid code for synchronous generators, which all DER can reasonably meet. Category II covers all BES reliability needs and coordinates with NERC reliability standards. Category III adds capability for areas with “very high” adoption of DER; its requirements were derived from California Rule 21 smart inverter specifications.
-6.	Location \[Census Block Group\]: The census block group has a unique Federal Information Processing Standard ([FIPS](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)) code, and up to about 3000 people live in one. We do not request street addresses.
-7.	Time from Application to Interconnection Agreement \[days\], or blank if the project is not finished. This measures time taken by the utility to handle the application, including all studies.
-8.	Time from Construction Completion to Permission to Operate \[days\], or blank if the project is not finished. This measures time taken by the utility for inspection and commissioning.
-9.	Status \[active, operational, withdrawn, suspended\]: These are the same four status flags used in the LBNL Queued-Up data for BES interconnections.
-10.	Estimated Cost of Studies and Fees \[$ quoted from the utility\]
-11.	Estimated Cost of System Upgrades \[$ quoted from the utility\]
-12.	Final Cost of Interconnection \[$ billed from the utility\]: This captures any difference from the sum of the two estimates.
+1.	**Rated Power** \[kW\]: (This is a single measure of the project size.
+2.	**Technology** \[PV, Gas, Diesel, Wind, CSP, BESS, LFG, H2, Hydro, Other\]: Some of these have more output variability than others.
+3.	**Stored Energy** \[kWh\]: Applicable to BESS.
+4.	**IEEE 1547 Reactive Power Category** \[A, B, legacy\]: Commonly referred to as voltage and reactive power capability. “Legacy” applies to pre-2018 version of the standard. Category A is a minimum performance level required of all new DER in states that adopted IEEE 1547-2018. Category B adds capability for areas with “high” adoption of DER, or for DER subject to “large” variations in output.
+5.	**IEEE 1547 Disturbance Category** \[I, II, III, legacy\]: Commonly referred to as voltage and frequency ride-through capability. “Legacy” applies to pre-2018 version of the standard. Category I is a minimum performance level required of all new DER in states that adopted IEEE 1547-2018; its requirements were derived from a German grid code for synchronous generators, which all DER can reasonably meet. Category II covers all BES reliability needs and coordinates with NERC reliability standards. Category III adds capability for areas with “very high” adoption of DER; its requirements were derived from California Rule 21 smart inverter specifications.
+6.	**Location** \[Census Block Group\]: The census block group has a unique Federal Information Processing Standard ([FIPS](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)) code, and up to about 3000 people live in one. We do not request street addresses.
+7.	**Time from Application to Interconnection Agreement** \[days\], or blank if the project is not finished. This measures time taken by the utility to handle the application, including all studies.
+8.	**Time from Construction Completion to Permission to Operate** \[days\], or blank if the project is not finished. This measures time taken by the utility for inspection and commissioning.
+9.	**Status** \[active, operational, withdrawn, suspended\]: These are the same four status flags used in the LBNL Queued-Up data for BES interconnections.
+10.	**Estimated Cost of Studies and Fees** \[$ quoted from the utility\]
+11.	**Estimated Cost of System Upgrades** \[$ quoted from the utility\]
+12.	**Final Cost of Interconnection** \[$ billed from the utility\]: This captures any difference from the sum of the two estimates.
 
 These items would be readily available to utilities, as items 1-6 come 
 from the DER application and items 7-12 are generated by the utility.  
