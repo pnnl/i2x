@@ -37,15 +37,15 @@ to host DER.  The census-based location provides a link to demographic
 data for Energy Equity and Environmental Justice (EEEJ) metrics, and it 
 can be aggregated into larger spatial datasets.  Size, cost, and location 
 data may already be publicly available in some jurisdictions or service 
-territories.  We don’t need specific project addresses, owner names, or 
-developer names; the census block group location is precise enough for 
-i2X.  When a DER project is large enough that only one or two could exist 
-in a census block group, then items 1-12 could be identifiable to a single 
-project.  Some stakeholders may be concerned about that, but we believe 
-the data is important to measure process improvements.  
+territories.  Specific project addresses, owner names, or developer names 
+are not necessary; the census block group location is precise enough for 
+analyzing process metrics.  When a DER project is large enough that only 
+one or two could exist in a census block group, then items 1-12 could be 
+identifiable to a single project.  Some stakeholders may be concerned 
+about that, but this data will be important to measure process 
+improvements.  
 
-As part of the socialization process, we will advocate that interested 
-states and utilities adopt a common data reporting practice.  The 
+Interested states and utilities may a common data reporting practice.  The 
 Queued-Up data for BES follows a uniform format, based on the underlying 
 FERC and EIA reporting requirements.  This makes it easier to understand 
 the BES data, identify gaps in it, and address those gaps.  A common data 
