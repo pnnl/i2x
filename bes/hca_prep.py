@@ -9,16 +9,38 @@ HCA_PMAX = 30000.0
 HCA_QMAX = 10000.0
 HCA_MIN_BR_CONTINGENCY_MVA = 200.0
 
-if __name__ == '__main__':
-  load_scale = 1.0
-  sys_name = 'IEEE118'
+CASES = [
+  {'id': '1783D2A8-1204-4781-A0B4-7A73A2FA6038', 
+   'name': 'IEEE118', 
+   'swingbus':'131',
+   'load_scale':0.6748,
+   'min_kv_to_upgrade': 100.0,
+   'min_contingency_mva': 2000.0,
+   'mva_upgrades': None},
+  {'id': '2540AF5C-4F83-4C0F-9577-DEE8CC73BBB3', 
+   'name': 'WECC240', 
+   'swingbus':'2438',
+   'load_scale':1.0425,
+   'min_kv_to_upgrade': 10.0,
+   'min_contingency_mva': 7000.0,
+   'mva_upgrades': [
+     {'branch_number':307, 'new_mva':2168.0},
+     {'branch_number':406, 'new_mva': 750.0},
+     {'branch_number':422, 'new_mva':2100.0},
+     {'branch_number':430, 'new_mva':1000.0},
+     {'branch_number': 52, 'new_mva':1700.0},
+     {'branch_number':332, 'new_mva':1200.0},
+     {'branch_number':333, 'new_mva':1200.0}]}]
 
+if __name__ == '__main__':
+  case_id = 0
   if len(sys.argv) > 1:
-    sys_name = sys.argv[1]
-    if len(sys.argv) > 2:
-      HCA_MIN_BR_CONTINGENCY_MVA = float(sys.argv[2])
-      if len(sys.argv) > 3:
-        load_scale = float(sys.argv[3])
+    case_id = int(sys.argv[1])
+  sys_name = CASES[case_id]['name']
+  load_scale = CASES[case_id]['load_scale']
+  min_kv = CASES[case_id]['min_kv_to_upgrade']
+  mva_upgrades = CASES[case_id]['mva_upgrades']
+  min_contingency_mva = CASES[case_id]['min_contingency_mva']
 
   cfg = {}
   cfg['case_title'] = sys_name
@@ -45,9 +67,19 @@ if __name__ == '__main__':
   branch_contingencies = []
   bes.set_estimated_branch_ratings (matpower_dictionary=d, 
                                     branch_contingencies=branch_contingencies, 
-                                    contingency_mva_threshold=HCA_MIN_BR_CONTINGENCY_MVA)
+                                    contingency_mva_threshold=min_contingency_mva,
+                                    min_kv=min_kv)
+
   print ('{:d} of {:d} branch contingencies'.format(len(branch_contingencies), nl))
   cfg['branch_contingencies'] = branch_contingencies
+
+  if mva_upgrades is not None:
+    for row in mva_upgrades:
+      idx = row['branch_number'] - 1
+      d['branch'][idx][mpow.RATE_A] = row['new_mva']
+      d['branch'][idx][mpow.RATE_B] = row['new_mva']
+      d['branch'][idx][mpow.RATE_C] = row['new_mva']
+      print ('Upsizing branch MVA', idx+1, d['branch'][idx])
 
   wmva_name = '{:s}_wmva'.format(sys_name)
   print ('Writing base case updates to {:s}.m'.format(wmva_name))
