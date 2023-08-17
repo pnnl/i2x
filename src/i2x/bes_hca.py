@@ -8,6 +8,7 @@ import sys
 import numpy as np
 import i2x.mpow_utilities as mpow
 import json
+import os
 
 fuel_list = ['hca', 'wind', 'solar', 'nuclear', 'hydro', 'coal', 'ng', 'dl']
 
@@ -97,8 +98,15 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     iteration += 1
     cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
     fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, quiet=True)
+    # remove old results so we know if an error occurred
+    if os.path.exists(fsummary):
+      os.remove(fsummary)
 
     mpow.run_matpower_and_wait (fscript, quiet=True)
+
+    if not os.path.exists(fsummary):
+      print ('{:3d} ** HCA solution failed at this bus**'.format(hca_bus))
+      continue
 
     f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF = mpow.read_most_solution(fsummary)
     meanPg = np.mean(Pg[:,0,0,:], axis=1)

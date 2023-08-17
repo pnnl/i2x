@@ -370,7 +370,58 @@ buses 203 and 205 might be upgraded from 552.49 MVA.
       Mean Mu Branch:  430 (  62.232) Xfmr 203-205  500.00 /  230.00 kV x=0.0181, mva=552.49
 ```
 
+## Allowable Number of Contingencies
 
+The logic built in to *hca\_prep.py* identifies N-1 branch contingencies 
+according to the branch MVA rating, i.e., the highest-capacity branches 
+are included. In the reduced- order system models, most of these 
+highest-capacity branches represent lines or transformers in parallel. 
+Instead of removing the whole equivalent branch, the N-1 contingency 
+represents the outage of one parallel component, i.e., the equivalent 
+branch rating is reduced but not to zero. This logic probably doesn't 
+represent the most severe contingencies for HCA, because the strongest 
+parts of the system are weakened incrementally. A more realistic scheme, 
+at least for impact studies, would select different contingency sets for 
+each HCA bus, accounting for local network topology. For systematic HCA 
+over the whole network, the automated contingency selection would be more 
+practical. 
+
+The following table illustrates how many contingencies, Nc, can be solved 
+with Octave and the GLPK solver. At bus 1, higher values of Nc reduce the 
+estimated hosting capacity by up to 5%. Over the whole set of possible HCA 
+buses, higher values of Nc may have more effect on the estimated hosting 
+capacity. Furthermore, custom contingency selections for each HCA bus 
+would have more effect on the estimated hosting capacity. The results 
+indicated that 39 contingencies are practical for the IEEE118 system, and 
+at least 24 contingencies are practical for the WECC240 system. Those 
+bounds might be increased in a more capable computer, or using a 
+commercial solver. 
+
+
+```
+System     Smallest        Number of         Bus 1 Hosting     Solution
+           Contingency     Contingencies     Capacity          Time
+           Branch [MVA]    [Nc]              [MW]              [s]
+           
+IEEE118        2000            5                298                3
+                400           11                287                7
+                350           13                287                9
+                300           32                287               39
+                250           39                285               63
+                150          179               -----out of memory-----
+WECC240        7000            2               4247                4
+               5000            5               4243                9
+               4000            6               4243               18
+               3500           24               4236              334
+               3200           32               -----out of memory-----
+```
+
+The solution times were obtained in a Ubuntu Virtual Machine, allocated up to 8 GB RAM.
+The CPU speed was benchmarked according to:
+
+- *sudo apt-get install sysbench*
+- *sysbench cpu run*
+- resulting CPU speed is **1071.62** events per second
 
 Copyright 2022-2023, Battelle Memorial Institute
 
