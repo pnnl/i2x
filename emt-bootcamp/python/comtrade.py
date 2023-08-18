@@ -802,7 +802,7 @@ class AnalogChannel(Channel):
     def __str__(self):
         fields = [str(self.n), self.name, self.ph, self.ccbm, self.uu, 
             str(self.a), str(self.b), str(self.skew), str(self.cmin), 
-            str(self.cmax), str(self.primary), str(self.secondary), self.ps]
+            str(self.cmax), str(self.primary), str(self.secondary), self.pors]
         return ','.join(fields)
 
 

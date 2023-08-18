@@ -36,20 +36,25 @@ def setup_plot_options():
   plt.rc('axes', labelsize=lsize)
   plt.rc('legend', fontsize=lsize)
 
-def show_case_plot(channels, case_title):
+def show_case_plot(channels, units, case_title):
   t = channels['t']
   fig, ax = plt.subplots(5, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle ('Case: ' + case_title)
   for lbl in ['VA', 'VB', 'VC']:
     ax[0].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[0].set_ylabel (units['VA'])
   for lbl in ['IA', 'IB', 'IC']:
     ax[1].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[1].set_ylabel (units['IA'])
   for lbl in ['Vrms']:
     ax[2].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[2].set_ylabel (units['Vrms'])
   for lbl in ['P', 'Q']:
     ax[3].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[3].set_ylabel ('{:s}, {:s}'.format (units['P'], units['Q']))
   for lbl in ['F']:
     ax[4].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[4].set_ylabel (units['F'])
   for i in range(5):
     ax[i].grid()
     ax[i].legend()
@@ -59,7 +64,7 @@ def show_case_plot(channels, case_title):
   plt.show()
   plt.close()
 
-def show_comparison_plot (ibr, rm):
+def show_comparison_plot (ibr, rm, units):
   fig, ax = plt.subplots(4, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle ('Comparing IBR and Machine Behaviors')
 
@@ -93,6 +98,7 @@ def load_channels(comtrade_path):
   t = np.array(rec.time)
 
   channels = {}
+  units = {}
   channels['t'] = t
   print ('Channels ({:d} points) read from {:s}.cfg:'.format (len(t), comtrade_path))
   for i in range(rec.analog_count):
@@ -101,12 +107,19 @@ def load_channels(comtrade_path):
     idx = lbl.find(':')
     if idx >= 0:
       lbl = lbl[0:idx]
-    print ('  "{:s}"'.format(lbl))
-    channels[lbl] = np.array (rec.analog[i])
+    ch_config = rec.cfg.analog_channels[i]
+    scale = 1.0
+    if ch_config.pors.upper() == 'P':
+      scale = ch_config.secondary / ch_config.primary
+    elif ch_config.pors.upper() == 'S':
+      scale = ch_config.primary / ch_config.secondary
+    print ('  "{:s}" [{:s}] scale={:.6e}'.format(lbl, ch_config.uu, scale))
+    channels[lbl] = scale * np.array (rec.analog[i])
+    units[lbl] = ch_config.uu
 
-  return channels
+  return channels, units
 
-def show_test_plot (channels, case_title):
+def show_test_plot (channels, units, case_title):
   t = channels['t']
   labels = []
   for lbl in channels:
@@ -117,8 +130,11 @@ def show_test_plot (channels, case_title):
   for i in range(len(labels)):
     lbl = labels[i]
     ax[i].plot(t, channels[lbl], label=lbl)
+    ax[i].set_ylabel (units[lbl])
     ax[i].grid()
     ax[i].legend()
+  ax[i].set_xlabel ('Time [s]')
+  ax[i].set_xlim (t[0], int(t[-1]+0.5))
   plt.show()
   plt.close()
 
@@ -130,12 +146,12 @@ if __name__ == '__main__':
 # ibr_path = os.path.join (session_path, 'Solar2.if18_x86/rank_00001/Run_00001/IBR')
 # rm_path = os.path.join (session_path, 'Machine2.if18_x86/rank_00001/Run_00001/Machine')
 #
-# ibr_channels = load_channels (ibr_path)
-# rm_channels = load_channels (rm_path)
+# ibr_channels, ibr_units = load_channels (ibr_path)
+# rm_channels, rm_units = load_channels (rm_path)
 #
-# show_case_plot (ibr_channels, 'IBR')
-# show_case_plot (rm_channels, 'Machine')
-# show_comparison_plot (ibr=ibr_channels, rm=rm_channels)
+# show_case_plot (ibr_channels, ibr_units, 'PSCAD IBR')
+# show_case_plot (rm_channels, rm_units, 'PSCAD Machine')
+# show_comparison_plot (ibr=ibr_channels, rm=rm_channels, units=ibr_units)
 #
 # quit()
 
@@ -143,7 +159,11 @@ if __name__ == '__main__':
   ibr_path = os.path.join (session_path, 'Wind2')
   rm_path = os.path.join (session_path, 'Machine2')
 
-#  ibr_channels = load_channels (ibr_path)
-  rm_channels = load_channels (rm_path)
-  show_test_plot (rm_channels, rm_path)
+  ibr_channels, ibr_units = load_channels (ibr_path)
+  rm_channels, rm_units = load_channels (rm_path)
+#  show_test_plot (rm_channels, rm_units, rm_path)
+#  show_case_plot (rm_channels, rm_units, 'EMTP Machine')
+#  show_test_plot (ibr_channels, ibr_units, ibr_path)
+#  show_case_plot (ibr_channels, ibr_units, 'Wind2')
+  show_comparison_plot (ibr=ibr_channels, rm=rm_channels, units=ibr_units)
 
