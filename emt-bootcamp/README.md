@@ -4,19 +4,23 @@ This repository contains presentations and examples for the NERC/i2X
 bootcamps in electromagnetic transient (EMT) modeling of inverter-based
 resources (IBR).
 
-## Pre-session Slides
-
-- [Introductory slides](EMT_Bootcamp_July_27.pdf)
-- [Plant-Level slides](EMT_Bootcamp_Aug_3.pdf)
-- [EMTP slides](EMTP/EMTP_training_session_1.pdf)
-- [PSCAD slides](PSCAD/EMT-largescale-simulations.pdf)
+| Topic | Materials |
+| ----- | ----------|
+| Pre-session (7/27/2023) | [Introductory slides](EMT_Bootcamp_July_27.pdf)<br>[EMTP slides](EMTP/EMTP_training_session_1.pdf)<br>[PSCAD slides](PSCAD/EMT-largescale-simulations.pdf) |
+| Plant-Level (8/3/2023) | [Slides](EMT_Bootcamp_Aug_3.pdf)<br>[Models](Plant-Level.zip) |
+| Comparing rotating machine and IBR behaviors in EMT | TBD |
+| Comparing switching and average models | TBD |
+| Automation of faults | TBD |
+| Automation of IEEE P2800.2 type tests | TBD |
+| Automation of waveform evaluations | TBD |
+| System-Level (9/14/2023) | TBD |
 
 ## Obtaining Models and Data Files
 
 There are two options available:
 
 1. Download a zip file just before each session:
-   - [Plant-Level Session](Plant-Level.zip)
+   - For example, the [Plant-Level Session Models](Plant-Level.zip)
    - Extract the contents into a local directory.
    - Because the material is brand new, there may be last-minute updates. We will announce the time of last update as each session begins.
    - You may download individual updated files through the web browser, but make sure they go to the correct relative directory.
