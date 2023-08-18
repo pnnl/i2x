@@ -8,7 +8,7 @@ resources (IBR).
 | ----- | ----------|
 | Pre-session (7/27/2023) | [Introductory slides](EMT_Bootcamp_July_27.pdf)<br>[EMTP slides](EMTP/EMTP_training_session_1.pdf)<br>[PSCAD slides](PSCAD/EMT-largescale-simulations.pdf) |
 | Plant-Level (8/3/2023) | [Slides](EMT_Bootcamp_Aug_3.pdf)<br>[Models](Plant-Level.zip) |
-| Comparing rotating machine and IBR behaviors in EMT | TBD |
+| Comparing rotating machine and IBR behaviors in EMT | [Slides](MachineIBR.pdf)<br>[Models](MachineIBR.zip)<br>[Intro Video]()<br>[EMTP Video]()<br>[PSCAD Video]() |
 | Comparing switching and average models | TBD |
 | Automation of faults | TBD |
 | Automation of IEEE P2800.2 type tests | TBD |
