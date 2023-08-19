@@ -42,19 +42,19 @@ def show_case_plot(channels, units, case_title):
   fig.suptitle ('Case: ' + case_title)
   for lbl in ['VA', 'VB', 'VC']:
     ax[0].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
-    ax[0].set_ylabel (units['VA'])
+    ax[0].set_ylabel ('V(t) [pu]')
   for lbl in ['IA', 'IB', 'IC']:
     ax[1].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
-    ax[1].set_ylabel (units['IA'])
+    ax[1].set_ylabel ('I(t) [pu]')
   for lbl in ['Vrms']:
     ax[2].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
-    ax[2].set_ylabel (units['Vrms'])
+    ax[2].set_ylabel ('V [pu]')
   for lbl in ['P', 'Q']:
     ax[3].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
-    ax[3].set_ylabel ('{:s}, {:s}'.format (units['P'], units['Q']))
+    ax[3].set_ylabel ('P, Q [pu]')
   for lbl in ['F']:
     ax[4].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
-    ax[4].set_ylabel (units['F'])
+    ax[4].set_ylabel ('F [Hz]')
   for i in range(5):
     ax[i].grid()
     ax[i].legend()
@@ -142,28 +142,26 @@ if __name__ == '__main__':
   setup_plot_options()
 
   # set the session_path to match location of your unzipped sample cases
-# session_path = 'c:/temp/pscad/i2x/'
-# ibr_path = os.path.join (session_path, 'Solar2.if18_x86/rank_00001/Run_00001/IBR')
-# rm_path = os.path.join (session_path, 'Machine2.if18_x86/rank_00001/Run_00001/Machine')
-#
-# ibr_channels, ibr_units = load_channels (ibr_path)
-# rm_channels, rm_units = load_channels (rm_path)
-#
-# show_case_plot (ibr_channels, ibr_units, 'PSCAD IBR')
-# show_case_plot (rm_channels, rm_units, 'PSCAD Machine')
-# show_comparison_plot (ibr=ibr_channels, rm=rm_channels, units=ibr_units)
-#
-# quit()
+  session_path = 'c:/temp/i2x/pscad'
+  ibr_path = os.path.join (session_path, 'Solar2.if18_x86/rank_00001/Run_00001/IBR')
+  rm_path = os.path.join (session_path, 'Machine2.if18_x86/rank_00001/Run_00001/Machine')
 
-  session_path = 'c:/temp/emtp/i2x/'
+  ibr_channels, ibr_units = load_channels (ibr_path)
+  rm_channels, rm_units = load_channels (rm_path)
+
+  show_case_plot (ibr_channels, ibr_units, 'PSCAD Solar2')
+  show_case_plot (rm_channels, rm_units, 'PSCAD Machine')
+  show_comparison_plot (ibr=ibr_channels, rm=rm_channels, units=ibr_units)
+
+  session_path = 'c:/temp/i2x/emtp'
   ibr_path = os.path.join (session_path, 'Wind2')
   rm_path = os.path.join (session_path, 'Machine2')
 
   ibr_channels, ibr_units = load_channels (ibr_path)
   rm_channels, rm_units = load_channels (rm_path)
-#  show_test_plot (rm_channels, rm_units, rm_path)
-#  show_case_plot (rm_channels, rm_units, 'EMTP Machine')
-#  show_test_plot (ibr_channels, ibr_units, ibr_path)
-#  show_case_plot (ibr_channels, ibr_units, 'Wind2')
+  show_test_plot (rm_channels, rm_units, rm_path)
+  show_case_plot (rm_channels, rm_units, 'EMTP Machine')
+  show_test_plot (ibr_channels, ibr_units, ibr_path)
+  show_case_plot (ibr_channels, ibr_units, 'EMTP Wind2')
   show_comparison_plot (ibr=ibr_channels, rm=rm_channels, units=ibr_units)
 

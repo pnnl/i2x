@@ -22,7 +22,7 @@
     <param name="Warn" value="1" />
     <param name="Check" value="7" />
     <param name="description" value="" />
-    <param name="revisor" value="mcde601, 1691759973" />
+    <param name="revisor" value="mcde601, 1692408168" />
     <param name="architecture" value="windows" />
     <param name="Source" value="" />
     <param name="Debug" value="0" />
@@ -58,7 +58,7 @@
         <grouping />
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Main" group="" url="" version="" build="" crc="100520280" instances="1" key="" view="false" date="1691759457" id="1090741750">
+    <Definition classid="UserCmpDefn" name="Main" group="" url="" version="" build="" crc="100520280" instances="1" key="" view="false" date="1692408137" id="1090741750">
       <paramlist>
         <param name="Description" value="" />
       </paramlist>
@@ -2160,6 +2160,78 @@
         <param name="active_1" value="true" />
       </paramlist>
     </Settings>
+    <Settings classid="GraphFrameSettings" id="806345969" link="1800790573">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1" />
+        <param name="xmax" value="1" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="2055174902" link="287787576">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1214777912" link="33891391">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1173597726" link="136666122">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1495201944" link="546859292">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="439134925" link="1843978898">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="409831629" link="2129748507">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1" />
+        <param name="xmax" value="1" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1266654385" link="1407657107">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
   </List>
   <bookmarks />
   <List classid="Resource" />
@@ -2171,7 +2243,7 @@
     </paramlist>
   </GlobalSubstitutions>
   <hierarchy>
-    <call link="836413145" name="Machine2:Station" z="-1" view="false" instance="0">
+    <call link="1017230908" name="Machine2:Station" z="-1" view="false" instance="0">
       <call link="862326792" name="Machine2:Main" z="-1" view="true" instance="0" />
     </call>
   </hierarchy>

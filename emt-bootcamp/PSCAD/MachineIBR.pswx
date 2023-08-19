@@ -1,0 +1,16 @@
+<workspace name="MachineIBR" version="5.0.2" crc="7208806">
+  <projects>
+    <project type="project" name="Machine2" filepath=".\Machine2.pscx" />
+    <project type="project" name="Solar2" filepath=".\Solar2.pscx" />
+    <project type="library" name="Solar_Lib" filepath=".\Solar_Lib.pslx" />
+  </projects>
+  <simulations />
+  <pmr />
+  <messagegrid expanded="">
+    <column name="Icon" />
+    <column name="Id" />
+    <column name="Component" />
+    <column name="Namespace" />
+    <column name="Description" />
+  </messagegrid>
+</workspace>
