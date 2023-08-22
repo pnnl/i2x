@@ -48,6 +48,6 @@ def megawatt_max(base, c, df, energy_type, status):
     else:
         result = df[df.type_clean.str.contains(energy_type).fillna(False)]
     result = result[result.q_status.str.contains(status)]
-    result = result.groupby([base]).sum()
+    result = result.groupby([base]).sum(numeric_only=True)
     result = result[c].max(axis=1)
     return result

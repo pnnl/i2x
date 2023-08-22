@@ -27,7 +27,8 @@ def init_output(df):
 # Count utilities 
     utility_count = df.groupby(['state_county'])['utility'].nunique()
     # Aggregate counties and sum all the floating point columns per county (NOTE: only mw1 and mw2 are summed.)
-    mw_sum = df.groupby(['state_county']).sum()
+    # print(df)
+    mw_sum = df.groupby(['state_county']).sum(numeric_only=True)
     # Get max of mw1 and mw2
     mw_max = mw_sum[['mw1', 'mw2']].max(axis=1)
     # Aggregate counties and take the max of the days for each county
