@@ -1,0 +1,23 @@
+//open Line.WF856_48332_sw
+//open Line.WG127_48332_sw
+//open LINE.LN0653457_SW
+//open LINE.V7173_48332_SW
+//open LINE.TSW803273_SW 
+//open LINE.A333_48332_SW 
+//solve
+//open LINE.TSW320328_SW  
+//open LINE.A8645_48332_SW
+//open LINE.TSW568613_SW
+//solve
+
+new swtcontrol.WF856_48332_sw  SwitchedObj=Line.WF856_48332_sw SwitchedTerm=1 State=Open
+new swtcontrol.WG127_48332_sw  SwitchedObj=Line.WG127_48332_sw SwitchedTerm=1 State=Open 
+new swtcontrol.LN0653457_SW    SwitchedObj=LINE.LN0653457_SW   SwitchedTerm=1 State=Open
+new swtcontrol.V7173_48332_SW  SwitchedObj=LINE.V7173_48332_SW SwitchedTerm=1 State=Open
+new swtcontrol.TSW803273_SW    SwitchedObj=LINE.TSW803273_SW   SwitchedTerm=1 State=Open
+new swtcontrol.A333_48332_SW   SwitchedObj=LINE.A333_48332_SW  SwitchedTerm=1 State=Open
+new swtcontrol.TSW320328_SW    SwitchedObj=LINE.TSW320328_SW   SwitchedTerm=1 State=Open
+new swtcontrol.A8645_48332_SW  SwitchedObj=LINE.A8645_48332_SW SwitchedTerm=1 State=Open
+new swtcontrol.TSW568613_SW    SwitchedObj=LINE.TSW568613_SW   SwitchedTerm=1 State=Open
+
+

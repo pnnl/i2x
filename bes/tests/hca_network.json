@@ -1,0 +1,250 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "nclass": "wind",
+      "ndata": {
+        "kv": 345.0,
+        "x": -96.71,
+        "y": 32.48
+      },
+      "id": "1"
+    },
+    {
+      "nclass": "gen",
+      "ndata": {
+        "kv": 345.0,
+        "x": -95.42,
+        "y": 29.66
+      },
+      "id": "2"
+    },
+    {
+      "nclass": "wind",
+      "ndata": {
+        "kv": 345.0,
+        "x": -99.99,
+        "y": 33.95
+      },
+      "id": "3"
+    },
+    {
+      "nclass": "wind",
+      "ndata": {
+        "kv": 345.0,
+        "x": -101.28,
+        "y": 32.08
+      },
+      "id": "4"
+    },
+    {
+      "nclass": "gen",
+      "ndata": {
+        "kv": 345.0,
+        "x": -97.93,
+        "y": 29.81
+      },
+      "id": "5"
+    },
+    {
+      "nclass": "wind",
+      "ndata": {
+        "kv": 345.0,
+        "x": -100.32,
+        "y": 29.27
+      },
+      "id": "6"
+    },
+    {
+      "nclass": "wind",
+      "ndata": {
+        "kv": 345.0,
+        "x": -97.72,
+        "y": 27.36
+      },
+      "id": "7"
+    },
+    {
+      "nclass": "gen",
+      "ndata": {
+        "kv": 345.0,
+        "x": -104.03,
+        "y": 29.94
+      },
+      "id": "8"
+    }
+  ],
+  "links": [
+    {
+      "eclass": "line",
+      "ename": "1",
+      "edata": {
+        "km": 336.987,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.337,
+      "source": "1",
+      "target": "2"
+    },
+    {
+      "eclass": "line",
+      "ename": "2",
+      "edata": {
+        "km": 346.051,
+        "kv": 345.0,
+        "npar": 3,
+        "rating": 3252.0
+      },
+      "weight": 0.3461,
+      "source": "1",
+      "target": "3"
+    },
+    {
+      "eclass": "line",
+      "ename": "3",
+      "edata": {
+        "km": 431.125,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.4311,
+      "source": "1",
+      "target": "4"
+    },
+    {
+      "eclass": "line",
+      "ename": "4",
+      "edata": {
+        "km": 320.126,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.3201,
+      "source": "1",
+      "target": "5"
+    },
+    {
+      "eclass": "line",
+      "ename": "5",
+      "edata": {
+        "km": 241.768,
+        "kv": 345.0,
+        "npar": 6,
+        "rating": 6504.0
+      },
+      "weight": 0.2418,
+      "source": "2",
+      "target": "5"
+    },
+    {
+      "eclass": "line",
+      "ename": "6",
+      "edata": {
+        "km": 340.08,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.3401,
+      "source": "2",
+      "target": "7"
+    },
+    {
+      "eclass": "line",
+      "ename": "7",
+      "edata": {
+        "km": 240.34,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.2403,
+      "source": "3",
+      "target": "4"
+    },
+    {
+      "eclass": "line",
+      "ename": "8",
+      "edata": {
+        "km": 407.245,
+        "kv": 345.0,
+        "npar": 6,
+        "rating": 6504.0
+      },
+      "weight": 0.4072,
+      "source": "4",
+      "target": "5"
+    },
+    {
+      "eclass": "line",
+      "ename": "9",
+      "edata": {
+        "km": 327.168,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.3272,
+      "source": "4",
+      "target": "6"
+    },
+    {
+      "eclass": "line",
+      "ename": "10",
+      "edata": {
+        "km": 349.597,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.3496,
+      "source": "4",
+      "target": "8"
+    },
+    {
+      "eclass": "line",
+      "ename": "11",
+      "edata": {
+        "km": 231.869,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.2319,
+      "source": "5",
+      "target": "6"
+    },
+    {
+      "eclass": "line",
+      "ename": "12",
+      "edata": {
+        "km": 271.827,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.2718,
+      "source": "5",
+      "target": "7"
+    },
+    {
+      "eclass": "line",
+      "ename": "13",
+      "edata": {
+        "km": 325.379,
+        "kv": 345.0,
+        "npar": 2,
+        "rating": 2168.0
+      },
+      "weight": 0.3254,
+      "source": "6",
+      "target": "7"
+    }
+  ]
+}

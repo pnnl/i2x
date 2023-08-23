@@ -1,5 +1,6 @@
 // this version has the secondary cables paralleled, for export to GridLAB-D via CIMHub
 clear
+set eventlogdefault=yes
 Set DefaultBaseFrequency=60
 new circuit.ieee390par basekv=230 pu=1.05 bus1=P1 mvasc3=200000 mvasc1=200000
  

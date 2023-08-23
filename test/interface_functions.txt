@@ -1,1054 +1,940 @@
-DSSDLL vars:
-  started
-  dll_path
-  dll_file_path
-  dss_obj
-  my_dss_version
-DSSDLL dir:
-  __init__                                 (dll_folder_param=None, dll_by_user=None)
-  _allocate_memory                         ()
-  active_class_all_names                   () -> List[str]
-  active_class_count                       () -> int
-  active_class_first                       () -> int
-  active_class_get_class_name              () -> str
-  active_class_get_name                    () -> str
-  active_class_next                        () -> int
-  active_class_num_elements                () -> int
-  active_class_parent_class_name           () -> str
-  active_class_write_name                  (argument) -> str
-  bus_all_pce_active_bus                   () -> List[str]
-  bus_all_pde_active_bus                   () -> List[str]
-  bus_axc_012_matrix                       ()
-  bus_coord_defined                        () -> int
-  bus_cplx_sequence_voltages               ()
-  bus_distance                             () -> float
-  bus_get_unique_node_number               (start_number: int = 1) -> int
-  bus_interruptions_avg_duration           () -> float
-  bus_interruptions_num                    () -> float
-  bus_interruptions_total_customers        () -> float
-  bus_isc                                  ()
-  bus_kv_base                              () -> float
-  bus_lambda                               () -> float
-  bus_line_list                            ()
-  bus_line_total_miles                     () -> float
-  bus_load_list                            ()
-  bus_name                                 () -> str
-  bus_nodes                                () -> List[int]
-  bus_num_nodes                            () -> int
-  bus_outage_customer_accum_duration       () -> float
-  bus_pu_vll                               ()
-  bus_pu_vmag_angle                        ()
-  bus_pu_voltages                          ()
-  bus_read_latitude                        () -> float
-  bus_read_longitude                       () -> float
-  bus_read_x                               () -> float
-  bus_read_y                               () -> float
-  bus_section_id                           () -> int
-  bus_seq_voltages                         ()
-  bus_total_customers                      () -> int
-  bus_vll                                  ()
-  bus_vmag_angle                           ()
-  bus_voc                                  ()
-  bus_voltages                             ()
-  bus_write_latitude                       (latitude_param: float) -> float
-  bus_write_longitude                      (longitude_param: float) -> float
-  bus_write_x                              (param_coordinate) -> int
-  bus_write_y                              (param_coordinate: float) -> int
-  bus_ysc_matrix                           ()
-  bus_zsc0                                 ()
-  bus_zsc1                                 ()
-  bus_zsc_matrix                           ()
-  bus_zsc_refresh                          () -> int
-  capacitors_add_step                      () -> int
-  capacitors_all_names                     () -> List[str]
-  capacitors_available_steps               () -> int
-  capacitors_close                         () -> int
-  capacitors_count                         () -> int
-  capacitors_first                         () -> int
-  capacitors_next                          () -> int
-  capacitors_open                          () -> int
-  capacitors_read_is_delta                 () -> int
-  capacitors_read_kv                       () -> float
-  capacitors_read_kvar                     () -> float
-  capacitors_read_name                     () -> str
-  capacitors_read_num_steps                () -> int
-  capacitors_read_states                   () -> List[int]
-  capacitors_subtract_step                 () -> int
-  capacitors_write_is_delta                (argument: int = 1) -> int
-  capacitors_write_kv                      (argument: float)
-  capacitors_write_kvar                    (argument: float)
-  capacitors_write_name                    (capacitor_name: str) -> str
-  capacitors_write_num_steps               (argument: int) -> int
-  capacitors_write_states                  (dss_, argument: list) -> int
-  capcontrols_all_names                    () -> List[str]
-  capcontrols_count                        () -> int
-  capcontrols_first                        () -> int
-  capcontrols_next                         () -> int
-  capcontrols_read_capacitor               () -> str
-  capcontrols_read_ct_ratio                () -> float
-  capcontrols_read_dead_time               () -> float
-  capcontrols_read_delay                   () -> float
-  capcontrols_read_delay_off               () -> float
-  capcontrols_read_mode                    () -> int
-  capcontrols_read_monitored_obj           () -> str
-  capcontrols_read_monitored_term          () -> int
-  capcontrols_read_name                    () -> str
-  capcontrols_read_off_setting             () -> float
-  capcontrols_read_on_setting              () -> float
-  capcontrols_read_pt_ratio                () -> float
-  capcontrols_read_use_volt_override       () -> int
-  capcontrols_read_vmax                    () -> float
-  capcontrols_read_vmin                    () -> float
-  capcontrols_write_capacitor              (argument: str) -> str
-  capcontrols_write_ct_ratio               (argument: float) -> float
-  capcontrols_write_dead_time              (argument: float) -> float
-  capcontrols_write_delay                  (argument: float) -> float
-  capcontrols_write_delay_off              (argument: float) -> float
-  capcontrols_write_mode                   (argument: int) -> int
-  capcontrols_write_monitored_obj          (argument: str) -> str
-  capcontrols_write_monitored_term         (dss, argument: int) -> int
-  capcontrols_write_name                   (argument: str) -> str
-  capcontrols_write_off_setting            (argument: float) -> float
-  capcontrols_write_on_setting             (argument: float) -> float
-  capcontrols_write_pt_ratio               (argument: float) -> float
-  capcontrols_write_use_volt_override      (dss, argument: int) -> int
-  capcontrols_write_vmax                   (argument: float) -> float
-  capcontrols_write_vmin                   (argument: float) -> float
-  check_assertion_result                   (param: int, message_1: Optional[str] = None, message_2: Optional[str] = None, expected_value=0) -> None
-  check_float_param                        (param: float, default=0.0) -> float
-  check_int_param                          (param: int, default=0) -> int
-  check_started                            ()
-  check_string_param                       (param: str, default='NAME_DEFAULT') -> str
-  circuit_all_bus_distances                () -> List[float]
-  circuit_all_bus_names                    () -> List[str]
-  circuit_all_bus_vmag                     () -> List[float]
-  circuit_all_bus_vmag_pu                  () -> List[float]
-  circuit_all_bus_volts                    () -> List[float]
-  circuit_all_element_losses               () -> List[float]
-  circuit_all_element_names                () -> List[str]
-  circuit_all_node_distances               () -> List[float]
-  circuit_all_node_distances_by_phase      (argument: int = 1) -> List[float]
-  circuit_all_node_names                   () -> List[str]
-  circuit_all_node_names_by_phase          (argument: int = 1) -> List[str]
-  circuit_all_node_vmag_by_phase           (argument: int = 1) -> List[float]
-  circuit_all_node_vmag_pu_by_phase        (argument: int = 1) -> List[float]
-  circuit_capacity                         (capacity_start=0, capacity_increment=0.1) -> float
-  circuit_disable                          () -> str
-  circuit_enable                           () -> str
-  circuit_end_of_time_step_update          () -> int
-  circuit_first_element                    () -> int
-  circuit_first_pc_element                 () -> int
-  circuit_first_pd_element                 () -> int
-  circuit_float                            (first, second, third) -> float
-  circuit_integer                          (first: int, second: int) -> int
-  circuit_line_losses                      () -> List[float]
-  circuit_losses                           () -> List[float]
-  circuit_name                             () -> str
-  circuit_next_element                     () -> int
-  circuit_next_pc_element                  () -> int
-  circuit_next_pd_element                  () -> int
-  circuit_num_buses                        () -> int
-  circuit_num_ckt_elements                 () -> int
-  circuit_num_nodes                        () -> int
-  circuit_parent_pd_element                () -> int
-  circuit_sample                           () -> int
-  circuit_save_sample                      () -> int
-  circuit_set_active_bus                   (argument: str) -> str
-  circuit_set_active_bus_i                 (i: int) -> int
-  circuit_set_active_class                 (argument: str) -> str
-  circuit_set_active_element               (argument: str) -> str
-  circuit_substation_losses                () -> List[float]
-  circuit_system_y                         () -> List[float]
-  circuit_total_power                      () -> List[float]
-  circuit_update_storage_t                 ()
-  circuit_y_currents                       ()
-  circuit_y_node_order                     () -> List[str]
-  circuit_y_node_varray                    ()
-  cktelement_all_property_names            () -> List[str]
-  cktelement_all_variables_names           () -> List[str]
-  cktelement_all_variables_values          () -> List[float]
-  cktelement_close                         (argument: int) -> int
-  cktelement_controller                    (argument: str) -> str
-  cktelement_cplx_seq_currents             () -> List[float]
-  cktelement_cplx_seq_voltages             () -> List[float]
-  cktelement_currents                      () -> List[float]
-  cktelement_currents_mag_ang              () -> List[float]
-  cktelement_energymeter                   () -> str
-  cktelement_guid                          () -> str
-  cktelement_has_switch_control            () -> int
-  cktelement_has_volt_control              () -> int
-  cktelement_is_open                       () -> int
-  cktelement_losses                        () -> List[float]
-  cktelement_name                          () -> str
-  cktelement_node_order                    () -> List[int]
-  cktelement_num_conductors                () -> int
-  cktelement_num_controls                  () -> int
-  cktelement_num_phases                    () -> int
-  cktelement_num_properties                () -> int
-  cktelement_num_terminals                 () -> int
-  cktelement_ocp_dev_index                 () -> int
-  cktelement_ocp_dev_type                  () -> int
-  cktelement_open                          (argument: int) -> int
-  cktelement_phase_losses                  () -> List[float]
-  cktelement_powers                        () -> List[float]
-  cktelement_read_bus_names                () -> List[str]
-  cktelement_read_display                  () -> str
-  cktelement_read_emerg_amps               () -> float
-  cktelement_read_enabled                  () -> int
-  cktelement_read_norm_amps                () -> float
-  cktelement_residuals                     () -> List[float]
-  cktelement_seq_currents                  () -> List[float]
-  cktelement_seq_powers                    () -> List[float]
-  cktelement_seq_voltages                  () -> List[float]
-  cktelement_variable_i                    (argument: float) -> float
-  cktelement_voltages                      () -> List[float]
-  cktelement_voltages_mag_ang              () -> List[float]
-  cktelement_write_bus_names               (dss, argument: List[str]) -> str
-  cktelement_write_display                 (argument: str) -> str
-  cktelement_write_emerg_amps              (argument: float) -> float
-  cktelement_write_enabled                 (argument: int) -> int
-  cktelement_write_norm_amps               (argument: float) -> float
-  cktelement_y_prim                        () -> List[float]
-  cmathlib_cabs                            (arg_real: float, arg_imaginary: float) -> float
-  cmathlib_cdang                           (arg_real: float, arg_imaginary: float) -> float
-  cmathlib_cmplx                           (real_part: float, imag_part: float) -> complex
-  cmathlib_ctopolardeg                     (double_real: float, double_imag: float) -> Tuple[float, float]
-  cmathlib_pdegtocomplex                   (double_real: float, double_imag: float) -> complex
-  ctrlqueue_action                         (argument: int) -> int
-  ctrlqueue_action_code                    () -> int
-  ctrlqueue_clear_actions                  () -> int
-  ctrlqueue_clear_queue                    () -> int
-  ctrlqueue_ctrlqueue                      () -> str
-  ctrlqueue_delete                         (argument: int) -> int
-  ctrlqueue_device_handle                  () -> int
-  ctrlqueue_do_all_queue                   () -> int
-  ctrlqueue_num_actions                    () -> int
-  ctrlqueue_pop_action                     () -> int
-  ctrlqueue_push                           () -> int
-  ctrlqueue_queue_size                     () -> int
-  ctrlqueue_show                           () -> int
-  dss_classes                              () -> List[str]
-  dss_clear_all                            ()
-  dss_default_editor                       () -> str
-  dss_new_circuit                          (argument: str) -> str
-  dss_num_circuits                         () -> int
-  dss_num_classes                          () -> int
-  dss_num_user_classes                     () -> int
-  dss_read_allow_forms                     ()
-  dss_read_datapath                        () -> str
-  dss_reset                                ()
-  dss_show_panel                           ()
-  dss_start                                () -> int
-  dss_user_classes                         () -> List[str]
-  dss_version                              () -> str
-  dss_write_allow_forms                    (argument: int)
-  dss_write_datapath                       (argument: str) -> str
-  dsselement_all_property_names            () -> List[str]
-  dsselement_name                          () -> str
-  dsselement_num_properties                () -> int
-  dssprogress_caption                      (arg: str) -> str
-  dssprogress_close                        () -> int
-  dssprogress_pct_progress                 (arg: float) -> int
-  dssprogress_show                         () -> int
-  dssproperties_description                (argument: str) -> str
-  dssproperties_name                       (argument: str) -> str
-  dssproperties_read_value                 (argument: str) -> str
-  dssproperties_write_value                (argument: str) -> str
-  error_code                               () -> int
-  error_desc                               () -> str
-  executive_command                        (arg: str) -> str
-  executive_command_help                   (arg: str) -> str
-  executive_num_commands                   () -> int
-  executive_num_options                    () -> int
-  executive_option                         (arg: str) -> str
-  executive_option_help                    (arg: str) -> str
-  executive_option_value                   (arg: str) -> str
-  fuses_all_names                          () -> List[str]
-  fuses_close                              () -> int
-  fuses_count                              () -> int
-  fuses_first                              () -> int
-  fuses_is_blown                           () -> int
-  fuses_next                               () -> int
-  fuses_num_phases                         () -> int
-  fuses_open                               () -> int
-  fuses_read_delay                         () -> float
-  fuses_read_idx                           () -> int
-  fuses_read_monitored_obj                 () -> str
-  fuses_read_monitored_term                () -> int
-  fuses_read_name                          () -> str
-  fuses_read_normal                        ()
-  fuses_read_rated_current                 () -> float
-  fuses_read_state                         ()
-  fuses_read_switched_obj                  () -> str
-  fuses_read_switched_term                 () -> int
-  fuses_read_tcc_curve                     () -> str
-  fuses_reset                              ()
-  fuses_write_delay                        (argument: float) -> float
-  fuses_write_idx                          (argument: int) -> int
-  fuses_write_monitored_obj                (argument: str) -> str
-  fuses_write_monitored_term               (argument: int) -> int
-  fuses_write_name                         (argument: str) -> str
-  fuses_write_normal                       (argument)
-  fuses_write_rated_current                (argument: float) -> float
-  fuses_write_state                        (argument)
-  fuses_write_switched_obj                 (argument) -> str
-  fuses_write_switched_term                (argument: int) -> int
-  fuses_write_tcc_curve                    (argument: str) -> str
-  generators_all_names                     () -> List[str]
-  generators_count                         () -> int
-  generators_first                         () -> int
-  generators_next                          () -> int
-  generators_read_forced_on                () -> int
-  generators_read_idx                      () -> int
-  generators_read_kv                       () -> float
-  generators_read_kva_rated                () -> float
-  generators_read_kvar                     () -> float
-  generators_read_kw                       () -> float
-  generators_read_model                    () -> int
-  generators_read_name                     () -> str
-  generators_read_pf                       () -> float
-  generators_read_phases                   () -> int
-  generators_read_vmax_pu                  () -> float
-  generators_read_vmin_pu                  () -> float
-  generators_register_names                () -> List[str]
-  generators_register_values               () -> List[float]
-  generators_write_forced_on               (argument: int) -> int
-  generators_write_idx                     (argument: int) -> int
-  generators_write_kv                      (argument: float) -> float
-  generators_write_kva_rated               (argument: float) -> float
-  generators_write_kvar                    (argument: float) -> float
-  generators_write_kw                      (argument: float) -> float
-  generators_write_model                   (argument: int) -> int
-  generators_write_name                    (argument: str) -> str
-  generators_write_pf                      (argument: float) -> float
-  generators_write_phases                  (argument: int) -> int
-  generators_write_vmax_pu                 (argument: float) -> float
-  generators_write_vmin_pu                 (argument: float) -> float
-  get_float                                (first, second)
-  get_integer                              (first: int, second: int) -> int
-  get_string                               (first, second)
-  isources_all_names                       () -> List[str]
-  isources_count                           () -> int
-  isources_first                           () -> int
-  isources_next                            () -> int
-  isources_read_amps                       () -> float
-  isources_read_angle_deg                  () -> float
-  isources_read_frequency                  () -> float
-  isources_read_name                       () -> str
-  isources_write_amps                      (argument: float) -> float
-  isources_write_angle_deg                 (argument: float) -> float
-  isources_write_frequency                 (argument: float) -> float
-  isources_write_name                      (argument: str) -> str
-  linecodes_all_names                      () -> str
-  linecodes_count                          () -> int
-  linecodes_first                          () -> int
-  linecodes_is_z1z0                        () -> int
-  linecodes_next                           () -> int
-  linecodes_read_c0                        () -> float
-  linecodes_read_c1                        () -> float
-  linecodes_read_cmatrix                   () -> str
-  linecodes_read_emerg_amps                () -> float
-  linecodes_read_name                      () -> str
-  linecodes_read_norm_amps                 () -> float
-  linecodes_read_phases                    () -> int
-  linecodes_read_r0                        () -> float
-  linecodes_read_r1                        () -> float
-  linecodes_read_rmatrix                   () -> str
-  linecodes_read_units                     () -> int
-  linecodes_read_x0                        () -> float
-  linecodes_read_x1                        () -> float
-  linecodes_read_xmatrix                   () -> str
-  linecodes_write_c0                       (argument: float) -> float
-  linecodes_write_c1                       (argument: float) -> float
-  linecodes_write_cmatrix                  (argument: str) -> None
-  linecodes_write_emerg_amps               (argument: float) -> float
-  linecodes_write_name                     (argument: str) -> str
-  linecodes_write_norm_amps                (argument: float) -> float
-  linecodes_write_phases                   (argument) -> int
-  linecodes_write_r0                       (argument: float) -> float
-  linecodes_write_r1                       (argument: float) -> float
-  linecodes_write_rmatrix                  (argument: str) -> None
-  linecodes_write_units                    (argument: int) -> int
-  linecodes_write_x0                       (argument: float) -> float
-  linecodes_write_x1                       (argument: float) -> float
-  linecodes_write_xmatrix                  (argument: str) -> None
-  lines_all_names                          () -> str
-  lines_count                              () -> int
-  lines_first                              () -> int
-  lines_next                               () -> int
-  lines_num_cust                           () -> int
-  lines_parent                             () -> int
-  lines_read_bus1                          () -> str
-  lines_read_bus2                          () -> str
-  lines_read_c0                            () -> float
-  lines_read_c1                            () -> float
-  lines_read_cmatrix                       () -> str
-  lines_read_emerg_amps                    () -> float
-  lines_read_geometry                      () -> str
-  lines_read_length                        () -> float
-  lines_read_linecode                      () -> str
-  lines_read_name                          () -> str
-  lines_read_norm_amps                     () -> float
-  lines_read_phases                        () -> int
-  lines_read_r0                            () -> float
-  lines_read_r1                            () -> float
-  lines_read_rg                            () -> float
-  lines_read_rho                           () -> float
-  lines_read_rmatrix                       ()
-  lines_read_season_rating                 () -> float
-  lines_read_spacing                       () -> str
-  lines_read_units                         () -> int
-  lines_read_x0                            () -> float
-  lines_read_x1                            () -> float
-  lines_read_xg                            () -> float
-  lines_read_xmatrix                       () -> List[float]
-  lines_read_yprim                         () -> str
-  lines_write_bus1                         (argument: str) -> str
-  lines_write_bus2                         (argument: str) -> str
-  lines_write_c0                           (argument: float) -> float
-  lines_write_c1                           (argument: float) -> float
-  lines_write_cmatrix                      (argument) -> int
-  lines_write_emerg_amps                   (argument: float) -> float
-  lines_write_geometry                     (argument: str) -> str
-  lines_write_length                       (argument: float) -> float
-  lines_write_linecode                     (argument: str) -> str
-  lines_write_name                         (argument: str) -> str
-  lines_write_norm_amps                    (argument: float) -> float
-  lines_write_phases                       (argument: int) -> int
-  lines_write_r0                           (argument: float) -> float
-  lines_write_r1                           (argument: float) -> float
-  lines_write_rg                           (argument: float) -> float
-  lines_write_rho                          (argument: float) -> float
-  lines_write_rmatrix                      (argument) -> str
-  lines_write_spacing                      (argument: str) -> str
-  lines_write_units                        (argument: int) -> int
-  lines_write_x0                           (argument: float) -> float
-  lines_write_x1                           (argument: float) -> float
-  lines_write_xg                           (argument: float) -> float
-  lines_write_xmatrix                      (argument) -> str
-  lines_write_yprim                        (argument) -> str
-  load_json                                ()
-  loads_all_names                          ()
-  loads_count                              () -> int
-  loads_first                              () -> int
-  loads_next                               () -> int
-  loads_read_allocation_factor             () -> float
-  loads_read_c_factor                      () -> float
-  loads_read_class                         () -> int
-  loads_read_cvr_curve                     () -> str
-  loads_read_cvr_vars                      () -> float
-  loads_read_cvr_watts                     () -> float
-  loads_read_daily                         () -> str
-  loads_read_duty                          () -> str
-  loads_read_growth                        () -> str
-  loads_read_idx                           () -> int
-  loads_read_is_delta                      () -> int
-  loads_read_kv                            () -> float
-  loads_read_kva                           () -> float
-  loads_read_kvar                          () -> float
-  loads_read_kw                            () -> float
-  loads_read_kwh                           () -> float
-  loads_read_kwh_days                      () -> float
-  loads_read_model                         () -> int
-  loads_read_name                          () -> str
-  loads_read_num_cust                      () -> int
-  loads_read_pct_mean                      () -> float
-  loads_read_pct_series_rl                 () -> float
-  loads_read_pct_std_dev                   () -> float
-  loads_read_pf                            () -> float
-  loads_read_r_neut                        () -> float
-  loads_read_rel_weight                    () -> float
-  loads_read_spectrum                      () -> str
-  loads_read_status                        () -> int
-  loads_read_vmax_pu                       () -> float
-  loads_read_vmin_emerg                    () -> float
-  loads_read_vmin_norm                     () -> float
-  loads_read_vmin_pu                       () -> float
-  loads_read_x_neut                        () -> float
-  loads_read_xfkva                         () -> float
-  loads_read_yearly                        () -> str
-  loads_read_zipv                          ()
-  loads_write_allocation_factor            (argument) -> float
-  loads_write_c_factor                     (argument: float) -> float
-  loads_write_class                        (argument) -> int
-  loads_write_cvr_curve                    (argument) -> str
-  loads_write_cvr_vars                     (argument) -> float
-  loads_write_cvr_watts                    (argument) -> float
-  loads_write_daily                        (argument) -> str
-  loads_write_duty                         (argument) -> str
-  loads_write_growth                       (argument) -> str
-  loads_write_idx                          (argument) -> int
-  loads_write_is_delta                     (argument) -> int
-  loads_write_kv                           (argument) -> float
-  loads_write_kva                          (argument) -> float
-  loads_write_kvar                         (argument) -> float
-  loads_write_kw                           (argument) -> float
-  loads_write_kwh                          (argument) -> float
-  loads_write_kwh_days                     (argument) -> float
-  loads_write_model                        (argument) -> int
-  loads_write_name                         (argument) -> str
-  loads_write_num_cust                     (argument) -> int
-  loads_write_pct_mean                     (argument) -> float
-  loads_write_pct_series_rl                (argument) -> float
-  loads_write_pct_std_dev                  (argument) -> float
-  loads_write_pf                           (argument) -> float
-  loads_write_r_neut                       (argument) -> float
-  loads_write_rel_weight                   (argument) -> float
-  loads_write_spectrum                     (argument) -> str
-  loads_write_status                       (argument) -> int
-  loads_write_vmax_pu                      (argument) -> float
-  loads_write_vmin_emerg                   (argument) -> float
-  loads_write_vmin_norm                    (argument) -> float
-  loads_write_vmin_pu                      (argument) -> float
-  loads_write_x_neut                       (argument) -> float
-  loads_write_xfkva                        (argument) -> float
-  loads_write_yearly                       (argument) -> str
-  loads_write_zipv                         (argument)
-  loadshapes_all_names                     ()
-  loadshapes_count                         () -> int
-  loadshapes_first                         () -> int
-  loadshapes_next                          () -> int
-  loadshapes_normalize                     () -> int
-  loadshapes_read_hr_interval              () -> float
-  loadshapes_read_min_interval             () -> float
-  loadshapes_read_name                     ()
-  loadshapes_read_npts                     () -> int
-  loadshapes_read_p_base                   () -> float
-  loadshapes_read_p_mult                   ()
-  loadshapes_read_q_base                   () -> float
-  loadshapes_read_q_mult                   ()
-  loadshapes_read_s_interval               () -> float
-  loadshapes_read_time_array               ()
-  loadshapes_read_use_actual               () -> int
-  loadshapes_write_hr_interval             (argument: float) -> float
-  loadshapes_write_min_interval            (argument: float) -> float
-  loadshapes_write_name                    (argument)
-  loadshapes_write_npts                    (argument) -> int
-  loadshapes_write_p_base                  (argument: float) -> float
-  loadshapes_write_p_mult                  (argument)
-  loadshapes_write_q_base                  (argument: float) -> float
-  loadshapes_write_q_mult                  (argument)
-  loadshapes_write_s_interval              (argument: float) -> float
-  loadshapes_write_time_array              (argument)
-  loadshapes_write_use_actual              (argument) -> int
-  meters_all_branches_in_zone              ()
-  meters_all_end_elements                  ()
-  meters_all_names                         ()
-  meters_all_pce_in_zone                   ()
-  meters_avg_repair_time                   () -> float
-  meters_close_all_di_files                () -> int
-  meters_count                             () -> int
-  meters_count_branches                    () -> int
-  meters_count_end_elements                () -> int
-  meters_cust_interrupts                   () -> float
-  meters_di_files_are_open                 () -> int
-  meters_do_reliability_calc               () -> int
-  meters_fault_rate_x_repair_hrs           () -> float
-  meters_first                             () -> int
-  meters_next                              () -> int
-  meters_num_section_branches              () -> int
-  meters_num_section_customers             () -> int
-  meters_num_sections                      () -> int
-  meters_ocp_device_type                   () -> int
-  meters_open_all_di_files                 () -> int
-  meters_read_alloc_factors                ()
-  meters_read_calc_current                 ()
-  meters_read_metered_element              ()
-  meters_read_metered_terminal             () -> int
-  meters_read_name                         ()
-  meters_read_peak_current                 ()
-  meters_read_sequence_index               () -> int
-  meters_register_names                    ()
-  meters_register_values                   ()
-  meters_reset                             () -> int
-  meters_reset_all                         () -> int
-  meters_saidi                             () -> float
-  meters_saifi                             () -> float
-  meters_saifi_kw                          () -> float
-  meters_sample                            () -> int
-  meters_sample_all                        () -> int
-  meters_save                              () -> int
-  meters_save_all                          () -> int
-  meters_sect_seq_idx                      () -> int
-  meters_sect_total_cust                   () -> int
-  meters_seq_list_size                     () -> int
-  meters_set_active_section                (argument) -> int
-  meters_sum_branch_flt_rates              () -> float
-  meters_total_customers                   () -> int
-  meters_totals                            ()
-  meters_write_alloc_factors               (argument)
-  meters_write_calc_current                (argument: str)
-  meters_write_metered_element             (argument)
-  meters_write_metered_terminal            (argument) -> int
-  meters_write_name                        (argument)
-  meters_write_peak_current                (argument)
-  meters_write_sequence_index              (argument) -> int
-  monitors_all_names                       ()
-  monitors_byte_stream                     ()
-  monitors_channel                         (argument) -> str
-  monitors_count                           () -> int
-  monitors_dbl_freq                        ()
-  monitors_dbl_hour                        ()
-  monitors_file_name                       () -> str
-  monitors_file_version                    () -> int
-  monitors_first                           () -> int
-  monitors_header                          ()
-  monitors_next                            () -> int
-  monitors_num_channels                    () -> int
-  monitors_process                         () -> int
-  monitors_process_all                     () -> int
-  monitors_read_element                    () -> str
-  monitors_read_mode                       () -> int
-  monitors_read_name                       () -> str
-  monitors_read_terminal                   () -> int
-  monitors_record_size                     () -> int
-  monitors_reset                           () -> int
-  monitors_reset_all                       () -> int
-  monitors_sample                          () -> int
-  monitors_sample_all                      () -> int
-  monitors_sample_count                    () -> int
-  monitors_save                            () -> int
-  monitors_save_all                        () -> int
-  monitors_show                            () -> int
-  monitors_write_element                   (argument) -> str
-  monitors_write_mode                      (argument) -> int
-  monitors_write_name                      (argument) -> str
-  monitors_write_terminal                  (argument) -> int
-  parallel_actor_progress                  ()
-  parallel_actor_status                    ()
-  parallel_create_actor                    () -> int
-  parallel_num_actors                      () -> int
-  parallel_num_cores                       () -> int
-  parallel_num_cpus                        () -> int
-  parallel_read_active_actor               () -> int
-  parallel_read_active_parallel            () -> int
-  parallel_read_actor_cpu                  () -> int
-  parallel_read_concatenate_reportsl       () -> int
-  parallel_wait                            () -> int
-  parallel_write_active_actor              (argument) -> int
-  parallel_write_active_parallel           (argument) -> int
-  parallel_write_actor_cpu                 (argument) -> int
-  parallel_write_concatenate_reportsl      (argument) -> int
-  parser_dbl_value                         () -> float
-  parser_int_value                         () -> int
-  parser_matrix                            ()
-  parser_next_param                        ()
-  parser_read_auto_increment               () -> int
-  parser_read_begin_quote                  ()
-  parser_read_cmd_string                   ()
-  parser_read_delimiters                   ()
-  parser_read_end_quote                    ()
-  parser_read_white_space                  ()
-  parser_reset_delimeters                  () -> int
-  parser_str_value                         ()
-  parser_sym_matrix                        ()
-  parser_symmatrix                         ()
-  parser_vector                            ()
-  parser_write_auto_increment              (argument) -> int
-  parser_write_begin_quote                 (argument)
-  parser_write_cmd_string                  (argument)
-  parser_write_delimiters                  (argument)
-  parser_write_end_quote                   (argument)
-  parser_write_white_space                 (argument)
-  pdelements_accumulated_l                 () -> float
-  pdelements_count                         () -> int
-  pdelements_first                         () -> int
-  pdelements_from_terminal                 () -> int
-  pdelements_is_shunt                      () -> int
-  pdelements_lambda                        () -> float
-  pdelements_next                          () -> int
-  pdelements_num_customers                 () -> int
-  pdelements_parent_pd_element             () -> int
-  pdelements_read_fault_rate               () -> float
-  pdelements_read_name                     ()
-  pdelements_read_pct_permanent            () -> float
-  pdelements_repair_time                   () -> float
-  pdelements_section_id                    () -> int
-  pdelements_total_customers               () -> int
-  pdelements_total_miles                   () -> float
-  pdelements_write_fault_rate              (argument) -> float
-  pdelements_write_name                    (argument)
-  pdelements_write_pct_permanent           (argument) -> float
-  pvsystems_all_names                      ()
-  pvsystems_count                          () -> int
-  pvsystems_first                          () -> int
-  pvsystems_kw                             () -> float
-  pvsystems_next                           () -> int
-  pvsystems_read_idx                       () -> int
-  pvsystems_read_irradiance                () -> float
-  pvsystems_read_kva_rated                 () -> float
-  pvsystems_read_kvar                      () -> float
-  pvsystems_read_name                      ()
-  pvsystems_read_pf                        () -> float
-  pvsystems_read_pmpp                      () -> float
-  pvsystems_write_idx                      (argument) -> int
-  pvsystems_write_irradiance               (argument) -> float
-  pvsystems_write_kva_rated                (argument) -> float
-  pvsystems_write_kvar                     (argument) -> float
-  pvsystems_write_name                     (argument)
-  pvsystems_write_pf                       (argument) -> float
-  pvsystems_write_pmpp                     (argument) -> float
-  reclosers_all_names                      ()
-  reclosers_close                          () -> int
-  reclosers_count                          () -> int
-  reclosers_first                          () -> int
-  reclosers_next                           () -> int
-  reclosers_open                           () -> int
-  reclosers_read_ground_inst               () -> float
-  reclosers_read_ground_trip               () -> float
-  reclosers_read_idx                       () -> int
-  reclosers_read_monitored_obj             ()
-  reclosers_read_monitored_term            () -> int
-  reclosers_read_name                      ()
-  reclosers_read_num_fast                  () -> int
-  reclosers_read_phase_inst                () -> float
-  reclosers_read_phase_trip                () -> float
-  reclosers_read_shots                     () -> int
-  reclosers_read_switched_obj              ()
-  reclosers_read_switched_term             () -> int
-  reclosers_reclose_intervals              ()
-  reclosers_write_ground_inst              (argument) -> float
-  reclosers_write_ground_trip              (argument) -> float
-  reclosers_write_idx                      (argument) -> int
-  reclosers_write_monitored_obj            (argument)
-  reclosers_write_monitored_term           (argument) -> int
-  reclosers_write_name                     (argument)
-  reclosers_write_num_fast                 (argument) -> int
-  reclosers_write_phase_inst               (argument) -> float
-  reclosers_write_phase_trip               (argument) -> float
-  reclosers_write_shots                    (argument) -> int
-  reclosers_write_switched_obj             (argument)
-  reclosers_write_switched_term            (argument) -> int
-  regcontrols_all_names                    ()
-  regcontrols_count                        () -> int
-  regcontrols_first                        () -> int
-  regcontrols_next                         () -> int
-  regcontrols_read_ct_primary              () -> float
-  regcontrols_read_delay                   () -> float
-  regcontrols_read_forward_band            () -> float
-  regcontrols_read_forward_r               () -> float
-  regcontrols_read_forward_vreg            () -> float
-  regcontrols_read_forward_x               () -> float
-  regcontrols_read_is_inverse_time         () -> int
-  regcontrols_read_is_reversible           () -> int
-  regcontrols_read_max_tap_change          () -> int
-  regcontrols_read_monitored_bus           ()
-  regcontrols_read_name                    ()
-  regcontrols_read_pt_ratio                () -> float
-  regcontrols_read_reverse_band            () -> float
-  regcontrols_read_reverse_r               () -> float
-  regcontrols_read_reverse_vreg            () -> float
-  regcontrols_read_reverse_x               () -> float
-  regcontrols_read_tap_delay               () -> float
-  regcontrols_read_tap_number              () -> int
-  regcontrols_read_tap_winding             () -> int
-  regcontrols_read_transformer             ()
-  regcontrols_read_voltage_limit           () -> float
-  regcontrols_read_winding                 () -> int
-  regcontrols_write_ct_primary             (argument) -> float
-  regcontrols_write_delay                  (argument) -> float
-  regcontrols_write_forward_band           (argument) -> float
-  regcontrols_write_forward_r              (argument) -> float
-  regcontrols_write_forward_vreg           (argument) -> float
-  regcontrols_write_forward_x              (argument) -> float
-  regcontrols_write_is_inverse_time        (argument) -> int
-  regcontrols_write_is_reversible          (argument) -> int
-  regcontrols_write_max_tap_change         (argument) -> int
-  regcontrols_write_monitored_bus          (argument)
-  regcontrols_write_name                   (argument)
-  regcontrols_write_pt_ratio               (argument) -> float
-  regcontrols_write_reverse_band           (argument) -> float
-  regcontrols_write_reverse_r              (argument) -> float
-  regcontrols_write_reverse_vreg           (argument) -> float
-  regcontrols_write_reverse_x              (argument) -> float
-  regcontrols_write_tap_delay              (argument) -> float
-  regcontrols_write_tap_number             (argument) -> int
-  regcontrols_write_tap_winding            (argument) -> int
-  regcontrols_write_transformer            (argument)
-  regcontrols_write_voltage_limit          (argument) -> float
-  regcontrols_write_winding                (argument) -> int
-  relays_all_names                         ()
-  relays_count                             () -> int
-  relays_first                             () -> int
-  relays_next                              () -> int
-  relays_read_idx                          () -> int
-  relays_read_monitored_obj                ()
-  relays_read_monitored_term               () -> int
-  relays_read_name                         ()
-  relays_read_switched_obj                 ()
-  relays_read_switched_term                () -> int
-  relays_write_idx                         (argument) -> int
-  relays_write_monitored_obj               (argument)
-  relays_write_monitored_term              (argument) -> int
-  relays_write_name                        (argument)
-  relays_write_switched_obj                (argument)
-  relays_write_switched_term               (argument) -> int
-  sensors_all_names                        ()
-  sensors_count                            () -> int
-  sensors_first                            () -> int
-  sensors_next                             () -> int
-  sensors_read_currents                    ()
-  sensors_read_is_delta                    () -> int
-  sensors_read_kv_base                     () -> float
-  sensors_read_kvars                       ()
-  sensors_read_kws                         ()
-  sensors_read_metered_element             ()
-  sensors_read_metered_terminal            () -> int
-  sensors_read_name                        ()
-  sensors_read_pct_error                   () -> float
-  sensors_read_reverse_delta               () -> int
-  sensors_read_weight                      () -> float
-  sensors_reset                            () -> int
-  sensors_reset_all                        () -> int
-  sensors_write_currents                   (argument)
-  sensors_write_is_delta                   (argument) -> int
-  sensors_write_kv_base                    (argument) -> float
-  sensors_write_kvars                      (argument)
-  sensors_write_kws                        (argument)
-  sensors_write_metered_element            (argument)
-  sensors_write_metered_terminal           (argument) -> int
-  sensors_write_name                       (argument)
-  sensors_write_pct_error                  (argument) -> float
-  sensors_write_reverse_delta              (argument) -> int
-  sensors_write_weight                     (argument) -> float
-  settings_allocation_factors              () -> float
-  settings_read_allow_duplicates           () -> int
-  settings_read_auto_bus_list              ()
-  settings_read_ckt_model                  () -> int
-  settings_read_emerg_vmax_pu              () -> float
-  settings_read_emerg_vmin_pu              () -> float
-  settings_read_loss_regs                  ()
-  settings_read_loss_weight                () -> float
-  settings_read_norm_vmax_pu               () -> float
-  settings_read_norm_vmin_pu               () -> float
-  settings_read_price_curve                ()
-  settings_read_price_signal               () -> float
-  settings_read_trapezoidal                () -> int
-  settings_read_ue_regs                    ()
-  settings_read_ue_weight                  () -> float
-  settings_read_voltage_bases              ()
-  settings_read_zone_lock                  () -> int
-  settings_write_allow_duplicates          (argument) -> int
-  settings_write_auto_bus_list             (argument)
-  settings_write_ckt_model                 (argument) -> int
-  settings_write_emerg_vmax_pu             (argument) -> float
-  settings_write_emerg_vmin_pu             (argument) -> float
-  settings_write_loss_regs                 (argument)
-  settings_write_loss_weight               (argument) -> float
-  settings_write_norm_vmax_pu              (argument) -> float
-  settings_write_norm_vmin_pu              (argument) -> float
-  settings_write_price_curve               (argument)
-  settings_write_price_signal              (argument) -> float
-  settings_write_trapezoidal               (argument) -> int
-  settings_write_ue_regs                   (argument)
-  settings_write_ue_weight                 (argument) -> float
-  settings_write_voltage_bases             (argument)
-  settings_write_zone_lock                 (argument) -> int
-  solution_build_y_matrix                  () -> int
-  solution_bus_levels                      ()
-  solution_calc_inc_matrix                 () -> int
-  solution_calc_inc_matrix_0               () -> int
-  solution_check_controls                  () -> int
-  solution_check_fault_status              () -> int
-  solution_clean_up                        () -> int
-  solution_do_control_actions              () -> int
-  solution_event_log                       ()
-  solution_finish_time_step                () -> int
-  solution_inc_matrix_cols                 ()
-  solution_inc_matrix_rows                 ()
-  solution_init_snap                       () -> int
-  solution_iterations                      () -> int
-  solution_laplacian                       ()
-  solution_mode_id                         ()
-  solution_most_iterations_done            () -> int
-  solution_nc_matrix                       ()
-  solution_process_time                    () -> float
-  solution_process_time_step               () -> float
-  solution_read_add_type                   () -> int
-  solution_read_algorithm                  () -> int
-  solution_read_cap_kvar                   () -> float
-  solution_read_control_actions_done       () -> int
-  solution_read_control_iterations         () -> int
-  solution_read_control_mode               () -> int
-  solution_read_converged                  () -> int
-  solution_read_dbl_hour                   () -> float
-  solution_read_default_daily              ()
-  solution_read_default_yearly             ()
-  solution_read_frequency                  () -> float
-  solution_read_gen_kw                     () -> float
-  solution_read_gen_mult                   () -> float
-  solution_read_gen_pf                     () -> float
-  solution_read_hour                       () -> int
-  solution_read_ld_curve                   ()
-  solution_read_load_model                 () -> int
-  solution_read_load_mult                  () -> float
-  solution_read_max_control_iterations     () -> int
-  solution_read_max_iterations             () -> int
-  solution_read_mode                       () -> int
-  solution_read_number                     () -> int
-  solution_read_pct_growth                 () -> float
-  solution_read_random                     () -> int
-  solution_read_seconds                    () -> float
-  solution_read_step_size                  () -> float
-  solution_read_tolerance                  () -> float
-  solution_read_total_time                 () -> float
-  solution_read_year                       () -> int
-  solution_sample_control_devices          () -> int
-  solution_sample_do_control_actions       () -> int
-  solution_solve                           () -> int
-  solution_solve_all                       () -> int
-  solution_solve_direct                    () -> int
-  solution_solve_no_control                () -> int
-  solution_solve_plus_control              () -> int
-  solution_solve_power_flow                () -> int
-  solution_step_size_hr                    () -> float
-  solution_step_size_min                   () -> float
-  solution_system_y_changed                () -> int
-  solution_total_iterations                () -> int
-  solution_write_add_type                  (argument) -> int
-  solution_write_algorithm                 (argument) -> int
-  solution_write_cap_kvar                  (argument) -> float
-  solution_write_control_actions_done      (argument) -> int
-  solution_write_control_iterations        (argument) -> int
-  solution_write_control_mode              (argument) -> int
-  solution_write_converged                 (argument) -> int
-  solution_write_dbl_hour                  (argument) -> float
-  solution_write_default_daily             (argument)
-  solution_write_default_yearly            (argument)
-  solution_write_frequency                 (argument) -> float
-  solution_write_gen_kw                    (argument) -> float
-  solution_write_gen_mult                  (argument) -> float
-  solution_write_gen_pf                    (argument) -> float
-  solution_write_hour                      (argument) -> int
-  solution_write_ld_curve                  (argument)
-  solution_write_load_model                (argument) -> int
-  solution_write_load_mult                 (argument) -> float
-  solution_write_max_control_iterations    (argument) -> int
-  solution_write_max_iterations            (argument) -> int
-  solution_write_mode                      (argument) -> int
-  solution_write_number                    (argument) -> int
-  solution_write_pct_growth                (argument) -> float
-  solution_write_random                    (argument) -> int
-  solution_write_seconds                   (argument) -> float
-  solution_write_step_size                 (argument) -> float
-  solution_write_tolerance                 (argument) -> float
-  solution_write_total_time                (argument) -> float
-  solution_write_year                      (argument) -> int
-  swtcontrols_all_names                    ()
-  swtcontrols_count                        () -> int
-  swtcontrols_first                        () -> int
-  swtcontrols_next                         () -> int
-  swtcontrols_read_action                  () -> int
-  swtcontrols_read_delay                   () -> float
-  swtcontrols_read_is_locked               () -> int
-  swtcontrols_read_name                    ()
-  swtcontrols_read_switched_obj            ()
-  swtcontrols_read_switched_term           () -> int
-  swtcontrols_write_action                 (argument) -> int
-  swtcontrols_write_delay                  (argument) -> float
-  swtcontrols_write_is_locked              (argument) -> int
-  swtcontrols_write_name                   (argument)
-  swtcontrols_write_switched_obj           (argument)
-  swtcontrols_write_switched_term          (argument) -> int
-  text                                     (argument)
-  topology_active_branch                   () -> int
-  topology_active_level                    () -> int
-  topology_all_isolated_branches           ()
-  topology_all_isolated_loads              ()
-  topology_all_looped_pairs                ()
-  topology_backward_branch                 () -> int
-  topology_first                           () -> int
-  topology_first_load                      () -> int
-  topology_forward_branch                  () -> int
-  topology_looped_branch                   () -> int
-  topology_next                            () -> int
-  topology_next_load                       () -> int
-  topology_num_isolated_branches           () -> int
-  topology_num_isolated_loadss             () -> int
-  topology_num_loops                       () -> int
-  topology_parallel_branch                 () -> int
-  topology_read_branch_name                ()
-  topology_read_bus_name                   ()
-  topology_write_branch_name               (argument)
-  topology_write_bus_name                  (argument)
-  transformers_all_Names                   ()
-  transformers_count                       () -> int
-  transformers_first                       () -> int
-  transformers_next                        () -> int
-  transformers_read_is_delta               () -> int
-  transformers_read_kv                     () -> float
-  transformers_read_kva                    () -> float
-  transformers_read_max_tap                () -> float
-  transformers_read_min_tap                () -> float
-  transformers_read_name                   ()
-  transformers_read_num_taps               () -> int
-  transformers_read_num_windings           () -> int
-  transformers_read_r                      () -> float
-  transformers_read_r_neut                 () -> float
-  transformers_read_tap                    () -> float
-  transformers_read_wdg                    () -> int
-  transformers_read_x_neut                 () -> float
-  transformers_read_xfmr_code              ()
-  transformers_read_xhl                    () -> float
-  transformers_read_xht                    () -> float
-  transformers_read_xlt                    () -> float
-  transformers_str_wdg_voltages            ()
-  transformers_wdg_currents                ()
-  transformers_wdg_voltages                ()
-  transformers_write_is_delta              (argument) -> int
-  transformers_write_kv                    (argument) -> float
-  transformers_write_kva                   (argument) -> float
-  transformers_write_max_tap               (argument) -> float
-  transformers_write_min_tap               (argument) -> float
-  transformers_write_name                  (argument)
-  transformers_write_num_taps              (argument) -> int
-  transformers_write_num_windings          (argument) -> int
-  transformers_write_r                     (argument) -> float
-  transformers_write_r_neut                (argument) -> float
-  transformers_write_tap                   (argument) -> float
-  transformers_write_wdg                   (argument) -> int
-  transformers_write_x_neut                (argument) -> float
-  transformers_write_xfmr_code             (argument)
-  transformers_write_xhl                   (argument) -> float
-  transformers_write_xht                   (argument) -> float
-  transformers_write_xlt                   (argument) -> float
-  vsources_all_names                       ()
-  vsources_count                           () -> int
-  vsources_first                           () -> int
-  vsources_next                            () -> int
-  vsources_read_angle_deg                  () -> float
-  vsources_read_base_kv                    () -> float
-  vsources_read_frequency                  () -> float
-  vsources_read_name                       ()
-  vsources_read_phases                     () -> int
-  vsources_read_pu                         () -> float
-  vsources_write_angle_deg                 (argument) -> float
-  vsources_write_base_kv                   (argument) -> float
-  vsources_write_frequency                 (argument) -> float
-  vsources_write_name                      (argument)
-  vsources_write_phases                    (argument) -> int
-  vsources_write_pu                        (argument) -> float
-  warn_msg                                 (msg, error)
-  xycurves_count                           () -> int
-  xycurves_first                           () -> int
-  xycurves_next                            () -> int
-  xycurves_read_name                       ()
-  xycurves_read_npts                       () -> int
-  xycurves_read_x                          () -> float
-  xycurves_read_x_array                    ()
-  xycurves_read_x_scale                    () -> float
-  xycurves_read_x_shift                    () -> float
-  xycurves_read_y                          () -> float
-  xycurves_read_y_array                    ()
-  xycurves_read_y_scale                    () -> float
-  xycurves_read_y_shift                    () -> float
-  xycurves_write_name                      (argument)
-  xycurves_write_npts                      (argument) -> int
-  xycurves_write_x                         (argument) -> float
-  xycurves_write_x_array                   (argument)
-  xycurves_write_x_scale                   (argument) -> float
-  xycurves_write_x_shift                   (argument) -> float
-  xycurves_write_y                         (argument) -> float
-  xycurves_write_y_array                   (argument)
-  xycurves_write_y_scale                   (argument) -> float
-  xycurves_write_y_shift                   (argument) -> float
+Summmary of py-dss-interface methods
+See https://py-dss-interface.readthedocs.io/en/latest/index.html for more details
+
+Properties
+==========================
+   dll_file_path str C:\Python\lib\site-packages\py_dss_interface\dll\x64\OpenDSSDirect.dll
+   started bool True
+
+Methods
+==========================
+   text Can be used to send commands to the text interface of OpenDSS (DSS.Text). (argument: str) -> str
+
+Interfaces
+==========================
+-------------------------
+  active_class This class implements the ActiveClass interface of OpenDSS.
+
+    The ActiveClass interface provides methods for accessing properties of DSS classes.
+    This class defines the methods for accessing the different properties included in this interface:
+    ActiveClassS, ActiveClassI, ActiveClassV.
+
+    Args:
+        obj_dss: The object that provides access to the OpenDSS engine.
+    
+      class_name
+      count
+      first
+      name
+      names
+      next
+      num_elements
+      parent_class_name
+-------------------------
+  bus 
+    This interface implements the Bus (IBus) interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface: BusS, BusI, BusV, BusF.
+    
+      all_pce_active_bus
+      all_pde_active_bus
+      axc_012_matrix
+      bus_lambda
+      coord_defined
+      cplx_sequence_voltages
+      distance
+      interruptions_avg_duration
+      interruptions_num
+      interruptions_total_customers
+      isc
+      kv_base
+      latitude
+      line_list
+      line_total_miles
+      load_list
+      longitude
+      name
+      nodes
+      num_nodes
+      outage_customer_accum_duration
+      pu_vll
+      pu_voltages
+      section_id
+      seq_voltages
+      total_customers
+      unique_node_number
+      vll
+      vmag_angle
+      vmag_angle_pu
+      voc
+      voltages
+      x
+      y
+      ysc_matrix
+      zsc0
+      zsc1
+      zsc_matrix
+      zsc_refresh
+-------------------------
+  capacitors 
+    This interface implements the Capacitors (ICapacitors) interface of OpenDSS by declaring 4 procedures for
+    accessing the different properties included in this interface: CapacitorsF, CapacitorsI, CapacitorsS, CapacitorsV.
+    
+      add_step
+      available_steps
+      close_all_steps
+      count
+      first
+      is_delta
+      kv
+      kvar
+      name
+      names
+      next
+      num_steps
+      open_all_steps
+      states
+      subtract_step
+-------------------------
+  capcontrols 
+    This interface implements the CapControls (ICapControls) interface of OpenDSS by declaring 4 procedures for
+    accessing the different properties included in this interface: CapControlsF, CapControlsI, CapControlsS,
+    CapControlsV
+    
+      controlled_capacitor
+      count
+      ct_ratio
+      dead_time
+      delay
+      delay_off
+      first
+      mode
+      monitored_object
+      monitored_term
+      name
+      names
+      next
+      off_setting
+      on_setting
+      pt_ratio
+      use_volt_override
+      vmax
+      vmin
+-------------------------
+  circuit 
+    This interface implements the Circuit (ICIrcuit) interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface: CircuitI, CircuitS, CircuitF, CircuitV
+    
+      buses_distances
+      buses_names
+      buses_vmag
+      buses_vmag_pu
+      buses_volts
+      capacity
+      disable
+      elements_losses
+      elements_names
+      enable
+      end_of_time_step_update
+      first_element
+      line_losses
+      losses
+      name
+      next_element
+      nodes_distances
+      nodes_distances_by_phase
+      nodes_names
+      nodes_names_by_phase
+      nodes_vmag_by_phase
+      nodes_vmag_pu_by_phase
+      num_buses
+      num_ckt_elements
+      num_nodes
+      parent_pd_element
+      pc_element_first
+      pc_element_next
+      pd_element_first
+      pd_element_next
+      sample
+      save_sample
+      set_active_bus
+      set_active_bus_i
+      set_active_class
+      set_active_element
+      substation_losses
+      system_y
+      total_power
+      update_storage_t
+      y_currents
+      y_node_order
+      y_node_varray
+-------------------------
+  cktelement 
+    This interface implements the CktElement interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface: CktElementI, CktElementS, CktElementF, CktElementV
+    
+      bus_names
+      close_terminal
+      controller
+      cplx_seq_currents
+      cplx_seq_voltages
+      currents
+      currents_mag_ang
+      display
+      emerg_amps
+      enabled
+      energymeter
+      guid
+      has_switch_control
+      has_volt_control
+      is_enabled
+      is_terminal_open
+      losses
+      name
+      node_order
+      norm_amps
+      num_conductors
+      num_controls
+      num_phases
+      num_properties
+      num_terminals
+      ocp_dev_index
+      ocp_dev_type
+      open_terminal
+      phase_losses
+      powers
+      property_names
+      residuals_currents
+      seq_currents
+      seq_powers
+      seq_voltages
+      variable_i
+      variables_names
+      variables_values
+      voltages
+      voltages_mag_ang
+      y_prim
+-------------------------
+  cmathlib 
+    This interface implements the CmathLib (ICmathLib) interface of OpenDSS by declaring 2 procedures for accessing
+    the different properties included in this interface: CMathLibF, CMathLibV.
+    
+      cabs
+      cdang
+      cmplx
+      ctopolardeg
+      pdegtocomplex
+-------------------------
+  ctrlqueue 
+    This interface implements the CtrlQueue (ICtrlQueue) interface of OpenDSS by declaring 2 procedures for accessing
+    the different properties included in this interface: CtrlQueueI, CtrlQueueV
+    
+      action
+      action_code
+      clear_actions
+      clear_queue
+      ctrlqueue
+      delete
+      device_handle
+      do_all_queue
+      num_actions
+      pop_action
+      push
+      queue_size
+      show
+-------------------------
+  dsselement 
+    This interface implements the DSSElement (IDSSElement) interface of OpenDSS by declaring 3 procedures for
+    accessing the different properties included in this interface: DSSElementI, DSSElementS, DSSElementV
+    
+      name
+      num_properties
+      property_names
+-------------------------
+  dssexecutive 
+    This interface implements the DSS_Executive (IDSS_Executive) interface of OpenDSS by declaring 2 procedures for
+    accessing the different properties included in this interface: DSSExecutiveS, DSSExecutiveI
+    
+      command
+      command_help
+      num_commands
+      num_options
+      option
+      option_help
+      option_value
+-------------------------
+  dssinterface 
+    This interface implements the DSS interface (IDSS - DDSS.pas) of OpenDSS by declaring 3 procedures for accessing the
+    different properties included in this interface: DSSInterfaceS, DSSInterfaceI, DSSInterfaceV
+    
+      allow_forms
+      classes
+      clear_all
+      datapath
+      default_editor
+      new_circuit
+      num_circuits
+      num_classes
+      num_user_classes
+      reset
+      show_panel
+      start
+      user_classes
+      version
+-------------------------
+  dssproperties 
+    This interface implements the DSSproperties (IDSSProperties) interface of OpenDSS by declaring 4 procedures for
+    accessing the different properties included in this interface.
+
+    This interface can be used to read/write certain properties of DSS objects.
+
+    The structure of the interface is as follows:
+        CStr DSSProperties(int32_t Parameter, CStr Argument);
+
+    This interface returns a string pointer (ANSI) with the result of the query according to the value of the
+    variable Parameter, which can be one of the following.
+    
+      description_active_property
+      name_active_property
+      value_read
+      value_write
+-------------------------
+  errorinterface 
+    This interface implements the DSS interface (IDSS - DDSS.pas) of OpenDSS by declaring 3 procedures for accessing the
+    different properties included in this interface: DSSInterfaceS, DSSInterfaceI, DSSInterfaceV
+    
+      allow_forms
+      classes
+      clear_all
+      datapath
+      default_editor
+      new_circuit
+      num_circuits
+      num_classes
+      num_user_classes
+      reset
+      show_panel
+      start
+      user_classes
+      version
+-------------------------
+  fuses " This interface implements the Fuses (IFuses) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: FusesI, FusesS, FusesF, FusesV 
+      close
+      count
+      delay
+      first
+      idx
+      is_blown
+      monitored_obj
+      monitored_term
+      name
+      names
+      next
+      normal
+      num_phases
+      open
+      rated_current
+      reset
+      state
+      switched_obj
+      switched_term
+      tcc_curve
+-------------------------
+  generators 
+    This interface implements the Generators (IGenerators) interface of OpenDSS by declaring 4 procedures for
+    accessing the different properties included in this interface: GeneratorsI, GeneratorsF, GeneratorsS, GeneratorsV.
+    
+      count
+      first
+      forced_on
+      idx
+      kv
+      kva
+      kvar
+      kw
+      model
+      name
+      names
+      next
+      pf
+      phases
+      register_names
+      register_values
+      vmax_pu
+      vmin_pu
+-------------------------
+  isources 
+    This interface implements the ISources (IIsources) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: ISourcesI, ISourcesF, ISourcesS, ISourcesV.
+    
+      amps
+      angle_deg
+      count
+      first
+      frequency
+      name
+      names
+      next
+-------------------------
+  linecodes 
+    This interface implements the Lines (ILineCodes) interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface:
+    
+      c0
+      c1
+      cmatrix
+      count
+      emerg_amps
+      first
+      is_z1z0
+      name
+      names
+      next
+      norm_amps
+      phases
+      r0
+      r1
+      rmatrix
+      units
+      x0
+      x1
+      xmatrix
+-------------------------
+  lines 
+    This interface implements the Lines (ILines) interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface: LinesV, LinesS, LinesI, LinesF.
+    
+      bus1
+      bus2
+      c0
+      c1
+      cmatrix
+      count
+      emerg_amps
+      first
+      geometry
+      length
+      linecode
+      name
+      names
+      next
+      norm_amps
+      num_cust
+      parent
+      phases
+      r0
+      r1
+      rg
+      rho
+      rmatrix
+      season_rating
+      spacing
+      units
+      x0
+      x1
+      xg
+      xmatrix
+      yprim
+-------------------------
+  loads 
+    This interface implements the Loads (ILoads) interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface: LoadsF, LoadsI, LoadsS, LoadsV.
+    
+      allocation_factor
+      c_factor
+      class_number
+      count
+      cvr_curve
+      cvr_vars
+      cvr_watts
+      daily
+      duty
+      first
+      growth
+      idx
+      is_delta
+      kv
+      kva
+      kvar
+      kw
+      kwh
+      kwh_days
+      model
+      name
+      names
+      next
+      num_cust
+      pct_mean
+      pct_std_dev
+      pf
+      r_neut
+      rel_weight
+      rl
+      spectrum
+      status
+      vmax_pu
+      vmin_emerg
+      vmin_norm
+      vmin_pu
+      x_neut
+      xfkva
+      yearly
+      zipv
+-------------------------
+  loadshapes 
+    This interface implements the LoadShape (ILoadShape) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: .
+    
+      count
+      first
+      hr_interval
+      min_interval
+      name
+      names
+      next
+      normalize
+      npts
+      p_base
+      p_mult
+      q_base
+      q_mult
+      s_interval
+      time_array
+      use_actual
+-------------------------
+  meters 
+    This interface implements the Meters (IMeters) interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface: MetersV, MetersS, MetersF, MetersI.
+    
+      all_branches_in_zone
+      all_end_elements
+      all_pce_in_zone
+      alloc_factors
+      avg_repair_time
+      calc_current
+      close_all_di_files
+      count
+      count_branches
+      count_end_elements
+      cust_interrupts
+      di_files_are_open
+      do_reliability_calc
+      fault_rate_x_repair_hrs
+      first
+      metered_element
+      metered_terminal
+      name
+      names
+      next
+      num_section_branches
+      num_section_customers
+      num_sections
+      ocp_device_type
+      open_all_di_files
+      peak_current
+      register_names
+      register_values
+      reset
+      reset_all
+      saidi
+      saifi
+      saifi_kw
+      sample
+      sample_all
+      save
+      save_all
+      sect_seq_idx
+      sect_total_cust
+      seq_list_size
+      sequence_index
+      set_active_section
+      sum_branch_flt_rates
+      total_customers
+      totals
+-------------------------
+  monitors 
+    This interface implements the Monitors (IMonitors) interface of OpenDSS by declaring 3 procedures for accessing
+    the different properties included in this interface: MonitorsI._, MonitorsV, MonitorsS.
+    
+      byte_stream
+      channel
+      count
+      dbl_freq
+      dbl_hour
+      element
+      file_name
+      file_version
+      first
+      header
+      mode
+      name
+      names
+      next
+      num_channels
+      process
+      process_all
+      record_size
+      reset
+      reset_all
+      sample
+      sample_all
+      sample_count
+      save
+      save_all
+      show
+      terminal
+-------------------------
+  parallel 
+    These interfaces allows users to use the parallel processing features included in OpenDSS-PM. With this interface
+    it is possible to create multiple actors, specify the CPU where the actor will be executed, control the execution
+    of the actors, check the actors status and progress among many other functionalities.
+    
+      active_actor
+      active_parallel
+      actor_cpu
+      actor_progress
+      actor_status
+      concatenate_reportsl
+      create_actor
+      num_actors
+      num_cores
+      num_cpus
+      wait
+-------------------------
+  parser 
+    This interface implements the CmathLib (ICmathLib) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: ParserI, ParserS, ParserF, ParserV.
+    
+      auto_increment
+      begin_quote
+      cmd_string
+      dbl_value
+      delimiters
+      end_quote
+      int_value
+      matrix
+      parser_next_param
+      parser_str_value
+      reset_delimiters
+      sym_matrix
+      vector
+      white_space
+-------------------------
+  pdelements 
+    This interface implements the PDElements (IPDElements) interface of OpenDSS by declaring 3 procedures for
+    accessing the different properties included in this interface: PDElementsF, PDElementsI, PDElementsS.
+    
+      accumulated_failure_rate
+      branch_failure_rate
+      count
+      fault_rate
+      first
+      from_terminal
+      is_shunt
+      name
+      next
+      num_customers
+      parent_pd_element
+      pct_permanent
+      repair_time
+      section_id
+      total_customers
+      total_miles
+-------------------------
+  pvsystems 
+    This interface implements the PVSystems (IPVSystems) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: PVSystemsV, PVSystemsS, PVSystemsI, PVSystemsF.
+    
+      count
+      first
+      idx
+      irradiance
+      kva
+      kvar
+      kw_output
+      name
+      names
+      next
+      pf
+      pmpp
+-------------------------
+  reclosers 
+    This interface implements the Reclosers (IReclosers) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: ReclosersI, ReclosersV, ReclosersS, ReclosersF._
+    
+      close
+      count
+      first
+      ground_inst
+      ground_trip
+      idx
+      intervals
+      monitored_obj
+      monitored_term
+      name
+      names
+      next
+      num_fast
+      open
+      phase_inst
+      phase_trip
+      shots
+      switched_obj
+      switched_term
+-------------------------
+  regcontrols 
+    This interface implements the RegControls (IRegControls) interface of OpenDSS by declaring 4 procedures for
+    accessing the different properties included in this interface: RegControlsI, RegControlsF, RegControlsV,
+    RegControlsS.
+    
+      count
+      ct_primary
+      delay
+      first
+      forward_band
+      forward_r
+      forward_vreg
+      forward_x
+      is_inverse_time
+      is_reversible
+      max_tap_change
+      monitored_bus
+      name
+      names
+      next
+      pt_ratio
+      reverse_band
+      reverse_r
+      reverse_vreg
+      reverse_x
+      tap_delay
+      tap_number
+      tap_winding
+      transformer
+      voltage_limit
+      winding
+-------------------------
+  relays 
+    This interface implements the Relays (IRelays) interface of OpenDSS by declaring 3 procedures for accessing the
+    different properties included in this interface: RelaysS, RelaysV, RelaysI.
+    
+      count
+      first
+      idx
+      monitored_obj
+      monitored_term
+      name
+      names
+      next
+      switched_obj
+      switched_term
+-------------------------
+  sensors 
+    This interface implements the Sensors (ISensors) interface of OpenDSS by declaring 4 procedures for accessing the
+    different properties included in this interface: SensorsV, SensorsS, SensorsI, SensorsF.
+    
+      currents
+      first
+      is_delta
+      kv_base
+      kvars
+      kws
+      metered_element
+      metered_terminal
+      name
+      names
+      next
+      pct_error
+      reset
+      reset_all
+      reverse_delta
+      weight
+-------------------------
+  settings 
+    This interface implements the Settings (ISettings) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: SettingsS, SettingsF, SettingsI, SettingsV.
+    
+      allocation_factors
+      allow_duplicates
+      auto_bus_list
+      ckt_model
+      emerg_vmax_pu
+      emerg_vmin_pu
+      loss_regs
+      loss_weight
+      norm_vmax_pu
+      norm_vmin_pu
+      price_curve
+      price_signal
+      trapezoidal
+      ue_regs
+      ue_weight
+      voltage_bases
+      zone_lock
+-------------------------
+  solution 
+    This interface implements the Solution (ISolution) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: SolutionI, SolutionF, SolutionS, SolutionV.
+    
+      add_type
+      algorithm
+      build_y_matrix
+      bus_levels
+      calc_inc_matrix
+      calc_inc_matrix_0
+      cap_kvar
+      check_controls
+      check_fault_status
+      clean_up
+      control_actions_done
+      control_iterations
+      control_mode
+      converged
+      dbl_hour
+      default_daily
+      default_yearly
+      do_control_actions
+      event_log
+      finish_time_step
+      frequency
+      gen_kw
+      gen_mult
+      gen_pf
+      hour
+      inc_matrix_cols
+      inc_matrix_rows
+      init_snap
+      iterations
+      laplacian
+      ld_curve
+      load_model
+      load_mult
+      max_control_iterations
+      max_iterations
+      mode
+      mode_id
+      most_iterations_done
+      nc_matrix
+      number
+      pct_growth
+      process_time
+      process_time_step
+      random
+      sample_control_devices
+      sample_do_control_actions
+      seconds
+      solve
+      solve_all
+      solve_direct
+      solve_no_control
+      solve_plus_control
+      solve_power_flow
+      step_size
+      step_size_hr
+      step_size_min
+      system_y_changed
+      tolerance
+      total_iterations
+      total_time
+      year
+-------------------------
+  swtcontrols 
+    This interface implements the SwtControls (ISwtControls) interface of OpenDSS by declaring 4 procedures for
+    accessing the different properties included in this interface: SwtControlsS, SwtControlsV, SwtControlsI,
+    SwtControlsF.
+    
+      action
+      count
+      delay
+      first
+      is_locked
+      name
+      names
+      next
+      switched_obj
+      switched_term
+-------------------------
+  topology 
+    This interface implements the Topology (ITopology) interface of OpenDSS by declaring 3 procedures for accessing
+    the different properties included in this interface: TopologyI, TopologyV, TopologyS.
+    
+      active_branch
+      active_level
+      all_isolated_branches
+      all_isolated_loads
+      all_looped_pairs
+      backward_branch
+      branch_name
+      bus_name
+      first
+      first_load
+      forward_branch
+      looped_branch
+      next
+      next_load
+      num_isolated_branches
+      num_isolated_loads
+      num_loops
+      parallel_branch
+-------------------------
+  transformers 
+    This interface implements the Transformers (ITransformer) interface of OpenDSS by declaring 4 procedures for
+    accessing the different properties included in this interface: TransformersV, TransformersF, TransformersI, TransformersS.
+    
+      count
+      first
+      is_delta
+      kv
+      kva
+      max_tap
+      min_tap
+      name
+      names
+      next
+      num_taps
+      num_windings
+      r
+      r_neut
+      str_wdg_voltages
+      tap
+      wdg
+      wdg_currents
+      wdg_voltages
+      x_neut
+      xfmr_code
+      xhl
+      xht
+      xlt
+-------------------------
+  vsources 
+    This interface implements the Vsources (IVSources) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: VSourcesS, VSourcesV, VSourcesI, VSourcesF.
+    
+      angle_deg
+      base_kv
+      count
+      first
+      frequency
+      name
+      names
+      next
+      phases
+      pu
+-------------------------
+  xycurves 
+    This interface implements the XYCurves (IXYCurves) interface of OpenDSS by declaring 4 procedures for accessing
+    the different properties included in this interface: XYCurvesS, XYCurvesI, XYCurvesF, XYCurvesV.
+    
+      count
+      first
+      name
+      next
+      npts
+      x
+      x_array
+      x_scale
+      x_shift
+      y
+      y_array
+      y_scale
+      y_shift

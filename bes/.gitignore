@@ -1,0 +1,15 @@
+*mb.txt
+*mg.txt
+*branch.txt
+*bus.txt
+*gen.txt
+*results.txt
+solve*.m
+*solved.m
+*summary.txt
+*.log
+hca_case.m
+hca_contab.m
+hca_xgd.m
+most_case.m
+most_xgd.m

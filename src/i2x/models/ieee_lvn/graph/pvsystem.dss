@@ -1,0 +1,8 @@
+New "PVSystem.s193" phases=3 bus1=S193 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1
+New "PVSystem.s198" phases=3 bus1=S198 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1
+New "PVSystem.s203" phases=3 bus1=S203 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1
+New "PVSystem.s210" phases=3 bus1=S210 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1
+New "PVSystem.s217" phases=3 bus1=S217 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1
+New "PVSystem.s224" phases=3 bus1=S224 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1
+New "PVSystem.s231" phases=3 bus1=S231 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1
+New "PVSystem.s236" phases=3 bus1=S236 kv=0.48 kVA=1095 irradiance=1 Pmpp=100 pf=1

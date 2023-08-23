@@ -1,0 +1,47 @@
+{
+"choice":  "ieee9500",
+"loadcurve":  "DEFAULT",
+"loadmult": 1.0,
+"pvcurve" : "pcloud",
+"invmode" : "CONSTANT_PF",
+"invpf" : 1.0,
+"solnmode" : "DAILY",
+"ctrlmode" : "STATIC",
+"debug_output" : false,
+"res_pv_frac": 0.2,
+"stepsize": 300,
+"numsteps": 288,
+"remove_all_pv": false,
+"hca_log":{
+    "logname": "hcalog",
+    "loglevel": "info",
+    "format": "{name}: {levelname}: {message}",
+    "logtofile": false
+},
+"remove_large_der": [],
+"explicit_storage": {},
+"explicit_pv": {},
+"redisp_pv":{},
+"explicit_gen": {},
+"redisp_gen": {},
+"metrics":{
+    "limits":{
+        "voltage": {
+            "vmin": 0.95,
+            "vmax": 1.05,
+            "vdiff": 3.0
+        },
+        "thermal": {
+            "emerg": 0
+        },
+        "island":{
+            "pq": [0.3, 0.05]
+        }
+    },
+    "tolerances":{
+        "voltage": 1e-3,
+        "thermal": 1e-2,
+        "island": 1e-2
+    }
+}
+}

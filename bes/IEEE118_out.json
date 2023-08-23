@@ -1,0 +1,38 @@
+{
+  "system": "hca",
+  "case_title": "IEEE118",
+  "load_scale": 0.6748,
+  "upgrades": null,
+  "buses": {
+    "1": {
+      "fuels": {
+        "hca": 0.29833836399674196,
+        "wind": 0.4288,
+        "solar": 1.3644,
+        "nuclear": 0.0,
+        "hydro": 0.0,
+        "coal": 0.0,
+        "ng": 0.7709632360031999,
+        "dl": 0.0
+      },
+      "max_max_muF": {
+        "branch": 37,
+        "muF": 72.30050069027715
+      },
+      "max_mean_muF": {
+        "branch": 37,
+        "muF": 12.050083448379524
+      }
+    }
+  },
+  "branches": {
+    "37": {
+      "from": 1,
+      "to": 3,
+      "muF": 0.0624356655356452,
+      "rating": 157.0,
+      "kv1": 138.0,
+      "kv2": 138.0
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "directed": false,
+  "directed": true,
   "multigraph": false,
   "graph": {},
   "nodes": [
@@ -7,7 +7,7 @@
       "nclass": "source",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 230.0,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -30,7 +30,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 230.0,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -51,7 +51,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 230.0,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -72,7 +72,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 230.0,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -93,7 +93,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -114,7 +114,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -135,7 +135,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -156,7 +156,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -177,7 +177,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -198,7 +198,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -219,7 +219,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -240,7 +240,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -261,7 +261,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -282,7 +282,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -303,7 +303,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -324,7 +324,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -345,7 +345,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -366,7 +366,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -387,7 +387,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -408,7 +408,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -429,7 +429,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -450,7 +450,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -471,7 +471,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -492,7 +492,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -513,7 +513,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -534,7 +534,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -555,7 +555,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -576,7 +576,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -597,7 +597,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -618,7 +618,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -639,7 +639,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -660,7 +660,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -681,7 +681,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -702,7 +702,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -723,7 +723,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -744,7 +744,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -765,7 +765,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -786,7 +786,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -807,7 +807,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -828,7 +828,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -849,7 +849,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -870,7 +870,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -891,7 +891,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -912,7 +912,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -933,7 +933,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -954,7 +954,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -975,7 +975,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -996,7 +996,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1017,7 +1017,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1038,7 +1038,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1059,7 +1059,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1080,7 +1080,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1101,7 +1101,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1122,7 +1122,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1143,7 +1143,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1164,7 +1164,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1185,7 +1185,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1206,7 +1206,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1227,7 +1227,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1248,7 +1248,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1269,7 +1269,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1290,7 +1290,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1311,7 +1311,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1332,7 +1332,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1353,7 +1353,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1374,7 +1374,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1395,7 +1395,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1416,7 +1416,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1437,7 +1437,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1458,7 +1458,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1479,7 +1479,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1500,7 +1500,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1521,7 +1521,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1542,7 +1542,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1563,7 +1563,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1584,7 +1584,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1605,7 +1605,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1626,7 +1626,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1647,7 +1647,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1668,7 +1668,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1689,7 +1689,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1710,7 +1710,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1731,7 +1731,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1752,7 +1752,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1773,7 +1773,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1794,7 +1794,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1815,7 +1815,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1836,7 +1836,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1857,7 +1857,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1878,7 +1878,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1899,7 +1899,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1920,7 +1920,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1941,7 +1941,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1962,7 +1962,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -1983,7 +1983,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2004,7 +2004,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2025,7 +2025,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2046,7 +2046,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2067,7 +2067,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2088,7 +2088,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2109,7 +2109,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2130,7 +2130,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2151,7 +2151,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2172,7 +2172,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2193,7 +2193,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2214,7 +2214,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2235,7 +2235,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2256,7 +2256,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2277,7 +2277,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2298,7 +2298,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2319,7 +2319,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2340,7 +2340,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2361,7 +2361,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2382,7 +2382,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2403,7 +2403,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2424,7 +2424,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2445,7 +2445,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2466,7 +2466,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2487,7 +2487,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2508,7 +2508,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2529,7 +2529,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2550,7 +2550,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2571,7 +2571,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2592,7 +2592,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2613,7 +2613,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2634,7 +2634,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2655,7 +2655,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2676,7 +2676,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2697,7 +2697,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2718,7 +2718,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2739,7 +2739,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2760,7 +2760,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2781,7 +2781,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2802,7 +2802,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2823,7 +2823,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2844,7 +2844,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2865,7 +2865,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2886,7 +2886,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2907,7 +2907,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2928,7 +2928,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2949,7 +2949,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2970,7 +2970,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -2991,7 +2991,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3012,7 +3012,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3033,7 +3033,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3054,7 +3054,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3075,7 +3075,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3125,7 +3125,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3146,7 +3146,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3196,7 +3196,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3217,7 +3217,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3267,7 +3267,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3288,7 +3288,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3309,7 +3309,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3359,7 +3359,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3380,7 +3380,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3401,7 +3401,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3451,7 +3451,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3472,7 +3472,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3493,7 +3493,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3543,7 +3543,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3564,7 +3564,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3585,7 +3585,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3635,7 +3635,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3656,7 +3656,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3706,7 +3706,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3811,7 +3811,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -3944,7 +3944,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4077,7 +4077,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4350,7 +4350,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4371,7 +4371,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4476,7 +4476,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4497,7 +4497,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4602,7 +4602,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4623,7 +4623,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4728,7 +4728,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4749,7 +4749,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4882,7 +4882,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -4903,7 +4903,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5008,7 +5008,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5029,7 +5029,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5134,7 +5134,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5155,7 +5155,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5260,7 +5260,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5281,7 +5281,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5414,7 +5414,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5547,7 +5547,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5680,7 +5680,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5813,7 +5813,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -5946,7 +5946,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6051,7 +6051,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6156,7 +6156,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6205,7 +6205,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6254,7 +6254,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6275,7 +6275,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6352,7 +6352,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6373,7 +6373,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6450,7 +6450,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6471,7 +6471,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6548,7 +6548,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6569,7 +6569,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6646,7 +6646,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6667,7 +6667,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6744,7 +6744,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6765,7 +6765,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6842,7 +6842,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6863,7 +6863,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6940,7 +6940,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -6961,7 +6961,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7038,7 +7038,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7059,7 +7059,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7164,7 +7164,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7269,7 +7269,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7374,7 +7374,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7423,7 +7423,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 230.0,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7444,7 +7444,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7465,7 +7465,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 230.0,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7486,7 +7486,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 13.8,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7507,7 +7507,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7528,7 +7528,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7549,7 +7549,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7570,7 +7570,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7591,7 +7591,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7612,7 +7612,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7633,7 +7633,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7654,7 +7654,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7675,7 +7675,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7696,7 +7696,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7717,7 +7717,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7738,7 +7738,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7759,7 +7759,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7780,7 +7780,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7801,7 +7801,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7822,7 +7822,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7843,7 +7843,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7864,7 +7864,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7885,7 +7885,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7906,7 +7906,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7927,7 +7927,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7948,7 +7948,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7969,7 +7969,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -7990,7 +7990,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8011,7 +8011,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8032,7 +8032,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8053,7 +8053,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8074,7 +8074,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8095,7 +8095,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8116,7 +8116,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8137,7 +8137,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8158,7 +8158,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8179,7 +8179,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8200,7 +8200,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8221,7 +8221,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8242,7 +8242,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8263,7 +8263,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8284,7 +8284,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8305,7 +8305,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8326,7 +8326,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8347,7 +8347,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8368,7 +8368,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8389,7 +8389,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8410,7 +8410,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8431,7 +8431,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8452,7 +8452,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8473,7 +8473,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8494,7 +8494,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.208,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8515,7 +8515,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8536,7 +8536,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8557,7 +8557,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8578,7 +8578,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8599,7 +8599,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8620,7 +8620,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8641,7 +8641,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8662,7 +8662,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8683,7 +8683,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8704,7 +8704,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8725,7 +8725,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8746,7 +8746,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8767,7 +8767,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8788,7 +8788,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8809,7 +8809,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8830,7 +8830,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8851,7 +8851,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8872,7 +8872,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8893,7 +8893,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8914,7 +8914,7 @@
       "nclass": "bus",
       "ndata": {
         "phases": 3,
-        "nomkv": 0.0,
+        "nomkv": 0.48,
         "loadkw": 0.0,
         "genkva": 0.0,
         "genkw": 0.0,
@@ -8983,6 +8983,7 @@
         "bus2": "p4",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p3",
@@ -8996,6 +8997,7 @@
         "bus2": "p8",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p7",
@@ -9045,25 +9047,13 @@
     },
     {
       "eclass": "switch",
-      "ename": "2_sw",
-      "edata": {
-        "bus1": "p5",
-        "bus2": "p6",
-        "Switch": true,
-        "length": 1.0,
-        "phases": 3
-      },
-      "source": "p6",
-      "target": "p5"
-    },
-    {
-      "eclass": "switch",
       "ename": "5_sw",
       "edata": {
         "bus1": "p11",
         "bus2": "p12",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p11",
@@ -9077,6 +9067,7 @@
         "bus2": "p28",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p27",
@@ -9118,6 +9109,7 @@
         "bus2": "p46",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p45",
@@ -9131,6 +9123,7 @@
         "bus2": "p63",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p62",
@@ -9180,25 +9173,13 @@
     },
     {
       "eclass": "switch",
-      "ename": "4_sw",
-      "edata": {
-        "bus1": "p9",
-        "bus2": "p10",
-        "Switch": true,
-        "length": 1.0,
-        "phases": 3
-      },
-      "source": "p10",
-      "target": "p9"
-    },
-    {
-      "eclass": "switch",
       "ename": "9_sw",
       "edata": {
         "bus1": "p81",
         "bus2": "p82",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p81",
@@ -9212,6 +9193,7 @@
         "bus2": "p98",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p97",
@@ -9253,6 +9235,7 @@
         "bus2": "p118",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p117",
@@ -9266,6 +9249,7 @@
         "bus2": "p135",
         "Switch": true,
         "length": 1.0,
+        "SwtControl": false,
         "phases": 3
       },
       "source": "p134",
@@ -11946,20 +11930,6 @@
       "target": "s193"
     },
     {
-      "eclass": "nwp",
-      "ename": "61_sw",
-      "edata": {
-        "bus1": "s196",
-        "bus2": "s194",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s194",
-      "target": "s196"
-    },
-    {
       "eclass": "line",
       "ename": "137",
       "edata": {
@@ -11970,22 +11940,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s193",
-      "target": "s195"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "62_sw",
-      "edata": {
-        "bus1": "s197",
-        "bus2": "s195",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s195",
-      "target": "s197"
+      "target": "s193"
     },
     {
       "eclass": "line",
@@ -12002,20 +11958,6 @@
       "target": "s198"
     },
     {
-      "eclass": "nwp",
-      "ename": "63_sw",
-      "edata": {
-        "bus1": "s201",
-        "bus2": "s199",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s199",
-      "target": "s201"
-    },
-    {
       "eclass": "line",
       "ename": "139",
       "edata": {
@@ -12026,22 +11968,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s198",
-      "target": "s200"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "64_sw",
-      "edata": {
-        "bus1": "s202",
-        "bus2": "s200",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s200",
-      "target": "s202"
+      "target": "s198"
     },
     {
       "eclass": "line",
@@ -12058,20 +11986,6 @@
       "target": "s203"
     },
     {
-      "eclass": "nwp",
-      "ename": "65_sw",
-      "edata": {
-        "bus1": "s207",
-        "bus2": "s204",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s204",
-      "target": "s207"
-    },
-    {
       "eclass": "line",
       "ename": "141",
       "edata": {
@@ -12082,8 +11996,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s203",
-      "target": "s205"
+      "source": "s205",
+      "target": "s203"
     },
     {
       "eclass": "line",
@@ -12096,36 +12010,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s203",
-      "target": "s206"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "66_sw",
-      "edata": {
-        "bus1": "s208",
-        "bus2": "s205",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s205",
-      "target": "s208"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "67_sw",
-      "edata": {
-        "bus1": "s209",
-        "bus2": "s206",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s206",
-      "target": "s209"
+      "target": "s203"
     },
     {
       "eclass": "line",
@@ -12142,20 +12028,6 @@
       "target": "s210"
     },
     {
-      "eclass": "nwp",
-      "ename": "68_sw",
-      "edata": {
-        "bus1": "s214",
-        "bus2": "s211",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s211",
-      "target": "s214"
-    },
-    {
       "eclass": "line",
       "ename": "144",
       "edata": {
@@ -12166,8 +12038,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s210",
-      "target": "s212"
+      "source": "s212",
+      "target": "s210"
     },
     {
       "eclass": "line",
@@ -12180,36 +12052,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s210",
-      "target": "s213"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "69_sw",
-      "edata": {
-        "bus1": "s215",
-        "bus2": "s212",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s212",
-      "target": "s215"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "70_sw",
-      "edata": {
-        "bus1": "s216",
-        "bus2": "s213",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s213",
-      "target": "s216"
+      "target": "s210"
     },
     {
       "eclass": "line",
@@ -12226,20 +12070,6 @@
       "target": "s217"
     },
     {
-      "eclass": "nwp",
-      "ename": "71_sw",
-      "edata": {
-        "bus1": "s221",
-        "bus2": "s218",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s218",
-      "target": "s221"
-    },
-    {
       "eclass": "line",
       "ename": "147",
       "edata": {
@@ -12250,8 +12080,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s217",
-      "target": "s219"
+      "source": "s219",
+      "target": "s217"
     },
     {
       "eclass": "line",
@@ -12264,36 +12094,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s217",
-      "target": "s220"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "72_sw",
-      "edata": {
-        "bus1": "s222",
-        "bus2": "s219",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s219",
-      "target": "s222"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "73_sw",
-      "edata": {
-        "bus1": "s223",
-        "bus2": "s220",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s220",
-      "target": "s223"
+      "target": "s217"
     },
     {
       "eclass": "line",
@@ -12310,20 +12112,6 @@
       "target": "s224"
     },
     {
-      "eclass": "nwp",
-      "ename": "74_sw",
-      "edata": {
-        "bus1": "s228",
-        "bus2": "s225",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s225",
-      "target": "s228"
-    },
-    {
       "eclass": "line",
       "ename": "150",
       "edata": {
@@ -12334,8 +12122,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s224",
-      "target": "s226"
+      "source": "s226",
+      "target": "s224"
     },
     {
       "eclass": "line",
@@ -12348,36 +12136,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s224",
-      "target": "s227"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "75_sw",
-      "edata": {
-        "bus1": "s229",
-        "bus2": "s226",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s226",
-      "target": "s229"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "76_sw",
-      "edata": {
-        "bus1": "s230",
-        "bus2": "s227",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s227",
-      "target": "s230"
+      "target": "s224"
     },
     {
       "eclass": "line",
@@ -12394,20 +12154,6 @@
       "target": "s231"
     },
     {
-      "eclass": "nwp",
-      "ename": "77_sw",
-      "edata": {
-        "bus1": "s234",
-        "bus2": "s232",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s232",
-      "target": "s234"
-    },
-    {
       "eclass": "line",
       "ename": "153",
       "edata": {
@@ -12418,22 +12164,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s231",
-      "target": "s233"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "78_sw",
-      "edata": {
-        "bus1": "s235",
-        "bus2": "s233",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s233",
-      "target": "s235"
+      "target": "s231"
     },
     {
       "eclass": "line",
@@ -12450,20 +12182,6 @@
       "target": "s236"
     },
     {
-      "eclass": "nwp",
-      "ename": "79_sw",
-      "edata": {
-        "bus1": "s238",
-        "bus2": "s237",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s237",
-      "target": "s238"
-    },
-    {
       "eclass": "line",
       "ename": "155",
       "edata": {
@@ -12474,22 +12192,8 @@
         "Switch": false,
         "phases": 3
       },
-      "source": "s236",
-      "target": "s239"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "80_sw",
-      "edata": {
-        "bus1": "s240",
-        "bus2": "s239",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
       "source": "s239",
-      "target": "s240"
+      "target": "s236"
     },
     {
       "eclass": "line",
@@ -12560,20 +12264,6 @@
       },
       "source": "s4",
       "target": "s5"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "14_sw",
-      "edata": {
-        "bus1": "s145",
-        "bus2": "s4",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s4",
-      "target": "s145"
     },
     {
       "eclass": "line",
@@ -12660,20 +12350,6 @@
       "target": "s10"
     },
     {
-      "eclass": "nwp",
-      "ename": "16_sw",
-      "edata": {
-        "bus1": "s149",
-        "bus2": "s9",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s9",
-      "target": "s149"
-    },
-    {
       "eclass": "line",
       "ename": "165",
       "edata": {
@@ -12756,20 +12432,6 @@
       },
       "source": "s14",
       "target": "s15"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "18_sw",
-      "edata": {
-        "bus1": "s153",
-        "bus2": "s14",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s14",
-      "target": "s153"
     },
     {
       "eclass": "line",
@@ -12856,20 +12518,6 @@
       "target": "s20"
     },
     {
-      "eclass": "nwp",
-      "ename": "20_sw",
-      "edata": {
-        "bus1": "s157",
-        "bus2": "s19",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s19",
-      "target": "s157"
-    },
-    {
       "eclass": "line",
       "ename": "175",
       "edata": {
@@ -12910,20 +12558,6 @@
       },
       "source": "s42",
       "target": "s43"
-    },
-    {
-      "eclass": "line",
-      "ename": "240",
-      "edata": {
-        "bus1": "s37",
-        "bus2": "s42",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s42",
-      "target": "s37"
     },
     {
       "eclass": "line",
@@ -12968,20 +12602,6 @@
       "target": "s45"
     },
     {
-      "eclass": "nwp",
-      "ename": "21_sw",
-      "edata": {
-        "bus1": "s147",
-        "bus2": "s44",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s44",
-      "target": "s147"
-    },
-    {
       "eclass": "line",
       "ename": "179",
       "edata": {
@@ -12994,20 +12614,6 @@
       },
       "source": "s45",
       "target": "s46"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "30_sw",
-      "edata": {
-        "bus1": "s161",
-        "bus2": "s45",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s45",
-      "target": "s161"
     },
     {
       "eclass": "line",
@@ -13036,20 +12642,6 @@
       },
       "source": "s47",
       "target": "s48"
-    },
-    {
-      "eclass": "line",
-      "ename": "255",
-      "edata": {
-        "bus1": "s38",
-        "bus2": "s47",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s47",
-      "target": "s38"
     },
     {
       "eclass": "line",
@@ -13094,20 +12686,6 @@
       "target": "s50"
     },
     {
-      "eclass": "nwp",
-      "ename": "23_sw",
-      "edata": {
-        "bus1": "s151",
-        "bus2": "s49",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s49",
-      "target": "s151"
-    },
-    {
       "eclass": "line",
       "ename": "184",
       "edata": {
@@ -13120,20 +12698,6 @@
       },
       "source": "s50",
       "target": "s51"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "32_sw",
-      "edata": {
-        "bus1": "s165",
-        "bus2": "s50",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s50",
-      "target": "s165"
     },
     {
       "eclass": "line",
@@ -13162,20 +12726,6 @@
       },
       "source": "s52",
       "target": "s53"
-    },
-    {
-      "eclass": "line",
-      "ename": "270",
-      "edata": {
-        "bus1": "s39",
-        "bus2": "s52",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s52",
-      "target": "s39"
     },
     {
       "eclass": "line",
@@ -13220,20 +12770,6 @@
       "target": "s55"
     },
     {
-      "eclass": "nwp",
-      "ename": "25_sw",
-      "edata": {
-        "bus1": "s155",
-        "bus2": "s54",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s54",
-      "target": "s155"
-    },
-    {
       "eclass": "line",
       "ename": "189",
       "edata": {
@@ -13246,20 +12782,6 @@
       },
       "source": "s55",
       "target": "s56"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "34_sw",
-      "edata": {
-        "bus1": "s169",
-        "bus2": "s55",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s55",
-      "target": "s169"
     },
     {
       "eclass": "line",
@@ -13288,20 +12810,6 @@
       },
       "source": "s57",
       "target": "s58"
-    },
-    {
-      "eclass": "line",
-      "ename": "285",
-      "edata": {
-        "bus1": "s40",
-        "bus2": "s57",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s57",
-      "target": "s40"
     },
     {
       "eclass": "line",
@@ -13346,20 +12854,6 @@
       "target": "s60"
     },
     {
-      "eclass": "nwp",
-      "ename": "27_sw",
-      "edata": {
-        "bus1": "s159",
-        "bus2": "s59",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s59",
-      "target": "s159"
-    },
-    {
       "eclass": "line",
       "ename": "194",
       "edata": {
@@ -13374,20 +12868,6 @@
       "target": "s61"
     },
     {
-      "eclass": "nwp",
-      "ename": "36_sw",
-      "edata": {
-        "bus1": "s173",
-        "bus2": "s60",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s60",
-      "target": "s173"
-    },
-    {
       "eclass": "line",
       "ename": "195",
       "edata": {
@@ -13400,20 +12880,6 @@
       },
       "source": "s61",
       "target": "s62"
-    },
-    {
-      "eclass": "line",
-      "ename": "300",
-      "edata": {
-        "bus1": "s41",
-        "bus2": "s62",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s62",
-      "target": "s41"
     },
     {
       "eclass": "line",
@@ -13442,20 +12908,6 @@
       },
       "source": "s83",
       "target": "s84"
-    },
-    {
-      "eclass": "line",
-      "ename": "245",
-      "edata": {
-        "bus1": "s78",
-        "bus2": "s83",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s83",
-      "target": "s78"
     },
     {
       "eclass": "line",
@@ -13500,20 +12952,6 @@
       "target": "s86"
     },
     {
-      "eclass": "nwp",
-      "ename": "37_sw",
-      "edata": {
-        "bus1": "s163",
-        "bus2": "s85",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s85",
-      "target": "s163"
-    },
-    {
       "eclass": "line",
       "ename": "199",
       "edata": {
@@ -13526,20 +12964,6 @@
       },
       "source": "s86",
       "target": "s87"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "46_sw",
-      "edata": {
-        "bus1": "s177",
-        "bus2": "s86",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s86",
-      "target": "s177"
     },
     {
       "eclass": "line",
@@ -13568,20 +12992,6 @@
       },
       "source": "s88",
       "target": "s89"
-    },
-    {
-      "eclass": "line",
-      "ename": "260",
-      "edata": {
-        "bus1": "s79",
-        "bus2": "s88",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s88",
-      "target": "s79"
     },
     {
       "eclass": "line",
@@ -13626,20 +13036,6 @@
       "target": "s91"
     },
     {
-      "eclass": "nwp",
-      "ename": "39_sw",
-      "edata": {
-        "bus1": "s167",
-        "bus2": "s90",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s90",
-      "target": "s167"
-    },
-    {
       "eclass": "line",
       "ename": "204",
       "edata": {
@@ -13652,20 +13048,6 @@
       },
       "source": "s91",
       "target": "s92"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "48_sw",
-      "edata": {
-        "bus1": "s181",
-        "bus2": "s91",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s91",
-      "target": "s181"
     },
     {
       "eclass": "line",
@@ -13694,20 +13076,6 @@
       },
       "source": "s93",
       "target": "s94"
-    },
-    {
-      "eclass": "line",
-      "ename": "275",
-      "edata": {
-        "bus1": "s80",
-        "bus2": "s93",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s93",
-      "target": "s80"
     },
     {
       "eclass": "line",
@@ -13752,20 +13120,6 @@
       "target": "s96"
     },
     {
-      "eclass": "nwp",
-      "ename": "41_sw",
-      "edata": {
-        "bus1": "s171",
-        "bus2": "s95",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s95",
-      "target": "s171"
-    },
-    {
       "eclass": "line",
       "ename": "209",
       "edata": {
@@ -13778,20 +13132,6 @@
       },
       "source": "s96",
       "target": "s97"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "50_sw",
-      "edata": {
-        "bus1": "s185",
-        "bus2": "s96",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s96",
-      "target": "s185"
     },
     {
       "eclass": "line",
@@ -13820,20 +13160,6 @@
       },
       "source": "s98",
       "target": "s99"
-    },
-    {
-      "eclass": "line",
-      "ename": "290",
-      "edata": {
-        "bus1": "s81",
-        "bus2": "s98",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s98",
-      "target": "s81"
     },
     {
       "eclass": "line",
@@ -13878,20 +13204,6 @@
       "target": "s101"
     },
     {
-      "eclass": "nwp",
-      "ename": "43_sw",
-      "edata": {
-        "bus1": "s175",
-        "bus2": "s100",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s100",
-      "target": "s175"
-    },
-    {
       "eclass": "line",
       "ename": "214",
       "edata": {
@@ -13906,20 +13218,6 @@
       "target": "s102"
     },
     {
-      "eclass": "nwp",
-      "ename": "52_sw",
-      "edata": {
-        "bus1": "s189",
-        "bus2": "s101",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s101",
-      "target": "s189"
-    },
-    {
       "eclass": "line",
       "ename": "215",
       "edata": {
@@ -13932,20 +13230,6 @@
       },
       "source": "s102",
       "target": "s103"
-    },
-    {
-      "eclass": "line",
-      "ename": "305",
-      "edata": {
-        "bus1": "s82",
-        "bus2": "s103",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s103",
-      "target": "s82"
     },
     {
       "eclass": "line",
@@ -13977,20 +13261,6 @@
     },
     {
       "eclass": "line",
-      "ename": "250",
-      "edata": {
-        "bus1": "s119",
-        "bus2": "s124",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s124",
-      "target": "s119"
-    },
-    {
-      "eclass": "line",
       "ename": "217",
       "edata": {
         "bus1": "s125",
@@ -14016,20 +13286,6 @@
       },
       "source": "s126",
       "target": "s127"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "53_sw",
-      "edata": {
-        "bus1": "s179",
-        "bus2": "s126",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s126",
-      "target": "s179"
     },
     {
       "eclass": "line",
@@ -14075,20 +13331,6 @@
     },
     {
       "eclass": "line",
-      "ename": "265",
-      "edata": {
-        "bus1": "s120",
-        "bus2": "s129",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s129",
-      "target": "s120"
-    },
-    {
-      "eclass": "line",
       "ename": "222",
       "edata": {
         "bus1": "s130",
@@ -14114,20 +13356,6 @@
       },
       "source": "s131",
       "target": "s132"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "55_sw",
-      "edata": {
-        "bus1": "s183",
-        "bus2": "s131",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s131",
-      "target": "s183"
     },
     {
       "eclass": "line",
@@ -14173,20 +13401,6 @@
     },
     {
       "eclass": "line",
-      "ename": "280",
-      "edata": {
-        "bus1": "s121",
-        "bus2": "s134",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s134",
-      "target": "s121"
-    },
-    {
-      "eclass": "line",
       "ename": "227",
       "edata": {
         "bus1": "s135",
@@ -14212,20 +13426,6 @@
       },
       "source": "s136",
       "target": "s137"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "57_sw",
-      "edata": {
-        "bus1": "s187",
-        "bus2": "s136",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s136",
-      "target": "s187"
     },
     {
       "eclass": "line",
@@ -14271,20 +13471,6 @@
     },
     {
       "eclass": "line",
-      "ename": "295",
-      "edata": {
-        "bus1": "s122",
-        "bus2": "s139",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s139",
-      "target": "s122"
-    },
-    {
-      "eclass": "line",
       "ename": "232",
       "edata": {
         "bus1": "s140",
@@ -14310,20 +13496,6 @@
       },
       "source": "s141",
       "target": "s142"
-    },
-    {
-      "eclass": "nwp",
-      "ename": "59_sw",
-      "edata": {
-        "bus1": "s191",
-        "bus2": "s141",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s141",
-      "target": "s191"
     },
     {
       "eclass": "line",
@@ -14355,20 +13527,6 @@
     },
     {
       "eclass": "line",
-      "ename": "310",
-      "edata": {
-        "bus1": "s123",
-        "bus2": "s144",
-        "units": "ft",
-        "length": 100.0,
-        "Switch": false,
-        "phases": 3
-      },
-      "source": "s144",
-      "target": "s123"
-    },
-    {
-      "eclass": "line",
       "ename": "237",
       "edata": {
         "bus1": "s22",
@@ -14396,20 +13554,6 @@
       "target": "s32"
     },
     {
-      "eclass": "nwp",
-      "ename": "13_sw",
-      "edata": {
-        "bus1": "s148",
-        "bus2": "s27",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s27",
-      "target": "s148"
-    },
-    {
       "eclass": "line",
       "ename": "239",
       "edata": {
@@ -14422,6 +13566,20 @@
       },
       "source": "s32",
       "target": "s37"
+    },
+    {
+      "eclass": "line",
+      "ename": "240",
+      "edata": {
+        "bus1": "s37",
+        "bus2": "s42",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "s37",
+      "target": "s42"
     },
     {
       "eclass": "line",
@@ -14452,20 +13610,6 @@
       "target": "s73"
     },
     {
-      "eclass": "nwp",
-      "ename": "29_sw",
-      "edata": {
-        "bus1": "s164",
-        "bus2": "s68",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s68",
-      "target": "s164"
-    },
-    {
       "eclass": "line",
       "ename": "244",
       "edata": {
@@ -14478,6 +13622,20 @@
       },
       "source": "s73",
       "target": "s78"
+    },
+    {
+      "eclass": "line",
+      "ename": "245",
+      "edata": {
+        "bus1": "s78",
+        "bus2": "s83",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "s78",
+      "target": "s83"
     },
     {
       "eclass": "line",
@@ -14508,20 +13666,6 @@
       "target": "s114"
     },
     {
-      "eclass": "nwp",
-      "ename": "45_sw",
-      "edata": {
-        "bus1": "s180",
-        "bus2": "s109",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s109",
-      "target": "s180"
-    },
-    {
       "eclass": "line",
       "ename": "249",
       "edata": {
@@ -14534,6 +13678,20 @@
       },
       "source": "s114",
       "target": "s119"
+    },
+    {
+      "eclass": "line",
+      "ename": "250",
+      "edata": {
+        "bus1": "s119",
+        "bus2": "s124",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "s119",
+      "target": "s124"
     },
     {
       "eclass": "line",
@@ -14564,20 +13722,6 @@
       "target": "s33"
     },
     {
-      "eclass": "nwp",
-      "ename": "15_sw",
-      "edata": {
-        "bus1": "s152",
-        "bus2": "s28",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s28",
-      "target": "s152"
-    },
-    {
       "eclass": "line",
       "ename": "254",
       "edata": {
@@ -14592,18 +13736,18 @@
       "target": "s38"
     },
     {
-      "eclass": "nwp",
-      "ename": "22_sw",
+      "eclass": "line",
+      "ename": "255",
       "edata": {
-        "bus1": "s146",
-        "bus2": "s33",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s38",
+        "bus2": "s47",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s33",
-      "target": "s146"
+      "source": "s38",
+      "target": "s47"
     },
     {
       "eclass": "line",
@@ -14634,20 +13778,6 @@
       "target": "s74"
     },
     {
-      "eclass": "nwp",
-      "ename": "31_sw",
-      "edata": {
-        "bus1": "s168",
-        "bus2": "s69",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s69",
-      "target": "s168"
-    },
-    {
       "eclass": "line",
       "ename": "259",
       "edata": {
@@ -14662,18 +13792,18 @@
       "target": "s79"
     },
     {
-      "eclass": "nwp",
-      "ename": "38_sw",
+      "eclass": "line",
+      "ename": "260",
       "edata": {
-        "bus1": "s162",
-        "bus2": "s74",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s79",
+        "bus2": "s88",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s74",
-      "target": "s162"
+      "source": "s79",
+      "target": "s88"
     },
     {
       "eclass": "line",
@@ -14704,20 +13834,6 @@
       "target": "s115"
     },
     {
-      "eclass": "nwp",
-      "ename": "47_sw",
-      "edata": {
-        "bus1": "s184",
-        "bus2": "s110",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s110",
-      "target": "s184"
-    },
-    {
       "eclass": "line",
       "ename": "264",
       "edata": {
@@ -14732,18 +13848,18 @@
       "target": "s120"
     },
     {
-      "eclass": "nwp",
-      "ename": "54_sw",
+      "eclass": "line",
+      "ename": "265",
       "edata": {
-        "bus1": "s178",
-        "bus2": "s115",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s120",
+        "bus2": "s129",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s115",
-      "target": "s178"
+      "source": "s120",
+      "target": "s129"
     },
     {
       "eclass": "line",
@@ -14774,20 +13890,6 @@
       "target": "s34"
     },
     {
-      "eclass": "nwp",
-      "ename": "17_sw",
-      "edata": {
-        "bus1": "s156",
-        "bus2": "s29",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s29",
-      "target": "s156"
-    },
-    {
       "eclass": "line",
       "ename": "269",
       "edata": {
@@ -14802,18 +13904,18 @@
       "target": "s39"
     },
     {
-      "eclass": "nwp",
-      "ename": "24_sw",
+      "eclass": "line",
+      "ename": "270",
       "edata": {
-        "bus1": "s150",
-        "bus2": "s34",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s39",
+        "bus2": "s52",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s34",
-      "target": "s150"
+      "source": "s39",
+      "target": "s52"
     },
     {
       "eclass": "line",
@@ -14844,20 +13946,6 @@
       "target": "s75"
     },
     {
-      "eclass": "nwp",
-      "ename": "33_sw",
-      "edata": {
-        "bus1": "s172",
-        "bus2": "s70",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s70",
-      "target": "s172"
-    },
-    {
       "eclass": "line",
       "ename": "274",
       "edata": {
@@ -14872,18 +13960,18 @@
       "target": "s80"
     },
     {
-      "eclass": "nwp",
-      "ename": "40_sw",
+      "eclass": "line",
+      "ename": "275",
       "edata": {
-        "bus1": "s166",
-        "bus2": "s75",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s80",
+        "bus2": "s93",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s75",
-      "target": "s166"
+      "source": "s80",
+      "target": "s93"
     },
     {
       "eclass": "line",
@@ -14914,20 +14002,6 @@
       "target": "s116"
     },
     {
-      "eclass": "nwp",
-      "ename": "49_sw",
-      "edata": {
-        "bus1": "s188",
-        "bus2": "s111",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s111",
-      "target": "s188"
-    },
-    {
       "eclass": "line",
       "ename": "279",
       "edata": {
@@ -14942,18 +14016,18 @@
       "target": "s121"
     },
     {
-      "eclass": "nwp",
-      "ename": "56_sw",
+      "eclass": "line",
+      "ename": "280",
       "edata": {
-        "bus1": "s182",
-        "bus2": "s116",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s121",
+        "bus2": "s134",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s116",
-      "target": "s182"
+      "source": "s121",
+      "target": "s134"
     },
     {
       "eclass": "line",
@@ -14984,20 +14058,6 @@
       "target": "s35"
     },
     {
-      "eclass": "nwp",
-      "ename": "19_sw",
-      "edata": {
-        "bus1": "s160",
-        "bus2": "s30",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s30",
-      "target": "s160"
-    },
-    {
       "eclass": "line",
       "ename": "284",
       "edata": {
@@ -15012,18 +14072,18 @@
       "target": "s40"
     },
     {
-      "eclass": "nwp",
-      "ename": "26_sw",
+      "eclass": "line",
+      "ename": "285",
       "edata": {
-        "bus1": "s154",
-        "bus2": "s35",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s40",
+        "bus2": "s57",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s35",
-      "target": "s154"
+      "source": "s40",
+      "target": "s57"
     },
     {
       "eclass": "line",
@@ -15054,20 +14114,6 @@
       "target": "s76"
     },
     {
-      "eclass": "nwp",
-      "ename": "35_sw",
-      "edata": {
-        "bus1": "s176",
-        "bus2": "s71",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s71",
-      "target": "s176"
-    },
-    {
       "eclass": "line",
       "ename": "289",
       "edata": {
@@ -15082,18 +14128,18 @@
       "target": "s81"
     },
     {
-      "eclass": "nwp",
-      "ename": "42_sw",
+      "eclass": "line",
+      "ename": "290",
       "edata": {
-        "bus1": "s170",
-        "bus2": "s76",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s81",
+        "bus2": "s98",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s76",
-      "target": "s170"
+      "source": "s81",
+      "target": "s98"
     },
     {
       "eclass": "line",
@@ -15124,20 +14170,6 @@
       "target": "s117"
     },
     {
-      "eclass": "nwp",
-      "ename": "51_sw",
-      "edata": {
-        "bus1": "s192",
-        "bus2": "s112",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
-        "phases": 3
-      },
-      "source": "s112",
-      "target": "s192"
-    },
-    {
       "eclass": "line",
       "ename": "294",
       "edata": {
@@ -15152,18 +14184,18 @@
       "target": "s122"
     },
     {
-      "eclass": "nwp",
-      "ename": "58_sw",
+      "eclass": "line",
+      "ename": "295",
       "edata": {
-        "bus1": "s186",
-        "bus2": "s117",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s122",
+        "bus2": "s139",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s117",
-      "target": "s186"
+      "source": "s122",
+      "target": "s139"
     },
     {
       "eclass": "line",
@@ -15208,18 +14240,18 @@
       "target": "s41"
     },
     {
-      "eclass": "nwp",
-      "ename": "28_sw",
+      "eclass": "line",
+      "ename": "300",
       "edata": {
-        "bus1": "s158",
-        "bus2": "s36",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s41",
+        "bus2": "s62",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s36",
-      "target": "s158"
+      "source": "s41",
+      "target": "s62"
     },
     {
       "eclass": "line",
@@ -15264,18 +14296,18 @@
       "target": "s82"
     },
     {
-      "eclass": "nwp",
-      "ename": "44_sw",
+      "eclass": "line",
+      "ename": "305",
       "edata": {
-        "bus1": "s174",
-        "bus2": "s77",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s82",
+        "bus2": "s103",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s77",
-      "target": "s174"
+      "source": "s82",
+      "target": "s103"
     },
     {
       "eclass": "line",
@@ -15320,18 +14352,18 @@
       "target": "s123"
     },
     {
-      "eclass": "nwp",
-      "ename": "60_sw",
+      "eclass": "line",
+      "ename": "310",
       "edata": {
-        "bus1": "s190",
-        "bus2": "s118",
-        "Switch": true,
-        "length": 1.0,
-        "Relay": true,
+        "bus1": "s123",
+        "bus2": "s144",
+        "units": "ft",
+        "length": 100.0,
+        "Switch": false,
         "phases": 3
       },
-      "source": "s118",
-      "target": "s190"
+      "source": "s123",
+      "target": "s144"
     },
     {
       "eclass": "transformer",
@@ -15348,6 +14380,20 @@
       "target": "p5"
     },
     {
+      "eclass": "switch",
+      "ename": "2_sw",
+      "edata": {
+        "bus1": "p5",
+        "bus2": "p6",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "phases": 3
+      },
+      "source": "p5",
+      "target": "p6"
+    },
+    {
       "eclass": "transformer",
       "ename": "2",
       "edata": {
@@ -15360,6 +14406,1040 @@
       },
       "source": "p8",
       "target": "p9"
+    },
+    {
+      "eclass": "switch",
+      "ename": "4_sw",
+      "edata": {
+        "bus1": "p9",
+        "bus2": "p10",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "phases": 3
+      },
+      "source": "p9",
+      "target": "p10"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "13_sw",
+      "edata": {
+        "bus1": "s148",
+        "bus2": "s27",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s148",
+      "target": "s27"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "14_sw",
+      "edata": {
+        "bus1": "s145",
+        "bus2": "s4",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s145",
+      "target": "s4"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "15_sw",
+      "edata": {
+        "bus1": "s152",
+        "bus2": "s28",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s152",
+      "target": "s28"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "16_sw",
+      "edata": {
+        "bus1": "s149",
+        "bus2": "s9",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s149",
+      "target": "s9"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "17_sw",
+      "edata": {
+        "bus1": "s156",
+        "bus2": "s29",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s156",
+      "target": "s29"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "18_sw",
+      "edata": {
+        "bus1": "s153",
+        "bus2": "s14",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s153",
+      "target": "s14"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "19_sw",
+      "edata": {
+        "bus1": "s160",
+        "bus2": "s30",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s160",
+      "target": "s30"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "20_sw",
+      "edata": {
+        "bus1": "s157",
+        "bus2": "s19",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s157",
+      "target": "s19"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "21_sw",
+      "edata": {
+        "bus1": "s147",
+        "bus2": "s44",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s147",
+      "target": "s44"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "22_sw",
+      "edata": {
+        "bus1": "s146",
+        "bus2": "s33",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s146",
+      "target": "s33"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "23_sw",
+      "edata": {
+        "bus1": "s151",
+        "bus2": "s49",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s151",
+      "target": "s49"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "24_sw",
+      "edata": {
+        "bus1": "s150",
+        "bus2": "s34",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s150",
+      "target": "s34"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "25_sw",
+      "edata": {
+        "bus1": "s155",
+        "bus2": "s54",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s155",
+      "target": "s54"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "26_sw",
+      "edata": {
+        "bus1": "s154",
+        "bus2": "s35",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s154",
+      "target": "s35"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "27_sw",
+      "edata": {
+        "bus1": "s159",
+        "bus2": "s59",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s159",
+      "target": "s59"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "28_sw",
+      "edata": {
+        "bus1": "s158",
+        "bus2": "s36",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s158",
+      "target": "s36"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "29_sw",
+      "edata": {
+        "bus1": "s164",
+        "bus2": "s68",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s164",
+      "target": "s68"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "30_sw",
+      "edata": {
+        "bus1": "s161",
+        "bus2": "s45",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s161",
+      "target": "s45"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "31_sw",
+      "edata": {
+        "bus1": "s168",
+        "bus2": "s69",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s168",
+      "target": "s69"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "32_sw",
+      "edata": {
+        "bus1": "s165",
+        "bus2": "s50",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s165",
+      "target": "s50"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "33_sw",
+      "edata": {
+        "bus1": "s172",
+        "bus2": "s70",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s172",
+      "target": "s70"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "34_sw",
+      "edata": {
+        "bus1": "s169",
+        "bus2": "s55",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s169",
+      "target": "s55"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "35_sw",
+      "edata": {
+        "bus1": "s176",
+        "bus2": "s71",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s176",
+      "target": "s71"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "36_sw",
+      "edata": {
+        "bus1": "s173",
+        "bus2": "s60",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s173",
+      "target": "s60"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "37_sw",
+      "edata": {
+        "bus1": "s163",
+        "bus2": "s85",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s163",
+      "target": "s85"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "38_sw",
+      "edata": {
+        "bus1": "s162",
+        "bus2": "s74",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s162",
+      "target": "s74"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "39_sw",
+      "edata": {
+        "bus1": "s167",
+        "bus2": "s90",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s167",
+      "target": "s90"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "40_sw",
+      "edata": {
+        "bus1": "s166",
+        "bus2": "s75",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s166",
+      "target": "s75"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "41_sw",
+      "edata": {
+        "bus1": "s171",
+        "bus2": "s95",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s171",
+      "target": "s95"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "42_sw",
+      "edata": {
+        "bus1": "s170",
+        "bus2": "s76",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s170",
+      "target": "s76"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "43_sw",
+      "edata": {
+        "bus1": "s175",
+        "bus2": "s100",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s175",
+      "target": "s100"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "44_sw",
+      "edata": {
+        "bus1": "s174",
+        "bus2": "s77",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s174",
+      "target": "s77"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "45_sw",
+      "edata": {
+        "bus1": "s180",
+        "bus2": "s109",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s180",
+      "target": "s109"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "46_sw",
+      "edata": {
+        "bus1": "s177",
+        "bus2": "s86",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s177",
+      "target": "s86"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "47_sw",
+      "edata": {
+        "bus1": "s184",
+        "bus2": "s110",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s184",
+      "target": "s110"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "48_sw",
+      "edata": {
+        "bus1": "s181",
+        "bus2": "s91",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s181",
+      "target": "s91"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "49_sw",
+      "edata": {
+        "bus1": "s188",
+        "bus2": "s111",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s188",
+      "target": "s111"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "50_sw",
+      "edata": {
+        "bus1": "s185",
+        "bus2": "s96",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s185",
+      "target": "s96"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "51_sw",
+      "edata": {
+        "bus1": "s192",
+        "bus2": "s112",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s192",
+      "target": "s112"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "52_sw",
+      "edata": {
+        "bus1": "s189",
+        "bus2": "s101",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s189",
+      "target": "s101"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "53_sw",
+      "edata": {
+        "bus1": "s179",
+        "bus2": "s126",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s179",
+      "target": "s126"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "54_sw",
+      "edata": {
+        "bus1": "s178",
+        "bus2": "s115",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s178",
+      "target": "s115"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "55_sw",
+      "edata": {
+        "bus1": "s183",
+        "bus2": "s131",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s183",
+      "target": "s131"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "56_sw",
+      "edata": {
+        "bus1": "s182",
+        "bus2": "s116",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s182",
+      "target": "s116"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "57_sw",
+      "edata": {
+        "bus1": "s187",
+        "bus2": "s136",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s187",
+      "target": "s136"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "58_sw",
+      "edata": {
+        "bus1": "s186",
+        "bus2": "s117",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s186",
+      "target": "s117"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "59_sw",
+      "edata": {
+        "bus1": "s191",
+        "bus2": "s141",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s191",
+      "target": "s141"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "60_sw",
+      "edata": {
+        "bus1": "s190",
+        "bus2": "s118",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s190",
+      "target": "s118"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "61_sw",
+      "edata": {
+        "bus1": "s196",
+        "bus2": "s194",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s196",
+      "target": "s194"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "62_sw",
+      "edata": {
+        "bus1": "s197",
+        "bus2": "s195",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s197",
+      "target": "s195"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "63_sw",
+      "edata": {
+        "bus1": "s201",
+        "bus2": "s199",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s201",
+      "target": "s199"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "64_sw",
+      "edata": {
+        "bus1": "s202",
+        "bus2": "s200",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s202",
+      "target": "s200"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "65_sw",
+      "edata": {
+        "bus1": "s207",
+        "bus2": "s204",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s207",
+      "target": "s204"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "66_sw",
+      "edata": {
+        "bus1": "s208",
+        "bus2": "s205",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s208",
+      "target": "s205"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "67_sw",
+      "edata": {
+        "bus1": "s209",
+        "bus2": "s206",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s209",
+      "target": "s206"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "68_sw",
+      "edata": {
+        "bus1": "s214",
+        "bus2": "s211",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s214",
+      "target": "s211"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "69_sw",
+      "edata": {
+        "bus1": "s215",
+        "bus2": "s212",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s215",
+      "target": "s212"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "70_sw",
+      "edata": {
+        "bus1": "s216",
+        "bus2": "s213",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s216",
+      "target": "s213"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "71_sw",
+      "edata": {
+        "bus1": "s221",
+        "bus2": "s218",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s221",
+      "target": "s218"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "72_sw",
+      "edata": {
+        "bus1": "s222",
+        "bus2": "s219",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s222",
+      "target": "s219"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "73_sw",
+      "edata": {
+        "bus1": "s223",
+        "bus2": "s220",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s223",
+      "target": "s220"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "74_sw",
+      "edata": {
+        "bus1": "s228",
+        "bus2": "s225",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s228",
+      "target": "s225"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "75_sw",
+      "edata": {
+        "bus1": "s229",
+        "bus2": "s226",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s229",
+      "target": "s226"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "76_sw",
+      "edata": {
+        "bus1": "s230",
+        "bus2": "s227",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s230",
+      "target": "s227"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "77_sw",
+      "edata": {
+        "bus1": "s234",
+        "bus2": "s232",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s234",
+      "target": "s232"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "78_sw",
+      "edata": {
+        "bus1": "s235",
+        "bus2": "s233",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s235",
+      "target": "s233"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "79_sw",
+      "edata": {
+        "bus1": "s238",
+        "bus2": "s237",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s238",
+      "target": "s237"
+    },
+    {
+      "eclass": "nwp",
+      "ename": "80_sw",
+      "edata": {
+        "bus1": "s240",
+        "bus2": "s239",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "Relay": true,
+        "phases": 3
+      },
+      "source": "s240",
+      "target": "s239"
     }
   ]
 }

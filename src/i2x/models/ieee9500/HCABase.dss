@@ -1,11 +1,9 @@
 Clear
+set eventlogdefault=yes
 
 New Circuit.hca9500node pu=1.05  r1=0  x1=0.001  r0=0  x0=0.001  
 
-new Loadshape.pclear npts=86401 sinterval=1 csvfile=../support/pclear.dat action=normalize
-new Loadshape.pcloud npts=86401 sinterval=1 csvfile=../support/pcloud.dat action=normalize
-new Loadshape.pvduty npts=2900 interval=(1.0 3600 /) mult=(file=../support/pvloadshape-1sec-2900pts.dat) action=normalize
-redirect ../support/inverters.dss
+redirect ../support/loadshapes_and_xycurves.dss
 
 Redirect  WireData.dss
 Redirect  CableData.dss
@@ -60,8 +58,9 @@ Set loadmult=1.0
 
 ! Generator Configuration
 ! CHP at 30% capacity, MT-1 at 25%, MT-2 at 50%, all other DG off.
-Generator.SteamGen1.kw=1000
-Generator.SteamGen1.vpu=1.00
+! generator PV model (3) is not compatible with InvControl and ExpControl
+edit Generator.SteamGen1 model=1 kw=1000 vpu=1.00 pf=-0.68
+//edit Generator.SteamGen1 kw=1000 vpu=1.00
 Generator.MicroTurb-1.kw=50
 Generator.MicroTurb-2.kw=0
 Generator.MicroTurb-3.kw=0
@@ -76,15 +75,7 @@ Generator.LNGEngine1800.kw=0
 
 
 ! Set normal feeder configuration
-open Line.WF856_48332_sw
-open Line.WG127_48332_sw
-open LINE.LN0653457_SW
-open LINE.V7173_48332_SW
-open LINE.TSW803273_SW 
-open LINE.A333_48332_SW 
-//solve
-open LINE.TSW320328_SW  
-open LINE.A8645_48332_SW
-open LINE.TSW568613_SW
-//solve
+redirect switches.dss
 
+// include reclosers and their monitors
+redirect reclosers.dss

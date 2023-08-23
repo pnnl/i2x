@@ -28,9 +28,9 @@ Redirect  CapControls.dss
 Redirect  Regulators.dss
 
 Redirect  Generators.dss
-Redirect  EnergyStorage.dss
-Redirect  PV_10pen_DSSPV.dss
-Redirect  PV_NN_100_DSSPV.dss
+//Redirect  EnergyStorage.dss
+//Redirect  PV_10pen_DSSPV.dss
+//Redirect  PV_NN_100_DSSPV.dss
 
 ! Let DSS estimate the voltage bases
 Set voltagebases=[115, 69, 12.47,  0.480, 0.208] 
@@ -58,7 +58,12 @@ setkvbase m1069-MT1     kVll=0.480
 !Buscoords  BusCoords.dss
 LatLongCoords LatLongCoords.dss
 
+//New Energymeter.m1 Element=Line.HVMV115B1_sw Terminal=1
 New Energymeter.m1 Element=Line.LN5710794-3 Terminal=1
+
+//new Energymeter.f1 Element=LINE.HVMV_SUB_CONNECTOR Terminal=1
+//new Energymeter.f2 Element=LINE.HVMV69S2B2_SW      Terminal=1
+//new Energymeter.f3 Element=LINE.HVMV69S3B2_SW      Terminal=1
 
 
 Set Maxiterations=30     ! Sometimes the solution takes more than the default 15 iterations
@@ -82,6 +87,8 @@ Generator.Diesel590.kw=0
 Generator.LNGEngine100.kw=0
 Generator.LNGEngine1800.kw=0
 
+//batchedit generator..* kw=0
+//batchedit pvsystem..* enabled=no
 
 ! Set normal feeder configuration
 open Line.WF856_48332_sw
@@ -113,16 +120,27 @@ edit transformer.HVMV69_11Sub1 sub=y subname=S1
 edit transformer.HVMV69_11Sub2 sub=y subname=S2
 edit transformer.HVMV69_11Sub3 sub=y subname=S3
 
-new recloser.r1 monitoredobj=LINE.LN6044631-1
-new recloser.r2 monitoredobj=LINE.LN5742828-2
-new recloser.r3 monitoredobj=LINE.LN5774497-1
-new recloser.r4 monitoredobj=LINE.LN5534968-1
-new recloser.r5 monitoredobj=LINE.LN5803273-1
-new recloser.r6 monitoredobj=LINE.LN6350556-2
-new recloser.r7 monitoredobj=LINE.LN5502532-1
-new recloser.r8 monitoredobj=LINE.LN5533709-1
-new recloser.r9 monitoredobj=LINE.LN6413954-1
-new recloser.r10 monitoredobj=LINE.LN6359077-1
-new recloser.r11 monitoredobj=LINE.LN2001100-1
+new recloser.r1  monitoredobj=LINE.HVMV_SUB_CONNECTOR MonitoredTerm=1 phasetrip=400.0 groundtrip=200.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+new recloser.r2  monitoredobj=LINE.HVMV69S2B2_SW      MonitoredTerm=1 phasetrip=400.0 groundtrip=200.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+new recloser.r3  monitoredobj=LINE.HVMV69S3B2_SW      MonitoredTerm=1 phasetrip=400.0 groundtrip=200.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+new recloser.r4  monitoredobj=LINE.LN0956471_SW       MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r5  monitoredobj=LINE.LN6350556-2        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r6  monitoredobj=LINE.LN5502532-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r7  monitoredobj=LINE.LN6413954-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r8  monitoredobj=LINE.LN6359077-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+new recloser.r9  monitoredobj=LINE.LN2001100-1        MonitoredTerm=1 phasetrip=200.0 groundtrip=150.0
+batchedit recloser..* phasefast=A groundfast=A phasedelayed=D grounddelayed=D
+
+batchedit regcontrol..* enabled=no
+batchedit capcontrol..* enabled=no
+batchedit load..* model=2
+
+new fault.flt bus1=hvmv_sub1_48332  phases=3 temporary=yes ontime=0.01
+new monitor.flt element=fault.flt mode=32
+set mode=dynamic controlmode=time time=(0,0) stepsize=0.004 number=1000
+solve
 
 //Plot daisy Power Max=1000 dots=n labels=n 1ph=3
