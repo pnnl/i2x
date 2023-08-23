@@ -2,7 +2,3 @@ __pycache__
 src/i2x.egg-info/
 dist/
 scratch/
-.idea
-result.pkl
-bin
-venv
