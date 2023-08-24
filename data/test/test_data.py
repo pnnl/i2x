@@ -1,7 +1,7 @@
-import solar_trace as st
-import qu as qu
+from myscript import main_function
 
 def test_main_function_execution():
     # This test will simply run the main function and will pass if no exceptions are raised.
-    qu.qu_driver()
-    st.st_driver()  
+    print("Starting test...")
+    main_function()  
+    print("Finished test")
