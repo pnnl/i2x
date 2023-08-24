@@ -32,4 +32,6 @@ jobs:
     - name: Test
       run: |
         source venv/bin/activate
-        python data/myscript.py
+        # python data/myscript.py
+        pytest test/test_data.py
+
