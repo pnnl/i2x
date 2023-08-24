@@ -33,5 +33,5 @@ jobs:
       run: |
         source venv/bin/activate
         # python data/myscript.py
-        pytest test/test_data.py
+        pytest data/test/test_data.py
 
