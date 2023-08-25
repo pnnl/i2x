@@ -15,7 +15,7 @@ if __name__ == '__main__':
   if len(sys.argv) > 1:
     if int(sys.argv[1]) > 0:
       results_file = 'WECC240_out.json'
-      case_file = 'WECC240_case.m'
+      case_file = 'WECC240_wmva.m'
 
   lp = open (results_file).read()
   r = json.loads(lp)
