@@ -7,16 +7,7 @@ import i2x.mpow_utilities as mpow
 
 # some data from CIMHub/BES/mpow.py
 
-CASES = [
-  {'id': '1783D2A8-1204-4781-A0B4-7A73A2FA6038', 
-   'name': 'IEEE118', 
-   'swingbus':'131',
-   'load_scale':0.6748},
-  {'id': '2540AF5C-4F83-4C0F-9577-DEE8CC73BBB3', 
-   'name': 'WECC240', 
-   'swingbus':'2438',
-   'load_scale':1.0425},
-]
+from bes_cases import *
 
 # global constants
 SQRT3 = math.sqrt(3.0)

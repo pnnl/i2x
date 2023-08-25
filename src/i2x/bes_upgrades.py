@@ -93,6 +93,27 @@ def get_branch_description (branch, bus, i):
     desc = 'Scap {:3d}-{:3d} {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, xpu, mva)
   return desc
 
+def estimate_branch_scaling (x, b, tap, kv1, kv2, mva):
+  npar = 1
+  length = 1.0
+  if tap > 0.0:
+    eclass = 'xfmr'
+    npar = estimate_transformers_in_parallel (mva, max(kv1, kv2))
+  elif x >= 0.0:
+    eclass = 'line'
+    zbase = kv1*kv1/100.0
+    x *= zbase
+    if b > 0.0:
+      xc = zbase / b
+      z = math.sqrt(x * xc)
+      npar = estimate_overhead_lines_in_parallel (z, kv1)
+    length = estimate_overhead_line_length (x*npar, kv1)
+  else:
+    eclass = 'scap'
+
+  scale = get_parallel_branch_scale (npar)
+  return eclass, round (length, 3), npar, round (scale, 6)
+
 def set_estimated_branch_ratings (matpower_dictionary, 
                                   branch_contingencies=None, 
                                   contingency_mva_threshold=100.0, 

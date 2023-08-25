@@ -9,10 +9,7 @@ import matplotlib.patches as patches
 
 plt.rcParams['savefig.directory'] = os.getcwd()
 
-CASES = [
-  {'id': '1783D2A8-1204-4781-A0B4-7A73A2FA6038', 'name': 'IEEE118'},
-  {'id': '2540AF5C-4F83-4C0F-9577-DEE8CC73BBB3', 'name': 'WECC240'},
-]
+from bes_cases import *
 
 nodeTypes = {
   'load':  {'color':'green', 'tag':'Load',  'size':15},
