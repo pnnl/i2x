@@ -10,8 +10,6 @@ import i2x.mpow_utilities as mpow
 import json
 import os
 
-fuel_list = ['hca', 'wind', 'solar', 'nuclear', 'hydro', 'coal', 'ng', 'dl']
-
 def cfg_assign (cfg, tag, val):
   if tag in cfg:
     val = cfg[tag]
@@ -30,6 +28,8 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
   load_scale = 2.75
   hca_buses = None
   upgrades = None
+  branch_contingencies = None
+  bus_contingencies = None
   if cfg_filename is not None:
     fp = open (cfg_filename, 'r')
     cfg = json.loads(fp.read())
@@ -39,6 +39,8 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     load_scale = cfg_assign (cfg, 'load_scale', load_scale)
     hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
     upgrades = cfg_assign (cfg, 'upgrades', upgrades)
+    branch_contingencies = cfg_assign (cfg, 'branch_contingencies', branch_contingencies)
+    bus_contingencies = cfg_assign (cfg, 'bus_contingencies', bus_contingencies)
   out_name = '{:s}_out.json'.format(case_title)
   saved_iteration = 0
 
@@ -92,12 +94,26 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
 
   if log_output == True:
     print ('Bus Generation by Fuel[GW]')
-    print ('   ', ' '.join(['{:>7s}'.format(x) for x in fuel_list]), ' [Max muF Branch] [Mean muF Branch]')
+    print ('   ', ' '.join(['{:>7s}'.format(x) for x in mpow.FUEL_LIST]), ' [Max muF Branch] [Mean muF Branch]')
   iteration = 0
+
+  # write the size-based list of branch contingencies, but only if there are no adjacent-bus contingencies
+  chgtab_name = 'hca_contab'
+  if branch_contingencies is not None:
+    if bus_contingencies is None:
+      mpow.write_contab_list (chgtab_name, d, branch_contingencies)
+
   for hca_bus in hca_buses:
     iteration += 1
     cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
     fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, quiet=True)
+    # update the list of contingencies for this HCA bus
+    if bus_contingencies is not None:
+      contingencies = bus_contingencies[str(hca_bus)]
+      if branch_contingencies is not None:
+        contingencies = contingencies + branch_contingencies
+      mpow.write_contab_list (chgtab_name, d, contingencies, bLog=False)
+
     # remove old results so we know if an error occurred
     if os.path.exists(fsummary):
       os.remove(fsummary)
@@ -122,14 +138,14 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
 
     # summarize the generation by fuel type
     fuel_Pg = {}
-    for fuel in fuel_list:
+    for fuel in mpow.FUEL_LIST:
       fuel_Pg[fuel] = 0.0
     for i in range(ng):
       fuel = d['genfuel'][i]
       fuel_Pg[fuel] += meanPgen[i]
-    for fuel in fuel_list:
+    for fuel in mpow.FUEL_LIST:
       fuel_Pg[fuel] *= 0.001
-    fuel_str = ' '.join(['{:7.3f}'.format(fuel_Pg[x]) for x in fuel_list])
+    fuel_str = ' '.join(['{:7.3f}'.format(fuel_Pg[x]) for x in mpow.FUEL_LIST])
 
     # identify the most limiting branches, based on shadow prices
     branch_str = 'None'

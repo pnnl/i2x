@@ -5,6 +5,7 @@
 import sys
 import numpy as np
 import i2x.mpow_utilities as mpow
+import networkx as nx
 import json
 import math
 
@@ -170,15 +171,77 @@ def print_limiting_branches (case_file, results_file):
 
   lp = open (results_file).read()
   r = json.loads(lp)
-  print (' Bus   HC[GW]')
+  print (' Bus   HC[MW]')
   for key, val in r['buses'].items():
-    print ('{:4d} {:8.3f}'.format (int(key), val['fuels']['hca']))
+    print ('{:4d} {:8.2f}'.format (int(key), 1000.0 * val['fuels']['hca']))
     i_max = val['max_max_muF']['branch']
     mu_max = val['max_max_muF']['muF']
     i_mean = val['max_mean_muF']['branch']
     mu_mean = val['max_mean_muF']['muF']
-    print ('       Max Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_max, mu_max, 
+    if mu_max > 0.0:
+      print ('       Max Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_max, mu_max, 
                                                                 get_branch_description (branch, bus, i_max)))
-    print ('      Mean Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_mean, mu_mean, 
+      print ('      Mean Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_mean, mu_mean, 
                                                                 get_branch_description (branch, bus, i_mean)))
+
+def get_graph_bus_type (idx):
+  if idx == 1:
+    return 'PQ'
+  elif idx == 2:
+    return 'PV'
+  elif idx == 3:
+    return 'Swing'
+  return 'Isolated'
+
+def build_matpower_graph (d):
+  branch = np.array (d['branch'], dtype=float)
+  bus = np.array (d['bus'], dtype=float)
+  G = nx.Graph()
+  for i in range(len(bus)):
+    n = i+1
+    nclass = get_graph_bus_type (bus[i, mpow.BUS_TYPE])
+    G.add_node (n, nclass=nclass, ndata={'kV':bus[i, mpow.BASE_KV], 'PD':bus[i, mpow.PD], 'QD': bus[i, mpow.QD]})
+  for i in range(len(branch)):
+    n1 = int (branch[i, mpow.F_BUS])
+    n2 = int (branch[i, mpow.T_BUS])
+    kV1 = bus[n1-1, mpow.BASE_KV]
+    kV2 = bus[n2-1, mpow.BASE_KV]
+    MVA = branch[i, mpow.RATE_A]
+    r = branch[i, mpow.BR_R]
+    x = branch[i, mpow.BR_X]
+    b = branch[i, mpow.BR_B]
+    tap = branch[i, mpow.TAP]
+    # now estimate how many parallel branches this represents, and the line length if applicable
+    eclass, length, npar, scale = estimate_branch_scaling (x, b, tap, kV1, kV2, MVA)
+    G.add_edge (n1, n2, eclass=eclass, ename=str(i+1), 
+                edata={'kV1':kV1, 'kV2':kV2, 'MVA':MVA, 'r':r, 'x':x, 'b':b, 'tap':tap, 'npar':npar, 'miles':length, 'scale':scale}, 
+                weight=x)
+  return G
+
+def add_bus_contingencies (G, hca_buses, bLog=True):
+  d = {}
+  ncmax = 0
+  removals = []
+  for key in hca_buses:
+    bus = int(key)
+    d[bus] = []
+    ev = list(G.edges(nbunch=bus, data=True))
+    nc = len(ev)
+    if nc > ncmax:
+      ncmax = nc
+    bExcluded = False
+    if nc < 2:
+      if ev[0][2]['edata']['npar'] < 2:
+        bExcluded = True
+        removals.append(bus)
+        if bLog:
+          print ('** Radial bus {:d} has no parallel circuit and should be excluded from HCA'.format (bus))
+    if not bExcluded:
+      for br in ev:
+        brnum = int(br[2]['ename'])
+        scale = br[2]['edata']['scale']
+        d[bus].append ({'branch': brnum, 'scale': scale})
+  if bLog:
+    print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
+  return d, removals, ncmax
 

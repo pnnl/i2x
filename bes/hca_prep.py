@@ -40,7 +40,7 @@ if __name__ == '__main__':
   for i in range(nb):
     if bus[i,mpow.BASE_KV] > 100.0:
       hca_buses.append (int(bus[i,mpow.BUS_I]))
-  print ('{:d} of {:d} buses for HCA'.format(len(hca_buses), nb))
+  print ('{:d} of {:d} candidate buses for HCA'.format(len(hca_buses), nb))
   cfg['hca_buses'] = hca_buses
 
   branch_contingencies = []
@@ -49,7 +49,7 @@ if __name__ == '__main__':
                                     contingency_mva_threshold=min_contingency_mva,
                                     min_kv=min_kv)
 
-  print ('{:d} of {:d} branch contingencies'.format(len(branch_contingencies), nl))
+  print ('{:d} of {:d} size-based branch contingencies'.format(len(branch_contingencies), nl))
   cfg['branch_contingencies'] = branch_contingencies
 
   if mva_upgrades is not None:
@@ -64,9 +64,16 @@ if __name__ == '__main__':
   print ('Writing base case updates to {:s}.m'.format(wmva_name))
   mpow.write_matpower_casefile (d, wmva_name)
 
-  # write the branch contingency table
+  # write the branch contingency table for size-based filtering - MAY BE OVERWRITTEN with bus contingencies
   chgtab_name = 'hca_contab'
   mpow.write_contab_list (chgtab_name, d, branch_contingencies)
+
+  # find the adjacency-based contingencies for each bus under consideration
+  G = bes.build_matpower_graph (d)
+  cfg['bus_contingencies'], removals, ncmax = bes.add_bus_contingencies (G, hca_buses, bLog=False)
+  print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
+  if len(removals) > 0:
+    print ('** These HCA candidate buses are radial and do not have a parallel circuit connection:', removals)
 
   # write the hosting capacity base case, including a new hca generator and fuel-dependent linear generator costs
 #  %% bus  Pg     Qg    Qmax     Qmin   Vg  mBase status     Pmax   Pmin  Pc1 Pc2 Qc1min  Qc1max  Qc2min  Qc2max  ramp_agc  ramp_10 ramp_30 ramp_q  apf
@@ -80,9 +87,6 @@ if __name__ == '__main__':
   for i in range(ng):
     d['gencost'][i] = mpow.get_hca_gencosts(d['genfuel'][i])
   print ('Writing the hosting capacity analysis base case to hca_case.m')
-  # write the branch contingency table and extra generator data (xgd) for matpower
-  chgtab_name = 'hca_contab'
-  mpow.write_contab_list (chgtab_name, d, branch_contingencies)
 
   # extra generator data (xgd) including the new one for HCA
   # assume all units have been on for 24 hours to start, so MOST can leave them on or switch them off without restriction

@@ -42,7 +42,7 @@ if __name__ == '__main__':
         plot_labels = True
   sys_name = CASES[case_id]['name']
   d = mpow.read_matpower_casefile ('{:s}_wmva.m'.format(sys_name))
-  G = mpow.build_matpower_graph (d)
+  G = bes.build_matpower_graph (d)
   list_neighboring_branches (G)
 
 

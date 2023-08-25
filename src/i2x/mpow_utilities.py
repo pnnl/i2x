@@ -9,8 +9,8 @@ import subprocess
 import sys
 import os
 import math
-import networkx as nx
-import i2x.bes_upgrades as bes
+
+FUEL_LIST = ['hca', 'wind', 'solar', 'nuclear', 'hydro', 'coal', 'ng', 'dl']
 
 # Matpower column numbers
 
@@ -524,7 +524,7 @@ def write_contab (root, d, scales):
   fp.close()
 # print ('wrote {:d} changes labeled {:d} to {:s}'.format (n, label, fname))
 
-def write_contab_list (root, d, conts):
+def write_contab_list (root, d, conts, bLog=True):
   br = d['branch']
   fname = '{:s}.m'.format(root)
   fp = open(fname, 'w')
@@ -558,7 +558,8 @@ def write_contab_list (root, d, conts):
   print('  ];', file=fp)
   print('end', file=fp)
   fp.close()
-  print ('wrote {:d} labeled contingencies to {:s}'.format (n, fname))
+  if bLog:
+    print ('wrote {:d} labeled contingencies to {:s}'.format (n, fname))
 
 # minup, mindown
 def get_plant_min_up_down_hours(fuel, gencosts, gen):
@@ -810,38 +811,4 @@ def concatenate_MOST_result (total, new):
   else:
     total = np.hstack ((total, new))
   return total
-
-def get_graph_bus_type (idx):
-  if idx == 1:
-    return 'PQ'
-  elif idx == 2:
-    return 'PV'
-  elif idx == 3:
-    return 'Swing'
-  return 'Isolated'
-
-def build_matpower_graph (d):
-  branch = np.array (d['branch'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
-  G = nx.Graph()
-  for i in range(len(bus)):
-    n = i+1
-    nclass = get_graph_bus_type (bus[i, BUS_TYPE])
-    G.add_node (n, nclass=nclass, ndata={'kV':bus[i, BASE_KV], 'PD':bus[i, PD], 'QD': bus[i, QD]})
-  for i in range(len(branch)):
-    n1 = int (branch[i, F_BUS])
-    n2 = int (branch[i, T_BUS])
-    kV1 = bus[n1-1, BASE_KV]
-    kV2 = bus[n2-1, BASE_KV]
-    MVA = branch[i, RATE_A]
-    r = branch[i, BR_R]
-    x = branch[i, BR_X]
-    b = branch[i, BR_B]
-    tap = branch[i, TAP]
-    # now estimate how many parallel branches this represents, and the line length if applicable
-    eclass, length, npar, scale = bes.estimate_branch_scaling (x, b, tap, kV1, kV2, MVA)
-    G.add_edge (n1, n2, eclass=eclass, ename=str(i+1), 
-                edata={'kV1':kV1, 'kV2':kV2, 'MVA':MVA, 'r':r, 'x':x, 'b':b, 'tap':tap, 'npar':npar, 'miles':length, 'scale':scale}, 
-                weight=x)
-  return G
 

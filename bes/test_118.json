@@ -3,6 +3,67 @@
     "sys_name": "hca",
     "load_scale": 0.6748,
     "hca_buses": [1],
-    "branch_contingencies": [],
-    "upgrades": null
+    "upgrades": null,
+    "branch_contingencies": [
+      {
+        "branch": 47,
+        "scale": 0.0
+      },
+      {
+        "branch": 54,
+        "scale": 0.0
+      },
+      {
+        "branch": 66,
+        "scale": 0.0
+      },
+      {
+        "branch": 112,
+        "scale": 0.0
+      },
+      {
+        "branch": 113,
+        "scale": 0.0
+      },
+      {
+        "branch": 114,
+        "scale": 0.5
+      },
+      {
+        "branch": 116,
+        "scale": 0.5
+      },
+      {
+        "branch": 117,
+        "scale": 0.5
+      },
+      {
+        "branch": 154,
+        "scale": 0.0
+      },
+      {
+        "branch": 155,
+        "scale": 0.5
+      },
+      {
+        "branch": 170,
+        "scale": 0.5
+      }
+    ],
+    "bus_contingencies": {
+      "1": [
+        {
+          "branch": 36,
+          "scale": 0.0
+        },
+        {
+          "branch": 37,
+          "scale": 0.0
+        },
+        {
+          "branch": 196,
+          "scale": 0.0
+        }
+      ]
+    }
 }
