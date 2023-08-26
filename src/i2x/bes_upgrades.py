@@ -66,15 +66,18 @@ def get_parallel_branch_scale (npar):
     return 1.0 - 1.0 / float(npar)
   return 0.0
 
-def get_branch_description (branch, bus, i):
+# pass i as zero-based index, not the branch number
+def get_branch_description (branch, bus, i, bEstimateMVA=False):
   desc = '??'
   bus1 = int(branch[i,mpow.F_BUS])
   bus2 = int(branch[i,mpow.T_BUS])
   kv1 = bus[bus1-1,mpow.BASE_KV]
   kv2 = bus[bus2-1,mpow.BASE_KV]
   xpu = branch[i,mpow.BR_X]
+  mva = branch[i,mpow.RATE_A]
   if branch[i,mpow.TAP] > 0.0:
-    mva = 100.0 * 0.10 / xpu
+    if bEstimateMVA:
+      mva = 100.0 * 0.10 / xpu
     desc = 'Xfmr {:3d}-{:3d} {:7.2f} / {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, kv2, xpu, mva)
   elif xpu > 0.0:
     bpu = branch[i,mpow.BR_B]
@@ -85,12 +88,14 @@ def get_branch_description (branch, bus, i):
       xc = zbase / branch[i,mpow.BR_B]
       z = math.sqrt(x * xc)
       npar = estimate_overhead_lines_in_parallel (z, kv1)
-    mva = npar * get_default_line_mva (kv1)
+    if bEstimateMVA:
+      mva = npar * get_default_line_mva (kv1)
     # TODO: need a test for overhead vs cable
     miles = estimate_overhead_line_length (x*npar, kv1)
     desc = 'Line {:3d}-{:3d} {:7.2f} kV x={:.4f}, z={:6.2f} ohms, npar={:d}, mva={:.2f}, mi={:.2f}'.format (bus1, bus2, kv1, xpu, z, npar, mva, miles)
   elif xpu < 0.0:
-    mva = get_default_line_mva (kv1)
+    if bEstimateMVA:
+      mva = get_default_line_mva (kv1)
     desc = 'Scap {:3d}-{:3d} {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, xpu, mva)
   return desc
 
@@ -180,9 +185,9 @@ def print_limiting_branches (case_file, results_file):
     mu_mean = val['max_mean_muF']['muF']
     if mu_max > 0.0:
       print ('       Max Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_max, mu_max, 
-                                                                get_branch_description (branch, bus, i_max)))
+                                                                get_branch_description (branch, bus, i_max-1)))
       print ('      Mean Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_mean, mu_mean, 
-                                                                get_branch_description (branch, bus, i_mean)))
+                                                                get_branch_description (branch, bus, i_mean-1)))
 
 def get_graph_bus_type (idx):
   if idx == 1:
