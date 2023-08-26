@@ -132,7 +132,9 @@ def get_node_mnemonic(nclass):
     return nodeTypes[nclass]['tag']
   return nodeTypes['other']['tag']
 
-def get_node_size(nclass):
+def get_node_size(nclass, highlight=False):
+  if highlight:
+    return 35
   if nclass in nodeTypes:
     return nodeTypes[nclass]['size']
   return 1
@@ -142,13 +144,18 @@ def get_node_offset(nclass):
     return nodeTypes[nclass]['lblDeltaY']
   return -lblDeltaY
 
-def get_node_color(nclass):
+def get_node_color(nclass, highlight=False):
   if nclass in nodeTypes:
     nodeTypes[nclass]['count'] += 1
-    return nodeTypes[nclass]['color']
-  return 'black'
+    if highlight:
+      return "yellow"
+    else:
+      return nodeTypes[nclass]['color']
+  return "yellow" if highlight else 'black'
 
-def get_edge_width(nphs, eclass):
+def get_edge_width(nphs, eclass, highlight=False):
+  if highlight:
+    return 5.0
   if eclass != 'line':
     return 4.0
   if nphs == 1:
@@ -162,10 +169,13 @@ def get_edge_marker(eclass):
     return None
   return None # 's'
 
-def get_edge_color(eclass):
+def get_edge_color(eclass, highlight=False):
   if eclass in edgeTypes:
     edgeTypes[eclass]['count'] += 1
-    return edgeTypes[eclass]['color']
+    if highlight:
+      return "yellow"
+    else:
+      return edgeTypes[eclass]['color']
   print ('unknown edge class', eclass)
   return edgeTypes['unknown']['color']
 
@@ -192,9 +202,11 @@ def load_builtin_graph (feeder_name):
   fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
   return load_opendss_graph (fname)
 
-def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, 
+def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, highlight_edges=[], highlight_nodes=[],
                          ax = None, title=None, on_canvas=False, plot_comps=False, legend_loc='lower right'):
 
+  highlight_edges = [s.lower() for s in highlight_edges]
+  highlight_nodes = [s.lower() for s in highlight_nodes]
   reset_type_counts()
   # extract the XY coordinates available for plotting
   xy = {}
@@ -228,12 +240,13 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None,
             xyLbl[n] = [busx, busy + get_node_offset (nclass)]
         else:
           nclass = 'bus'
+        highlight = n.lower() in highlight_nodes
         plotNodes.append(n)
         if plot_comps:
           nodeColors.append(compcolors[d["comp"]])
         else:
-          nodeColors.append (get_node_color (nclass))
-        nodeSizes.append (get_node_size (nclass))
+          nodeColors.append (get_node_color (nclass, highlight=highlight))
+        nodeSizes.append (get_node_size (nclass, highlight=highlight))
 
   # only plot the edges that have XY coordinates at both ends
   plotEdges = []
@@ -246,8 +259,9 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None,
         bFound = True
         nph = data['edata']['phases']
         plotEdges.append ((n1, n2))
-        edgeWidths.append (get_edge_width(nph, data['eclass']))
-        edgeColors.append (get_edge_color(data['eclass']))
+        highlight = data["ename"].lower() in highlight_edges
+        edgeWidths.append (get_edge_width(nph, data['eclass'], highlight=highlight))
+        edgeColors.append (get_edge_color(data['eclass'], highlight=highlight))
     if not bFound:
       print ('unable to plot', data['ename'])
 
