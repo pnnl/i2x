@@ -653,7 +653,7 @@ def ercot_daily_loads (start, end, resp_scale):
   responsive_load = resp_scale * fixed_load
   return fixed_load, responsive_load
 
-def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, cmd=None, quiet=False):
+def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, cmd=None, quiet=False, softlims=False, glpk_opts=None):
   fscript = 'solve_{:s}.m'.format(root)
   fsummary = '{:s}_summary.txt'.format(root)
   fp = open(fscript, 'w')
@@ -667,6 +667,9 @@ def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, c
     print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 0);""", file=fp)
   else:
     print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
+  if glpk_opts is not None:
+    for key, val in glpk_opts.items():
+      print("""mpopt = mpoption(mpopt, '{:s}', {:s});""".format(key, str(val)), file=fp)
   if upgrades is None:
     print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
   else:
@@ -678,6 +681,8 @@ def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, c
   if cmd is not None:
     print (cmd, file=fp)
   print("""xgd = loadxgendata('{:s}_xgd.m', mpc);""".format(root), file=fp)
+  if softlims:
+    print("""set_softlims;""", file=fp)
   print("""mdi = loadmd(mpc, [], xgd, [], '{:s}_contab.m');""".format(root), file=fp)
   print("""mdo = most(mdi, mpopt);""", file=fp)
   print("""ms = most_summary(mdo);""", file=fp)

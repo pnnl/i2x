@@ -218,7 +218,9 @@ def build_matpower_graph (d):
                 weight=x)
   return G
 
-def add_bus_contingencies (G, hca_buses, bLog=True):
+def add_bus_contingencies (G, hca_buses, bLog=True,
+                           contingency_mva_threshold=100.0, 
+                           contingency_kv_threshold=100.0):
   d = {}
   ncmax = 0
   removals = []
@@ -238,9 +240,11 @@ def add_bus_contingencies (G, hca_buses, bLog=True):
           print ('** Radial bus {:d} has no parallel circuit and should be excluded from HCA'.format (bus))
     if not bExcluded:
       for br in ev:
-        brnum = int(br[2]['ename'])
-        scale = br[2]['edata']['scale']
-        d[bus].append ({'branch': brnum, 'scale': scale})
+        edata = br[2]['edata']
+        if edata['MVA'] >= contingency_mva_threshold and edata['kV1'] >= contingency_kv_threshold and edata['kV2'] >= contingency_kv_threshold:
+          brnum = int(br[2]['ename'])
+          scale = br[2]['edata']['scale']
+          d[bus].append ({'branch': brnum, 'scale': scale})
   if bLog:
     print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
   return d, removals, ncmax

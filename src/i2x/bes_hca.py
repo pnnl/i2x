@@ -30,6 +30,8 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
   upgrades = None
   branch_contingencies = None
   bus_contingencies = None
+  softlims = False
+  glpk_opts = None
   if cfg_filename is not None:
     fp = open (cfg_filename, 'r')
     cfg = json.loads(fp.read())
@@ -39,6 +41,8 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     load_scale = cfg_assign (cfg, 'load_scale', load_scale)
     hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
     upgrades = cfg_assign (cfg, 'upgrades', upgrades)
+    softlims = cfg_assign (cfg, 'softlims', softlims)
+    glpk_opts = cfg_assign (cfg, 'glpk_opts', glpk_opts)
     branch_contingencies = cfg_assign (cfg, 'branch_contingencies', branch_contingencies)
     bus_contingencies = cfg_assign (cfg, 'bus_contingencies', bus_contingencies)
   out_name = '{:s}_out.json'.format(case_title)
@@ -106,7 +110,8 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
   for hca_bus in hca_buses:
     iteration += 1
     cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
-    fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, quiet=True)
+    fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, 
+                                                   quiet=True, glpk_opts=glpk_opts, softlims=softlims)
     # update the list of contingencies for this HCA bus
     if bus_contingencies is not None:
       contingencies = bus_contingencies[str(hca_bus)]

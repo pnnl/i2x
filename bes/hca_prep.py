@@ -26,6 +26,8 @@ if __name__ == '__main__':
   cfg['sys_name'] = 'hca'
   cfg['load_scale'] = load_scale
   cfg['upgrades'] = None
+  cfg['softlims'] = CASES[case_id]['softlims']
+  cfg['glpk_opts'] = CASES[case_id]['glpk_opts']
 
   d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))
   nb = len(d['bus'])
