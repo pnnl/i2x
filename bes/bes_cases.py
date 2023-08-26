@@ -20,7 +20,7 @@ CASES = [
      {'branch_number':307, 'new_mva':2168.0},
      {'branch_number':406, 'new_mva': 750.0},
      {'branch_number':422, 'new_mva':2100.0},
-     {'branch_number':430, 'new_mva':1000.0},
+     {'branch_number':430, 'new_mva':1500.0},
      {'branch_number': 52, 'new_mva':1700.0},
      {'branch_number':332, 'new_mva':1200.0},
      {'branch_number':333, 'new_mva':1200.0}]}]

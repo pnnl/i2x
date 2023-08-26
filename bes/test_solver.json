@@ -2,7 +2,7 @@
     "case_title": "WECC240",
     "sys_name": "hca",
     "load_scale": 1.0425,
-    "hca_buses": [103],
+    "hca_buses": [24],
     "upgrades": null,
     "softlims": true,
     "glpk_opts": {
@@ -31,19 +31,19 @@
       }
     ],
     "bus_contingencies": {
-        "103": [
-            {
-              "branch": 158,
-              "scale": 0.5
-            },
-            {
-              "branch": 159,
-              "scale": 0.5
-            },
-            {
-              "branch": 389,
-              "scale": 0.98
-            }
+        "24": [
+          {
+            "branch": 26,
+            "scale": 0.0
+          },
+          {
+            "branch": 29,
+            "scale": 0.0
+          },
+          {
+            "branch": 347,
+            "scale": 0.0
+          }
         ]
     }
 }
