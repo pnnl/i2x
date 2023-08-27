@@ -98,21 +98,21 @@ Branch Upgrade Suggestions:
    1    34.41
    2    13.50
    3   183.32
-       Max Mu Branch:   68 (  44.500) Line   3-  5  138.00 kV x=0.1080, z=371.37 ohms, npar=1, mva=157.00, mi=25.71
-      Mean Mu Branch:   68 (   3.179) Line   3-  5  138.00 kV x=0.1080, z=371.37 ohms, npar=1, mva=157.00, mi=25.71
+       Max Mu Branch:   68 (  44.500) Line   3- 12  138.00 kV x=0.1600, z=378.06 ohms, npar=1, mva=157.00, mi=38.09
+      Mean Mu Branch:   68 (   3.179) Line   3- 12  138.00 kV x=0.1600, z=378.06 ohms, npar=1, mva=157.00, mi=38.09
    4    26.32
-       Max Mu Branch:  177 (  44.000) Xfmr 105-184  138.00 /   13.80 kV x=0.0870, mva=115.00
-      Mean Mu Branch:  177 (   3.385) Xfmr 105-184  138.00 /   13.80 kV x=0.0870, mva=115.00
+       Max Mu Branch:  177 (  44.000) Xfmr 104-183  138.00 /   13.80 kV x=0.0536, mva=186.40
+      Mean Mu Branch:  177 (   3.385) Xfmr 104-183  138.00 /   13.80 kV x=0.0536, mva=186.40
 ```
 
 The branch shadow prices are too low from the HCA on buses 1 and 2 to 
 identify the limiting branch.  At bus 3, the hosting capacity is 183.32 
 MW.  To increase this limit, *muF* suggests that the single-circuit 138-kV 
-line between buses 3 and 5 might be upgraded.  For example, a second line 
+line between buses 3 and 12 might be upgraded.  For example, a second line 
 of the same impedance and MVA rating might be constructed in parallel.  At 
 bus 4, the hosting capacity is 26.32 MW.  To increase that limit, 
-upgrading the 138/13.8 kV transformer between buses 105 and 184 might be 
-upgraded.  For example, a second 115-MVA transformer might be added in 
+upgrading the 138/13.8 kV transformer between buses 104 and 183 might be 
+upgraded.  For example, a second 186-MVA transformer might be added in 
 parallel.  
 
 In reviewing the entire output:
@@ -140,7 +140,7 @@ Interpretation of this output was discussed in the previous section.
 Highlights of the WECC240 results include: 
 
 - The hosting capacity is zero at 28 buses: 2, 20, 41, 58, 59, 81, 123, 124, 125, 126, 127, 128, 129, 172, 173, 174, 175, 176, 177, 178, 179, 187, 200, 206, 213, 214, 227, 233
-- Branch 430 is suggested for an upgrade many times. This is a 552.59 MVA, 500/230-kV transformer, between buses 203 and 205. **TODO**. In *bes\_cases.py*, this should have been upgraded to 1000 MVA. There may be an off-by-one branch indexing error in the grid upgrade logic.
+- Branch 430 is suggested for an upgrade many times. This is a 1000 MVA, 500/230-kV transformer, between buses 200 and 201.
 
 It was not possible to determine an accurate total solution time, because 
 the HCA failed on bus 24.  To work around that failure, this procedure was 
@@ -148,7 +148,7 @@ followed:
 
 - Unlike the IEEE 118-bus system, solve the WECC 240-bus system with Python running in the **background**, i.e, using the **&** operator.
 - After displaying results for bus 22, the HCA fails to make any visible progress for several minutes.
-- Use **ps** to find the process running **octave-cle** and use **kill -9 ####** to stop that process.
+- Use **ps** to find the process running **octave-cli** and use **kill -9 ####** to stop that process.
     - The supervising Python process should indicate that HCA solution failed, and proceed to the next one.
     - Subsequent HCA bus results should be saved in the *WECC240\_out.json* file.
 
