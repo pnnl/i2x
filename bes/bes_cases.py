@@ -13,7 +13,7 @@ CASES = [
    'swingbus':'2438',
    'load_scale':1.0425,
    'softlims': False,
-   'glpk_opts': {'glpk.opts.itlim': 5},
+   'glpk_opts': None, # {'glpk.opts.itlim': 5},
    'min_kv_to_upgrade': 10.0,
    'min_contingency_mva': 5000.0,
    'mva_upgrades': [

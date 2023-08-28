@@ -4,9 +4,7 @@
   "load_scale": 1.0425,
   "upgrades": null,
   "softlims": false,
-  "glpk_opts": {
-    "glpk.opts.itlim": 5
-  },
+  "glpk_opts": null,
   "hca_buses": [
     1,
     2,
