@@ -15,8 +15,9 @@
 "hca_log":{
     "logname": "hcalog",
     "loglevel": "info",
-    "format": "{name}: {levelname}: {message}",
-    "logtofile": false
+    "format": "{message}",
+    "logtofile": false,
+    "logtofilemode": "w"
 },
 "remove_large_der": [],
 "explicit_storage": {},
