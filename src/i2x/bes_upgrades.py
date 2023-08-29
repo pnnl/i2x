@@ -133,9 +133,10 @@ def get_branch_description (branch, bus, i, bEstimateMVA=False, bEstimateCost=Fa
   elif xpu > 0.0:
     bpu = branch[i,mpow.BR_B]
     npar = 1
+    zbase = kv1*kv1/100.0
+    x = xpu*zbase
+    z = -1.0
     if bpu > 0.0:
-      zbase = kv1*kv1/100.0
-      x = xpu*zbase
       xc = zbase / branch[i,mpow.BR_B]
       z = math.sqrt(x * xc)
       npar = estimate_overhead_lines_in_parallel (z, kv1)
@@ -288,7 +289,7 @@ def build_matpower_graph (d):
                 weight=x)
   return G
 
-def add_bus_contingencies (G, hca_buses, bLog=True,
+def add_bus_contingencies (G, hca_buses, size_contingencies=[], bLog=True,
                            contingency_mva_threshold=100.0, 
                            contingency_kv_threshold=100.0):
   d = {}
@@ -307,14 +308,15 @@ def add_bus_contingencies (G, hca_buses, bLog=True,
         bExcluded = True
         removals.append(bus)
         if bLog:
-          print ('** Radial bus {:d} has no parallel circuit and should be excluded from HCA'.format (bus))
+          print ('** Radial bus {:d} has no parallel circuit and can only serve local load. Might exclude from HCA.'.format (bus))
     if not bExcluded:
       for br in ev:
         edata = br[2]['edata']
         if edata['MVA'] >= contingency_mva_threshold and edata['kV1'] >= contingency_kv_threshold and edata['kV2'] >= contingency_kv_threshold:
           brnum = int(br[2]['ename'])
-          scale = br[2]['edata']['scale']
-          d[bus].append ({'branch': brnum, 'scale': scale})
+          if brnum not in size_contingencies:
+            scale = br[2]['edata']['scale']
+            d[bus].append ({'branch': brnum, 'scale': scale})
   if bLog:
     print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
   return d, removals, ncmax
