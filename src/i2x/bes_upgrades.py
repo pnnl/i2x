@@ -234,15 +234,25 @@ def print_limiting_branches (case_file, results_file):
   print (' Bus   HC[MW]')
   for key, val in r['buses'].items():
     print ('{:4d} {:8.2f}'.format (int(key), 1000.0 * val['fuels']['hca']))
+    printed = []
     i_max = val['max_max_muF']['branch']
     mu_max = val['max_max_muF']['muF']
     i_mean = val['max_mean_muF']['branch']
     mu_mean = val['max_mean_muF']['muF']
-    if mu_max > 0.0:
+    if mu_max > 0.0 and i_max not in printed:
       print ('       Max Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_max, mu_max, 
                                                                 get_branch_description (branch, bus, i_max-1, bEstimateCost=True)))
+      printed.append (i_max)
+    if mu_mean > 0.0 and i_mean not in printed:
       print ('      Mean Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_mean, mu_mean, 
                                                                 get_branch_description (branch, bus, i_mean-1, bEstimateCost=True)))
+      printed.append (i_mean)
+    if 'local_branches_mu_max' in val:
+      for str_ibr, mu in val['local_branches_mu_max'].items():
+        ibr = int(str_ibr)
+        if ibr not in printed:
+          printed.append (ibr)
+          print ('        Local Branch: {:4d} ({:8.3f}) {:s}'.format (ibr, mu, get_branch_description (branch, bus, ibr-1, bEstimateCost=True)))
 
 def get_graph_bus_type (idx):
   if idx == 1:

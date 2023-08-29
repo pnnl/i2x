@@ -21,20 +21,10 @@ if __name__ == '__main__':
   r = json.loads(lp)
 
   print (' Bus   Generation by Fuel [MW]')
-  print ('    ', ' '.join(['{:>8s}'.format(x) for x in mpow.FUEL_LIST]), ' [Max muF Branch] [Mean muF Branch]')
+  print ('    ', ' '.join(['{:>8s}'.format(x) for x in mpow.FUEL_LIST]))
   for key, val in r['buses'].items():
     fuel_str = ' '.join(['{:8.2f}'.format(1000.0 * val['fuels'][x]) for x in mpow.FUEL_LIST])
-
-    i_max = val['max_max_muF']['branch']
-    mu_max = val['max_max_muF']['muF']
-    i_mean = val['max_mean_muF']['branch']
-    mu_mean = val['max_mean_muF']['muF']
-    if mu_max > 0.0:
-      branch_str = ' [{:.4f} on {:d}] [{:.4f} on {:d}]'.format (mu_max, i_max, mu_mean, i_mean)
-    else:
-      branch_str = ''
-
-    print ('{:4d} {:s} {:s}'.format (int(key), fuel_str, branch_str))
+    print ('{:4d} {:s}'.format (int(key), fuel_str))
 
   print ('\nBranch Upgrade Suggestions:')
   bes.print_limiting_branches (results_file = results_file, case_file = case_file)

@@ -9,6 +9,7 @@ import numpy as np
 import i2x.mpow_utilities as mpow
 import json
 import os
+import math
 
 def cfg_assign (cfg, tag, val):
   if tag in cfg:
@@ -98,7 +99,7 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
 
   if log_output == True:
     print ('Bus Generation by Fuel[GW]')
-    print ('   ', ' '.join(['{:>7s}'.format(x) for x in mpow.FUEL_LIST]), ' [Max muF Branch] [Mean muF Branch]')
+    print ('   ', ' '.join(['{:>7s}'.format(x) for x in mpow.FUEL_LIST]), ' [Max muF Branch] [Mean muF Branch] [Local Branch MVA:muF]')
   iteration = 0
 
   # write the size-based list of branch contingencies, but only if there are no adjacent-bus contingencies
@@ -170,15 +171,37 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     if max_i >= 0:
       branch_str = ' [{:.4f} on {:d}] [{:.4f} on {:d}]'.format (max_max_muF, max_i+1, max_mean_muF, mean_i+1)
 
+    # check lines to adjacent buses
+    bus_str = ''
+    local_branches_mu_max = {}
+    if bus_contingencies is not None:
+      for cd in bus_contingencies[str(hca_bus)]:
+        ibr = cd['branch']
+        scale = cd['scale']
+        rating = branch[ibr-1][mpow.RATE_A]
+        mu_max = np.max (muF[ibr-1,:,:,:])
+        if mu_max > 0.0:
+          bus_str = bus_str + ' {:d}:{:.3f}:{:.6f}'.format (ibr, rating, mu_max)
+          local_branches_mu_max[ibr] = mu_max
+#       pf = branch[ibr-1][mpow.PF]
+#       qf = branch[ibr-1][mpow.QF]
+#       pt = branch[ibr-1][mpow.PT]
+#       qt = branch[ibr-1][mpow.QT]
+#       sf = math.sqrt(pf+pf + qf*qf)
+#       st = math.sqrt(pt+pt + qt*qt)
+#       mva = max(sf, st)
+#       bus_str = bus_str + ' {:d}:{.3f}'.format (ibr, mva/rating)
+
     if log_output == True:
-      print ('{:3d} {:s} {:s}'.format(hca_bus, fuel_str, branch_str))
+      print ('{:3d} {:s} {:s} [{:s}]'.format(hca_bus, fuel_str, branch_str, bus_str))
 
     muFtotal += meanmuF
 
     # archive the results for post-processing
     results['buses'][int(hca_bus)] = {'fuels':fuel_Pg, 
                                  'max_max_muF':{'branch':max_i+1, 'muF':max_max_muF}, 
-                                 'max_mean_muF':{'branch':mean_i+1, 'muF':max_mean_muF}}
+                                 'max_mean_muF':{'branch':mean_i+1, 'muF':max_mean_muF},
+                                 'local_branches_mu_max':local_branches_mu_max}
     if write_json == True and (iteration % json_frequency == 0):
       write_json_results_file (out_name, results, log_output)
       saved_iteration = iteration

@@ -2,7 +2,7 @@
     "case_title": "IEEE118",
     "sys_name": "hca",
     "load_scale": 0.6748,
-    "hca_buses": [1],
+    "hca_buses": [3],
     "upgrades": null,
     "branch_contingencies": [
       {
@@ -51,19 +51,19 @@
       }
     ],
     "bus_contingencies": {
-      "1": [
-        {
-          "branch": 36,
-          "scale": 0.0
-        },
-        {
-          "branch": 37,
-          "scale": 0.0
-        },
-        {
-          "branch": 196,
-          "scale": 0.0
-        }
+      "3": [
+          {
+            "branch": 37,
+            "scale": 0.0
+          },
+          {
+            "branch": 68,
+            "scale": 0.0
+          },
+          {
+            "branch": 69,
+            "scale": 0.0
+          }
       ]
     }
 }
