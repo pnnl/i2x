@@ -274,6 +274,16 @@ class HCA:
     for l in self.change_lines_history:
       self.dss.text(l)
 
+  def save_circuit(self, filename=None, dirname=None):
+    filearg = ''
+    dirarg = ''
+    if filename is not None:
+      filearg = 'file='.format(filename)
+    if dirname is not None:
+      dirarg = 'dir='.format(dirname)
+    self.dss.text('save circuit {:s} {:s}'.format (filearg, dirarg))
+#    self.dss.text('save pvsystem {:s} {:s}'.format (filearg, dirarg))
+
   def clear_changelines(self):
     """clear change lines. Call between successive calls to rundss"""
     self.change_lines_noprint = []
