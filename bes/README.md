@@ -129,18 +129,16 @@ configured with N-1 contingencies:
 - Full N-1 HCA: **python hca.py WECC240\_prep.json &**
 - Faster 1-bus test case: **python hca.py test\_240.json**
 
-Results are saved to *WECC240\_out.json*.  Wall-clock time was 7982.54 
-seconds, but this includes an interruption as described below.  To 
-summarize actionable results from this WECC240 HCA analysis, based on the 
-saved results: 
+Solution time was 6640 seconds and the results are saved to 
+*WECC240\_out.json*.  To summarize actionable results from this WECC240 
+HCA analysis, based on the saved results: 
 
 - **python grid\_upgrades.py 1**
 
-Interpretation of this output was discussed in the previous section.  
-Highlights of the WECC240 results include: 
-
-- The hosting capacity is zero at 28 buses: 2, 20, 41, 58, 59, 81, 123, 124, 125, 126, 127, 128, 129, 172, 173, 174, 175, 176, 177, 178, 179, 187, 200, 206, 213, 214, 227, 233
-- Branch 430 is suggested for an upgrade many times. This is a 1000 MVA, 500/230-kV transformer, between buses 200 and 201.
+Interpretation of this output was discussed in the previous section.  The 
+hosting capacity is zero at 28 buses: 2, 20, 41, 58, 59, 81, 123, 124, 
+125, 126, 127, 128, 129, 163, 164, 172, 173, 174, 175, 176, 177, 178, 179, 
+187, 200, 206, 227, 233 
 
 It was not possible to determine an accurate total solution time, because 
 the HCA failed on bus 24.  To work around that failure, this procedure was 
