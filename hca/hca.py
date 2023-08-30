@@ -17,14 +17,16 @@ import hashlib
 
 SQRT3 = math.sqrt(3.0)
 
-def print_config(config:dict, tabs=""):
+def print_config(config:dict, tabs="", printf=print):
     """print a configuration dictionary"""
+    if not tabs:
+      printf("\n===================================\nConfiguration:\n===================================")
     for k, v in config.items():
         if isinstance(v, dict):
-            print(f"{tabs}{k}:")
-            print_config(v, tabs=tabs+"\t")
+            printf(f"{tabs}{k}:")
+            print_config(v, tabs=tabs+"\t", printf=printf)
         else:
-            print(f"{tabs}{k}:{v}")
+            printf(f"{tabs}{k}:{v}")
 
 def print_column_keys (label, d):
   columns = ''
@@ -178,9 +180,24 @@ def calc_di_voltage_stats(di_voltexception:pd.DataFrame, vmin=0.95, vmax=1.05, w
             ]).rename("integral")
           ], axis= 1)
 
+def upgrade_line(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, factor:float):
+  dss.text(f"select line.{name}") # activate line obejct
+  change_lines.append(f"edit line.{name} Length={dss.lines.length/factor:.7f} Normamps={dss.lines.norm_amps*factor:.2f} Emergamps={dss.lines.emerg_amps*factor:.2f}")
+
+def upgrade_xfrm(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, factor:float):
+  # loop over any potential parallel transformers
+  for xfrm in get_parallel_xfrm(dss, name):
+    activate_xfrm_byname(dss, xfrm) #activate the transformer
+    # loop over the windings and collect the kva ratings
+    kvas = []
+    for wdg in range(1, dss.transformers.num_windings+1):
+      dss.transformers.wdg = wdg #activate the winding
+      kvas.append(dss.transformers.kva)
+    change_lines.append(f"edit transformer.{xfrm} kvas=({', '.join(str(round(s*factor)) for s in kvas)})")
+
 
 class HCA:
-  def __init__(self, inputs):
+  def __init__(self, inputs, logger_heading=None):
     self.inputs = inputs
     self.change_lines = []
     self.change_lines_noprint = []
@@ -190,6 +207,10 @@ class HCA:
                          level=inputs["hca_log"]["loglevel"], format=inputs["hca_log"]["format"])
     if inputs["hca_log"]["logtofile"]:
       self.logger.set_logfile(mode=inputs["hca_log"]["logtofilemode"])
+
+    if logger_heading is not None:
+      self.logger.info(logger_heading)
+    self.print_config()
 
     ## establish a random seed for reproducibility
     # generate a 32bit seed based on the choice of feeder
@@ -224,6 +245,12 @@ class HCA:
     self.metrics = HCAMetrics(inputs["metrics"]["limits"], 
                               tol=inputs["metrics"]["tolerances"],
                               logger=self.logger)
+
+  def print_config(self, level="info"):
+    if level == "info":
+      print_config(self.inputs, printf=self.logger.info)
+    elif level == "debug":
+      print_config(self.inputs, printf=self.logger.debug)
 
   def collect_stats(self):
     self.data["Stotal"][self.cnt] = pd.DataFrame({
@@ -458,6 +485,9 @@ class HCA:
         shunts_new = [s for s in d["ndata"]["shunts"] if 'pvsystem' not in s]
         d["ndata"]["shunts"] = shunts_new
         d["nclass"] = self.update_node_class(n)
+  
+  def disable_regulators(self):
+    self.change_lines.append("batchedit regcontrol..* enabled=no")
 
   def sample_buslist(self, buslist:list, seed=None):
     """
@@ -572,6 +602,10 @@ class HCA:
     if self.inputs["remove_all_pv"]:
       self.remove_all_pv()
       self.parse_graph()
+
+    ### regulator controls
+    if not self.inputs["reg_control"]:
+      self.disable_regulators()
     
     ### remove specified large ders
     for key in self.inputs["remove_large_der"]:
@@ -707,10 +741,16 @@ class HCA:
           cnt -= 1
         else:
           return hc, cnt
+  
 
-  def hca_round(self, typ, bus=None, Sij=None, allow_violations=False):
+  def hca_round(self, typ, bus=None, Sij=None, allow_violations=False, hciter=True):
     """perform a single round of hca"""
     
+    # if allow_violations is false iter must be true
+    if (not allow_violations) and (not hciter):
+      raise ValueError(f"hca_round: allow_violatios is {allow_violations} and hciter is {hciter}. Combination with allow_violations=False and hciter=False is not possible!")
+    if not hciter:
+      hc = "not calculated"
     #### some mappings
     nclass = {"pv": "pvsystem", "bat": "storage", "der": "generator"}
     graphdir = {"pv": "pvder", "bat": "batder", "der": "gender"}
@@ -786,32 +826,36 @@ class HCA:
     self.metrics.calc_metrics()
     if self.metrics.violation_count == 0:
       # no violations
-      self.logger.info(f"No violations with capacity {Sij}. Iterating to find HC")
+      self.logger.info(f"No violations with capacity {Sij}.")
       self.update_data("Sij", typ, Sij)  # save installed capacity
-      Sijlim = self.hc_bisection(typ, key, Sij, None) # find limit via bisection search
-      hc = {k: Sijlim[k] - Sij[k] for k in ["kw", "kva"]}
-      self.update_data("hc", typ, hc)
+      if hciter:
+        self.logger.info("Iterating to find HC.")
+        Sijlim = self.hc_bisection(typ, key, Sij, None) # find limit via bisection search
+        hc = {k: Sijlim[k] - Sij[k] for k in ["kw", "kva"]}
+        self.update_data("hc", typ, hc)
       self.update_data("eval", typ, self.metrics.eval)
     else:
       # violations: decrease capacity to find limit
-      self.logger.info(f"Violations with capacity {Sij} (allow_violations is {allow_violations}). Iterating to find Limit.")
+      self.logger.info(f"Violations with capacity {Sij} (allow_violations is {allow_violations}).")
       self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
       if allow_violations:
         self.update_data("Sij", typ, Sij)
         self.update_data("eval", typ, self.metrics.eval)
-      Sijlim = self.hc_bisection(typ, key, None, Sij)
-      if Sijlim["kw"] == 0: 
-        # no capacity at this bus (not just no *additional*, none at all)
-        # remove the object from the graph
-        self.logger.info(f"\tNo capacity at bus {self.active_bus}. Disabling resource {key}.")
-        # self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
-        # self.reset_dss() # reset state to last good solution
-      hc = {k: 0 for k in ["kw", "kva"]}
-      self.update_data("hc", typ, hc)
-      if not allow_violations:
-        Sij = copy.deepcopy(Sijlim)
-        self.update_data("Sij", typ, Sij) # update with intalled capacity
-        self.update_data("eval", typ, self.metrics.eval)
+      if hciter:
+        self.logger.info("Iterating to find Limit.")
+        Sijlim = self.hc_bisection(typ, key, None, Sij)
+        if Sijlim["kw"] == 0: 
+          # no capacity at this bus (not just no *additional*, none at all)
+          # remove the object from the graph
+          self.logger.info(f"\tNo capacity at bus {self.active_bus}. Disabling resource {key}.")
+          # self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
+          # self.reset_dss() # reset state to last good solution
+        hc = {k: 0 for k in ["kw", "kva"]}
+        self.update_data("hc", typ, hc)
+        if not allow_violations:
+          Sij = copy.deepcopy(Sijlim)
+          self.update_data("Sij", typ, Sij) # update with intalled capacity
+          self.update_data("eval", typ, self.metrics.eval)
       # mark bus as exauhsted
       self.exauhsted_buses[typ].append(self.active_bus)
 
@@ -829,7 +873,7 @@ class HCA:
     if not self.lastres["converged"]:
       raise ValueError("Open DSS Run did not converge")
     
-    if allow_violations and (Sijlim["kw"] < Sij["kw"]):
+    if allow_violations and hciter and (Sijlim["kw"] < Sij["kw"]):
       # violations are allowed an we installed capacity that will create some
       # recalculate metrics
       self.metrics.load_res(self.lastres)
@@ -991,6 +1035,22 @@ class HCAMetrics:
     # self.pv_stats = get_volt_stats(res["pvdict"])
     # self.rec_stats = get_volt_stats(res["recdict"])
   
+  def get_volt_max_buses(self, threshold):
+    d = {}
+    for reskey in 'pvdict', 'recdict', 'voltdict':
+      for k, v  in self.res[reskey].items():
+          if v["vmax"]/(1000*v["basekv"]/np.sqrt(3)) > threshold:
+              d[k] = v["v"]
+    return d
+
+  def get_volt_min_buses(self, threshold):
+    d = {}
+    for reskey in 'pvdict', 'recdict', 'voltdict':
+      for k, v  in self.res[reskey].items():
+          if v["vmin"]/(1000*v["basekv"]/np.sqrt(3)) < threshold:
+              d[k] = v["v"]
+    return d
+
   # def _test(self, test:bool, margin, description:str) -> tuple[bool, str]:
   def _test(self, val, lim, sense, tol) -> tuple[bool, float, str]:
     """
@@ -1004,35 +1064,35 @@ class HCAMetrics:
   def _vmin(self, val):
     vmin = self.volt_stats.loc[self.volt_stats.index.str.contains("Min"), :]
     # vmin = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "min", np.min)
-    test, margin = self._test(vmin["limits"], val, 1, self.tol["voltage"])
+    test, margin = self._test(vmin["limits"], val, 1, self.tol["voltage_mag"])
     if test.all() or (self.base is None):
       # test passed
       return test, margin
     else:
       # test didn't pass, compare to base result
       lims = self.base.volt_stats.loc[self.base.volt_stats.index.str.contains("Min"),:]
-      test1, margin1 = self._test(vmin["limits"], lims["limits"], 1, self.tol["voltage"]) #new vmin should be >= base solution
-      test2, margin2 = self._test(vmin["integral"], lims["integral"], -1, self.tol["voltage"]) #integral of vmin violation should be <= base solution
+      test1, margin1 = self._test(vmin["limits"], lims["limits"], 1, self.tol["voltage_mag"]) #new vmin should be >= base solution
+      test2, margin2 = self._test(vmin["integral"], lims["integral"], -1, self.tol["voltage_integral"]) #integral of vmin violation should be <= base solution
       return pd.concat([test1, test2], axis=1), pd.concat([margin1, margin2], axis=1)
   
   def _vmax(self, val):
     # vmax = dict_key_comp([self.volt_stats, self.pv_stats, self.rec_stats], "max", np.max)
     vmax = self.volt_stats.loc[self.volt_stats.index.str.contains("Max"), :]
-    test, margin = self._test(vmax["limits"], val, -1, self.tol["voltage"])
+    test, margin = self._test(vmax["limits"], val, -1, self.tol["voltage_mag"])
     if test.all() or (self.base is None):
       # test passed
       return test, margin
     else:
       # test didn't pass, compare to base result
       lims = self.base.volt_stats.loc[self.base.volt_stats.index.str.contains("Max"),:]
-      test1, margin1 = self._test(vmax["limits"], lims["limits"], -1, self.tol["voltage"]) #new vamx should be <= base solution
-      test2, margin2 = self._test(vmax["integral"], lims["integral"], -1, self.tol["voltage"]) #integral of vmax violation should be <= base solution
+      test1, margin1 = self._test(vmax["limits"], lims["limits"], -1, self.tol["voltage_mag"]) #new vamx should be <= base solution
+      test2, margin2 = self._test(vmax["integral"], lims["integral"], -1, self.tol["voltage_integral"]) #integral of vmax violation should be <= base solution
       return pd.concat([test1, test2], axis=1), pd.concat([margin1, margin2], axis=1)
   
   def _vdiff(self, val):
     if self.base is not None:
       val = max(val, self.base.vdiff)
-    return self._test(self.vdiff, val, -1, self.tol["voltage"])
+    return self._test(self.vdiff, val, -1, self.tol["voltage_diff"])
   
   def _ue(self, val):
     # verifies that the total ue d
@@ -1230,10 +1290,16 @@ if __name__ == "__main__":
   parser.add_argument("config", nargs='?', help="configuration file", default="defaults.json")
   parser.add_argument("--show-options", help="Show options and exit", action='store_true')
   parser.add_argument("--print-inputs", help="print passed inputs", action="store_true")
+  parser.add_argument("--show-defaults", help="show default configuration and exit", action='store_true')
   args = parser.parse_args()
 
   if args.show_options:
     print_options()
+    sys.exit(0)
+
+  if args.show_defaults:
+    inputs = load_config('defaults.json')
+    print_config(inputs)
     sys.exit(0)
   
   inputs = load_config(args.config)

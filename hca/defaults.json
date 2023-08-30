@@ -12,6 +12,7 @@
 "stepsize": 300,
 "numsteps": 288,
 "remove_all_pv": false,
+"reg_control": true,
 "hca_log":{
     "logname": "hcalog",
     "loglevel": "info",
@@ -40,7 +41,9 @@
         }
     },
     "tolerances":{
-        "voltage": 1e-3,
+        "voltage_mag": 1e-3,
+        "voltage_integral": 1e-2,
+        "voltage_diff": 1e-2,
         "thermal": 1e-2,
         "island": 1e-2
     }
