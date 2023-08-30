@@ -29,7 +29,7 @@ HCA_MIN_BR_CONTINGENCY_MVA = 200.0
 if __name__ == '__main__':
   min_kv = 100.0
   mva_upgrades = None
-  min_contingency_mva = 3000.0
+  min_contingency_mva = 2000.0
   sys_name = 'hca'
 
   cfg = {}

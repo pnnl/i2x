@@ -155,6 +155,31 @@ def get_branch_description (branch, bus, i, bEstimateMVA=False, bEstimateCost=Fa
       desc = desc + ', ${:.2f}M'.format (estimate_capacitor_cost (kv1, mva) / 1.0e6)
   return desc
 
+# pass i as zero-based index, not the branch number
+def get_branch_next_upgrade (branch, bus, i):
+  scale = 0.0
+  cost = 0.0
+  bus1 = int(branch[i,mpow.F_BUS])
+  bus2 = int(branch[i,mpow.T_BUS])
+  kv = max (bus[bus1-1,mpow.BASE_KV], bus[bus2-1,mpow.BASE_KV])
+  xpu = branch[i,mpow.BR_X]
+  mva = branch[i,mpow.RATE_A]
+  if branch[i,mpow.TAP] > 0.0:
+    newmva = get_default_transformer_mva (kv)
+    cost = estimate_transformer_cost (kv, newmva)
+  elif xpu > 0.0:
+    newmva = get_default_line_mva (kv)
+    npar = int (0.5 + mva/newmva) # how many existing lines on this right-of-way
+    zbase = kv*kv/100.0
+    x = xpu*zbase
+    miles = estimate_overhead_line_length (x*npar, kv)
+    cost = estimate_line_cost (kv, miles)
+  elif xpu < 0.0:
+    newmva = get_default_line_mva (kv)
+    cost = estimate_capacitor_cost (kv, newmva)
+  scale = 1.0 + newmva / mva
+  return scale, cost
+
 def estimate_branch_scaling (x, b, tap, kv1, kv2, mva):
   npar = 1
   length = 1.0
@@ -265,8 +290,8 @@ def get_graph_bus_type (idx):
   return 'Isolated'
 
 def build_matpower_graph (d):
-  branch = np.array (d['branch'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
+  branch = d['branch']
+  bus = d['bus']
   G = nx.Graph()
   for i in range(len(bus)):
     n = i+1
@@ -321,3 +346,31 @@ def add_bus_contingencies (G, hca_buses, size_contingencies=[], bLog=True,
     print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
   return d, removals, ncmax
 
+def rebuild_contingencies (mpd, G, poc, min_mva=100.0, min_kv=100.0):
+  s = []
+  bus = mpd['bus']
+  branch = mpd['branch']
+  nl = len(branch)
+  # size-based contingencies
+  for i in range(nl):
+    bus1 = int(branch[i,mpow.F_BUS])
+    bus2 = int(branch[i,mpow.T_BUS])
+    kv = min(bus[bus1-1,mpow.BASE_KV], bus[bus2-1,mpow.BASE_KV])
+    mva = branch[i,mpow.RATE_A]
+    if kv >= min_kv and mva >= min_mva:
+      if branch[i,mpow.TAP] > 0.0:
+        outage = get_default_transformer_mva (kv)
+      else:
+        outage = get_default_line_mva (kv)
+      scale = (mva - outage) / mva
+      if scale < 0.01:
+        scale = 0.0
+      s.append({'branch':i+1, 'scale':scale})
+
+  # bus-based contingencies
+  exclusions = []
+  for ct in s:
+    exclusions.append (ct['branch'])
+  b, _, _ = add_bus_contingencies (G, [poc], exclusions, False, min_mva, min_kv)
+
+  return s+b[poc]

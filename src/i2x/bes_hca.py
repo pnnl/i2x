@@ -23,29 +23,8 @@ def write_json_results_file (out_name, results, log_output):
   json.dump (results, fp, indent=2)
   fp.close()
 
-def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency=20):
-  sys_name = 'hca'
-  case_title = 'hca'
-  load_scale = 2.75
-  hca_buses = None
-  upgrades = None
-  branch_contingencies = None
-  bus_contingencies = None
-  softlims = False
-  glpk_opts = None
-  if cfg_filename is not None:
-    fp = open (cfg_filename, 'r')
-    cfg = json.loads(fp.read())
-    fp.close()
-    sys_name = cfg_assign (cfg, 'sys_name', sys_name)
-    case_title = cfg_assign (cfg, 'case_title', case_title)
-    load_scale = cfg_assign (cfg, 'load_scale', load_scale)
-    hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
-    upgrades = cfg_assign (cfg, 'upgrades', upgrades)
-    softlims = cfg_assign (cfg, 'softlims', softlims)
-    glpk_opts = cfg_assign (cfg, 'glpk_opts', glpk_opts)
-    branch_contingencies = cfg_assign (cfg, 'branch_contingencies', branch_contingencies)
-    bus_contingencies = cfg_assign (cfg, 'bus_contingencies', bus_contingencies)
+def bes_hca_fn (sys_name='hca', case_title='hca', load_scale=2.74, hca_buses=None, upgrades=None, branch_contingencies=None,
+                bus_contingencies=None, softlims=False, glpk_opts=None, log_output=False, write_json=False, json_frequency=20):
   out_name = '{:s}_out.json'.format(case_title)
   saved_iteration = 0
 
@@ -227,3 +206,30 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     write_json_results_file (out_name, results, log_output)
   return results
 
+def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency=20):
+  sys_name = 'hca'
+  case_title = 'hca'
+  load_scale = 2.75
+  hca_buses = None
+  upgrades = None
+  branch_contingencies = None
+  bus_contingencies = None
+  softlims = False
+  glpk_opts = None
+  if cfg_filename is not None:
+    fp = open (cfg_filename, 'r')
+    cfg = json.loads(fp.read())
+    fp.close()
+    sys_name = cfg_assign (cfg, 'sys_name', sys_name)
+    case_title = cfg_assign (cfg, 'case_title', case_title)
+    load_scale = cfg_assign (cfg, 'load_scale', load_scale)
+    hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
+    upgrades = cfg_assign (cfg, 'upgrades', upgrades)
+    softlims = cfg_assign (cfg, 'softlims', softlims)
+    glpk_opts = cfg_assign (cfg, 'glpk_opts', glpk_opts)
+    branch_contingencies = cfg_assign (cfg, 'branch_contingencies', branch_contingencies)
+    bus_contingencies = cfg_assign (cfg, 'bus_contingencies', bus_contingencies)
+
+  return bes_hca_fn (sys_name=sys_name, case_title=case_title, load_scale=load_scale, hca_buses=hca_buses, upgrades=upgrades, 
+                     branch_contingencies=branch_contingencies, bus_contingencies=bus_contingencies, softlims=softlims, 
+                     glpk_opts=glpk_opts, log_output=log_output, write_json=write_json, json_frequency=json_frequency)

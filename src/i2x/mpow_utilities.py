@@ -292,7 +292,7 @@ def read_most_solution(fname='msout.txt'):
   return f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF
 ###################################################
 
-def read_matpower_array(fp, bStrings):
+def read_matpower_array(fp, bStrings, asNumpy):
   A = []
   while True:
     ln = fp.readline()
@@ -309,13 +309,15 @@ def read_matpower_array(fp, bStrings):
       A.append(ln.strip("'"))
     else:
       A.append(ln.split())
+  if asNumpy and not bStrings:
+    return np.array (A, dtype=float)
   return A
 
 def get_last_number (ln):
   toks = ln.split(' ')
   return toks[-1].strip('";\n')
 
-def read_matpower_casefile(fname):
+def read_matpower_casefile(fname, asNumpy=False):
   d = {}
   fp = open(fname, 'r')
   while True:
@@ -334,7 +336,7 @@ def read_matpower_casefile(fname):
             bStrings = True
           else:
             bStrings = False
-          d[table] = read_matpower_array(fp, bStrings)
+          d[table] = read_matpower_array(fp, bStrings, asNumpy)
   fp.close()
   return d
 
@@ -596,7 +598,7 @@ def get_plant_commit_key(fuel, gencosts, gen, use_wind):
       return 1
   return 2
 
-def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True):
+def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True, bLog=True):
   fp = open('{:s}.m'.format(root), 'w')
   print("""function [xgd_table] = {:s} (mpc)
   xgd_table.colnames = {{
@@ -640,7 +642,8 @@ def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True):
   print('];', file=fp)
   print('end', file=fp)
   fp.close()
-  print ('configured {:d} generators, {:d} wind plants, {:d} responsive loads'.format(ngen, nwind, nresp))
+  if bLog:
+    print ('configured {:d} generators, {:d} wind plants, {:d} responsive loads'.format(ngen, nwind, nresp))
 
 def ercot_daily_loads (start, end, resp_scale):
   # pad the load profiles to cover requested number of hours
