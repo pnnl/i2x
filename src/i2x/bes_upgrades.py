@@ -9,6 +9,55 @@ import networkx as nx
 import json
 import math
 
+def estimate_substation_position_cost (kv):
+  if kv <= 121.0:
+    return 1.9e6
+  elif kv <= 145.0:
+    return 2.0e6
+  elif kv <= 242.0:
+    return 3.0e6
+  elif kv <= 362.0:
+    return 5.0e6
+  elif kv <= 550.0:
+    return 10.0e6
+  return -1.0 # force an error
+
+def estimate_capacitor_cost (kv, mvar):
+  sub_cost = 1.0 * estimate_substation_position_cost (kv)
+  if sub_cost >= 0.0:
+    return sub_cost + mvar*11.0e3
+  return -1.0 # force an error
+
+# for one circuit, plus two breaker positions
+def estimate_line_cost (kv, miles):
+  sub_cost = 2.0 * estimate_substation_position_cost (kv)
+  if kv <= 121.0:
+    return sub_cost + miles*1.9e6
+  elif kv <= 145.0:
+    return sub_cost + miles*2.0e6
+  elif kv <= 242.0:
+    return sub_cost + miles*2.1e6
+  elif kv <= 362.0:
+    return sub_cost + miles*3.5e6
+  elif kv <= 550.0:
+    return sub_cost + miles*4.0e6
+  return -1.0 # force an error
+
+# includes one breaker position in existing substations
+def estimate_transformer_cost (kv, mva):
+  sub_cost = 1.0 * estimate_substation_position_cost (kv)
+  if kv <= 121.0:
+    return sub_cost + mva*5.5e3
+  elif kv <= 145.0:
+    return sub_cost + mva*6.0e3
+  elif kv <= 242.0:
+    return sub_cost + mva*7.0e3
+  elif kv <= 362.0:
+    return sub_cost + mva*9.0e3
+  elif kv <= 550.0:
+    return sub_cost + mva*12.0e3
+  return -1.0 # force an error
+
 def get_default_line_mva (kv):
   if kv <= 121.0:
     return 131.0
@@ -67,7 +116,7 @@ def get_parallel_branch_scale (npar):
   return 0.0
 
 # pass i as zero-based index, not the branch number
-def get_branch_description (branch, bus, i, bEstimateMVA=False):
+def get_branch_description (branch, bus, i, bEstimateMVA=False, bEstimateCost=False):
   desc = '??'
   bus1 = int(branch[i,mpow.F_BUS])
   bus2 = int(branch[i,mpow.T_BUS])
@@ -79,12 +128,15 @@ def get_branch_description (branch, bus, i, bEstimateMVA=False):
     if bEstimateMVA:
       mva = 100.0 * 0.10 / xpu
     desc = 'Xfmr {:3d}-{:3d} {:7.2f} / {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, kv2, xpu, mva)
+    if bEstimateCost:
+      desc = desc + ', ${:.2f}M'.format (estimate_transformer_cost (kv1, mva) / 1.0e6)
   elif xpu > 0.0:
     bpu = branch[i,mpow.BR_B]
     npar = 1
+    zbase = kv1*kv1/100.0
+    x = xpu*zbase
+    z = -1.0
     if bpu > 0.0:
-      zbase = kv1*kv1/100.0
-      x = xpu*zbase
       xc = zbase / branch[i,mpow.BR_B]
       z = math.sqrt(x * xc)
       npar = estimate_overhead_lines_in_parallel (z, kv1)
@@ -93,10 +145,14 @@ def get_branch_description (branch, bus, i, bEstimateMVA=False):
     # TODO: need a test for overhead vs cable
     miles = estimate_overhead_line_length (x*npar, kv1)
     desc = 'Line {:3d}-{:3d} {:7.2f} kV x={:.4f}, z={:6.2f} ohms, npar={:d}, mva={:.2f}, mi={:.2f}'.format (bus1, bus2, kv1, xpu, z, npar, mva, miles)
+    if bEstimateCost:
+      desc = desc + ', ${:.2f}M/ckt'.format (estimate_line_cost (kv1, miles) / 1.0e6)
   elif xpu < 0.0:
     if bEstimateMVA:
       mva = get_default_line_mva (kv1)
     desc = 'Scap {:3d}-{:3d} {:7.2f} kV x={:.4f}, mva={:.2f}'.format (bus1, bus2, kv1, xpu, mva)
+    if bEstimateCost:
+      desc = desc + ', ${:.2f}M'.format (estimate_capacitor_cost (kv1, mva) / 1.0e6)
   return desc
 
 def estimate_branch_scaling (x, b, tap, kv1, kv2, mva):
@@ -179,15 +235,25 @@ def print_limiting_branches (case_file, results_file):
   print (' Bus   HC[MW]')
   for key, val in r['buses'].items():
     print ('{:4d} {:8.2f}'.format (int(key), 1000.0 * val['fuels']['hca']))
+    printed = []
     i_max = val['max_max_muF']['branch']
     mu_max = val['max_max_muF']['muF']
     i_mean = val['max_mean_muF']['branch']
     mu_mean = val['max_mean_muF']['muF']
-    if mu_max > 0.0:
+    if mu_max > 0.0 and i_max not in printed:
       print ('       Max Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_max, mu_max, 
-                                                                get_branch_description (branch, bus, i_max-1)))
+                                                                get_branch_description (branch, bus, i_max-1, bEstimateCost=True)))
+      printed.append (i_max)
+    if mu_mean > 0.0 and i_mean not in printed:
       print ('      Mean Mu Branch: {:4d} ({:8.3f}) {:s}'.format (i_mean, mu_mean, 
-                                                                get_branch_description (branch, bus, i_mean-1)))
+                                                                get_branch_description (branch, bus, i_mean-1, bEstimateCost=True)))
+      printed.append (i_mean)
+    if 'local_branches_mu_max' in val:
+      for str_ibr, mu in val['local_branches_mu_max'].items():
+        ibr = int(str_ibr)
+        if ibr not in printed:
+          printed.append (ibr)
+          print ('        Local Branch: {:4d} ({:8.3f}) {:s}'.format (ibr, mu, get_branch_description (branch, bus, ibr-1, bEstimateCost=True)))
 
 def get_graph_bus_type (idx):
   if idx == 1:
@@ -223,7 +289,7 @@ def build_matpower_graph (d):
                 weight=x)
   return G
 
-def add_bus_contingencies (G, hca_buses, bLog=True,
+def add_bus_contingencies (G, hca_buses, size_contingencies=[], bLog=True,
                            contingency_mva_threshold=100.0, 
                            contingency_kv_threshold=100.0):
   d = {}
@@ -242,14 +308,15 @@ def add_bus_contingencies (G, hca_buses, bLog=True,
         bExcluded = True
         removals.append(bus)
         if bLog:
-          print ('** Radial bus {:d} has no parallel circuit and should be excluded from HCA'.format (bus))
+          print ('** Radial bus {:d} has no parallel circuit and can only serve local load. Might exclude from HCA.'.format (bus))
     if not bExcluded:
       for br in ev:
         edata = br[2]['edata']
         if edata['MVA'] >= contingency_mva_threshold and edata['kV1'] >= contingency_kv_threshold and edata['kV2'] >= contingency_kv_threshold:
           brnum = int(br[2]['ename'])
-          scale = br[2]['edata']['scale']
-          d[bus].append ({'branch': brnum, 'scale': scale})
+          if brnum not in size_contingencies:
+            scale = br[2]['edata']['scale']
+            d[bus].append ({'branch': brnum, 'scale': scale})
   if bLog:
     print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
   return d, removals, ncmax

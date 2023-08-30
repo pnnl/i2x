@@ -1,0 +1,130 @@
+{
+  "case_title": "hca",
+  "sys_name": "hca",
+  "load_scale": 2.75,
+  "upgrades": null,
+  "softlims": false,
+  "glpk_opts": null,
+  "hca_buses": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "branch_contingencies": [
+    {
+      "branch": 2,
+      "scale": 0.8333333333333334
+    },
+    {
+      "branch": 9,
+      "scale": 0.8333333333333334
+    },
+    {
+      "branch": 13,
+      "scale": 0.6666666666666667
+    }
+  ],
+  "bus_contingencies": {
+    "1": [
+      {
+        "branch": 4,
+        "scale": 0.5
+      },
+      {
+        "branch": 6,
+        "scale": 0.5
+      },
+      {
+        "branch": 10,
+        "scale": 0.5
+      }
+    ],
+    "2": [
+      {
+        "branch": 4,
+        "scale": 0.5
+      },
+      {
+        "branch": 5,
+        "scale": 0.5
+      }
+    ],
+    "3": [
+      {
+        "branch": 11,
+        "scale": 0.5
+      }
+    ],
+    "4": [
+      {
+        "branch": 3,
+        "scale": 0.5
+      },
+      {
+        "branch": 7,
+        "scale": 0.5
+      },
+      {
+        "branch": 10,
+        "scale": 0.5
+      },
+      {
+        "branch": 11,
+        "scale": 0.5
+      }
+    ],
+    "5": [
+      {
+        "branch": 1,
+        "scale": 0.5
+      },
+      {
+        "branch": 6,
+        "scale": 0.5
+      },
+      {
+        "branch": 12,
+        "scale": 0.5
+      }
+    ],
+    "6": [
+      {
+        "branch": 1,
+        "scale": 0.5
+      },
+      {
+        "branch": 3,
+        "scale": 0.5
+      },
+      {
+        "branch": 8,
+        "scale": 0.5
+      }
+    ],
+    "7": [
+      {
+        "branch": 5,
+        "scale": 0.5
+      },
+      {
+        "branch": 8,
+        "scale": 0.5
+      },
+      {
+        "branch": 12,
+        "scale": 0.5
+      }
+    ],
+    "8": [
+      {
+        "branch": 7,
+        "scale": 0.5
+      }
+    ]
+  }
+}

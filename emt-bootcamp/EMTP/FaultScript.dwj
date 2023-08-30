@@ -1,0 +1,104 @@
+// elements are:
+//  case mnemonic: including abcg for involved phases, number for retained voltage in percent
+//  Rf from each phase to neutral
+//  Lf from each phase to neutral [H]
+//  Rg from neutral to ground
+//  Lg from neutral to ground [H]
+var cases = [
+  ['abcg80', 0.000, 0.1057, 0.001, 0.0],
+  ['abcg50', 0.000, 0.0264, 0.001, 0.0],
+  ['abcg25', 0.000, 0.0088, 0.001, 0.0],
+  ['abcg01', 0.001, 0.0000, 0.001, 0.0],
+  ['ag80', 0.000, 0.1057, 0.001, 0.0],
+  ['ag50', 0.000, 0.0264, 0.001, 0.0],
+  ['ag25', 0.000, 0.0088, 0.001, 0.0],
+  ['ag01', 0.001, 0.0000, 0.001, 0.0],
+  ['bc80', 0.000, 0.1057, 0.001, 0.0],
+  ['bc50', 0.000, 0.0264, 0.001, 0.0],
+  ['bc25', 0.000, 0.0088, 0.001, 0.0],
+  ['bc01', 0.001, 0.0000, 0.001, 0.0]
+];
+
+// preamble to load support functions and find interfaces to modified components
+prepare_case();
+var cct = currentCircuit(); //grab the handle to the current circuit object
+var designfilename=design_file_name();
+writeln ('Running fault script on ', designfilename);
+
+var dev=cct.devices('Name', 'fault1');
+var oFault = new oDevice_fault(dev[0]);
+dev = cct.devices('Name', 'write1');
+var oWriter= new oDevice_comtrade_writer(dev[0]);
+
+// table-driven execution of the cases
+for (idx in cases) {
+  writeln('Running case: ', idx, ': ', cases[idx]);
+  set_fault (oFault, cases[idx][0], cases[idx][1], cases[idx][2], cases[idx][3], cases[idx][4]);
+  set_writer (oWriter, cases[idx][0]);
+  run_this_case (cct, idx.toString());
+}
+
+// the design doesn't have to be saved after these parametric simulations 
+// cct.save();
+
+// Load support functions that will be used, from the EMTP installed
+//  location, under the directory "Info Scripts/device_services"
+function prepare_case(){
+  //*Some useful script functions
+  parseScriptFile('make_file_name.dwj');
+  parseScriptFile('program_.dwj');
+  parseScriptFile('run_emtp.dwj');
+  parseScriptFile('check_my_filename.dwj');
+  parseScriptFile('find_data_in_object.dwj'); //for searching objects
+
+  parseScriptFile('fault_m.dwj');
+  parseScriptFile('comtrade_writer_m.dwj');
+
+  prepare_design_folder();
+}
+
+function set_writer (oWriter, root) {
+  oWriter.Parameters.CFGfilename = root + '.cfg';
+  oWriter.Parameters.DATfilename = root + '.dat';
+  oWriter.SaveData();
+}
+
+// Run a simulation, and wait for it to exit. Progress messages to console.
+function run_this_case (cct, tag) {
+  str=runExportToString('report scripts/EMTP Netlist.rfm',null,'NETLIST');
+  var netlist_file = Netlist_file_name();
+  run_emtp(netlist_file,false,tag,true);
+}
+
+// change the fault type and impedance
+function set_fault (oFault, fault_type, rf, lf, rg, lg) {
+  oFault.Parameters.Ra = rf.toString();
+  oFault.Parameters.Rb = rf.toString();
+  oFault.Parameters.Rc = rf.toString();
+  oFault.Parameters.Rground = rg.toString();
+  oFault.Parameters.La = lf.toString();
+  oFault.Parameters.Lb = lf.toString();
+  oFault.Parameters.Lc = lf.toString();
+  oFault.Parameters.Lground = lg.toString();
+  if (fault_type.indexOf('a') >= 0) {
+  	oFault.Parameters.faultOnPhaseA = '1';
+  } else {
+  	oFault.Parameters.faultOnPhaseA = '0';
+  }
+  if (fault_type.indexOf('b') >= 0) {
+	oFault.Parameters.faultOnPhaseB = '1';
+  } else {
+	oFault.Parameters.faultOnPhaseB = '0';
+  }
+  if (fault_type.indexOf('c') >= 0) {
+    oFault.Parameters.faultOnPhaseC = '1';
+  } else {
+    oFault.Parameters.faultOnPhaseC = '0';
+  }
+  if (fault_type.indexOf('g') >= 0) {
+    oFault.Parameters.faultToTheGround = '1';
+  } else {
+    oFault.Parameters.faultToTheGround = '0';
+  }
+  oFault.SaveData();
+}
