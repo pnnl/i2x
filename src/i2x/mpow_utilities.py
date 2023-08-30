@@ -317,7 +317,7 @@ def get_last_number (ln):
   toks = ln.split(' ')
   return toks[-1].strip('";\n')
 
-def read_matpower_casefile(fname, asNumpy=False):
+def read_matpower_casefile(fname, asNumpy=True):
   d = {}
   fp = open(fname, 'r')
   while True:
@@ -332,7 +332,7 @@ def read_matpower_casefile(fname, asNumpy=False):
       for table in ['gen', 'branch', 'bus', 'bus_name', 'gencost', 'gentype', 'genfuel']:
         token = 'mpc.{:s} ='.format(table)
         if token in ln:
-          if table in ['gentype', 'genfuel']:
+          if table in ['gentype', 'genfuel', 'bus_name']:
             bStrings = True
           else:
             bStrings = False

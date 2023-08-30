@@ -34,9 +34,9 @@ if __name__ == '__main__':
   ng = len(d['gen'])
   nl = len(d['branch'])
 
-  gen = np.array (d['gen'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
-  branch = np.array (d['branch'], dtype=float)
+  gen = d['gen']
+  bus = d['bus']
+  branch = d['branch']
 
   hca_buses = []
   for i in range(nb):
@@ -81,13 +81,16 @@ if __name__ == '__main__':
 #  %% bus  Pg     Qg    Qmax     Qmin   Vg  mBase status     Pmax   Pmin  Pc1 Pc2 Qc1min  Qc1max  Qc2min  Qc2max  ramp_agc  ramp_10 ramp_30 ramp_q  apf
 #   1.0     0.0  0.0 10000.0 -10000.0  1.0   1000.0  0.0  30000.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0  Inf Inf Inf Inf  0.0;
 # gencost = 2.0 10.0 10.0  2.0   0.51   5.0;
-  d['gen'].append (np.array([1.0,0.0,0.0,HCA_QMAX,-HCA_QMAX,1.0,1000.0,0.0,HCA_PMAX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]))
+  d['gen'] = np.vstack ((d['gen'], 
+                         np.array([1.0,0.0,0.0,HCA_QMAX,-HCA_QMAX,1.0,1000.0,0.0,HCA_PMAX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])))
   d['gentype'].append('DL')
   d['genfuel'].append('hca')
-  d['gencost'].append(mpow.get_hca_gencosts('hca'))
+  # assign linear cost functions
   ng = len(d['gen'])
+  gencost = []
   for i in range(ng):
-    d['gencost'][i] = mpow.get_hca_gencosts(d['genfuel'][i])
+    gencost.append (mpow.get_hca_gencosts(d['genfuel'][i]))
+  d['gencost'] = np.array (gencost, dtype=float)
   print ('Writing the hosting capacity analysis base case to hca_case.m')
 
   # extra generator data (xgd) including the new one for HCA

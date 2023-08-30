@@ -206,8 +206,8 @@ def set_estimated_branch_ratings (matpower_dictionary,
                                   contingency_mva_threshold=100.0, 
                                   contingency_kv_threshold=100.0,
                                   min_kv=10.0):
-  bus = np.array (matpower_dictionary['bus'], dtype=float)
-  branch = np.array (matpower_dictionary['branch'], dtype=float)
+  bus = matpower_dictionary['bus']
+  branch = matpower_dictionary['branch']
   nb = len(bus)
   nl = len(branch)
 
@@ -251,9 +251,9 @@ def set_estimated_branch_ratings (matpower_dictionary,
 #  1) return a dictionary of the limiting branches and their parameters, def get_limiting_branches (case_file, results_file):
 #  2) return branch parameters by index, def get_branch_attributes (case_file, idx):
 def print_limiting_branches (case_file, results_file):
-  d = mpow.read_matpower_casefile (case_file)
-  branch = np.array (d['branch'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
+  d = mpow.read_matpower_casefile (case_file, asNumpy=True)
+  branch = d['branch']
+  bus = d['bus']
 
   lp = open (results_file).read()
   r = json.loads(lp)

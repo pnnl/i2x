@@ -61,8 +61,6 @@ if __name__ == '__main__':
   proc.wait()
   mpow.print_solution_summary (fsummary, details=True)
   r = mpow.read_matpower_casefile (fsolved)
-  for tag in ['bus', 'gen', 'branch', 'gencost']:
-    r[tag] = np.array(r[tag], dtype=float)
   mpow.summarize_casefile (r, 'Solved')
   print ('Min and max bus voltages=[{:.4f},{:.4f}]'.format (np.min(r['bus'][:,mpow.VM]),np.max(r['bus'][:,mpow.VM])))
   print ('Load = {:.3f} + j{:.3f} MVA'.format (np.sum(r['bus'][:,mpow.PD]),np.sum(r['bus'][:,mpow.QD])))

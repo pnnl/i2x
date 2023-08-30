@@ -63,8 +63,10 @@ if __name__ == '__main__':
 
   # assign linear cost functions
   ng = len(d['gen'])
+  gencost = []
   for i in range(ng):
-    d['gencost'][i] = mpow.get_hca_gencosts(d['genfuel'][i])
+    gencost.append (mpow.get_hca_gencosts(d['genfuel'][i]))
+  d['gencost'] = np.array (gencost, dtype=float)
   # Write extra generator data (xgd), assuming all units have been on for 24 hours to start, 
   # so MOST can leave them on or switch them off without restriction
   unit_states = np.ones(len(d['gen'])) * 24.0

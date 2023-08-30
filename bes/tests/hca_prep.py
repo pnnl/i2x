@@ -45,9 +45,9 @@ if __name__ == '__main__':
   ng = len(d['gen'])
   nl = len(d['branch'])
 
-  gen = np.array (d['gen'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
-  branch = np.array (d['branch'], dtype=float)
+  gen = d['gen']
+  bus = d['bus']
+  branch = d['branch']
 
   hca_buses = []
   for i in range(nb):
@@ -97,10 +97,12 @@ if __name__ == '__main__':
 #  %% bus  Pg     Qg    Qmax     Qmin   Vg  mBase status     Pmax   Pmin  Pc1 Pc2 Qc1min  Qc1max  Qc2min  Qc2max  ramp_agc  ramp_10 ramp_30 ramp_q  apf
 #   1.0     0.0  0.0 10000.0 -10000.0  1.0   1000.0  0.0  30000.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0  Inf Inf Inf Inf  0.0;
 # gencost = 2.0 10.0 10.0  2.0   0.51   5.0;
-  d['gen'].append (np.array([1.0,0.0,0.0,HCA_QMAX,-HCA_QMAX,1.0,1000.0,0.0,HCA_PMAX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]))
+  d['gen'] = np.vstack ((d['gen'],
+                         np.array([1.0,0.0,0.0,HCA_QMAX,-HCA_QMAX,1.0,1000.0,0.0,HCA_PMAX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])))
   d['gentype'].append('DL')
   d['genfuel'].append('hca')
-  d['gencost'].append(mpow.get_hca_gencosts('hca'))
+  d['gencost'] = np.vstack((d['gencost'], mpow.get_hca_gencosts('hca')))
+
   # skip this back-filling of default costs, because the base case had ERCOT generator costs from the APEN paper
 # ng = len(d['gen'])
 # for i in range(ng):

@@ -29,14 +29,14 @@ def bes_hca_fn (sys_name='hca', case_title='hca', load_scale=2.74, hca_buses=Non
   saved_iteration = 0
 
   # nominal quantities for the base case, hca generation at zero
-  d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name))
+  d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name), asNumpy=True)
   nb = len(d['bus'])
   ng = len(d['gen'])
   nl = len(d['branch'])
 
-  gen = np.array (d['gen'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
-  branch = np.array (d['branch'], dtype=float)
+  gen = d['gen']
+  bus = d['bus']
+  branch = d['branch']
   nominalPd = np.sum (bus[:,mpow.PD])
   scaledPd = load_scale * nominalPd
   nominalPmax = np.sum (gen[:,mpow.PMAX])
@@ -97,7 +97,7 @@ def bes_hca_fn (sys_name='hca', case_title='hca', load_scale=2.74, hca_buses=Non
       contingencies = bus_contingencies[str(hca_bus)]
       if branch_contingencies is not None:
         contingencies = contingencies + branch_contingencies
-      mpow.write_contab_list (chgtab_name, d, contingencies, bLog=False)
+      mpow.write_contab_list (contab_name, d, contingencies, bLog=False)
 
     # remove old results so we know if an error occurred
     if os.path.exists(fsummary):
