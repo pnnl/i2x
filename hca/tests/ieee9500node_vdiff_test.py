@@ -7,15 +7,15 @@ import islands as isl
 import pandas as pd
 import networkx as nx
 
-def main(vdiff_array, invmod, logmode="a"):
+def main(vdiff_array, invmode, logmode="a"):
     ### load config (note: just changes to defaults)
     inputs = h.load_config("hca9500node_testconfig.json")
-    inputs["invmod"] = invmod
+    inputs["invmode"] = invmode
     inputs["hca_log"]["logname"] = "hca_vdiff_test"
     inputs["hca_log"]["logtofilemode"] = logmode
 
     hca = h.HCA(inputs) # instantiate hca instance
-    hca.logger.info(f"********* Run with {invmod} ****************")
+    hca.logger.info(f"********* Run with {invmode} ****************")
     hca.runbase()       # run baseline
 
     ### add solar to bus n1134480
@@ -25,7 +25,7 @@ def main(vdiff_array, invmod, logmode="a"):
     # run hca round allowing violations (violation should occur)
     hca.hca_round("pv", bus=bus, Sij=Sij, allow_violations=True)
 
-    vdiff_array[invmod] = [hca.metrics.violation['voltage']['vdiff']]
+    vdiff_array[invmode] = [hca.metrics.violation['voltage']['vdiff']]
     hca.logger.info(f"(post addition) vdiff margin = {hca.metrics.violation['voltage']['vdiff']}")
 
     ###### Upgrade path 
@@ -67,7 +67,7 @@ def main(vdiff_array, invmod, logmode="a"):
 
     ### Re-Run
     hca.reset_dss() # reset to before the last resource was added
-    hca.replay_resource_addition("pv", last_bus, 1) #re-add the pv resource
+    hca.replay_resource_addition("pv", last_bus, hca.cnt) #re-add the pv resource
     hca.change_lines.extend(upgrade_lines) # add all the upgrades
     ### print first change line to verify resource is being 
     #print last line to verify upgrades are happening
@@ -81,21 +81,21 @@ def main(vdiff_array, invmod, logmode="a"):
     hca.metrics.load_res(hca.lastres)
     hca.metrics.calc_metrics()
     hca.logger.info(f"(post upgrade) vdiff margin = {hca.metrics.violation['voltage']['vdiff']}")
-    vdiff_array[invmod].append(hca.metrics.violation['voltage']['vdiff'])
+    vdiff_array[invmode].append(hca.metrics.violation['voltage']['vdiff'])
 
-    hca.logger.info(f"\n********* Finished run with {invmod} **************")
+    hca.logger.info(f"\n********* Finished run with {invmode} **************")
     return hca
 
 if __name__ == "__main__":
     vdiff_array = {}
     hca = main(vdiff_array, "CONSTANT_PF", logmode="w")
     ### Re-try with advanced inverter functions
-    for invmod in ['VOLT_WATT', 'VOLT_VAR_CATA', 'VOLT_VAR_CATB', 'VOLT_VAR_AVR', 'VOLT_VAR_VOLT_WATT', 'VOLT_VAR_14H']:
-        hca = main(vdiff_array, invmod)
+    for invmode in ['VOLT_WATT', 'VOLT_VAR_CATA', 'VOLT_VAR_CATB', 'VOLT_VAR_AVR', 'VOLT_VAR_VOLT_WATT', 'VOLT_VAR_14H']:
+        hca = main(vdiff_array, invmode)
 
     hca.logger.info("\n**** Impact of Inverer Mode and Upgrade ****")
-    for invmod, vdiff in vdiff_array.items():
-        hca.logger.info(f"Results with inverter mode {invmod}")
+    for invmode, vdiff in vdiff_array.items():
+        hca.logger.info(f"Results with inverter mode {invmode}")
         hca.logger.info(f"pre: {vdiff[0]}, post: {vdiff[1]}")
     
 
