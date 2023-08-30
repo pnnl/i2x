@@ -32,7 +32,6 @@ mpc.gen = [
  4.0  8730.3  0.0  2869.5  -2869.5  1.0   8730.3  0.0   8730.3     0.0  0.0  0.0  0.0  0.0  0.0  0.0  Inf Inf Inf Inf  0.0;
  6.0    99.8  0.0  32.8  -32.8      1.0     99.8  0.0     99.8     0.0  0.0  0.0  0.0  0.0  0.0  0.0  Inf Inf Inf Inf  0.0;
  7.0  3562.2  0.0  1170.8  -1170.8  1.0   3562.2  0.0   3562.2     0.0  0.0  0.0  0.0  0.0  0.0  0.0  Inf Inf Inf Inf  0.0;
- 1.0     0.0  0.0 10000.0 -10000.0  1.0   1000.0  0.0  30000.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0  Inf Inf Inf Inf  0.0;
 ];
 %% bus  tbus       r         x        b   rateA   rateB   rateC ratio angle status angmin angmax
 mpc.branch = [
@@ -70,7 +69,6 @@ mpc.gencost = [
  2.0 10.0 10.0  2.0   1.01  10.0;
  2.0 10.0 10.0  2.0   1.01  10.0;
  2.0 10.0 10.0  2.0   1.01  10.0;
- 2.0 10.0 10.0  2.0   0.51   5.0;
 ];
 
 mpc.gentype = {
@@ -92,7 +90,6 @@ mpc.gentype = {
   'WT';
   'WT';
   'WT';
-  'DL';
 };
 
 %% generator fuel type (see GENFUELS); use wind, solar, hydro, nuclear, ng, coal, dl
@@ -115,6 +112,5 @@ mpc.genfuel = {
   'wind';
   'wind';
   'wind';
-  'hca';
 };
 

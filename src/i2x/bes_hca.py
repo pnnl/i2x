@@ -69,12 +69,12 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     hca_buses = np.arange(1, nb+1, dtype=int)
   nhca = len(hca_buses)
 
-  chgtab_name = None
+  upgrade_name = None
   nupgrades = 0
   if upgrades:
-    chgtab_name = '{:s}_upgrades'.format(sys_name)
+    upgrade_name = '{:s}_upgrades'.format(sys_name)
     nupgrades = len(upgrades)
-    mpow.write_contab (chgtab_name, d, upgrades)
+    mpow.write_contab (upgrade_name, d, upgrades)
 
   hca_gen_idx = 0
 
@@ -103,16 +103,16 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
   iteration = 0
 
   # write the size-based list of branch contingencies, but only if there are no adjacent-bus contingencies
-  chgtab_name = 'hca_contab'
+  contab_name = 'hca_contab'
   if branch_contingencies is not None:
     if bus_contingencies is None:
-      mpow.write_contab_list (chgtab_name, d, branch_contingencies)
+      mpow.write_contab_list (contab_name, d, branch_contingencies)
 
   for hca_bus in hca_buses:
     iteration += 1
     cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
-    fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, 
-                                                   quiet=True, glpk_opts=glpk_opts, softlims=softlims)
+    fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=upgrade_name, 
+                                                   cmd=cmd, quiet=True, glpk_opts=glpk_opts, softlims=softlims)
     # update the list of contingencies for this HCA bus
     if bus_contingencies is not None:
       contingencies = bus_contingencies[str(hca_bus)]

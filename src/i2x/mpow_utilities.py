@@ -590,7 +590,7 @@ def get_plant_commit_key(fuel, gencosts, gen, use_wind):
         return 1
       else:
         return -1
-    elif fuel == 'dl':
+    elif fuel in ['dl', 'nuclear', 'coal']:
       return 2
     else:
       return 1
