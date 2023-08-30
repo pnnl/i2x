@@ -335,7 +335,8 @@ def get_vi_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
     d[key] = {}
     d[key]['elem'] = elem
     d[key]['monitor'] = name
-    d[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float except for transformers
+    d[key]['basekv'] = get_basekv(dss, elem, dss.monitors.terminal)
+    # d[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float except for transformers
   d[key]['vmin'] = np.min(v)
   d[key]['vmax'] = np.max(v)
   d[key]['vmean'] = np.mean(v)
@@ -352,7 +353,8 @@ def get_pq_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
     d[key] = {}
     d[key]['elem'] = elem
     d[key]['monitor'] = name
-    d[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float except for transformers
+    d[key]['basekv'] = get_basekv(dss, elem, dss.monitors.terminal)
+    # d[key]['basekv'] = np.unique(get_basekv(dss, elem)).squeeze() # should lead to a single float except for transformers
   d[key]['pmin'] = np.min(p)
   d[key]['pmax'] = np.max(p)
   d[key]['p'] = p
@@ -374,10 +376,9 @@ def check_element_status(dss:py_dss_interface.DSSDLL, elemname:str) -> int:
   index_str = dss.circuit.set_active_element(elemname)
   return dss.cktelement.is_enabled
 
-def get_basekv(dss:py_dss_interface.DSSDLL, elemname:str) -> list[float]:
+def get_basekv(dss:py_dss_interface.DSSDLL, elemname:str, terminal:int) -> float:
   dss.circuit.set_active_element(elemname)
-  basekv = []
-  for n in dss.cktelement.bus_names:
-    dss.circuit.set_active_bus(n)
-    basekv.append(dss.bus.kv_base*np.sqrt(3))
-    return basekv
+  
+  # set the bus of the specified terminal active
+  dss.circuit.set_active_bus(dss.cktelement.bus_names[terminal-1])
+  return dss.bus.kv_base*np.sqrt(3)
