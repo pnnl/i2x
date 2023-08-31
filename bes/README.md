@@ -247,5 +247,64 @@ The steps for an auction-based process would be:
 - Define the minimum bids and maximum allowed capacity for each bus to be included in the auction.
     - Run a confirming N-1 analysis for a system with a set of auctioned projects connected to the grid. The purpose is to verify feasibility of interconnecting a set of auction-winning projects to the grid. However, there are no existing helper scripts for this task.
 
+## Example of Queue and Auction Simulations
+
+From the *./tests* subdirectory:
+
+- **python impact.py**
+
+produces the following results:
+
+```
+***********************************************
+Auction Process on buses [6, 3, 8]
+Generation by Fuel[GW]
+    hca    wind   solar nuclear   hydro    coal      ng      dl
+  9.648  14.391   0.000   5.139   0.000  21.566  15.341   0.000
+ Bus    HC [MW]
+   6   4552.694
+   3   3855.826
+   8   1239.512
+Merit order of upgrades:
+ Br# From   To     muF      MVA      kV  Add MVA    Miles  Cost $M
+   1    5    6  4.8935  2168.00  345.00  1084.00   142.43   508.49
+  13    1    3  4.1832  3252.00  345.00  1084.00   212.56   753.96
+   4    1    2  4.0474  2168.00  345.00  1084.00   207.00   734.49
+   8    6    7  3.5878  2168.00  345.00  1084.00   199.86   709.52
+   7    4    8  1.7354  2168.00  345.00  1084.00   214.74   761.59
+   9    2    5  0.3557  6504.00  345.00  1084.00   148.51   529.78
+  11    3    4  0.0190  2168.00  345.00  1084.00   147.63   526.71
+***********************************************
+Queue Process on 3 applications
+Processing application for 5000.00 MW at bus 6
+  Added 5000.00 MW solar at bus 6 for $0.000M
+Processing application for 4400.00 MW at bus 3
+  HC=4122.50 MW, upgrade branch 1 by 1.5000 at $508.489M
+  IX Cost $508.489M is too high, HC=4422.132 MW
+Processing application for 2000.00 MW at bus 8
+  HC=1239.51 MW, upgrade branch 1 by 1.5000 at $508.489M
+  HC=1239.51 MW, upgrade branch 7 by 1.5000 at $761.593M
+  Added 2000.00 MW wind at bus 8 for $1270.082M
+```
+
+In the 8-bus ERCOT model, buses 3, 6, and 8 have the lowest hosting 
+capacity. The auction simulation indicates that 9648 MW can be hosted 
+among those three buses, without any system upgrades. A queue simulation 
+results in 7 GW actually connected to the system, but one applicant had to 
+pay $1270M in system upgrade costs. Because the project at bus 6 came 
+first in the queue, that project was able to connect 5000 MW, which is 
+higher than 4553 MW allocated to that bus for an auction. Nothing was 
+connected at bus 3 because the applicant was unwilling to pay $508M in 
+grid upgrade costs. However, a smaller project might have been accepted at 
+bus 3. The last project at bus 8 was able to connect 2000 MW, which is 
+higher than the auction limit at bus 8, but only by paying for grid 
+upgrades.
+ 
+In the queue process, an upgrade on branch 1 was proposed for the project 
+at bus 3, but not added to the grid because the project withdrew. Later, 
+the project at bus 8 paid for the same proposed upgrade on branch 1, in 
+addition to an upgrade on branch 7. The sizes, locations, and upgrade cost 
+limits are configurable for each application in the Python script. 
+
 Copyright 2022-2023, Battelle Memorial Institute
 

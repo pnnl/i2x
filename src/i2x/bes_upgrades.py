@@ -164,6 +164,7 @@ def get_branch_next_upgrade (branch, bus, i):
   kv = max (bus[bus1-1,mpow.BASE_KV], bus[bus2-1,mpow.BASE_KV])
   xpu = branch[i,mpow.BR_X]
   mva = branch[i,mpow.RATE_A]
+  miles = 0.0
   if branch[i,mpow.TAP] > 0.0:
     newmva = get_default_transformer_mva (kv)
     cost = estimate_transformer_cost (kv, newmva)
@@ -175,10 +176,11 @@ def get_branch_next_upgrade (branch, bus, i):
     miles = estimate_overhead_line_length (x*npar, kv)
     cost = estimate_line_cost (kv, miles)
   elif xpu < 0.0:
+    miles = -1.0
     newmva = get_default_line_mva (kv)
     cost = estimate_capacitor_cost (kv, newmva)
   scale = 1.0 + newmva / mva
-  return scale, cost
+  return scale, cost, miles
 
 def estimate_branch_scaling (x, b, tap, kv1, kv2, mva):
   npar = 1
@@ -346,7 +348,7 @@ def add_bus_contingencies (G, hca_buses, size_contingencies=[], bLog=True,
     print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
   return d, removals, ncmax
 
-def rebuild_contingencies (mpd, G, poc, min_mva=100.0, min_kv=100.0):
+def rebuild_contingencies (mpd, G, poc_buses, min_mva=100.0, min_kv=100.0):
   s = []
   bus = mpd['bus']
   branch = mpd['branch']
@@ -371,6 +373,9 @@ def rebuild_contingencies (mpd, G, poc, min_mva=100.0, min_kv=100.0):
   exclusions = []
   for ct in s:
     exclusions.append (ct['branch'])
-  b, _, _ = add_bus_contingencies (G, [poc], exclusions, False, min_mva, min_kv)
+  b, _, _ = add_bus_contingencies (G, poc_buses, exclusions, False, min_mva, min_kv)
 
-  return s+b[poc]
+  all = s
+  for poc in poc_buses:
+    all = all + b[poc]
+  return all
