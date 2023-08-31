@@ -14,7 +14,7 @@ kVLNbase = 230.0 / math.sqrt(3.0)
 MVAbase = 100.0
 kAbase = MVAbase / kVLNbase / 3.0
 
-def scale_factor(lbl):
+def scale_factor(lbl, bPSCAD):
   if 'P' in lbl:
     return 1.0 / MVAbase
   elif 'Q' in lbl:
@@ -22,7 +22,8 @@ def scale_factor(lbl):
   elif 'I' in lbl:
     return 1.0 / kAbase / math.sqrt(2.0)
   elif 'Vrms' in lbl:
-    return 1.0 / kVLNbase
+    if not bPSCAD:
+      return 1.0 / kVLNbase
   elif 'V' in lbl:
     return 1.0 / kVLNbase / math.sqrt(2.0)
   return 1.0
@@ -36,24 +37,24 @@ def setup_plot_options():
   plt.rc('axes', labelsize=lsize)
   plt.rc('legend', fontsize=6)
 
-def show_case_plot(channels, units, case_title):
+def show_case_plot(channels, units, case_title, bPSCAD):
   t = channels['t']
   fig, ax = plt.subplots(5, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle ('Case: ' + case_title)
   for lbl in ['VA', 'VB', 'VC']:
-    ax[0].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[0].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
     ax[0].set_ylabel ('V(t) [pu]')
   for lbl in ['IA', 'IB', 'IC']:
-    ax[1].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[1].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
     ax[1].set_ylabel ('I(t) [pu]')
   for lbl in ['Vrms']:
-    ax[2].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[2].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
     ax[2].set_ylabel ('V [pu]')
   for lbl in ['P', 'Q']:
-    ax[3].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[3].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
     ax[3].set_ylabel ('P, Q [pu]')
   for lbl in ['F']:
-    ax[4].plot (t, scale_factor(lbl) * channels[lbl], label=lbl)
+    ax[4].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
     ax[4].set_ylabel ('F [Hz]')
   for i in range(5):
     ax[i].grid()
@@ -64,7 +65,7 @@ def show_case_plot(channels, units, case_title):
   plt.show()
   plt.close()
 
-def show_fault_comparison_plot (chd, unitd, case_tag):
+def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD):
   fig, ax = plt.subplots(4, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle ('Comparing Fault Cases: {:s}'.format(case_tag))
 
@@ -76,7 +77,7 @@ def show_fault_comparison_plot (chd, unitd, case_tag):
     ch = chd[key]
     for i in range(4):
       lbl = channel_labels[i]
-      ax[i].plot (ch['t'], scale_factor(lbl) * ch[lbl], label=key)
+      ax[i].plot (ch['t'], scale_factor(lbl, bPSCAD) * ch[lbl], label=key)
 
   for i in range(4):
     ax[i].set_ylabel (y_labels[i])
@@ -125,6 +126,11 @@ def load_channels(comtrade_path):
   return channels, units
 
 if __name__ == '__main__':
+  bPSCAD = True
+  if len(sys.argv) > 1:
+    if int(sys.argv[1]) == 1:
+      bPSCAD = False
+
   setup_plot_options()
 
   cases = ['abcg80', 'abcg50', 'abcg25', 'abcg01',
@@ -132,16 +138,18 @@ if __name__ == '__main__':
            'bc80',   'bc50',   'bc25',   'bc01']
 
   # set the session_path to match location of your unzipped sample cases
-# session_path = 'c:/temp/i2x/pscad'
-  case_tag = 'Solar'
-  session_path = 'c:/temp/i2x/emtp'
-  case_tag = 'Wind'
+  if bPSCAD:
+    case_tag = 'Solar'
+    session_path = 'c:/temp/i2x/pscad/Solar4.if18_x86/rank_00001/Run_00001'
+  else:
+    session_path = 'c:/temp/i2x/emtp'
+    case_tag = 'Wind'
 
   flt_channels = {}
   flt_units = {}
   for tag in cases:
     flt_path = os.path.join (session_path, '{:s}'.format (tag))
     flt_channels[tag], flt_units[tag] = load_channels (flt_path)
-#    show_case_plot (flt_channels[tag], flt_units[tag], 'Case {:s}'.format(tag))
-  show_fault_comparison_plot (flt_channels, flt_units, case_tag)
+    show_case_plot (flt_channels[tag], flt_units[tag], 'Case {:s}'.format(tag), bPSCAD)
+  show_fault_comparison_plot (flt_channels, flt_units, case_tag, bPSCAD)
 

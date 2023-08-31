@@ -29,5 +29,15 @@ with EMTP, two spaces below *EPRI\_Aggregated\_Park\_WECC\_WP\_V1* in the
 screenshot.  This model's help document is longer, at 61 pages, and it
 provides additional background information.  
 
+## Directory of EMTP Files
+
+These models and scripts are used in the video walk-throughs:
+
+- **Machine2.ecf**; a project with rotating machine in the plant model test circuit.
+- **Wind2.ecf**; a project with IBR in the plant model test circuit.
+- **Wind4.ecf**; a plant model test circuit, set up for automated fault simulations.
+- **FaultScript.dwj**; a JavaScript program that applies 12 faults to *Wind4.ecf*
+
+
 Copyright 2022-2023, Battelle Memorial Institute
 
