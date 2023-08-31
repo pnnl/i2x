@@ -140,23 +140,28 @@ def show_test_plot (channels, units, case_title):
   plt.close()
 
 if __name__ == '__main__':
+  bPSCAD = True
+  if len(sys.argv) > 1:
+    if int(sys.argv[1]) == 1:
+      bPSCAD = False
+
   setup_plot_options()
 
   # set the session_path to match location of your unzipped sample cases
-# session_path = 'c:/temp/i2x/pscad'
-# dm_path = os.path.join (session_path, 'Solar3dm.if18_x86/rank_00001/Run_00001/DM')
-# avm_path = os.path.join (session_path, 'Solar3avm.if18_x86/rank_00001/Run_00001/AVM')
-# dm_channels, dm_units = load_channels (dm_path)
-# avm_channels, avm_units = load_channels (avm_path)
+  if bPSCAD:
+    session_path = 'c:/temp/i2x/pscad'
+    dm_path = os.path.join (session_path, 'Solar3dm.if18_x86/rank_00001/Run_00001/DM')
+    avm_path = os.path.join (session_path, 'Solar3avm.if18_x86/rank_00001/Run_00001/AVM')
+  else:
+    session_path = 'c:/temp/i2x/emtp'
+    dm_path = os.path.join (session_path, 'dm')
+    avm_path = os.path.join (session_path, 'avm')
 
-  session_path = 'c:/temp/i2x/emtp'
-  dm_path = os.path.join (session_path, 'dm')
-  avm_path = os.path.join (session_path, 'avm')
   dm_channels, dm_units = load_channels (dm_path)
   avm_channels, avm_units = load_channels (avm_path)
 
-  show_case_plot (dm_channels, dm_units, 'Detailed Switching Model')
-  show_case_plot (avm_channels, avm_units, 'Average Switching Model')
+  show_case_plot (dm_channels, dm_units, 'Switching Model')
+  show_case_plot (avm_channels, avm_units, 'Average Model')
   show_comparison_plot (dm=dm_channels, avm=avm_channels, units=dm_units)
 
   #  show_test_plot (dm_channels, dm_units, dm_path)
