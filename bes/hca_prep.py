@@ -57,10 +57,16 @@ if __name__ == '__main__':
   if mva_upgrades is not None:
     for row in mva_upgrades:
       idx = row['branch_number'] - 1
-      d['branch'][idx][mpow.RATE_A] = row['new_mva']
-      d['branch'][idx][mpow.RATE_B] = row['new_mva']
-      d['branch'][idx][mpow.RATE_C] = row['new_mva']
-      print ('Upsizing branch MVA', idx+1, d['branch'][idx])
+      old_mva = d['branch'][idx][mpow.RATE_A]
+      new_mva = row['new_mva']
+      scale = new_mva / old_mva
+      d['branch'][idx][mpow.RATE_A] = new_mva
+      d['branch'][idx][mpow.RATE_B] = new_mva
+      d['branch'][idx][mpow.RATE_C] = new_mva
+      d['branch'][idx][mpow.BR_R] /= scale
+      d['branch'][idx][mpow.BR_X] /= scale
+      d['branch'][idx][mpow.BR_B] *= scale
+      print ('Upsizing branch {:d} by {:.2f} to {:.2f} MVA'.format(idx+1, scale, new_mva))
 
   wmva_name = '{:s}_wmva'.format(sys_name)
   print ('Writing base case updates to {:s}.m'.format(wmva_name))
