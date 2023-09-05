@@ -49,7 +49,9 @@ if __name__ == '__main__':
     print ('Recorder parameters:', recorder.parameters())
 
   # table-driven parametric study
+  ncase = 1
   for row in cases:
+    print ('Simulating {:s}, {:d} of {:d} fault cases'.format (row['tag'], ncase, len(cases)))
     faultL.parameters (L=row['L'])
     recorder.parameters (FName=row['tag'])
     A=False
@@ -66,4 +68,5 @@ if __name__ == '__main__':
       G=True
     fault.parameters (A=A, B=B, C=C, G=G)
     prj.run()
+    ncase += 1
 
