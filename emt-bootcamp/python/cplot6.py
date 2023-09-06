@@ -1,6 +1,6 @@
 # Copyright (C) 2018-2023 Battelle Memorial Institute
-# file: cplot5.py
-""" Plots COMTRADE channels from plant model test cases.
+# file: cplot6.py
+""" Plots COMTRADE channels from plant model SCR ramping.
 """
 
 import sys
@@ -59,12 +59,13 @@ def setup_plot_options():
   plt.rc('xtick', labelsize=lsize)
   plt.rc('ytick', labelsize=lsize)
   plt.rc('axes', labelsize=lsize)
-  plt.rc('legend', fontsize=6)
+  plt.rc('legend', fontsize=10)
 
-def show_case_plot(channels, units, case_title, bPSCAD):
+def show_case_plot(channels, units, title, bPSCAD, tmax=40.0, PNGName=None):
+  x_ticks = np.linspace (0.0, tmax, 11)
   t = channels['t']
   fig, ax = plt.subplots(5, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
-  fig.suptitle ('Case: ' + case_title)
+  fig.suptitle (title)
   for lbl in ['VA', 'VB', 'VC']:
     ax[0].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
     ax[0].set_ylabel ('V(t) [pu]')
@@ -81,34 +82,11 @@ def show_case_plot(channels, units, case_title, bPSCAD):
     ax[4].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
     ax[4].set_ylabel ('F [Hz]')
   for i in range(5):
-    ax[i].grid()
-    ax[i].legend()
-  ax[4].set_xlabel ('seconds')
-  plt.show()
-  plt.close()
-
-def show_comparison_plot (chd, unitd, title, bPSCAD, tmax, PNGName=None):
-  fig, ax = plt.subplots(4, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
-  fig.suptitle (title)
-
-  channel_labels = ['Vrms', 'P', 'Q', 'F']
-  y_labels = ['Vrms [pu]', 'P [pu]', 'Q [pu]', 'F [Hz]']
-  x_ticks = np.linspace (0.0, tmax, 11)
-
-  for key in chd:
-    ch = chd[key]
-    for i in range(4):
-      lbl = channel_labels[i]
-      ax[i].plot (ch['t'], scale_factor(lbl, bPSCAD) * ch[lbl], label=key)
-
-  for i in range(4):
-    ax[i].set_ylabel (y_labels[i])
     ax[i].set_xticks (x_ticks)
     ax[i].set_xlim (x_ticks[0], x_ticks[-1])
     ax[i].grid()
     ax[i].legend(loc='lower right')
-  ax[3].set_xlabel ('Time [s]')
-
+  ax[4].set_xlabel ('seconds')
   if PNGName is not None:
     plt.savefig(PNGName)
   plt.show()
@@ -151,50 +129,36 @@ def load_channels(comtrade_path, bDebug=False):
 
   return channels, units
 
-def process_test_suite (session_path, case_tag, bPSCAD, test_title, test_files, test_tmax, PNGName):
-  channels = {}
-  units = {}
-  for tag in test_files:
-    tag_path = os.path.join (session_path, '{:s}'.format (tag))
-    channels[tag], units[tag] = load_channels (tag_path)
-    if bPSCAD: # cosmetic initialization of the frequency plot
-      channels[tag]['F'][0] = 60.0
-#    show_case_plot (channels[tag], units[tag], 'Case {:s}'.format(tag), bPSCAD)
-  title = '{:s}: {:s}'.format(test_title, case_tag)
-  show_comparison_plot (channels, units, title, bPSCAD, test_tmax, PNGName)
-
 if __name__ == '__main__':
   bPSCAD = True
   bSavePNG = False
-  test = 'fs'
-  test = 'uv'
-  test = 'ov'
-  test = 'fr'
-  test = 'an'
-  test = 'st'
+  test = 'rampscr'
   if len(sys.argv) > 1:
     if int(sys.argv[1]) == 1:
       bPSCAD = False
     if len(sys.argv) > 2:
-      test = sys.argv[2]
-      if len(sys.argv) > 3:
-        if int(sys.argv[3]) == 1:
-          bSavePNG = True
+      if int(sys.argv[2]) == 1:
+        bSavePNG = True
 
   setup_plot_options()
 
   # set the session_path to match location of your unzipped sample cases
   if bPSCAD:
     case_tag = 'Solar'
-    session_path = 'c:/temp/i2x/pscad/Solar5.if18_x86/rank_00001/Run_00001'
+    session_path = 'c:/temp/i2x/pscad/Solar6.if18_x86/rank_00001/Run_00001'
+    tmax = 40.0
   else:
     session_path = 'c:/temp/i2x/emtp'
     case_tag = 'Wind'
+    tmax = 20.0
   if bSavePNG:
     PNGName = '{:s}_{:s}.png'.format (case_tag, test)
   else:
     PNGName = None
 
-  process_test_suite (session_path, case_tag, bPSCAD, test_suites[test]['title'], 
-                      test_suites[test]['files'], test_suites[test]['tmax'], PNGName)
+  tag_path = os.path.join (session_path, 'rampscr')
+  channels, units = load_channels (tag_path)
+  if bPSCAD: # cosmetic initialization of the frequency plot
+    channels['F'][0] = 60.0
+  show_case_plot (channels, units, 'Ramping SCR test: {:s}'.format(case_tag), bPSCAD, tmax, PNGName)
 
