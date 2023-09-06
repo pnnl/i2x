@@ -17,7 +17,24 @@ kAbase = MVAbase / kVLNbase / 3.0
 flats = ['fsicrv', 'fsicrq0', 'fsicrqp', 'fsicrqn', 'fsicrpf0', 'fsicrpfp', 'fsicrpfn',
          'fsminv', 'fsminq0', 'fsminqp', 'fsminqn', 'fsminpf0', 'fsminpfp', 'fsminpfn']
 
-test_suites = {'fs': {'title': 'Weak-grid model initialization tests', 'files': flats}}
+uvrts = ['uvq03sag', 'uvq03pg', 'uvq01pg', 'uvq02pg', 'uvq02p', 
+         'uvqp3sag', 'uvqp3pg', 'uvqp1pg', 'uvqp2pg', 'uvqp2p', 
+         'uvqn3sag', 'uvqn3pg', 'uvqn1pg', 'uvqn2pg', 'uvqn2p']
+
+ovrts = ['ovq0', 'ovqp', 'ovqn']
+
+freqs = ['oficr', 'uficr', 'ofmin', 'ufmin']
+
+angles = ['anicr', 'apicr', 'anmin', 'apmin']
+
+steps = ['stvref', 'stqref', 'stpfref', 'stpref']
+
+test_suites = {'fs': {'title': 'Weak-grid model initialization tests', 'files': flats, 'tmax': 20.0},
+               'uv': {'title': 'Weak-grid undervoltage ride-through tests', 'files': uvrts, 'tmax': 10.0},
+               'ov': {'title': 'Weak-grid overvoltage ride-through tests', 'files': ovrts, 'tmax': 20.0},
+               'fr': {'title': 'Weak-grid frequency ride-through tests', 'files': freqs, 'tmax': 40.0},
+               'an': {'title': 'Weak-grid angle ride-through tests', 'files': angles, 'tmax': 40.0},
+               'st': {'title': 'Control reference step tests', 'files': steps, 'tmax': 50.0}}
 
 def scale_factor(lbl, bPSCAD):
   if 'P' in lbl:
@@ -68,13 +85,13 @@ def show_case_plot(channels, units, case_title, bPSCAD):
   plt.show()
   plt.close()
 
-def show_comparison_plot (chd, unitd, title, bPSCAD):
+def show_comparison_plot (chd, unitd, title, bPSCAD, tmax):
   fig, ax = plt.subplots(4, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle (title)
 
   channel_labels = ['Vrms', 'P', 'Q', 'F']
   y_labels = ['Vrms [pu]', 'P [pu]', 'Q [pu]', 'F [Hz]']
-  x_ticks = np.linspace (0.0, 20.0, 11)
+  x_ticks = np.linspace (0.0, tmax, 11)
 
   for key in chd:
     ch = chd[key]
@@ -110,7 +127,7 @@ def load_channels(comtrade_path, bDebug=False):
   channels = {}
   units = {}
   channels['t'] = t
-  print ('{:d} channels ({:d} points) read from {:s}.cfg:'.format (rec.analog_count, len(t), comtrade_path))
+  print ('{:d} channels ({:d} points) read from {:s}.cfg'.format (rec.analog_count, len(t), comtrade_path))
   for i in range(rec.analog_count):
     lbl = rec.analog_channel_ids[i].strip()
     # for PSCAD naming convention, truncate the channel at first colon, if one exists
@@ -130,7 +147,7 @@ def load_channels(comtrade_path, bDebug=False):
 
   return channels, units
 
-def process_test_suite (session_path, case_tag, bPSCAD, test_title, test_files):
+def process_test_suite (session_path, case_tag, bPSCAD, test_title, test_files, test_tmax):
   channels = {}
   units = {}
   for tag in test_files:
@@ -140,11 +157,16 @@ def process_test_suite (session_path, case_tag, bPSCAD, test_title, test_files):
       channels[tag]['F'][0] = 60.0
 #    show_case_plot (channels[tag], units[tag], 'Case {:s}'.format(tag), bPSCAD)
   title = '{:s}: {:s}'.format(test_title, case_tag)
-  show_comparison_plot (channels, units, title, bPSCAD)
+  show_comparison_plot (channels, units, title, bPSCAD, test_tmax)
 
 if __name__ == '__main__':
   bPSCAD = True
   test = 'fs'
+  test = 'uv'
+  test = 'ov'
+  test = 'fr'
+  test = 'an'
+  test = 'st'
   if len(sys.argv) > 1:
     if int(sys.argv[1]) == 1:
       bPSCAD = False
@@ -159,5 +181,6 @@ if __name__ == '__main__':
     session_path = 'c:/temp/i2x/emtp'
     case_tag = 'Wind'
 
-  process_test_suite (session_path, case_tag, bPSCAD, test_suites[test]['title'], test_suites[test]['files'])
+  process_test_suite (session_path, case_tag, bPSCAD, test_suites[test]['title'], 
+                      test_suites[test]['files'], test_suites[test]['tmax'])
 

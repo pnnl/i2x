@@ -10,6 +10,7 @@ Preconditions:
 """
 
 import mhi.pscad
+import time
 
 # one row for each case
 #  'tag' codes the phases involved and expected retained voltage
@@ -49,6 +50,7 @@ if __name__ == '__main__':
     print ('Recorder parameters:', recorder.parameters())
 
   # table-driven parametric study
+  start = time.time()
   ncase = 1
   for row in cases:
     print ('Simulating {:s}, {:d} of {:d} fault cases'.format (row['tag'], ncase, len(cases)))
@@ -69,4 +71,5 @@ if __name__ == '__main__':
     fault.parameters (A=A, B=B, C=C, G=G)
     prj.run()
     ncase += 1
+  print ('Finished: {:.2f} seconds elapsed'.format(time.time() - start))
 
