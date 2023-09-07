@@ -77,7 +77,8 @@ def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD, PNGName=None):
   channel_labels = ['Vrms', 'P', 'Q', 'F']
   y_labels = ['Vrms [pu]', 'P [pu]', 'Q [pu]', 'F [Hz]']
   x_ticks = [0.75, 1.00, 1.25, 1.50, 1.75]
-  x_ticks = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+  if not bPSCAD:
+    x_ticks = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
 
   for key in chd:
     ch = chd[key]
@@ -137,9 +138,13 @@ def load_channels(comtrade_path, bDebug=False):
 
 if __name__ == '__main__':
   bPSCAD = True
+  bSavePNG = False
   if len(sys.argv) > 1:
     if int(sys.argv[1]) == 1:
       bPSCAD = False
+    if len(sys.argv) > 2:
+      if int(sys.argv[2]) == 1:
+        bSavePNG = True
 
   setup_plot_options()
 
@@ -154,6 +159,10 @@ if __name__ == '__main__':
   else:
     session_path = 'c:/temp/i2x/emtp'
     case_tag = 'Wind'
+  if bSavePNG:
+    PNGName = '{:s}_faults.png'.format (case_tag)
+  else:
+    PNGName = None
 
   flt_channels = {}
   flt_units = {}
@@ -161,5 +170,5 @@ if __name__ == '__main__':
     flt_path = os.path.join (session_path, '{:s}'.format (tag))
     flt_channels[tag], flt_units[tag] = load_channels (flt_path)
     #show_case_plot (flt_channels[tag], flt_units[tag], 'Case {:s}'.format(tag), bPSCAD)
-  show_fault_comparison_plot (flt_channels, flt_units, case_tag, bPSCAD)
+  show_fault_comparison_plot (flt_channels, flt_units, case_tag, bPSCAD, PNGName)
 
