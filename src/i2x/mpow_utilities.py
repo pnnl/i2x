@@ -10,6 +10,8 @@ import sys
 import os
 import math
 
+FUEL_LIST = ['hca', 'wind', 'solar', 'nuclear', 'hydro', 'coal', 'ng', 'dl']
+
 # Matpower column numbers
 
 # mpc.bus
@@ -290,7 +292,7 @@ def read_most_solution(fname='msout.txt'):
   return f, nb, ng, nl, ns, nt, nj_max, nc_max, psi, Pg, Pd, Rup, Rdn, SoC, Pf, u, lamP, muF
 ###################################################
 
-def read_matpower_array(fp, bStrings):
+def read_matpower_array(fp, bStrings, asNumpy):
   A = []
   while True:
     ln = fp.readline()
@@ -307,13 +309,15 @@ def read_matpower_array(fp, bStrings):
       A.append(ln.strip("'"))
     else:
       A.append(ln.split())
+  if asNumpy and not bStrings:
+    return np.array (A, dtype=float)
   return A
 
 def get_last_number (ln):
   toks = ln.split(' ')
   return toks[-1].strip('";\n')
 
-def read_matpower_casefile(fname):
+def read_matpower_casefile(fname, asNumpy=True):
   d = {}
   fp = open(fname, 'r')
   while True:
@@ -328,11 +332,11 @@ def read_matpower_casefile(fname):
       for table in ['gen', 'branch', 'bus', 'bus_name', 'gencost', 'gentype', 'genfuel']:
         token = 'mpc.{:s} ='.format(table)
         if token in ln:
-          if table in ['gentype', 'genfuel']:
+          if table in ['gentype', 'genfuel', 'bus_name']:
             bStrings = True
           else:
             bStrings = False
-          d[table] = read_matpower_array(fp, bStrings)
+          d[table] = read_matpower_array(fp, bStrings, asNumpy)
   fp.close()
   return d
 
@@ -522,7 +526,7 @@ def write_contab (root, d, scales):
   fp.close()
 # print ('wrote {:d} changes labeled {:d} to {:s}'.format (n, label, fname))
 
-def write_contab_list (root, d, conts):
+def write_contab_list (root, d, conts, bLog=True):
   br = d['branch']
   fname = '{:s}.m'.format(root)
   fp = open(fname, 'w')
@@ -556,7 +560,8 @@ def write_contab_list (root, d, conts):
   print('  ];', file=fp)
   print('end', file=fp)
   fp.close()
-  print ('wrote {:d} labeled contingencies to {:s}'.format (n, fname))
+  if bLog:
+    print ('wrote {:d} labeled contingencies to {:s}'.format (n, fname))
 
 # minup, mindown
 def get_plant_min_up_down_hours(fuel, gencosts, gen):
@@ -587,13 +592,13 @@ def get_plant_commit_key(fuel, gencosts, gen, use_wind):
         return 1
       else:
         return -1
-    elif fuel == 'dl':
+    elif fuel in ['dl', 'nuclear', 'coal']:
       return 2
     else:
       return 1
   return 2
 
-def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True):
+def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True, bLog=True):
   fp = open('{:s}.m'.format(root), 'w')
   print("""function [xgd_table] = {:s} (mpc)
   xgd_table.colnames = {{
@@ -637,7 +642,8 @@ def write_xgd_function (root, gen, gencost, genfuel, unit_state, use_wind=True):
   print('];', file=fp)
   print('end', file=fp)
   fp.close()
-  print ('configured {:d} generators, {:d} wind plants, {:d} responsive loads'.format(ngen, nwind, nresp))
+  if bLog:
+    print ('configured {:d} generators, {:d} wind plants, {:d} responsive loads'.format(ngen, nwind, nresp))
 
 def ercot_daily_loads (start, end, resp_scale):
   # pad the load profiles to cover requested number of hours
@@ -650,7 +656,7 @@ def ercot_daily_loads (start, end, resp_scale):
   responsive_load = resp_scale * fixed_load
   return fixed_load, responsive_load
 
-def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, cmd=None, quiet=False):
+def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, cmd=None, quiet=False, softlims=False, glpk_opts=None):
   fscript = 'solve_{:s}.m'.format(root)
   fsummary = '{:s}_summary.txt'.format(root)
   fp = open(fscript, 'w')
@@ -664,6 +670,9 @@ def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, c
     print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 0);""", file=fp)
   else:
     print("""mpopt = mpoption(mpopt, 'glpk.opts.msglev', 1);""", file=fp)
+  if glpk_opts is not None:
+    for key, val in glpk_opts.items():
+      print("""mpopt = mpoption(mpopt, '{:s}', {:s});""".format(key, str(val)), file=fp)
   if upgrades is None:
     print("""mpc = loadcase ('{:s}_case.m');""".format(root), file=fp)
   else:
@@ -675,6 +684,8 @@ def write_hca_solve_file (root, solver='GLPK', load_scale=None, upgrades=None, c
   if cmd is not None:
     print (cmd, file=fp)
   print("""xgd = loadxgendata('{:s}_xgd.m', mpc);""".format(root), file=fp)
+  if softlims:
+    print("""set_softlims;""", file=fp)
   print("""mdi = loadmd(mpc, [], xgd, [], '{:s}_contab.m');""".format(root), file=fp)
   print("""mdo = most(mdi, mpopt);""", file=fp)
   print("""ms = most_summary(mdo);""", file=fp)
@@ -808,3 +819,4 @@ def concatenate_MOST_result (total, new):
   else:
     total = np.hstack ((total, new))
   return total
+

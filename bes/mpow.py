@@ -7,16 +7,7 @@ import i2x.mpow_utilities as mpow
 
 # some data from CIMHub/BES/mpow.py
 
-CASES = [
-  {'id': '1783D2A8-1204-4781-A0B4-7A73A2FA6038', 
-   'name': 'IEEE118', 
-   'swingbus':'131',
-   'load_scale':0.6748},
-  {'id': '2540AF5C-4F83-4C0F-9577-DEE8CC73BBB3', 
-   'name': 'WECC240', 
-   'swingbus':'2438',
-   'load_scale':1.0425},
-]
+from bes_cases import *
 
 # global constants
 SQRT3 = math.sqrt(3.0)
@@ -70,8 +61,6 @@ if __name__ == '__main__':
   proc.wait()
   mpow.print_solution_summary (fsummary, details=True)
   r = mpow.read_matpower_casefile (fsolved)
-  for tag in ['bus', 'gen', 'branch', 'gencost']:
-    r[tag] = np.array(r[tag], dtype=float)
   mpow.summarize_casefile (r, 'Solved')
   print ('Min and max bus voltages=[{:.4f},{:.4f}]'.format (np.min(r['bus'][:,mpow.VM]),np.max(r['bus'][:,mpow.VM])))
   print ('Load = {:.3f} + j{:.3f} MVA'.format (np.sum(r['bus'][:,mpow.PD]),np.sum(r['bus'][:,mpow.QD])))

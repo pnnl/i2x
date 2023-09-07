@@ -31,8 +31,12 @@ class Logger(logging.Logger):
         self.logger = logging.getLogger(name)
         ## remove any handlers
         if self.logger.hasHandlers():
-            for h in self.logger.handlers:
+            while len(self.logger.handlers) > 0:
+                h = self.logger.handlers.pop(0)
                 self.logger.removeHandler(h)
+            self.logger.handlers = []
+            # for h in self.logger.handlers:
+            #     self.logger.removeHandler(h)
         if type(level) == str:
             self.logger.setLevel(level.upper())
         else:

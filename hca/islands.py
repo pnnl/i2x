@@ -47,6 +47,15 @@ def check_radial(G: nx.classes.graph.Graph) -> bool:
 
     return nx.is_tree(H)
 
+def get_nondir_tree(G: nx.classes.DiGraph) -> nx.classes.Graph:
+    """ Return undirected version of graph with open switches removed"""
+
+    H = G.copy().to_undirected()
+    ## get the open switches and remove them from the graph
+    open_switches = get_branch_elem(H, ['eclass', 'SwtOpen'], ['swtcontrol', True])
+    H.remove_edges_from(open_switches)
+    return H
+
 def get_islands(G: nx.classes.graph.Graph) -> Tuple[list, list]:
     """
     Get the components of graph G that can be islanded via reclosers.
@@ -94,6 +103,14 @@ def add_comp_num(G: nx.classes.graph.Graph, comps:list):
 
 def get_sources(G):
     return [n for n, d in G.nodes(data=True) if d["nclass"] == "source"]
+
+def get_nearest_source(G: nx.classes.Graph, bus):
+    """Return the nearest source bus in G to bus, as well as the path to it"""
+    paths = {}
+    for s in get_sources(G):
+        paths[s] = nx.shortest_path(G, bus, s)
+    nearest_source = min(paths, key=lambda x: len(paths[x]))
+    return nearest_source, paths[nearest_source]
 
 def get_comps(e:tuple, comps:list) -> tuple:
     """ 

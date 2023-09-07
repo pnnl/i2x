@@ -1,0 +1,235 @@
+// Copyright (C) 2023 Battelle Memorial Institute
+// file: PlantScript.dwj
+// Automating plant model testing in EMTP for the EMT bootcamp.
+
+// fault case row elements are:
+//  case mnemonic: including abcg for involved phases, number for retained voltage in percent
+//  Rf from each phase to neutral
+//  Lf from each phase to neutral [H]
+//  Rg from neutral to ground
+//  Lg from neutral to ground [H]
+var cases = [
+  ['abcg80', 0.000, 0.1057, 0.001, 0.0],
+  ['abcg50', 0.000, 0.0264, 0.001, 0.0],
+  ['abcg25', 0.000, 0.0088, 0.001, 0.0],
+  ['abcg01', 0.001, 0.0000, 0.001, 0.0],
+  ['ag80', 0.000, 0.1057, 0.001, 0.0],
+  ['ag50', 0.000, 0.0264, 0.001, 0.0],
+  ['ag25', 0.000, 0.0088, 0.001, 0.0],
+  ['ag01', 0.001, 0.0000, 0.001, 0.0],
+  ['bc80', 0.000, 0.1057, 0.001, 0.0],
+  ['bc50', 0.000, 0.0264, 0.001, 0.0],
+  ['bc25', 0.000, 0.0088, 0.001, 0.0],
+  ['bc01', 0.001, 0.0000, 0.001, 0.0]
+];
+  
+// flat-start cases
+var fsTMAX = 20.0;
+var fsTAG = 'fs';
+// elements are mnemonic, control mode, vref, qref, pfref
+var fs_cases = [
+  ['qn', 1, 1.0, -0.3287, -0.95], 
+  ['q0', 1, 1.0,  0.0000,  1.00], 
+  ['qp', 1, 1.0,  0.3287,  0.95], 
+  ['v',  2, 1.0,  0.0, 1.0], 
+  ['pfn', 3, 1.0, -0.3287, -0.95], 
+  ['pf0', 3, 1.0,  0.0000,  1.00], 
+  ['pfp', 3, 1.0,  0.3287,  0.95]
+];
+var p_levels = [
+  ['icr', 1.0],
+  ['min', 0.04]
+];
+
+// undervoltage ride-through cases, all at Pref=1.0 and Fixed Q mode (1)
+var uvTMAX = 20.0;
+var uvTAG = 'uv';
+// mnemonic, fault type, fault inductance
+var uv_faults = [
+  ['3sag', 'abcg', 0.3915],
+  ['3pg', 'abcg', 0.0001],
+  ['1pg', 'ag', 0.0001],
+  ['2pg', 'bcg', 0.0001],
+  ['2p', 'bc', 0.0001]
+]
+// mnemonic, qref
+var uv_qvals = [
+  ['q0', 0.0],
+  ['qp', 0.3287],
+  ['qn', -0.3]  // because -0.3287 triggers undervoltage trip
+]
+  
+// preamble to load support functions and find interfaces to modified components
+var iCCT = 0;
+var iFAULT = 1;
+var iWRITER = 2;
+var iPLANT = 3;
+var idVREF = 4;
+var idPREF = 5;
+var idQREF = 6;
+var idPFREF = 7;
+var iSIM = 8;
+var d = prepare_case();
+
+//run_fs_suite (d);
+run_uv_suite (d);
+
+function run_uv_suite (d) {
+  set_zero_dref (d);
+  set_tmax (d[iSIM], uvTMAX);
+  for (i in uv_qvals) {
+    for (j in uv_faults) {
+      var tag = uvTAG + uv_qvals[i][0] + uv_faults[j][0];
+      set_writer (d[iWRITER], tag);
+      // interface, Pref, mode, Vref, Qref, PFref
+      set_ppc (d[iPLANT], 1.0, 1, 1.0, uv_qvals[i][1], 1.0)
+      // interface, type, rf, lf, rg, lg, tclose, topen
+      set_fault (d[iFAULT], uv_faults[j][1], 0.0001, uv_faults[j][2], 0.0001, 0.0, 5.0, 5.16)
+      writeln ('Running case: ' + tag);
+      startemtp_UseRunEMTP (true, false, '', true);
+    }
+  }
+}
+
+function run_fs_suite (d) {
+  set_zero_dref (d);
+  set_no_fault (d);
+  set_tmax (d[iSIM], fsTMAX);
+  for (i in p_levels) {
+    for (j in fs_cases) {
+      var tag = fsTAG + p_levels[i][0] + fs_cases[j][0];
+      set_writer (d[iWRITER], tag);
+      // interface, Pref, mode, Vref, Qref, PFref
+      set_ppc (d[iPLANT], p_levels[i][1], fs_cases[j][1], fs_cases[j][2], fs_cases[j][3], fs_cases[j][4])
+      writeln ('Running case: ' + tag);
+      startemtp_UseRunEMTP (true, false, '', true);
+    }
+  }
+}
+
+function set_zero_dref (d) {
+  set_fu_expression (d[idVREF], '0.0');
+  set_fu_expression (d[idPREF], '0.0');
+  set_fu_expression (d[idQREF], '0.0');
+  set_fu_expression (d[idPFREF], '0.0');
+}
+
+function set_no_fault (d) {
+  set_fault (d[iFAULT], 'abcg50', 0.000, 0.0264, 0.001, 0.0, 999.0, 9999.0);
+}
+
+// Load support functions that will be used, from the EMTP installed
+//  location, under the directory "Info Scripts/device_services"
+function prepare_case(){
+  parseScriptFile('start_emtp/startemtp_UseRunEMTP.dwj');
+  parseScriptFile('make_file_name.dwj');
+  parseScriptFile('program_.dwj');
+  parseScriptFile('run_emtp.dwj');
+  parseScriptFile('check_my_filename.dwj');
+  parseScriptFile('find_data_in_object.dwj');
+  parseScriptFile('sim_options_m.dwj');
+
+  parseScriptFile('fault_m.dwj');
+  parseScriptFile('comtrade_writer_m.dwj');
+
+  prepare_design_folder();
+
+  var cct = currentCircuit();
+  cct=cct.findByLocator('CC'); //move to top circuit
+  var sim = new oDevice_(cct);
+
+  var designfilename=design_file_name();
+  writeln ('Running fault script on ', designfilename);
+
+  var dev=cct.devices('Name', 'fault1');
+  var oFault = new oDevice_fault(dev[0]);
+  dev = cct.devices('Name', 'write1');
+  var oWriter = new oDevice_comtrade_writer(dev[0]);
+
+  var oFdVref = cct.devices('Name', 'FdVref')[0];
+  var oFdPref = cct.devices('Name', 'FdPref')[0];
+  var oFdQref = cct.devices('Name', 'FdQref')[0];
+  var oFdPFref = cct.devices('Name', 'FdPFref')[0];
+
+  dev = cct.devices('Name', 'WECC_WP_2')[0];
+  var scriptToParse = dev.getAttribute('Script.DevObj');
+  writeln (scriptToParse);
+  parseScriptFile(scriptToParse);
+  var oPlant = get_dev_methods(dev);
+  
+  return [cct, oFault, oWriter, oPlant, oFdVref, oFdPref, oFdQref, oFdPFref, sim];
+}
+
+function set_writer (oWriter, root) {
+  oWriter.Parameters.CFGfilename = root + '.cfg';
+  oWriter.Parameters.DATfilename = root + '.dat';
+  oWriter.SaveData();
+}
+
+function set_tmax (oSim, tmax) {
+//  writeln (oSim.tmax + '=>' + tmax);
+  oSim.tmax = tmax.toString();
+  oSim.tmaxu = '';
+  // oSim.Dt, oSim.Dtu for time step
+  oSim.SaveData();
+//  writeln ('now='+oSim.tmax);
+}
+
+function set_fu_expression (oF, expr) {
+  oF.setAttribute ('ModelData', expr);
+  oF.setAttribute ('FormData', '@@f(u)@' + expr + '@ON@@@@');
+//  oF.SaveData();
+}
+
+function set_ppc (oPlant, Pref, mode, Vref, Qref, PFref) {
+  oPlant.Parameters.Pref_poi = Pref.toString();
+  oPlant.Parameters.QC_select = mode.toString();
+  oPlant.Parameters.Vpoi_pu = Vref.toString();
+  oPlant.Parameters.Qpoi_pu = Qref.toString();
+  if (mode == 1) {
+    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+  } else {
+    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0'; // '1';
+  }
+  oPlant.Parameters.pf_poi = PFref.toString();
+  oPlant.SaveData();
+}
+
+// change the fault type and impedance
+function set_fault (oFault, fault_type, rf, lf, rg, lg, tclose, topen) {
+  oFault.Parameters.Ra = rf.toString();
+  oFault.Parameters.Rb = rf.toString();
+  oFault.Parameters.Rc = rf.toString();
+  oFault.Parameters.Rground = rg.toString();
+  oFault.Parameters.La = lf.toString();
+  oFault.Parameters.Lb = lf.toString();
+  oFault.Parameters.Lc = lf.toString();
+  oFault.Parameters.Lground = lg.toString();
+  oFault.Parameters.tclose_A = tclose.toString();
+  oFault.Parameters.tclose_B = tclose.toString();
+  oFault.Parameters.tclose_C = tclose.toString();
+  oFault.Parameters.topen_A = topen.toString();
+  oFault.Parameters.topen_B = topen.toString();
+  oFault.Parameters.topen_C = topen.toString();
+  if (fault_type.indexOf('a') >= 0) {
+  	oFault.Parameters.faultOnPhaseA = '1';
+  } else {
+  	oFault.Parameters.faultOnPhaseA = '0';
+  }
+  if (fault_type.indexOf('b') >= 0) {
+	oFault.Parameters.faultOnPhaseB = '1';
+  } else {
+	oFault.Parameters.faultOnPhaseB = '0';
+  }
+  if (fault_type.indexOf('c') >= 0) {
+    oFault.Parameters.faultOnPhaseC = '1';
+  } else {
+    oFault.Parameters.faultOnPhaseC = '0';
+  }
+  if (fault_type.indexOf('g') >= 0) {
+    oFault.Parameters.faultToTheGround = '1';
+  } else {
+    oFault.Parameters.faultToTheGround = '0';
+  }
+  oFault.SaveData();
+}

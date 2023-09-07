@@ -9,8 +9,7 @@ import numpy as np
 import i2x.mpow_utilities as mpow
 import json
 import os
-
-fuel_list = ['hca', 'wind', 'solar', 'nuclear', 'hydro', 'coal', 'ng', 'dl']
+import math
 
 def cfg_assign (cfg, tag, val):
   if tag in cfg:
@@ -24,33 +23,20 @@ def write_json_results_file (out_name, results, log_output):
   json.dump (results, fp, indent=2)
   fp.close()
 
-def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency=20):
-  sys_name = 'hca'
-  case_title = 'hca'
-  load_scale = 2.75
-  hca_buses = None
-  upgrades = None
-  if cfg_filename is not None:
-    fp = open (cfg_filename, 'r')
-    cfg = json.loads(fp.read())
-    fp.close()
-    sys_name = cfg_assign (cfg, 'sys_name', sys_name)
-    case_title = cfg_assign (cfg, 'case_title', case_title)
-    load_scale = cfg_assign (cfg, 'load_scale', load_scale)
-    hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
-    upgrades = cfg_assign (cfg, 'upgrades', upgrades)
+def bes_hca_fn (sys_name='hca', case_title='hca', load_scale=2.74, hca_buses=None, upgrades=None, branch_contingencies=None,
+                bus_contingencies=None, softlims=False, glpk_opts=None, log_output=False, write_json=False, json_frequency=20):
   out_name = '{:s}_out.json'.format(case_title)
   saved_iteration = 0
 
   # nominal quantities for the base case, hca generation at zero
-  d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name))
+  d = mpow.read_matpower_casefile ('{:s}_case.m'.format (sys_name), asNumpy=True)
   nb = len(d['bus'])
   ng = len(d['gen'])
   nl = len(d['branch'])
 
-  gen = np.array (d['gen'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
-  branch = np.array (d['branch'], dtype=float)
+  gen = d['gen']
+  bus = d['bus']
+  branch = d['branch']
   nominalPd = np.sum (bus[:,mpow.PD])
   scaledPd = load_scale * nominalPd
   nominalPmax = np.sum (gen[:,mpow.PMAX])
@@ -62,12 +48,12 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     hca_buses = np.arange(1, nb+1, dtype=int)
   nhca = len(hca_buses)
 
-  chgtab_name = None
+  upgrade_name = None
   nupgrades = 0
   if upgrades:
-    chgtab_name = '{:s}_upgrades'.format(sys_name)
+    upgrade_name = '{:s}_upgrades'.format(sys_name)
     nupgrades = len(upgrades)
-    mpow.write_contab (chgtab_name, d, upgrades)
+    mpow.write_contab (upgrade_name, d, upgrades)
 
   hca_gen_idx = 0
 
@@ -92,12 +78,27 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
 
   if log_output == True:
     print ('Bus Generation by Fuel[GW]')
-    print ('   ', ' '.join(['{:>7s}'.format(x) for x in fuel_list]), ' [Max muF Branch] [Mean muF Branch]')
+    print ('   ', ' '.join(['{:>7s}'.format(x) for x in mpow.FUEL_LIST]), ' [Max muF Branch] [Mean muF Branch] [Local Branch MVA:muF]')
   iteration = 0
+
+  # write the size-based list of branch contingencies, but only if there are no adjacent-bus contingencies
+  contab_name = 'hca_contab'
+  if branch_contingencies is not None:
+    if bus_contingencies is None:
+      mpow.write_contab_list (contab_name, d, branch_contingencies)
+
   for hca_bus in hca_buses:
     iteration += 1
     cmd = 'mpc.gen({:d},1)={:d};'.format(hca_gen_idx, hca_bus) # move the HCA injection to each bus in turn
-    fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=chgtab_name, cmd=cmd, quiet=True)
+    fscript, fsummary = mpow.write_hca_solve_file ('hca', load_scale=load_scale, upgrades=upgrade_name, 
+                                                   cmd=cmd, quiet=True, glpk_opts=glpk_opts, softlims=softlims)
+    # update the list of contingencies for this HCA bus
+    if bus_contingencies is not None:
+      contingencies = bus_contingencies[str(hca_bus)]
+      if branch_contingencies is not None:
+        contingencies = contingencies + branch_contingencies
+      mpow.write_contab_list (contab_name, d, contingencies, bLog=False)
+
     # remove old results so we know if an error occurred
     if os.path.exists(fsummary):
       os.remove(fsummary)
@@ -122,14 +123,14 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
 
     # summarize the generation by fuel type
     fuel_Pg = {}
-    for fuel in fuel_list:
+    for fuel in mpow.FUEL_LIST:
       fuel_Pg[fuel] = 0.0
     for i in range(ng):
       fuel = d['genfuel'][i]
       fuel_Pg[fuel] += meanPgen[i]
-    for fuel in fuel_list:
+    for fuel in mpow.FUEL_LIST:
       fuel_Pg[fuel] *= 0.001
-    fuel_str = ' '.join(['{:7.3f}'.format(fuel_Pg[x]) for x in fuel_list])
+    fuel_str = ' '.join(['{:7.3f}'.format(fuel_Pg[x]) for x in mpow.FUEL_LIST])
 
     # identify the most limiting branches, based on shadow prices
     branch_str = 'None'
@@ -149,15 +150,37 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     if max_i >= 0:
       branch_str = ' [{:.4f} on {:d}] [{:.4f} on {:d}]'.format (max_max_muF, max_i+1, max_mean_muF, mean_i+1)
 
+    # check lines to adjacent buses
+    bus_str = ''
+    local_branches_mu_max = {}
+    if bus_contingencies is not None:
+      for cd in bus_contingencies[str(hca_bus)]:
+        ibr = cd['branch']
+        scale = cd['scale']
+        rating = branch[ibr-1][mpow.RATE_A]
+        mu_max = np.max (muF[ibr-1,:,:,:])
+        if mu_max > 0.0:
+          bus_str = bus_str + ' {:d}:{:.3f}:{:.6f}'.format (ibr, rating, mu_max)
+          local_branches_mu_max[ibr] = mu_max
+#       pf = branch[ibr-1][mpow.PF]
+#       qf = branch[ibr-1][mpow.QF]
+#       pt = branch[ibr-1][mpow.PT]
+#       qt = branch[ibr-1][mpow.QT]
+#       sf = math.sqrt(pf+pf + qf*qf)
+#       st = math.sqrt(pt+pt + qt*qt)
+#       mva = max(sf, st)
+#       bus_str = bus_str + ' {:d}:{.3f}'.format (ibr, mva/rating)
+
     if log_output == True:
-      print ('{:3d} {:s} {:s}'.format(hca_bus, fuel_str, branch_str))
+      print ('{:3d} {:s} {:s} [{:s}]'.format(hca_bus, fuel_str, branch_str, bus_str))
 
     muFtotal += meanmuF
 
     # archive the results for post-processing
     results['buses'][int(hca_bus)] = {'fuels':fuel_Pg, 
                                  'max_max_muF':{'branch':max_i+1, 'muF':max_max_muF}, 
-                                 'max_mean_muF':{'branch':mean_i+1, 'muF':max_mean_muF}}
+                                 'max_mean_muF':{'branch':mean_i+1, 'muF':max_mean_muF},
+                                 'local_branches_mu_max':local_branches_mu_max}
     if write_json == True and (iteration % json_frequency == 0):
       write_json_results_file (out_name, results, log_output)
       saved_iteration = iteration
@@ -183,3 +206,30 @@ def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency
     write_json_results_file (out_name, results, log_output)
   return results
 
+def bes_hca (cfg_filename=None, log_output=True, write_json=True, json_frequency=20):
+  sys_name = 'hca'
+  case_title = 'hca'
+  load_scale = 2.75
+  hca_buses = None
+  upgrades = None
+  branch_contingencies = None
+  bus_contingencies = None
+  softlims = False
+  glpk_opts = None
+  if cfg_filename is not None:
+    fp = open (cfg_filename, 'r')
+    cfg = json.loads(fp.read())
+    fp.close()
+    sys_name = cfg_assign (cfg, 'sys_name', sys_name)
+    case_title = cfg_assign (cfg, 'case_title', case_title)
+    load_scale = cfg_assign (cfg, 'load_scale', load_scale)
+    hca_buses = cfg_assign (cfg, 'hca_buses', hca_buses)
+    upgrades = cfg_assign (cfg, 'upgrades', upgrades)
+    softlims = cfg_assign (cfg, 'softlims', softlims)
+    glpk_opts = cfg_assign (cfg, 'glpk_opts', glpk_opts)
+    branch_contingencies = cfg_assign (cfg, 'branch_contingencies', branch_contingencies)
+    bus_contingencies = cfg_assign (cfg, 'bus_contingencies', bus_contingencies)
+
+  return bes_hca_fn (sys_name=sys_name, case_title=case_title, load_scale=load_scale, hca_buses=hca_buses, upgrades=upgrades, 
+                     branch_contingencies=branch_contingencies, bus_contingencies=bus_contingencies, softlims=softlims, 
+                     glpk_opts=glpk_opts, log_output=log_output, write_json=write_json, json_frequency=json_frequency)

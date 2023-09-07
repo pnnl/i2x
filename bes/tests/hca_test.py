@@ -55,9 +55,9 @@ if __name__ == '__main__':
 # print ('Mean muF over contingencies\n', meanmuF)
 # print ('Worst muF\n', muF[3,0,0,:])
 
-  gen = np.array (d['gen'], dtype=float)
-  bus = np.array (d['bus'], dtype=float)
-  branch = np.array (d['branch'], dtype=float)
+  gen = d['gen']
+  bus = d['bus']
+  branch = d['branch']
   nominalPd = np.sum (bus[:,mpow.PD])
   scaledPd = load_scale * nominalPd
   actualPd = np.sum(np.mean(Pd[:,0,0,:], axis=1))
