@@ -108,6 +108,8 @@ def show_comparison_plot (chd, unitd, title, bPSCAD, tmax, PNGName=None):
     ax[i].grid()
     ax[i].legend(loc='lower right')
   ax[3].set_xlabel ('Time [s]')
+#  if not bPSCAD:
+#    ax[0].set_ylim (0.85, 1.1)
 
   if PNGName is not None:
     plt.savefig(PNGName)
@@ -159,7 +161,7 @@ def process_test_suite (session_path, case_tag, bPSCAD, test_title, test_files, 
     channels[tag], units[tag] = load_channels (tag_path)
     if bPSCAD: # cosmetic initialization of the frequency plot
       channels[tag]['F'][0] = 60.0
-#    show_case_plot (channels[tag], units[tag], 'Case {:s}'.format(tag), bPSCAD)
+    #show_case_plot (channels[tag], units[tag], 'Case {:s}'.format(tag), bPSCAD)
   title = '{:s}: {:s}'.format(test_title, case_tag)
   show_comparison_plot (channels, units, title, bPSCAD, test_tmax, PNGName)
 

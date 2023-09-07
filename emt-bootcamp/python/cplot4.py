@@ -1,5 +1,5 @@
 # Copyright (C) 2018-2023 Battelle Memorial Institute
-# file: cplot2.py
+# file: cplot4.py
 """ Plots COMTRADE channels from parametric fault cases.
 """
 
@@ -9,6 +9,8 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 from comtrade import Comtrade
+
+plt.rcParams['savefig.directory'] = os.getcwd()
 
 kVLNbase = 230.0 / math.sqrt(3.0)
 MVAbase = 100.0
@@ -37,7 +39,7 @@ def setup_plot_options():
   plt.rc('axes', labelsize=lsize)
   plt.rc('legend', fontsize=6)
 
-def show_case_plot(channels, units, case_title, bPSCAD):
+def show_case_plot(channels, units, case_title, bPSCAD, PNGName=None):
   t = channels['t']
   fig, ax = plt.subplots(5, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle ('Case: ' + case_title)
@@ -58,20 +60,24 @@ def show_case_plot(channels, units, case_title, bPSCAD):
     ax[4].set_ylabel ('F [Hz]')
   for i in range(5):
     ax[i].grid()
-    ax[i].legend()
-#    ax[i].set_xlim (t[0], t[-1])
-    ax[i].set_xlim (0.75, 1.75)
+    ax[i].legend(loc='lower right')
+    ax[i].set_xlim (t[0], t[-1])
+#    ax[i].set_xlim (0.75, 1.75)
   ax[4].set_xlabel ('seconds')
-  plt.show()
-  plt.close()
 
-def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD):
+  if PNGName is not None:
+    plt.savefig(PNGName)
+  plt.show()
+  plt.close(fig)
+
+def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD, PNGName=None):
   fig, ax = plt.subplots(4, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle ('Comparing Fault Cases: {:s}'.format(case_tag))
 
   channel_labels = ['Vrms', 'P', 'Q', 'F']
   y_labels = ['Vrms [pu]', 'P [pu]', 'Q [pu]', 'F [Hz]']
   x_ticks = [0.75, 1.00, 1.25, 1.50, 1.75]
+  x_ticks = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
 
   for key in chd:
     ch = chd[key]
@@ -84,11 +90,13 @@ def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD):
     ax[i].set_xticks (x_ticks)
     ax[i].set_xlim (x_ticks[0], x_ticks[-1])
     ax[i].grid()
-    ax[i].legend()
+    ax[i].legend(loc='lower left')
   ax[3].set_xlabel ('Time [s]')
 
+  if PNGName is not None:
+    plt.savefig(PNGName)
   plt.show()
-  plt.close()
+  plt.close(fig)
 
 # load all the analog channels from each case into dictionaries of numpy arrays. Expecting:
 #   1..3 = Va..Vc
@@ -97,8 +105,9 @@ def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD):
 #   8 = P
 #   9 = Q
 #   10 = F
-def load_channels(comtrade_path):
-  print (comtrade_path)
+def load_channels(comtrade_path, bDebug=False):
+  if bDebug:
+    print (comtrade_path)
   rec = Comtrade ()
   rec.load (comtrade_path + '.cfg', comtrade_path + '.dat')
   t = np.array(rec.time)
@@ -106,7 +115,7 @@ def load_channels(comtrade_path):
   channels = {}
   units = {}
   channels['t'] = t
-  print ('Channels ({:d} points) read from {:s}.cfg:'.format (len(t), comtrade_path))
+  print ('{:d} channels ({:d} points) read from {:s}.cfg'.format (rec.analog_count, len(t), comtrade_path))
   for i in range(rec.analog_count):
     lbl = rec.analog_channel_ids[i].strip()
     # for PSCAD naming convention, truncate the channel at first colon, if one exists
@@ -119,7 +128,8 @@ def load_channels(comtrade_path):
       scale = ch_config.secondary / ch_config.primary
     elif ch_config.pors.upper() == 'S':
       scale = ch_config.primary / ch_config.secondary
-    print ('  "{:s}" [{:s}] scale={:.6e}'.format(lbl, ch_config.uu, scale))
+    if bDebug:
+      print ('  "{:s}" [{:s}] scale={:.6e}'.format(lbl, ch_config.uu, scale))
     channels[lbl] = scale * np.array (rec.analog[i])
     units[lbl] = ch_config.uu
 
@@ -150,6 +160,6 @@ if __name__ == '__main__':
   for tag in cases:
     flt_path = os.path.join (session_path, '{:s}'.format (tag))
     flt_channels[tag], flt_units[tag] = load_channels (flt_path)
-    show_case_plot (flt_channels[tag], flt_units[tag], 'Case {:s}'.format(tag), bPSCAD)
+    #show_case_plot (flt_channels[tag], flt_units[tag], 'Case {:s}'.format(tag), bPSCAD)
   show_fault_comparison_plot (flt_channels, flt_units, case_tag, bPSCAD)
 

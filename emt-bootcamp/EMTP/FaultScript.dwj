@@ -1,4 +1,8 @@
-// elements are:
+// Copyright (C) 2023 Battelle Memorial Institute
+// file: FaultScript.dwj
+// Automating faults in EMTP for the EMT bootcamp.
+
+// fault case row elements are:
 //  case mnemonic: including abcg for involved phases, number for retained voltage in percent
 //  Rf from each phase to neutral
 //  Lf from each phase to neutral [H]
@@ -35,7 +39,9 @@ for (idx in cases) {
   writeln('Running case: ', idx, ': ', cases[idx]);
   set_fault (oFault, cases[idx][0], cases[idx][1], cases[idx][2], cases[idx][3], cases[idx][4]);
   set_writer (oWriter, cases[idx][0]);
-  run_this_case (cct, idx.toString());
+//  run_this_case (cct, idx.toString());
+  // arguments are UpdateGlobalDataOption, Waitbar (false), tag, messages
+  startemtp_UseRunEMTP (true, false, idx.toString(), false);
 }
 
 // the design doesn't have to be saved after these parametric simulations 
@@ -45,6 +51,7 @@ for (idx in cases) {
 //  location, under the directory "Info Scripts/device_services"
 function prepare_case(){
   //*Some useful script functions
+  parseScriptFile('start_emtp/startemtp_UseRunEMTP.dwj');
   parseScriptFile('make_file_name.dwj');
   parseScriptFile('program_.dwj');
   parseScriptFile('run_emtp.dwj');
