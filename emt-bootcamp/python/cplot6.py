@@ -150,7 +150,7 @@ if __name__ == '__main__':
   else:
     session_path = 'c:/temp/i2x/emtp'
     case_tag = 'Wind'
-    tmax = 20.0
+    tmax = 40.0
   if bSavePNG:
     PNGName = '{:s}_{:s}.png'.format (case_tag, test)
   else:
