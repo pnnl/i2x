@@ -81,14 +81,12 @@ def get_api_result(row):
     try:
         if row.get('ahj') is None:
             return pd.Series([None, None])
-        print(row['ahj'])
         row_state = row[0]
         row_ahj = row[1].split()[:-1]
         response = requests.get(f'{API_STRING}&state={row_state}&city={row_ahj}')
         data = response.json()
         if data and len(data) >= 1:
             result = pd.Series([data[0]['lat'], data[0]['lon']])
-            print("THE SEIRES: ", result)
             return result
         else:
             return pd.Series([None, None])  # Default values
