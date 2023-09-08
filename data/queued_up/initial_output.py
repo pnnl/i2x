@@ -1,10 +1,17 @@
 import pandas as pd
 
+COLS = ["q_status", "q_date", "on_date", "project_name", "utility", "county_1", "type_clean", "mw1", "mw2", "state"]
 
+'''
+    This function does initial cleanup
+    1. Formats date columns to datetime
+    2. Calculate num of days between on_date and q_date
+    3. Fills empty entries with 0.0s and Unknowns
+    4. combines state abbr and county name into "state_county" column with values [state abbreviation]_[county name]
+    5. Removes entries with 0 or negative mw from the mw1 column since we are not interested in those data at this point
+'''
 def cleanup(df):
-    # excel_data_df = pd.read_excel(r'\i2x\hubdata\SolarTRACE data 7-8-22.xlsx', sheet_name='Employees')
-    cols = ["q_status", "q_date", "on_date", "project_name", "utility", "county_1", "type_clean", "mw1", "mw2", "state"]
-    df = df[cols]
+    df = df[COLS]
     # Convert "q_date" column to date/time format (NOTE: There is no time section)
     df['q_date'] = pd.to_datetime(df['q_date'], errors='coerce')
     # Convert "on_date" column to date/time format (NOTE: Only 1571 entries have on_date)
@@ -23,8 +30,18 @@ def cleanup(df):
 
     return df
 
+
 def init_output(df):
-# Count utilities 
+    '''
+    This function uses the state_county column to group then aggregate according to:
+    1. Get the sum for mw1 nad mw2
+    2. Get max between mw1 and mw2
+    3. Get max of num_days
+    4. Get project counts
+    5. *Get q_status counts
+    6. Concatenate all the entries of type_clean column for each grouping of state_county
+    '''
+    # Count utilities 
     utility_count = df.groupby(['state_county'])['utility'].nunique()
     # Aggregate counties and sum all the floating point columns per county (NOTE: only mw1 and mw2 are summed.)
     # print(df)
@@ -43,5 +60,6 @@ def init_output(df):
     type_clean = type_clean.set_index('state_county')
     # Combine the series to create an intitial version of the queued up output
     queued_up_initial = pd.concat([utility_count, mw_max, project_count, days, type_clean['type_clean']], axis=1, keys=['utility_count', 'mw_max', 'project_count', 'days_max', 'type_clean']).reset_index()
+    
     return queued_up_initial 
 

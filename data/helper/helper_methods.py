@@ -12,38 +12,49 @@ SCRIPT_DIR = Path(__file__).resolve().parent # Get the directory that the curren
 PARENT_DIR = SCRIPT_DIR.parent.parent # Get the parent directory
 INPUT_DIR = PARENT_DIR / 'hubdata' / 'input' # Get the input directory
 INPUT_FILE = 'CENTROIDS' # Choose the input file that contains centroids (keep this uppercase for consistency)
-API_STRING = 'https://nominatim.openstreetmap.org/search?format=json'
+API_STRING = 'https://nominatim.openstreetmap.org/search?format=json' # Current NOMINATIM URL
 
 
 def get_centroids():
-    # centroids_reservations = pd.read_csv('AIANNHA_centroids.csv')[COLS]
+    '''
+    This function is used to interpret and extract infromation from county centroids file that has lat lon for counties.
+    It is directly used in the queued up data processing (queues_2021_clean_data.xlsx) and indirectly
+    in solarTRACE by converting state abbreviations to state names and geo_ids
+    '''
     all_files = list(INPUT_DIR.glob('*'))
     for file in all_files: # Loop over all files
         if INPUT_FILE in file.name.upper(): # Check if 'centroids' is in the file name
             centroids_county = pd.read_csv(file).drop(COUNTY_COLS, axis=1)
     # attach state and county columns to for the 'state_county' column
     centroids_county_geoid = centroids_county.rename(columns={"FIPS": "geo_id"})
-    #
     centroids_county_geoid['NAME'] = centroids_county_geoid['NAME'].apply(lambda x: x.split(' ')[0].lower())
-    #
     centroids_county_geoid['state_county'] = centroids_county_geoid.STATE_ABBR.str.cat(centroids_county_geoid.NAME, sep='_')
-    #
     selected_cenrtroids = centroids_county_geoid[['STATE_NAME', 'STATE_ABBR', 'state_county', 'lat', 'lon']]
-    #
     selected_cenrtroids['state_county'] = selected_cenrtroids['state_county'].astype('string') # Change the type from object to string to use the string class.
+
     return selected_cenrtroids
 
-# # Define the components of the file path
-# SCRIPT_DIR = Path(__file__).resolve().parent # Get the directory that the current script is in
-# PARENT_DIR = SCRIPT_DIR.parent.parent # Get the parent directory
-# INPUT_DIR = PARENT_DIR / 'hubdata' / 'input' # Get the input directory
 
 def read_input(input_str, sheet, header=None, index_col=None):
+    '''
+    This function is used for reading the input files, as of the first version of this script, there are only two .xlsx
+    files that use this module. The solarTRACE file (currently pnnl_utility_timelines_summary.xlsx) and the berkley lab 
+    files (queues_2021_clean_data.xlsx)
+
+    Args:
+        input_str: is a string that is meant to tell the module which input file is being read.
+        sheet: denotes the excel sheet that holds the information needed for processing.
+        header: is used for the solarTRACE data because they contain extra rows for headers.
+        index_col: is used to indicate there is an index column in this file.
+
+    Returns:
+        returns: A Pandas dataframe(df) (The rest of the module only modifies this df)
+    '''
     # centroids_reservations = pd.read_csv('AIANNHA_centroids.csv')[COLS]
     all_files = list(INPUT_DIR.glob('*'))
     for file in all_files: # Loop over all files
-        if input_str in file.name: # Check if 'SolarTRACE' is in the file name
-            xlsx = pd.ExcelFile(file)
+        if input_str in file.name: # Check if input string is in the file name
+            xlsx = pd.ExcelFile(file) # Read the corresponding file
             df = pd.read_excel(xlsx, sheet, header=header, index_col=index_col)
             if header is None and index_col is None:
                 df = pd.read_excel(xlsx, sheet)
@@ -51,13 +62,22 @@ def read_input(input_str, sheet, header=None, index_col=None):
     return None
 
 def add_state_full(df):
+    '''
+    This function is used to add states' spelled out name to the df using the centroids file. This is used for searching 
+    through the API from the final_processing.py file.
+    '''
     temp_df = df.copy()
     centroids = get_centroids()
     state_dict = centroids.set_index('STATE_ABBR')['STATE_NAME'].to_dict()
     temp_df.insert(1, 'state_full', df['state'].map(state_dict))
     return temp_df
 
+
 def get_api_result(row):
+    '''
+    This function is used to call the api for one row. The for loop that goes over all the rows is in the 
+    final_processing.py file implemented in the api_call function.
+    '''
     try:
         if row.get('ahj') is None:
             return pd.Series([None, None])
