@@ -22,7 +22,7 @@
     <param name="Warn" value="1" />
     <param name="Check" value="7" />
     <param name="description" value="" />
-    <param name="revisor" value="mcde601, 1694011468" />
+    <param name="revisor" value="mcde601, 1694119466" />
     <param name="architecture" value="windows" />
     <param name="Source" value="" />
     <param name="Debug" value="0" />
@@ -58,7 +58,7 @@
         <grouping />
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Main" group="" url="" version="" build="" crc="32326710" instances="1" key="" view="false" date="1694011053" id="1090741750">
+    <Definition classid="UserCmpDefn" name="Main" group="" url="" version="" build="" crc="85972442" instances="1" key="" view="false" date="1694011053" id="1090741750">
       <paramlist>
         <param name="Description" value="" />
       </paramlist>
@@ -427,7 +427,7 @@ MHI]]></Sticky>
               <param name="ymin" value="-1" />
               <param name="ymax" value="1" />
             </paramlist>
-            <Curve classid="Curve" id="934816195" name="Vrms_POC" link="1545745078" color="0" bold="1" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
+            <Curve classid="Curve" id="934816195" name="Vrms_POC" link="1545745078" color="0" bold="0" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
               <path />
             </Curve>
           </Graph>
@@ -457,10 +457,10 @@ MHI]]></Sticky>
               <param name="ymin" value="-1" />
               <param name="ymax" value="1" />
             </paramlist>
-            <Curve classid="Curve" id="1886075581" name="P_POC" link="2079943451" color="0" bold="1" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
+            <Curve classid="Curve" id="1886075581" name="P_POC" link="2079943451" color="0" bold="0" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
               <path />
             </Curve>
-            <Curve classid="Curve" id="767210571" name="Q_POC" link="1016392956" color="0" bold="1" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
+            <Curve classid="Curve" id="767210571" name="Q_POC" link="1016392956" color="0" bold="0" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
               <path />
             </Curve>
           </Graph>
@@ -602,7 +602,7 @@ MHI]]></Sticky>
             <param name="gaddress" value="100663306" />
           </paramlist>
         </User>
-        <Frame classid="ControlFrame" name="" x="18" y="0" w="576" h="126" id="613927610" link="-1">
+        <Frame classid="ControlFrame" name="" x="-1" y="-1" w="72" h="126" id="613927610" link="-1">
           <paramlist link="-1">
             <param name="Icon" value="18,18" />
             <param name="state" value="0" />
@@ -2085,7 +2085,7 @@ MHI]]></Sticky>
             <param name="Ti_P" value="PPC_Ti_P" />
             <param name="Kp_P" value="PPC_Kp_P" />
             <param name="con_mode" value="1" />
-            <param name="Ti_V" value="PPC_Ti_V" />
+            <param name="Ti_V" value="PPC_Kp_V" />
             <param name="Kp_V" value="PPC_Ti_V" />
             <param name="Ti_PF" value="PPC_Ti_PF" />
             <param name="Kp_PF" value="PPC_Kp_PF" />
@@ -6780,6 +6780,78 @@ MHI]]></Sticky>
         <param name="active_1" value="true" />
       </paramlist>
     </Settings>
+    <Settings classid="GraphFrameSettings" id="426814288" link="1800790573">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1" />
+        <param name="xmax" value="1" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1251918469" link="287787576">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1203595275" link="33891391">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1892614775" link="136666122">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="16227940" link="546859292">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="979040936" link="1843978898">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="1690492456" link="2020233887">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1" />
+        <param name="xmax" value="1" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="1960018187" link="338888805">
+      <path>
+        <ref link="862326792" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
   </List>
   <bookmarks />
   <List classid="Resource" />
@@ -6791,7 +6863,7 @@ MHI]]></Sticky>
     </paramlist>
   </GlobalSubstitutions>
   <hierarchy>
-    <call link="1069296069" name="Solar6:Station" z="-1" view="false" instance="0">
+    <call link="1193952392" name="Solar6:Station" z="-1" view="false" instance="0">
       <call link="862326792" name="Solar6:Main" z="-1" view="true" instance="0">
         <call link="1688895060" name="Solar_Lib:Simple_PPC" z="460" view="false" instance="0">
           <call link="1808962177" name="Solar_Lib:PI_AntiWindUp_PPC" z="560" view="false" instance="0" />

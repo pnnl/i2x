@@ -23,7 +23,7 @@
     <param name="Warn" value="0" />
     <param name="Check" value="0" />
     <param name="description" value="" />
-    <param name="revisor" value="mcde601, 1694008452" />
+    <param name="revisor" value="mcde601, 1694122530" />
     <param name="Debug" value="0" />
   </paramlist>
   <Layers />
@@ -489,7 +489,7 @@
         </Wire>
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Main" id="844848237" group="" url="" version="" build="" crc="51184007" view="false" date="0">
+    <Definition classid="UserCmpDefn" name="Main" id="844848237" group="" url="" version="" build="" crc="55167522" view="false" date="0">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -639,6 +639,130 @@
             <param name="FDroop_1" value="0.04" />
             <param name="Fbase" value="60" />
             <param name="Fdb" value="1" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" id="1282347228" name="Solar_Lib:VSC_AVM" x="342" y="144" w="106" h="134" z="-1" orient="0" defn="Solar_Lib:VSC_AVM" link="-1" q="4" disable="false">
+          <paramlist name="" link="-1" crc="106941673">
+            <param name="Scale" value="30" />
+            <param name="Sbase" value="100" />
+            <param name="Pramp" value="1" />
+            <param name="Qramp" value="1" />
+            <param name="PR" value="0" />
+            <param name="Pmax" value=".5" />
+            <param name="Pmin" value=".5" />
+            <param name="Qmax" value=".5" />
+            <param name="MV_Vbase" value="132" />
+            <param name="System_Freq" value="60" />
+            <param name="LVRT_Threshold" value="0.85" />
+            <param name="HVRT_Threshold" value="1.2" />
+            <param name="Iq_Injection_Gain" value="2" />
+            <param name="Id_Ramprate" value="1" />
+            <param name="FRT_Off_Delay" value="0.2" />
+          </paramlist>
+          <paramlist name="" link="1900602768">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="329303359">
+            <param name="ymin" value="-1" />
+            <param name="ymax" value="1" />
+          </paramlist>
+          <paramlist name="" link="638477202">
+            <param name="ymin" value="-1" />
+            <param name="ymax" value="1" />
+          </paramlist>
+          <paramlist name="" link="1997927751">
+            <param name="ymin" value="-1" />
+            <param name="ymax" value="1" />
+          </paramlist>
+          <paramlist name="" link="687530016">
+            <param name="ymin" value="-1" />
+            <param name="ymax" value="1" />
+          </paramlist>
+          <paramlist name="" link="1770568813">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1336604679">
+            <param name="ymin" value="-1" />
+            <param name="ymax" value="1" />
+          </paramlist>
+          <paramlist name="" link="1713747043">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1063057749">
+            <param name="ymin" value="-1" />
+            <param name="ymax" value="1" />
+          </paramlist>
+          <paramlist name="" link="1197148961" />
+          <paramlist name="" link="1511693494">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1725407139">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="1869164282">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1791781856">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="925796900">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="1440319591">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="821627865">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1420643809">
+            <param name="ymin" value="-2.0" />
+            <param name="ymax" value="2.0" />
+          </paramlist>
+          <paramlist name="" link="596714741">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1889947136">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="1688083496">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1693434485">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="2064404643">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="1898783122">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="503271776">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
+          </paramlist>
+          <paramlist name="" link="192292780">
+            <param name="xmin" value="0.000000" />
+            <param name="xmax" value="1.000000" />
+          </paramlist>
+          <paramlist name="" link="1846073337">
+            <param name="ymin" value="-2.000000" />
+            <param name="ymax" value="2.000000" />
           </paramlist>
         </User>
       </schematic>
@@ -9424,7 +9548,7 @@ Based on "best practices" guidelines]]></Sticky>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="PI_AntiWindUp_PPC" group="" url="" version="" build="" crc="64288829" instances="10" key="" view="false" date="1693930353" id="296487728">
+    <Definition classid="UserCmpDefn" name="PI_AntiWindUp_PPC" group="" url="" version="" build="" crc="64288829" instances="10" key="" view="false" date="1693512607" id="296487728">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -10242,7 +10366,7 @@ Based on "best practices" guidelines]]></Sticky>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Simple_PPC" group="" url="" version="" build="" crc="63071922" instances="0" key="" view="false" date="1693930353" id="56350181">
+    <Definition classid="UserCmpDefn" name="Simple_PPC" group="" url="" version="" build="" crc="63071922" instances="0" key="" view="false" date="1693512607" id="56350181">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -12802,7 +12926,7 @@ Based on "best practices" guidelines]]></Sticky>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="PIwithFreeze_1" group="" url="" version="" build="" crc="130633900" instances="4" key="" view="false" date="1693930354" id="1896301325">
+    <Definition classid="UserCmpDefn" name="PIwithFreeze_1" group="" url="" version="" build="" crc="130633900" instances="4" key="" view="false" date="1693512609" id="1896301325">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -13232,7 +13356,7 @@ Based on "best practices" guidelines]]></Sticky>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="VSC_AVM" group="" url="" version="" build="" crc="130111643" instances="1" key="" view="false" date="1693930354" id="1207508506">
+    <Definition classid="UserCmpDefn" name="VSC_AVM" group="" url="" version="" build="" crc="131606157" instances="1" key="" view="false" date="1693512665" id="1207508506">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -13593,7 +13717,7 @@ Based on "best practices" guidelines]]></Sticky>
           <param name="show_border" value="0" />
           <param name="monitor_bus_voltage" value="0" />
           <param name="show_signal" value="0" />
-          <param name="show_virtual" value="1" />
+          <param name="show_virtual" value="0" />
           <param name="show_sequence" value="0" />
           <param name="auto_sequence" value="1" />
           <param name="defines" value="*" />
@@ -20682,8 +20806,8 @@ Based on "best practices" guidelines]]></Sticky>
         </Wire>
         <Frame classid="GraphFrame" id="1688083496" name="frame" link="-1" x="864" y="720" w="576" h="396">
           <paramlist link="-1" name="">
-            <param name="Icon" value="882,720" />
-            <param name="state" value="1" />
+            <param name="Icon" value="864,720" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -21217,8 +21341,12 @@ Based on "best practices" guidelines]]></Sticky>
   </definitions>
   <List classid="Resource" />
   <hierarchy>
-    <call link="1584888652" name="Solar_Lib:DS" z="-1" view="false" instance="0">
-      <call link="1325054872" name="Solar_Lib:Main" z="-1" view="false" instance="0">
+    <call link="1353309996" name="Solar_Lib:DS" z="-1" view="false" instance="0">
+      <call link="1325054872" name="Solar_Lib:Main" z="-1" view="true" instance="0">
+        <call link="1282347228" name="Solar_Lib:VSC_AVM" z="-1" view="false" instance="0">
+          <call link="127774023" name="Solar_Lib:PIwithFreeze_1" z="1930" view="false" instance="0" />
+          <call link="1071528461" name="Solar_Lib:PIwithFreeze_1" z="1970" view="false" instance="1" />
+        </call>
         <call link="1383147584" name="Solar_Lib:Simple_PPC" z="190" view="false" instance="0">
           <call link="1808962177" name="Solar_Lib:PI_AntiWindUp_PPC" z="560" view="false" instance="0" />
           <call link="1148544568" name="Solar_Lib:PI_AntiWindUp_PPC" z="630" view="false" instance="1" />
