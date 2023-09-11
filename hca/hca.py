@@ -257,37 +257,12 @@ def next_xfrm_kva(kva, nphase, skip=0) -> float:
     # no more ratings
     return -1
   
-def save_hca(hca, filename):
-    """save the hca object"""
-
-    dss = hca.__dict__.pop("dss") # clear the dss since it cannot be serialized
-    logger = hca.__dict__.pop("logger") # logger cannot be serialized
-    hca.metrics.logger = None
-    hca.metrics.base.logger = None
-    with open(filename, "wb") as f:
-      pickle.dump(hca, f)
-    hca.dss = dss
-    hca.logger = logger
-    hca.metrics.logger = logger
-    hca.metrics.base.logger = logger
-
-def reload_hca(filename, filemode=None, reload_heading=None):
-  with open(filename, "rb") as f:
-    hca = pickle.load(f)
-  if filemode is not None:
-    # make it possible to append to file
-    hca.inputs["hca_log"]["logtofilemode"] = filemode
-  hca.logger_init(reload_heading)
-  try:
-    hca.metrics.logger = hca.logger
-    hca.metrics.base.logger = hca.logger
-  except AttributeError:
-    pass
-  hca.reset_dss(clear_changes=False)
-  return hca
 
 class HCA:
-  def __init__(self, inputs, logger_heading=None):
+  def __init__(self, inputs, logger_heading=None, reload=False, reload_filemode="a"):
+    if reload:
+      self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading)
+      return
     self.inputs = inputs
     self.change_lines = []
     self.change_lines_noprint = []
@@ -336,7 +311,7 @@ class HCA:
     self.metrics = HCAMetrics(inputs["metrics"]["limits"], 
                               tol=inputs["metrics"]["tolerances"],
                               logger=self.logger)
-  
+
   def logger_init(self, logger_heading):
     self.logger = Logger(self.inputs["hca_log"]["logname"], 
                          level=self.inputs["hca_log"]["loglevel"], 
@@ -347,6 +322,55 @@ class HCA:
 
     if logger_heading is not None:
       self.logger.info(logger_heading)
+
+  def save(self, filename):
+    """Save the HCA for later re-instantiation vie load
+    filename is a pickle file to save
+    """
+    out = {}
+    skip = ["logger", "random_state", "dss", "metrics", "lastres"]
+    for k, v in self.__dict__.items():
+      if k in skip:
+        continue
+      else:
+        out[k] = copy.deepcopy(v)
+    
+    out["state"] = self.random_state.get_state()
+    out["metrics_baseres"] = copy.deepcopy(self.metrics.base.res)
+    out["lastres"] = {k: copy.deepcopy(v) for k, v in self.lastres.items() if k != "dss"}
+    # out["G"] = json.dumps(self.G, default=nx.node_link_data)
+
+    with open(filename, "wb") as f:
+      pickle.dump(out, f)
+  
+  def load(self, filename, filemode=None, reload_heading=None):
+    """Load a saved state of the HCA.
+    filename should be a pickle file
+    """
+    with open(filename, "rb") as f:
+      tmp = pickle.load(f)
+
+    skip = ["state"]    
+    for k, v in tmp.items():
+      if k not in skip:
+        setattr(self, k, v)
+
+    # self.G = nx.node_link_graph(tmp["G"], directed=True)
+
+    if filemode is not None:
+      # make it possible to append to file
+      self.inputs["hca_log"]["logtofilemode"] = filemode
+    self.logger_init(reload_heading)
+
+    self.metrics = HCAMetrics(self.inputs["metrics"]["limits"], 
+                              tol=self.inputs["metrics"]["tolerances"],
+                              logger=self.logger)
+    self.metrics.set_base(tmp["metrics_baseres"])
+
+    self.reset_dss(clear_changes=False)
+
+    self.random_state = np.random.RandomState()
+    self.random_state.set_state(tmp["state"])
 
   def print_config(self, level="info"):
     if level == "info":
