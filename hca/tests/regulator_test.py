@@ -12,10 +12,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 
-def main():
+def main(invmode):
     ### load config (note: just changes to defaults)
     inputs = h.load_config("hca9500node_testconfig.json")
-    inputs["invmode"] = 'VOLT_VAR_CATA' #"CONSTANT_PF"
+    inputs["invmode"] = invmode #'VOLT_VAR_CATA' #"CONSTANT_PF"
     inputs["hca_log"]["logname"] = f'hca_regulator_test_{inputs["invmode"]}'
     inputs["hca_log"]["logtofilemode"] = "w"
 
@@ -128,5 +128,6 @@ def main():
         h.print_config(hca.metrics.eval, title="Evaluation", printf=hca.logger.info)
 
 if __name__ == "__main__":
-    main()
+    for invmode in ['VOLT_VAR_CATA', "CONSTANT_PF"]:
+        main(invmode)
     
