@@ -13,20 +13,25 @@ import os
 import pandas as pd
 import copy
 import hashlib
+import pickle
 
 
 SQRT3 = math.sqrt(3.0)
 
-def print_config(config:dict, tabs="", printf=print):
+def print_config(config:dict, tabs="", printf=print, title="Configuration"):
     """print a configuration dictionary"""
     if not tabs:
-      printf("\n===================================\nConfiguration:\n===================================")
+      printf(f"\n===================================\n{title}:\n===================================")
     for k, v in config.items():
         if isinstance(v, dict):
             printf(f"{tabs}{k}:")
             print_config(v, tabs=tabs+"\t", printf=printf)
         else:
-            printf(f"{tabs}{k}:{v}")
+            if isinstance(v, (pd.DataFrame, pd.Series)):
+              printf(f"{tabs}{k}:")
+              printf(v)
+            else:
+              printf(f"{tabs}{k}:{v}")
 
 def print_column_keys (label, d):
   columns = ''
@@ -91,7 +96,17 @@ def get_parallel_xfrm(dss:py_dss_interface.DSSDLL,xfrm):
     if bus_names == [s.split(".")[0] for s in dss.cktelement.bus_names]:
       out.append(t)
   return out
-  
+
+def get_regcontrol(dss:py_dss_interface.DSSDLL, xfrm:str) -> int:
+  """
+  activate the regulator controller, returns 0 if no control is found
+  """
+  idx = dss.regcontrols.first()
+  while idx > 0:
+    if dss.regcontrols.transformer == xfrm:
+      return idx
+    idx = dss.regcontrols.next()
+  return idx
 
 def get_volt_stats(d:dict) -> dict:
   try:
@@ -180,9 +195,11 @@ def calc_di_voltage_stats(di_voltexception:pd.DataFrame, vmin=0.95, vmax=1.05, w
             ]).rename("integral")
           ], axis= 1)
 
-def upgrade_line(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, factor:float):
+def upgrade_line(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, factor:float=2):
+  """Decrease length and increase rating by factor (intended to simulate e.g. paralleling line of line (factor=2)) """
   dss.text(f"select line.{name}") # activate line obejct
   change_lines.append(f"edit line.{name} Length={dss.lines.length/factor:.7f} Normamps={dss.lines.norm_amps*factor:.2f} Emergamps={dss.lines.emerg_amps*factor:.2f}")
+  return {"old": dss.lines.norm_amps, "new": dss.lines.norm_amps*factor}
 
 def upgrade_xfrm(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, factor:float):
   # loop over any potential parallel transformers
@@ -194,22 +211,67 @@ def upgrade_xfrm(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, facto
       dss.transformers.wdg = wdg #activate the winding
       kvas.append(dss.transformers.kva)
     change_lines.append(f"edit transformer.{xfrm} kvas=({', '.join(str(round(s*factor)) for s in kvas)})")
+    return {"old": kvas, "new": [round(s*factor) for s in kvas]}
 
+def get_xfrm_kvas(dss:py_dss_interface.DSSDLL, name:str):
+  # loop over any potential parallel transformers
+  for xfrm in get_parallel_xfrm(dss, name):
+    activate_xfrm_byname(dss, xfrm) #activate the transformer
+    # loop over the windings and collect the kva ratings
+    kvas = []
+    for wdg in range(1, dss.transformers.num_windings+1):
+      dss.transformers.wdg = wdg #activate the winding
+      kvas.append(dss.transformers.kva)
+  return kvas
+
+def get_xfrm_phase(dss:py_dss_interface.DSSDLL, xfrm:str):
+  activate_xfrm_byname(dss, xfrm) #activate the transformer
+  # initialize some large nphase number (we always take minimum)
+  nphase = 100000
+  ### loop over buses and get their phase (node) number
+  for n in dss.cktelement.bus_names:
+    dss.circuit.set_active_bus(n) #set bus active
+    nphase = min(nphase, dss.bus.num_nodes)
+  return nphase
+
+def next_xfrm_kva(kva, nphase, skip=0) -> float:
+  """get the next kva transformer rating
+  skip is an optional parameter to skip to greater ratings.
+  When skip=0 [default] the next available rating is chosen.
+  When skip=1 one ratings will be skipped, etc.
+  """
+
+  # ratings from https://github.com/GRIDAPPSD/Powergrid-Models/blob/feature/SETO/taxonomy/FixTransformers.py
+  if nphase > 1:
+    # three phase
+    ratings = np.array([30, 45, 75, 112.5, 150, 225, 300, 500, 750, 1000, 1500, 2000, 3750, 5000, 7500, 10000])
+  else:
+    # single phase
+    ratings = np.array([5, 10, 15, 25, 37.5, 50, 75, 100, 167, 250, 333, 500])
+
+  # multiplication by 1.1 is sort of like a minumum upgrade. 
+  # also makes sure that the first found entry is not the one equal to kva.
+  try:
+    return ratings[np.where(kva*1.1 < ratings)[0][skip]]
+  except IndexError:
+    # no more ratings
+    return -1
+  
 
 class HCA:
-  def __init__(self, inputs, logger_heading=None):
+  def __init__(self, inputs, logger_heading=None, reload=False, reload_filemode="a"):
+    if reload:
+      self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading)
+      return
     self.inputs = inputs
     self.change_lines = []
     self.change_lines_noprint = []
     self.change_lines_history = []
+    self.upgrade_change_lines = []
     self.dss_reset = False
-    self.logger = Logger(inputs["hca_log"]["logname"], 
-                         level=inputs["hca_log"]["loglevel"], format=inputs["hca_log"]["format"])
-    if inputs["hca_log"]["logtofile"]:
-      self.logger.set_logfile(mode=inputs["hca_log"]["logtofilemode"])
-
-    if logger_heading is not None:
-      self.logger.info(logger_heading)
+    
+    self.logger_init(logger_heading)
+    
     self.print_config()
 
     ## establish a random seed for reproducibility
@@ -241,10 +303,74 @@ class HCA:
     # Sij, hc, and eval are keyed by type -> node (i) -> cnt (step through HCA process)
     #      |--> note that these will be sparse since we only have info on a node if it is being altered 
     self.data = {"Stotal": {}, "Sij": {}, "hc": {}, "eval": {}}
+
+    ## upgrades are keys by object typ -> object name -> cnt (step through HCA process) -> object specifics
+    ###  lines: 
+    self.upgrades = {"line": {}, "transformer": {}}
     
     self.metrics = HCAMetrics(inputs["metrics"]["limits"], 
                               tol=inputs["metrics"]["tolerances"],
                               logger=self.logger)
+
+  def logger_init(self, logger_heading):
+    self.logger = Logger(self.inputs["hca_log"]["logname"], 
+                         level=self.inputs["hca_log"]["loglevel"], 
+                         format=self.inputs["hca_log"]["format"])
+    
+    if self.inputs["hca_log"]["logtofile"]:
+      self.logger.set_logfile(mode=self.inputs["hca_log"]["logtofilemode"])
+
+    if logger_heading is not None:
+      self.logger.info(logger_heading)
+
+  def save(self, filename):
+    """Save the HCA for later re-instantiation vie load
+    filename is a pickle file to save
+    """
+    out = {}
+    skip = ["logger", "random_state", "dss", "metrics", "lastres"]
+    for k, v in self.__dict__.items():
+      if k in skip:
+        continue
+      else:
+        out[k] = copy.deepcopy(v)
+    
+    out["state"] = self.random_state.get_state()
+    out["metrics_baseres"] = copy.deepcopy(self.metrics.base.res)
+    out["lastres"] = {k: copy.deepcopy(v) for k, v in self.lastres.items() if k != "dss"}
+    # out["G"] = json.dumps(self.G, default=nx.node_link_data)
+
+    with open(filename, "wb") as f:
+      pickle.dump(out, f)
+  
+  def load(self, filename, filemode=None, reload_heading=None):
+    """Load a saved state of the HCA.
+    filename should be a pickle file
+    """
+    with open(filename, "rb") as f:
+      tmp = pickle.load(f)
+
+    skip = ["state"]    
+    for k, v in tmp.items():
+      if k not in skip:
+        setattr(self, k, v)
+
+    # self.G = nx.node_link_graph(tmp["G"], directed=True)
+
+    if filemode is not None:
+      # make it possible to append to file
+      self.inputs["hca_log"]["logtofilemode"] = filemode
+    self.logger_init(reload_heading)
+
+    self.metrics = HCAMetrics(self.inputs["metrics"]["limits"], 
+                              tol=self.inputs["metrics"]["tolerances"],
+                              logger=self.logger)
+    self.metrics.set_base(tmp["metrics_baseres"])
+
+    self.reset_dss(clear_changes=False)
+
+    self.random_state = np.random.RandomState()
+    self.random_state.set_state(tmp["state"])
 
   def print_config(self, level="info"):
     if level == "info":
@@ -272,7 +398,19 @@ class HCA:
     if self.active_bus not in self.data[key][typ]:
       self.data[key][typ][self.active_bus] = {}
     self.data[key][typ][self.active_bus][self.cnt] = copy.deepcopy(vals)
+  
+  def update_upgrades(self, typ:str, name:str, vals:dict, cnt=None):
+    "update the upgrades storage values"
     
+    if cnt is None:
+      cnt = self.cnt
+    if typ not in ["line", "transformer"]:
+      raise ValueError("Upgrade type must be in ['line', 'transformer']")
+    
+    if name not in self.upgrades[typ]:
+      self.upgrades[typ][name] = {}
+    self.upgrades[typ][name][cnt] = copy.deepcopy(vals)
+  
   def set_active_bus(self, bus):
     self.logger.info(f"Setting bus {bus} as active bus")
     self.active_bus = bus
@@ -293,10 +431,11 @@ class HCA:
   # def dss_state_nontmp2tmp(self):
   #   self.change_lines_history["tmp"] = copy.deepcopy(self.change_lines_history["nontmp"])
 
-  def reset_dss(self, tmp=False):
+  def reset_dss(self, clear_changes=True):
     """recompile feeder and load changes from history"""
     # key = "tmp" if tmp else "nontmp"
-    self.clear_changelines()
+    if clear_changes:
+      self.clear_changelines()
     self.dss = i2x.initialize_opendss(**self.inputs)
     for l in self.change_lines_history:
       self.dss.text(l)
@@ -345,7 +484,8 @@ class HCA:
 
     depth = 1
     while True:
-      n = nx.descendants_at_distance(self.G, "sourcebus", depth)
+      n = list(nx.descendants_at_distance(self.G, "sourcebus", depth))
+      n.sort() # for reproducibility
       if not n:
           break
       n = [i for i in n if self.G.nodes[i]["ndata"]["shunts"]]
@@ -496,8 +636,12 @@ class HCA:
         d["ndata"]["shunts"] = shunts_new
         d["nclass"] = self.update_node_class(n)
   
-  def disable_regulators(self):
-    self.change_lines.append("batchedit regcontrol..* enabled=no")
+  def disable_regulators(self, reglist=[]):
+    if not reglist:
+      self.change_lines.append("batchedit regcontrol..* enabled=no")
+    else:
+      for r in reglist:
+        self.change_lines.append(f"edit regcontrol.{r} enabled=no")
 
   def sample_buslist(self, buslist:list, seed=None):
     """
@@ -614,8 +758,11 @@ class HCA:
       self.parse_graph()
 
     ### regulator controls
-    if not self.inputs["reg_control"]:
+    if self.inputs["reg_control"]["disable_all"]:
       self.disable_regulators()
+    elif self.inputs["reg_control"]["disable_list"]:
+      self.disable_regulators(reglist=self.inputs["reg_control"]["disable_list"])
+
     
     ### remove specified large ders
     for key in self.inputs["remove_large_der"]:
@@ -647,7 +794,7 @@ class HCA:
 
   def rundss(self):
     pwd = os.getcwd()
-    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint, 
+    self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint + self.upgrade_change_lines, 
                                          "dss": self.dss, "demandinterval": True}, 
                                          **self.inputs} )  
     self.lastres["compflows"] = isl.all_island_flows(self.comp2rec, self.lastres["recdict"])
@@ -733,26 +880,38 @@ class HCA:
     elif typ == "der":
       self._redispatch_large_generator(key, **kwargs)
 
-  def get_hc(self, typ, bus, cnt=None):
-    """Retrieve the hosting capacity stored for the given bus for the given type
-    if no iteration counter is given the process works itself backwards from the
+  def get_data(self, key, typ, bus, cnt=None):
+    """Retrieve the hosting capacity, Sij, or eval stored for the given bus for the given type.
+    If no iteration counter is given the process works itself backwards from the
     current count until a viable index is found.
     """
+    if key not in ["Sij", "hc", "eval"]:
+      raise ValueError("key must be Sij, hc, or eval")
+    if typ not in ["pv", "bat", "der"]:
+      raise ValueError("Currently Only differentiating on pv, bat, der")
+    
     if cnt is not None:
       try:
-        return self.data["hc"][typ][bus][cnt], cnt
+        return self.data[key][typ][bus][cnt], cnt
       except KeyError:
         return None, cnt
     else:
       cnt = self.cnt
       while cnt >= 0:
-        hc, cnt =  self.get_hc(typ, bus, cnt)
-        if hc is None:
+        data, cnt =  self.get_data(key, typ, bus, cnt)
+        if data is None:
           cnt -= 1
         else:
-          return hc, cnt
+          return data, cnt
+      return None, cnt #if we're here then no data was found, cnt should be -1
+    
+  def get_hc(self, typ, bus, cnt=None):
+    """Retrieve the hosting capacity stored for the given bus for the given type
+    if no iteration counter is given the process works itself backwards from the
+    current count until a viable index is found.
+    """
+    return self.get_data("hc", typ, bus, cnt=cnt)
   
-
   def hca_round(self, typ, bus=None, Sij=None, allow_violations=False, hciter=True):
     """perform a single round of hca"""
     
@@ -774,7 +933,7 @@ class HCA:
     # first iteration of this round
     #### increment the count
     self.cnt +=1
-    self.logger.info(f"========= HCA Round {self.cnt} ({typ})=================")
+    self.logger.info(f"\n========= HCA Round {self.cnt} ({typ})=================")
   
     #### Step 1: select a bus. Viable options (for now) are:
     # * graph_dirs["bus3phase"]: 3phase buses with nothing on them
@@ -847,6 +1006,7 @@ class HCA:
     else:
       # violations: decrease capacity to find limit
       self.logger.info(f"Violations with capacity {Sij} (allow_violations is {allow_violations}).")
+      self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
       self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
       if allow_violations:
         self.update_data("Sij", typ, Sij)
@@ -947,6 +1107,7 @@ class HCA:
         return self.hc_bisection(typ, key, Sijnew, Sij2, kwtol, kwmin)
     else:
       self.logger.info(f"\tViolations with capacity {Sijnew}. Iterating to find Limit.")
+      self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
       self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
       if Sijnew["kw"] < kwmin:
         # End criterion: upperbound is below minimum threshold set to 0 and exit
@@ -996,6 +1157,50 @@ class HCA:
 
   def plot(self, **kwargs):
     i2x.plot_opendss_feeder(self.G, **kwargs)
+
+  def commit_upgrades(self):
+    """ move upgrades form their own changle line list to the general change_lines.
+    The general list gets saved when called save_dss_state
+    """
+    self.change_lines.extend(copy.deepcopy(self.upgrade_change_lines))
+    self.clear_upgrades()
+
+  def clear_upgrades(self):
+    """Empty the upgrade changle lines list"""
+    self.upgrade_change_lines = []
+
+  def upgrade_line(self, name, factor=2):
+    try:
+      brf, brt, brdata = isl.get_branch_elem(self.G, ["eclass", "ename"], ["line", name.lower()])[0]
+    except IndexError:
+      raise IndexError(f"Unable to find line {name} in graph.")
+    out = upgrade_line(self.dss, self.upgrade_change_lines, name, factor)
+    self.logger.info(f"Upgraded line {name} from {out['old']} A to {out['new']} A")
+    out["length"] = brdata["edata"]["length"] # add the original length
+    self.update_upgrades("line", name, out)
+
+  def upgrade_xfrm(self, name):
+    
+    ### get the transformer data from the graph
+    xfrm = None
+    for name_tmp in get_parallel_xfrm(self.dss, name):
+      try:
+        brf, brt, xfrm = isl.get_banch_elem(self.G, ["ename"], [name_tmp.lower()])[0]
+        break
+      except IndexError:
+        pass
+    if xfrm is None:
+      raise IndexError(f"Unable to find xfrm {name} (or any parallel xfrms) in graph.")
+    
+    kva_old = get_xfrm_kvas(self.dss, name)[0]
+    kva_new = next_xfrm_kva(kva_old, xfrm["edata"]["phases"])
+    if kva_new < 0:
+      raise ValueError(f"Unable to upgrade transformer {name}. kva_old = {kva_old}")
+    out = upgrade_xfrm(hca.dss, hca.upgrade_change_lines, name, kva_new/kva_old)
+    self.logger.info(f"Upgraded xfrm {name} from {out['old']} kVA to {out['new']} kVA")
+    self.update_upgrades("transformer", name, out)
+  
+
 class HCAMetrics:
   def __init__(self, lims:dict, comp=None, tol=None, logger=None):
     self.tests = {
@@ -1016,6 +1221,8 @@ class HCAMetrics:
 
     if logger is not None:
       self.logger = logger
+    else:
+      self.logger = None
     self.base = None
     self.comp = comp
     self.load_lims(lims)
@@ -1023,9 +1230,10 @@ class HCAMetrics:
     self.violation = {}
     self.violation_count = 0
     self.tol=tol
+    self.last_violation_list = []
   
   def set_base(self, res:dict):
-    self.base = HCAMetrics(self.lims, self.comp, self.tol)
+    self.base = HCAMetrics(self.lims, self.comp, self.tol, logger=self.logger)
     self.base.load_res(res, worst_case=True)
 
   def load_lims(self, lims:dict):
@@ -1045,22 +1253,53 @@ class HCAMetrics:
     # self.pv_stats = get_volt_stats(res["pvdict"])
     # self.rec_stats = get_volt_stats(res["recdict"])
   
-  def get_volt_max_buses(self, threshold):
-    d = {}
-    for reskey in 'pvdict', 'recdict', 'voltdict':
-      for k, v  in self.res[reskey].items():
-          if v["vmax"]/(1000*v["basekv"]/np.sqrt(3)) > threshold:
-              d[k] = v["v"]
-    return d
+  def get_vdiff_locations(self, lim=None):
+    if lim is None:
+      lim = self.lims["voltage"]["vdiff"]
+    out = {"v": {}, "vdiff": {}}
+    for reskey in ["pvdict", "recdict", "voltdict"]:
+      for k, v in self.res[reskey].items():
+        vbase = 1000*v["basekv"]/SQRT3
+        if 100*v["vdiff"]/vbase > lim:
+          out["v"][v["bus"]] = v["v"]/vbase
+          out["vdiff"][v["bus"]] = 100*np.diff(v["v"])/vbase
+    return out
 
-  def get_volt_min_buses(self, threshold):
-    d = {}
-    for reskey in 'pvdict', 'recdict', 'voltdict':
-      for k, v  in self.res[reskey].items():
-          if v["vmin"]/(1000*v["basekv"]/np.sqrt(3)) < threshold:
-              d[k] = v["v"]
-    return d
+  def get_violation_list(self):
+    out = []
+    for metric_class, metric in self.violation.items():
+      out.extend([f"{metric_class}_{k}" for k in metric.keys()])
+    return out
 
+  def get_volt_buses(self, minmax, threshold=None):
+    d = {}
+    for reskey in ['pvdict', 'recdict', 'voltdict']:
+      for k, v  in self.res[reskey].items():
+          vbase = 1000*v["basekv"]/np.sqrt(3)
+          if threshold is not None:
+            tmp = threshold
+          elif v["basekv"] < 1: #LV
+            tmp = self.base.volt_stats.loc[f"{minmax}LVVoltage", "limits"]
+          else: # MV
+            tmp = self.base.volt_stats.loc[f"{minmax}Voltage", "limits"]
+          if ((minmax == "Max") and (v["vmax"]/vbase > tmp)) or ((minmax == "Min") and (v["vmin"]/vbase < tmp)):
+            d[v["bus"]] = v["v"]/vbase
+    return d
+  
+  def get_volt_max_buses(self, threshold=None):
+    return self.get_volt_buses("Max", threshold=threshold)
+
+  def get_volt_min_buses(self, threshold=None):
+    return self.get_volt_buses("Min", threshold=threshold)
+
+  def get_thermal_branches(self):
+    out = {}
+    for typ, name in self.violation["thermal"]["emerg"].index.str.split("."):
+      if typ not in out:
+        out[typ] = []
+      out[typ].append(name)
+    return out
+  
   # def _test(self, test:bool, margin, description:str) -> tuple[bool, str]:
   def _test(self, val, lim, sense, tol) -> tuple[bool, float, str]:
     """
@@ -1240,6 +1479,8 @@ class HCAMetrics:
           self.violation[metric_class][metric] = margin
           violation_count += 1
     self.violation_count = violation_count
+    if violation_count > 0:
+      self.last_violation_list = self.get_violation_list()
         
         
 
