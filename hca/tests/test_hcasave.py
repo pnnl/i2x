@@ -29,7 +29,7 @@ def main(logname):
 
 if __name__ == "__main__":
     
-    main("hca_save_test1")
+    main("hca_save_test")
 
     reload_heading = "*******************RELOAD TEST *******************"
     hca = h.HCA("hca_save_tmp.pkl", reload=True, reload_filemode="a", logger_heading=reload_heading)

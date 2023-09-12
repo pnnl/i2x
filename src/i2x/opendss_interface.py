@@ -81,7 +81,7 @@ def get_event_log (dss):
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
                 change_lines=None, debug_output=True, dss=None, output=True,
-                demandinterval=False, **kwargs):
+                demandinterval=False, allow_forms=1, **kwargs):
 
   # dss = py_dss_interface.DSS()
   # fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
@@ -138,6 +138,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   
     dss_line(dss, f'set DataPath="{os.getcwd()}"', debug_output)
 
+  dss.dssinterface.allow_forms = allow_forms
   dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output)
   if demandinterval:
     dss_line(dss, 'closedi', debug_output)

@@ -12,6 +12,7 @@
 "stepsize": 300,
 "numsteps": 288,
 "remove_all_pv": false,
+"allow_forms": 0,
 "reg_control": {
     "disable_all": false,
     "disable_list": []
