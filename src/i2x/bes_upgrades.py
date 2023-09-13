@@ -213,6 +213,7 @@ def set_estimated_branch_ratings (matpower_dictionary,
   nb = len(bus)
   nl = len(branch)
 
+  # do the branch upgrades first, if requested
   for i in range(nl):
     bus1 = int(branch[i,mpow.F_BUS])
     bus2 = int(branch[i,mpow.T_BUS])
@@ -220,7 +221,6 @@ def set_estimated_branch_ratings (matpower_dictionary,
     kv2 = bus[bus2-1,mpow.BASE_KV]
     if kv1 > min_kv and kv2 > min_kv:
       scale = 0.0
-      # mva = branch[i,mpow.RATE_A] these are invalid for IEEE118 and WECC240
       xpu = branch[i,mpow.BR_X]
       if branch[i,mpow.TAP] > 0.0:
         mva = 100.0 * 0.10 / xpu
@@ -243,11 +243,24 @@ def set_estimated_branch_ratings (matpower_dictionary,
       elif xpu < 0.0: # not considering series capacitors in parallel, which is valid for the WECC 240-bus model
         mva = get_default_line_mva (kv1)
         reset_mva (matpower_dictionary, i, mva)
-      if branch_contingencies is not None:
-        if mva >= contingency_mva_threshold:
-          if kv1 > contingency_kv_threshold and kv2 > contingency_kv_threshold:
-            branch_contingencies.append({'branch':i+1, 'scale':scale})
-#            print ('contingency {:s} [scale={:.3f}]'.format (get_branch_description (branch, bus, i), scale))
+  # now look for size-based contingencies on the possibly upgraded branches
+  if branch_contingencies is not None:
+    for i in range(nl):
+      bus1 = int(branch[i,mpow.F_BUS])
+      bus2 = int(branch[i,mpow.T_BUS])
+      kv1 = bus[bus1-1,mpow.BASE_KV]
+      kv2 = bus[bus2-1,mpow.BASE_KV]
+      mva = branch[i,mpow.RATE_A]
+      if mva >= contingency_mva_threshold:
+        if kv1 > contingency_kv_threshold and kv2 > contingency_kv_threshold:
+          if branch[i,mpow.TAP] > 0.0:
+            mva1 = get_default_transformer_mva (max(kv1, kv2))
+          else:
+            mva1 = get_default_line_mva (max(kv1, kv2))
+          npar = int (mva/mva1 + 0.5)
+          scale = get_parallel_branch_scale (npar)
+          branch_contingencies.append({'branch':i+1, 'scale':scale})
+          print ('contingency {:s} [scale={:.3f}]'.format (get_branch_description (branch, bus, i), scale))
 
 #TODO: need functions that:
 #  1) return a dictionary of the limiting branches and their parameters, def get_limiting_branches (case_file, results_file):

@@ -13,9 +13,13 @@ if __name__ == '__main__':
   results_file = 'IEEE118_out.json'
   case_file = 'IEEE118_wmva.m'
   if len(sys.argv) > 1:
-    if int(sys.argv[1]) > 0:
+    flag = int(sys.argv[1])
+    if flag == 1:
       results_file = 'WECC240_out.json'
       case_file = 'WECC240_wmva.m'
+    elif flag == 2:
+      results_file = 'IEEE39_out.json'
+      case_file = 'IEEE39_wmva.m'
 
   lp = open (results_file).read()
   r = json.loads(lp)

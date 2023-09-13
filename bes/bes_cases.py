@@ -32,7 +32,16 @@ CASES = [
      {'branch_number':430, 'new_mva':1500.0},
      {'branch_number':442, 'new_mva':1000.0},
      {'branch_number':443, 'new_mva':1000.0},
-     {'branch_number':449, 'new_mva':1500.0}]
-   }]
+     {'branch_number':449, 'new_mva':1500.0}]},
+  {'id': None,
+   'name': 'IEEE39',
+   'swingbus':'31',
+   'load_scale':1.0000,
+   'softlims': False,
+   'glpk_opts': None,
+   'min_kv_to_upgrade': 500.0,
+   'min_contingency_mva': 1000.0,
+   'mva_upgrades': None}
+  ]
 
 
