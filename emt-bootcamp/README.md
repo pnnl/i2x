@@ -13,7 +13,9 @@ resources (IBR).
 | Automation of faults | TBD |
 | Automation of IEEE P2800.2 type tests | TBD |
 | Automation of waveform evaluations | TBD |
-| <span style='color: red;'>System-Level Session (9/14/2023)</span> | [Slides](EMT_Bootcamp_Sep_14.pdf)<br>[Models](System-Level.zip)<br>[PDH Request Form](PDH_Hours.xlsx) |
+| System-Level Session (9/14/2023) | [Slides](EMT_Bootcamp_Sep_14.pdf)<br>[Models](System-Level.zip)<br>[PDH Request Form](PDH_Hours.xlsx) |
+
+<span style='color: red;'>September 14 downloads are in the table row above.</span>
 
 ## Obtaining the Sample Models and Scripts
 
