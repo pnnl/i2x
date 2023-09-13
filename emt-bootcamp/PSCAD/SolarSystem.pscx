@@ -25,7 +25,7 @@
     <param name="Warn" value="0" />
     <param name="Check" value="0" />
     <param name="description" value="" />
-    <param name="revisor" value="mcde601, 1694639087" />
+    <param name="revisor" value="mcde601, 1694639605" />
     <param name="Debug" value="0" />
   </paramlist>
   <paramlist name="Libs" />
@@ -23396,7 +23396,7 @@
   </List>
   <hierarchy>
     <call link="1205822718" name="SolarSystem:DS" z="-1" view="false" instance="0">
-      <call link="1937999978" name="SolarSystem:Main" z="-1" view="false" instance="0">
+      <call link="1937999978" name="SolarSystem:Main" z="-1" view="true" instance="0">
         <call link="840043039" name="SolarSystem:TLine_9_39" z="-1" view="false" instance="0" />
         <call link="343087326" name="SolarSystem:TLine_14_15" z="-1" view="false" instance="0" />
         <call link="783518088" name="SolarSystem:TLine_2_25" z="-1" view="false" instance="0" />
@@ -23447,7 +23447,7 @@
             <call link="1586712796" name="Solar_Lib:PI_AntiWindUp_PPC" z="650" view="false" instance="2" />
             <call link="1863956614" name="Solar_Lib:PI_AntiWindUp_PPC" z="690" view="false" instance="3" />
           </call>
-          <call link="226324303" name="Solar_Lib:VSC_AVM" z="250" view="true" instance="0">
+          <call link="226324303" name="Solar_Lib:VSC_AVM" z="250" view="false" instance="0">
             <call link="127774023" name="Solar_Lib:PIwithFreeze_1" z="1930" view="false" instance="0" />
             <call link="1071528461" name="Solar_Lib:PIwithFreeze_1" z="1970" view="false" instance="1" />
           </call>
