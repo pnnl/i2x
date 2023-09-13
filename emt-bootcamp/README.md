@@ -15,7 +15,7 @@ resources (IBR).
 | Automation of waveform evaluations | TBD |
 | System-Level Session (9/14/2023) | [Slides](EMT_Bootcamp_Sep_14.pdf)<br>[Models](System-Level.zip)<br>[PDH Request Form](PDH_Hours.xlsx) |
 
-<span style='color: red;'>September 14 downloads are in the table row above.</span>
+$${\color{red}\text{September 14 downloads are in the table row above.}}$$
 
 ## Obtaining the Sample Models and Scripts
 
