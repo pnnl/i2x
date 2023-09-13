@@ -13,7 +13,7 @@ resources (IBR).
 | Automation of faults | TBD |
 | Automation of IEEE P2800.2 type tests | TBD |
 | Automation of waveform evaluations | TBD |
-| $${\color{red}System-Level Session (9/14/2023)}$$ | Slides TBD<br>Models TBD<br>[PDH Request Form](PDH_Hours.xlsx) |
+| $${\color{red}\begin{flushleft}System-Level \space Session \space (9/14/2023)\end{flushleft}}$$ | Slides TBD<br>Models TBD<br>[PDH Request Form](PDH_Hours.xlsx) |
 
 ## Obtaining the Sample Models and Scripts
 
