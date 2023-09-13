@@ -1,4 +1,4 @@
-<workspace name="SolarExamples" version="5.0.2" crc="15659452">
+<workspace name="SolarExamples" version="5.0.2" crc="28281388">
   <projects>
     <project type="project" name="Machine2" filepath=".\Machine2.pscx" />
     <project type="project" name="Solar3avm" filepath=".\Solar3avm.pscx" />
@@ -7,6 +7,7 @@
     <project type="project" name="Solar6" filepath=".\Solar6.pscx" />
     <project type="project" name="Solar4" filepath=".\Solar4.pscx" />
     <project type="project" name="Solar5" filepath=".\Solar5.pscx" />
+    <project type="project" name="SolarSystem" filepath=".\SolarSystem.pscx" />
   </projects>
   <simulations />
   <pmr />
