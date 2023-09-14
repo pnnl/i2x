@@ -23,6 +23,8 @@ var cases = [
   ['bc01', 0.001, 0.0000, 0.001, 0.0]
 ];
 
+var start = new Date();
+
 // preamble to load support functions and find interfaces to modified components
 prepare_case();
 var cct = currentCircuit(); //grab the handle to the current circuit object
@@ -39,10 +41,13 @@ for (idx in cases) {
   writeln('Running case: ', idx, ': ', cases[idx]);
   set_fault (oFault, cases[idx][0], cases[idx][1], cases[idx][2], cases[idx][3], cases[idx][4]);
   set_writer (oWriter, cases[idx][0]);
-//  run_this_case (cct, idx.toString());
   // arguments are UpdateGlobalDataOption, Waitbar (false), tag, messages
   startemtp_UseRunEMTP (true, false, idx.toString(), false);
 }
+ 
+var end = new Date();
+var seconds = (end - start) / 1000.0;
+writeln (seconds, 's elapsed time.');
 
 // the design doesn't have to be saved after these parametric simulations 
 // cct.save();
