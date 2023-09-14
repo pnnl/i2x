@@ -1,4 +1,4 @@
-<workspace name="SolarExamples" version="5.0.2" crc="28281388">
+<workspace name="SolarExamples" version="5.0.1" crc="3331425">
   <projects>
     <project type="project" name="Machine2" filepath=".\Machine2.pscx" />
     <project type="project" name="Solar3avm" filepath=".\Solar3avm.pscx" />
@@ -8,6 +8,9 @@
     <project type="project" name="Solar4" filepath=".\Solar4.pscx" />
     <project type="project" name="Solar5" filepath=".\Solar5.pscx" />
     <project type="project" name="SolarSystem" filepath=".\SolarSystem.pscx" />
+    <project type="project" name="IEEE39_Complete_EMT" filepath=".\IEEE39_Complete_EMT.pscx" />
+    <project type="project" name="IEEE39_Complete_IBR_EMT" filepath=".\IEEE39_Complete_IBR_EMT.pscx" />
+    <project type="project" name="IEEE39_Complete_IBR_NM1_EMT" filepath=".\IEEE39_Complete_IBR_NM1_EMT.pscx" />
   </projects>
   <simulations />
   <pmr />
