@@ -16,7 +16,7 @@ ICR = 100.0
 PMIN = 0.0
 KV = 230.0
 FREQ = 60.0
-Z1WEAK = 148.1
+Z1WEAK = 137.54
 LFWEAK = Z1WEAK / 377.0
 
 cmp_names = [
@@ -72,14 +72,14 @@ avals = [
 ]
 
 stepvals = [
-# {'tag':'stvref', 'mode':'POC_VOLTAGE', 'tmax':50.0,
-#     'V1':1.05, 'V2':0.95, 'P1':ICR, 'P2':ICR, 'Q1':0.0, 'Q2':0.0, 'PF1':1.0, 'PF2':1.0},
-# {'tag':'stqref', 'mode':'FIXED_Q', 'tmax':50.0,
-#     'V1':1.0, 'V2':1.0, 'P1':ICR, 'P2':ICR, 'Q1':0.3287*ICR, 'Q2':-0.3287*ICR, 'PF1':1.0, 'PF2':1.0},
+  {'tag':'stvref', 'mode':'POC_VOLTAGE', 'tmax':50.0,
+      'V1':1.05, 'V2':0.95, 'P1':ICR, 'P2':ICR, 'Q1':0.0, 'Q2':0.0, 'PF1':1.0, 'PF2':1.0},
+  {'tag':'stqref', 'mode':'FIXED_Q', 'tmax':50.0,
+      'V1':1.0, 'V2':1.0, 'P1':ICR, 'P2':ICR, 'Q1':0.3287*ICR, 'Q2':-0.3287*ICR, 'PF1':1.0, 'PF2':1.0},
   {'tag':'stpfref', 'mode':'POWER_FACTOR', 'tmax':50.0, 
-      'V1':1.0, 'V2':1.0, 'P1':ICR, 'P2':ICR, 'Q1':0.0, 'Q2':0.0, 'PF1':0.95, 'PF2':-0.95} # ,
-# {'tag':'stpref', 'mode':'POC_VOLTAGE', 'tmax':40.0,
-#     'V1':1.0, 'V2':1.0, 'P1':0.5*ICR, 'P2':0.04*ICR, 'Q1':0.0, 'Q2':0.0, 'PF1':1.0, 'PF2':1.0}
+      'V1':1.0, 'V2':1.0, 'P1':ICR, 'P2':ICR, 'Q1':0.0, 'Q2':0.0, 'PF1':0.95, 'PF2':-0.95},
+  {'tag':'stpref', 'mode':'POC_VOLTAGE', 'tmax':40.0,
+      'V1':1.0, 'V2':1.0, 'P1':0.5*ICR, 'P2':0.04*ICR, 'Q1':0.0, 'Q2':0.0, 'PF1':1.0, 'PF2':1.0}
 ]
 
 flats = [
@@ -340,11 +340,11 @@ def load_interfaces (prj_name, bListParameters = False):
 
 if __name__ == '__main__':
   prj, d = load_interfaces ('Solar5')
-# run_flatstart_tests (prj, d)
-# run_uvrt_tests (prj, d)
-# run_ovrt_tests (prj, d)
-# run_freq_tests (prj, d)
-# run_angle_tests (prj, d)
+  run_flatstart_tests (prj, d)
+  run_uvrt_tests (prj, d)
+  run_ovrt_tests (prj, d)
+  run_freq_tests (prj, d)
+  run_angle_tests (prj, d)
   run_step_tests (prj, d)
 
 

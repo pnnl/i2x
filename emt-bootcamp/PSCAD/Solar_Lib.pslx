@@ -23,7 +23,7 @@
     <param name="Warn" value="0" />
     <param name="Check" value="0" />
     <param name="description" value="" />
-    <param name="revisor" value="kdirks, 1694709417" />
+    <param name="revisor" value="mcde601, 1694824421" />
     <param name="Debug" value="0" />
   </paramlist>
   <Layers />
@@ -2577,6 +2577,78 @@
         <param name="active_1" value="true" />
       </paramlist>
     </Settings>
+    <Settings classid="GraphFrameSettings" id="79554801" link="1800790573">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1" />
+        <param name="xmax" value="1" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="2090590056" link="287787576">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="992791308" link="33891391">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="849249949" link="136666122">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="400751331" link="546859292">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="955700333" link="1843978898">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
+    <Settings classid="GraphFrameSettings" id="572384080" link="2020233887">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="xmin" value="-1" />
+        <param name="xmax" value="1" />
+      </paramlist>
+    </Settings>
+    <Settings classid="OverlayGraphSettings" id="352765637" link="338888805">
+      <path>
+        <ref link="1325054872" />
+      </path>
+      <paramlist>
+        <param name="ymin" value="-1.000000" />
+        <param name="ymax" value="1.000000" />
+      </paramlist>
+    </Settings>
   </List>
   <bookmarks />
   <GlobalSubstitutions name="Default">
@@ -2618,7 +2690,7 @@
         </Wire>
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Main" id="844848237" group="" url="" version="" build="" crc="104542188" view="false" date="0">
+    <Definition classid="UserCmpDefn" name="Main" id="844848237" group="" url="" version="" build="" crc="50262930" view="false" date="0">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -2739,7 +2811,7 @@
             <param name="FRT_Off_Delay" value="0.5" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:Simple_PPC" id="1383147584" x="144" y="270" w="196" h="152" z="190" orient="4" defn="Solar_Lib:Simple_PPC" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:Simple_PPC" id="1383147584" x="144" y="270" w="196" h="153" z="190" orient="4" defn="Solar_Lib:Simple_PPC" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="45848122">
             <param name="Name" value="Simple_PPC_1" />
             <param name="Scale" value="50" />
@@ -2926,7 +2998,7 @@
         </User>
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="PIwithFreeze" group="" url="" version="" build="" crc="95463188" instances="4" key="" view="false" date="1694707661" id="923058178">
+    <Definition classid="UserCmpDefn" name="PIwithFreeze" group="" url="" version="" build="" crc="17244529" instances="4" key="" view="false" date="1694823475" id="923058178">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -3053,7 +3125,7 @@
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:integral" id="1070062497" x="558" y="414" w="80" h="73" z="100" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:integral" id="1070062497" x="558" y="414" w="80" h="74" z="100" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="126573893">
             <param name="Extrn" value="0" />
             <param name="Reset" value="1" />
@@ -4013,7 +4085,7 @@
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="VSC" group="" url="" version="" build="" crc="30575625" instances="1" key="" view="false" date="1692633332" id="36202729">
+    <Definition classid="UserCmpDefn" name="VSC" group="" url="" version="" build="" crc="62560624" instances="1" key="" view="false" date="1692633332" id="36202729">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -4580,7 +4652,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="843918039" x="936" y="72" w="63" h="49" z="2670" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="843918039" x="936" y="72" w="63" h="48" z="2670" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="61936846">
             <param name="L" value="Q" />
             <param name="Type" value="3" />
@@ -4846,7 +4918,7 @@ Based on "best practices" guidelines]]></Sticky>
         <User classid="UserCmp" name="master:ground" id="1614936503" x="1242" y="342" w="26" h="34" z="0" orient="1" defn="master:ground" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="28206164" />
         </User>
-        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="1816818500" x="1062" y="72" w="63" h="49" z="2650" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="1816818500" x="1062" y="72" w="63" h="48" z="2650" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="61936846">
             <param name="L" value="Q" />
             <param name="Type" value="3" />
@@ -4871,7 +4943,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="1630625932" x="1188" y="72" w="63" h="49" z="2640" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="1630625932" x="1188" y="72" w="63" h="48" z="2640" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="61936846">
             <param name="L" value="Q" />
             <param name="Type" value="3" />
@@ -4896,7 +4968,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="49438468" x="1188" y="216" w="63" h="49" z="2520" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="49438468" x="1188" y="216" w="63" h="48" z="2520" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="61936846">
             <param name="L" value="Q" />
             <param name="Type" value="3" />
@@ -4921,7 +4993,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="1511990432" x="1062" y="216" w="63" h="49" z="2550" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="1511990432" x="1062" y="216" w="63" h="48" z="2550" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="61936846">
             <param name="L" value="Q" />
             <param name="Type" value="3" />
@@ -4946,7 +5018,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="241508090" x="936" y="216" w="63" h="49" z="2560" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:peswitch" defn="master:peswitch" id="241508090" x="936" y="216" w="63" h="48" z="2560" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="61936846">
             <param name="L" value="Q" />
             <param name="Type" value="3" />
@@ -5001,7 +5073,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="Lpu" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="1972632667" x="900" y="558" w="80" h="59" z="1160" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1972632667" x="900" y="558" w="80" h="60" z="1160" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="3" />
             <param name="Name" value="" />
@@ -5055,7 +5127,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="2090855663" x="234" y="1134" w="76" h="22" z="510" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="2090855663" x="234" y="1134" w="76" h="21" z="510" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="10" />
@@ -5070,7 +5142,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="90" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:div" id="1932015387" x="324" y="1062" w="80" h="59" z="1280" orient="0" defn="master:div" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:div" id="1932015387" x="324" y="1062" w="80" h="60" z="1280" orient="0" defn="master:div" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -5090,7 +5162,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="INV_Ibase" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1695014200" x="306" y="1206" w="76" h="22" z="520" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1695014200" x="306" y="1206" w="76" h="21" z="520" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="9" />
@@ -5117,7 +5189,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1513881999" x="378" y="1206" w="76" h="22" z="530" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1513881999" x="378" y="1206" w="76" h="21" z="530" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="12" />
@@ -5160,7 +5232,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="AL2" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="390657153" x="450" y="1098" w="76" h="22" z="500" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="390657153" x="450" y="1098" w="76" h="21" z="500" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="9" />
@@ -5183,7 +5255,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:div" id="1808778436" x="342" y="1242" w="80" h="59" z="550" orient="0" defn="master:div" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:div" id="1808778436" x="342" y="1242" w="80" h="60" z="550" orient="0" defn="master:div" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -5236,7 +5308,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="1758514567" x="900" y="630" w="80" h="59" z="1380" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1758514567" x="900" y="630" w="80" h="60" z="1380" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="3" />
             <param name="Name" value="" />
@@ -5261,7 +5333,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="-18" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:varrlc" id="2043993167" x="720" y="162" w="44" h="52" z="2600" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="2043993167" x="720" y="162" w="44" h="51" z="2600" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="1" />
             <param name="R" value="1.0 [ohm]" />
@@ -5293,7 +5365,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="0" y="18" />
         </Wire>
-        <User classid="UserCmp" defn="master:varrlc" id="1274219295" x="540" y="234" w="52" h="46" z="2570" orient="5" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="1274219295" x="540" y="234" w="51" h="46" z="2570" orient="5" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="0" />
             <param name="R" value="Rdamp" />
@@ -5305,7 +5377,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="1869432361" x="576" y="198" w="52" h="46" z="2590" orient="7" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="1869432361" x="576" y="198" w="51" h="46" z="2590" orient="7" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="1" />
             <param name="R" value="1.0 [ohm]" />
@@ -5317,7 +5389,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="1400392855" x="576" y="270" w="52" h="45" z="2540" orient="1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="1400392855" x="576" y="270" w="51" h="45" z="2540" orient="1" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="2" />
             <param name="R" value="1.0 [ohm]" />
@@ -5329,7 +5401,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="1452227155" x="702" y="198" w="52" h="44" z="2580" orient="1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="1452227155" x="702" y="198" w="51" h="44" z="2580" orient="1" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="2" />
             <param name="R" value="1.0 [ohm]" />
@@ -5341,7 +5413,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="1180320850" x="648" y="162" w="44" h="52" z="2610" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="1180320850" x="648" y="162" w="44" h="51" z="2610" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="1" />
             <param name="R" value="1.0 [ohm]" />
@@ -5404,7 +5476,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="72" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:div" id="1589713661" x="594" y="1494" w="80" h="59" z="2080" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1589713661" x="594" y="1494" w="80" h="60" z="2080" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -5457,7 +5529,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="698265518" x="108" y="1458" w="76" h="22" z="590" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="698265518" x="108" y="1458" w="76" h="21" z="590" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="1" />
@@ -5478,7 +5550,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="703817931" x="360" y="1422" w="80" h="59" z="1450" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="703817931" x="360" y="1422" w="80" h="60" z="1450" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -5527,14 +5599,14 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="0" y="54" />
         </Wire>
-        <User classid="UserCmp" defn="master:div" id="550289804" x="252" y="1548" w="80" h="59" z="1090" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="550289804" x="252" y="1548" w="80" h="60" z="1090" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1281213618" x="180" y="1620" w="76" h="22" z="660" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1281213618" x="180" y="1620" w="76" h="21" z="660" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="1" />
@@ -5847,7 +5919,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="INV_Vbase_LNpk" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="524040607" x="1746" y="828" w="80" h="59" z="1990" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="524040607" x="1746" y="828" w="80" h="60" z="1990" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -5868,7 +5940,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PIwithFreeze" id="1928569447" x="1674" y="828" w="87" h="68" z="1970" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PIwithFreeze" id="1928569447" x="1674" y="828" w="87" h="67" z="1970" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="13182031">
             <param name="Name" value="" />
             <param name="Kp" value="Kpq" />
@@ -5882,7 +5954,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="DBlk" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PIwithFreeze" id="1835432919" x="1674" y="1044" w="87" h="68" z="1930" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PIwithFreeze" id="1835432919" x="1674" y="1044" w="87" h="67" z="1930" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="13182031">
             <param name="Name" value="" />
             <param name="Kp" value="Kpd" />
@@ -5928,7 +6000,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:tvekta" defn="master:tvekta" id="1542181266" x="900" y="486" w="117" h="100" z="1360" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:tvekta" defn="master:tvekta" id="1542181266" x="900" y="486" w="117" h="99" z="1360" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="37065400">
             <param name="Gp" value="Kp_PLL" />
             <param name="Gi" value="Ti_PLL" />
@@ -6172,7 +6244,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="id" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="1573878802" x="1872" y="864" w="80" h="82" z="2010" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="1573878802" x="1872" y="864" w="80" h="83" z="2010" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -6196,7 +6268,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="iq" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="636505685" x="1872" y="1080" w="80" h="82" z="1980" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="636505685" x="1872" y="1080" w="80" h="83" z="1980" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -6382,7 +6454,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="54" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:div" id="1395960063" x="1746" y="1044" w="80" h="59" z="1960" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1395960063" x="1746" y="1044" w="80" h="60" z="1960" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -6430,7 +6502,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="18" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:div" defn="master:div" id="1858590824" x="1746" y="1332" w="80" h="59" z="2040" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:div" defn="master:div" id="1858590824" x="1746" y="1332" w="80" h="60" z="2040" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -6860,7 +6932,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1897278105" x="1674" y="1404" w="76" h="22" z="630" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1897278105" x="1674" y="1404" w="76" h="21" z="630" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="6" />
@@ -7120,7 +7192,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:maxmin" id="1039754551" x="522" y="792" w="80" h="59" z="1520" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:maxmin" id="1039754551" x="522" y="792" w="80" h="60" z="1520" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="103689034">
             <param name="DPath" value="1" />
             <param name="Type" value="1" />
@@ -7285,7 +7357,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="18" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:select" id="816011915" x="1134" y="1476" w="82" h="91" z="1800" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="816011915" x="1134" y="1476" w="82" h="90" z="1800" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="0" />
             <param name="DPath" value="1" />
@@ -7348,7 +7420,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="-18" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:select" id="1531343573" x="1134" y="1548" w="82" h="91" z="1880" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1531343573" x="1134" y="1548" w="82" h="90" z="1880" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -7401,7 +7473,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="0" y="72" />
         </Wire>
-        <User classid="UserCmp" name="master:photovoltaic_source" id="911759247" x="1674" y="162" w="81" h="90" z="2530" orient="7" defn="master:photovoltaic_source" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:photovoltaic_source" id="911759247" x="1674" y="162" w="82" h="90" z="2530" orient="7" defn="master:photovoltaic_source" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="124109687">
             <param name="PVname" value="PVarray1" />
             <param name="Nsr" value="24" />
@@ -8894,7 +8966,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="860048778" x="1044" y="1008" w="80" h="37" z="1650" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="860048778" x="1044" y="1008" w="80" h="38" z="1650" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -8908,21 +8980,21 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="870409675" x="1098" y="936" w="80" h="59" z="1780" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="870409675" x="1098" y="936" w="80" h="60" z="1780" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="2002137945" x="1098" y="1080" w="80" h="59" z="1670" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="2002137945" x="1098" y="1080" w="80" h="60" z="1670" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="1289862316" x="1170" y="936" w="80" h="37" z="1810" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="1289862316" x="1170" y="936" w="80" h="38" z="1810" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -8936,7 +9008,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="2075864612" x="1170" y="1080" w="80" h="37" z="1700" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="2075864612" x="1170" y="1080" w="80" h="38" z="1700" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -8997,7 +9069,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="AL2" value="0: Normal mode" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="1515445759" x="972" y="1782" w="82" h="91" z="1570" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1515445759" x="972" y="1782" w="82" h="90" z="1570" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -9115,7 +9187,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:sumjct" id="1534117579" x="954" y="1908" w="80" h="63" z="1120" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:sumjct" id="1534117579" x="954" y="1908" w="80" h="64" z="1120" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -9160,7 +9232,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="712836411" x="1260" y="1944" w="80" h="37" z="1680" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="712836411" x="1260" y="1944" w="80" h="38" z="1680" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -9232,7 +9304,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="36" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:select" id="299968026" x="1260" y="1710" w="82" h="91" z="1690" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="299968026" x="1260" y="1710" w="82" h="90" z="1690" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -9295,7 +9367,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="AL2" value="Freeze during fault" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="1444400535" x="1260" y="1836" w="82" h="91" z="1630" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1444400535" x="1260" y="1836" w="82" h="90" z="1630" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -11707,7 +11779,7 @@ Based on "best practices" guidelines]]></Sticky>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="PI_AntiWindUp_PPC" group="" url="" version="" build="" crc="68889241" instances="10" key="" view="false" date="1694707659" id="296487728">
+    <Definition classid="UserCmpDefn" name="PI_AntiWindUp_PPC" group="" url="" version="" build="" crc="64288829" instances="10" key="" view="false" date="1693930353" id="296487728">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -11846,7 +11918,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:integral" id="762050802" x="792" y="450" w="80" h="73" z="190" orient="0" link="-1" q="4" layer="" disable="false">
+        <User classid="UserCmp" defn="master:integral" id="762050802" x="792" y="450" w="80" h="74" z="190" orient="0" link="-1" q="4" layer="" disable="false">
           <paramlist link="-1" name="" crc="126573893">
             <param name="Extrn" value="0" />
             <param name="Reset" value="1" />
@@ -12030,7 +12102,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="frz" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="1573201780" x="684" y="450" w="82" h="91" z="170" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1573201780" x="684" y="450" w="82" h="90" z="170" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -12105,7 +12177,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="72" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:select" id="570722707" x="594" y="270" w="82" h="91" z="140" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="570722707" x="594" y="270" w="82" h="90" z="140" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -12525,7 +12597,7 @@ Based on "best practices" guidelines]]></Sticky>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Simple_PPC" group="" url="" version="" build="" crc="16931868" instances="0" key="" view="false" date="1694707659" id="56350181">
+    <Definition classid="UserCmpDefn" name="Simple_PPC" group="" url="" version="" build="" crc="63071922" instances="0" key="" view="false" date="1693930353" id="56350181">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -12875,7 +12947,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="36" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="2078274838" x="918" y="90" w="80" h="82" z="670" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="2078274838" x="918" y="90" w="80" h="83" z="670" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -12896,7 +12968,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:div" id="122265693" x="342" y="72" w="80" h="59" z="550" orient="0" defn="master:div" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:div" id="122265693" x="342" y="72" w="80" h="60" z="550" orient="0" defn="master:div" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -13468,7 +13540,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="VRT_On_Delay" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1808962177" x="846" y="324" w="87" h="82" z="560" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1808962177" x="846" y="324" w="87" h="81" z="560" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="110468201">
             <param name="Name" value="" />
             <param name="Kp" value="Kp_V" />
@@ -13478,7 +13550,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="MinOut" value="Qmin" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1148544568" x="846" y="432" w="87" h="82" z="630" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1148544568" x="846" y="432" w="87" h="81" z="630" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="110468201">
             <param name="Name" value="" />
             <param name="Kp" value="Kp_PF" />
@@ -13488,7 +13560,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="MinOut" value="Qmin" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1586712796" x="846" y="540" w="87" h="82" z="650" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1586712796" x="846" y="540" w="87" h="81" z="650" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="110468201">
             <param name="Name" value="" />
             <param name="Kp" value="Kp_Q" />
@@ -13498,7 +13570,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="MinOut" value="Qmin" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1863956614" x="990" y="90" w="87" h="82" z="690" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="Solar_SMIB_S1_FRT:PI_AntiWindUp_PPC" id="1863956614" x="990" y="90" w="87" h="81" z="690" orient="0" defn="Solar_Lib:PI_AntiWindUp_PPC" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="110468201">
             <param name="Name" value="" />
             <param name="Kp" value="Kp_P" />
@@ -13530,7 +13602,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:sumjct" id="196230974" x="666" y="180" w="80" h="63" z="450" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:sumjct" id="196230974" x="666" y="180" w="80" h="64" z="450" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -13556,14 +13628,14 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="AL2" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="352679040" x="882" y="180" w="80" h="59" z="480" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="352679040" x="882" y="180" w="80" h="60" z="480" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="776728946" x="810" y="180" w="80" h="59" z="470" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="776728946" x="810" y="180" w="80" h="60" z="470" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -13612,7 +13684,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="Fdb" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="936539315" x="630" y="216" w="80" h="37" z="240" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="936539315" x="630" y="216" w="80" h="38" z="240" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -14428,7 +14500,7 @@ Based on "best practices" guidelines]]></Sticky>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="VSC_AVM" group="" url="" version="" build="" crc="6596776" instances="1" key="" view="false" date="1694707660" id="1207508506">
+    <Definition classid="UserCmpDefn" name="VSC_AVM" group="" url="" version="" build="" crc="88256402" instances="1" key="" view="false" date="1694823474" id="1207508506">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -14969,7 +15041,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="Lpu" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="1204838506" x="900" y="558" w="80" h="59" z="1160" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1204838506" x="900" y="558" w="80" h="60" z="1160" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="3" />
             <param name="Name" value="" />
@@ -15023,7 +15095,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="972297022" x="234" y="1134" w="76" h="22" z="530" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="972297022" x="234" y="1134" w="76" h="21" z="530" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="10" />
@@ -15038,7 +15110,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="90" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:div" id="597149214" x="324" y="1062" w="80" h="59" z="1280" orient="0" defn="master:div" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:div" id="597149214" x="324" y="1062" w="80" h="60" z="1280" orient="0" defn="master:div" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -15058,7 +15130,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="INV_Ibase" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1245442210" x="306" y="1206" w="76" h="22" z="540" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1245442210" x="306" y="1206" w="76" h="21" z="540" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="9" />
@@ -15085,7 +15157,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1977647551" x="378" y="1206" w="76" h="22" z="550" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1977647551" x="378" y="1206" w="76" h="21" z="550" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="12" />
@@ -15128,7 +15200,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="AL2" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1530157794" x="450" y="1098" w="76" h="22" z="520" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1530157794" x="450" y="1098" w="76" h="21" z="520" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="9" />
@@ -15151,7 +15223,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:div" id="423291986" x="342" y="1242" w="80" h="59" z="570" orient="0" defn="master:div" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:div" id="423291986" x="342" y="1242" w="80" h="60" z="570" orient="0" defn="master:div" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -15204,7 +15276,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="988997736" x="900" y="630" w="80" h="59" z="1380" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="988997736" x="900" y="630" w="80" h="60" z="1380" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="3" />
             <param name="Name" value="" />
@@ -15229,7 +15301,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="-18" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:varrlc" id="247856843" x="720" y="162" w="44" h="52" z="2730" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="247856843" x="720" y="162" w="44" h="51" z="2730" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="1" />
             <param name="R" value="1.0 [ohm]" />
@@ -15261,7 +15333,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="0" y="18" />
         </Wire>
-        <User classid="UserCmp" defn="master:varrlc" id="941660212" x="540" y="234" w="52" h="46" z="2670" orient="5" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="941660212" x="540" y="234" w="51" h="46" z="2670" orient="5" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="0" />
             <param name="R" value="Rdamp" />
@@ -15273,7 +15345,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="1383267658" x="576" y="198" w="52" h="46" z="2710" orient="7" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="1383267658" x="576" y="198" w="51" h="46" z="2710" orient="7" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="1" />
             <param name="R" value="1.0 [ohm]" />
@@ -15285,7 +15357,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="1121241253" x="576" y="270" w="52" h="45" z="2660" orient="1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="1121241253" x="576" y="270" w="51" h="45" z="2660" orient="1" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="2" />
             <param name="R" value="1.0 [ohm]" />
@@ -15297,7 +15369,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="952402795" x="702" y="198" w="52" h="44" z="2700" orient="1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="952402795" x="702" y="198" w="51" h="44" z="2700" orient="1" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="2" />
             <param name="R" value="1.0 [ohm]" />
@@ -15309,7 +15381,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:varrlc" id="82812592" x="648" y="162" w="44" h="52" z="2740" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:varrlc" id="82812592" x="648" y="162" w="44" h="51" z="2740" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="130577312">
             <param name="RLC" value="1" />
             <param name="R" value="1.0 [ohm]" />
@@ -15372,7 +15444,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="72" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:div" id="620506062" x="594" y="1494" w="80" h="59" z="2190" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="620506062" x="594" y="1494" w="80" h="60" z="2190" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -15425,7 +15497,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="319375467" x="108" y="1458" w="76" h="22" z="610" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="319375467" x="108" y="1458" w="76" h="21" z="610" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="1" />
@@ -15446,7 +15518,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="473496854" x="360" y="1422" w="80" h="59" z="1450" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="473496854" x="360" y="1422" w="80" h="60" z="1450" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -15495,14 +15567,14 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="0" y="54" />
         </Wire>
-        <User classid="UserCmp" defn="master:div" id="1513991474" x="252" y="1548" w="80" h="59" z="1090" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1513991474" x="252" y="1548" w="80" h="60" z="1090" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="738646561" x="180" y="1620" w="76" h="22" z="680" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="738646561" x="180" y="1620" w="76" h="21" z="680" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="1" />
@@ -15802,7 +15874,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="INV_Vbase_LNpk" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="1168835839" x="1746" y="828" w="80" h="59" z="1990" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1168835839" x="1746" y="828" w="80" h="60" z="1990" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -15865,7 +15937,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:tvekta" defn="master:tvekta" id="885355449" x="900" y="486" w="117" h="100" z="1360" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:tvekta" defn="master:tvekta" id="885355449" x="900" y="486" w="117" h="99" z="1360" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="37065400">
             <param name="Gp" value="Kp_PLL" />
             <param name="Gi" value="Ti_PLL" />
@@ -16109,7 +16181,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="id" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="1874392416" x="1872" y="864" w="80" h="82" z="2010" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="1874392416" x="1872" y="864" w="80" h="83" z="2010" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -16133,7 +16205,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="iq" />
           </paramlist>
         </User>
-        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="1139469334" x="1872" y="1080" w="80" h="82" z="1980" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:sumjct" defn="master:sumjct" id="1139469334" x="1872" y="1080" w="80" h="83" z="1980" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -16319,7 +16391,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="54" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:div" id="182218198" x="1746" y="1044" w="80" h="59" z="1960" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="182218198" x="1746" y="1044" w="80" h="60" z="1960" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -16367,7 +16439,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="18" y="0" />
         </Wire>
-        <User classid="UserCmp" name="master:div" defn="master:div" id="146077272" x="1746" y="1332" w="80" h="59" z="2040" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:div" defn="master:div" id="146077272" x="1746" y="1332" w="80" h="60" z="2040" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
@@ -16797,7 +16869,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:emtconst" id="1322563019" x="1674" y="1404" w="76" h="22" z="650" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:emtconst" id="1322563019" x="1674" y="1404" w="76" h="21" z="650" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="116269466">
             <param name="Name" value="" />
             <param name="Value" value="6" />
@@ -17057,7 +17129,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:maxmin" id="1798446720" x="522" y="792" w="80" h="59" z="1520" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:maxmin" id="1798446720" x="522" y="792" w="80" h="60" z="1520" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="103689034">
             <param name="DPath" value="1" />
             <param name="Type" value="1" />
@@ -17222,7 +17294,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="18" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:select" id="1071569707" x="1134" y="1476" w="82" h="91" z="1800" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1071569707" x="1134" y="1476" w="82" h="90" z="1800" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="0" />
             <param name="DPath" value="1" />
@@ -17285,7 +17357,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="-18" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:select" id="1494957813" x="1134" y="1548" w="82" h="91" z="1880" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1494957813" x="1134" y="1548" w="82" h="90" z="1880" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -17338,7 +17410,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="0" y="72" />
         </Wire>
-        <User classid="UserCmp" name="master:photovoltaic_source" id="852415884" x="1674" y="162" w="81" h="90" z="2650" orient="7" defn="master:photovoltaic_source" link="-1" q="4" disable="false">
+        <User classid="UserCmp" name="master:photovoltaic_source" id="852415884" x="1674" y="162" w="82" h="90" z="2650" orient="7" defn="master:photovoltaic_source" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="124109687">
             <param name="PVname" value="PVarray1" />
             <param name="Nsr" value="24" />
@@ -18831,7 +18903,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="1417319988" x="1044" y="1008" w="80" h="37" z="1650" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="1417319988" x="1044" y="1008" w="80" h="38" z="1650" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -18845,21 +18917,21 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="1743370489" x="1098" y="936" w="80" h="59" z="1780" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1743370489" x="1098" y="936" w="80" h="60" z="1780" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:div" id="1417968840" x="1098" y="1080" w="80" h="59" z="1670" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:div" id="1417968840" x="1098" y="1080" w="80" h="60" z="1670" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74852640">
             <param name="Dim" value="1" />
             <param name="Name" value="" />
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="919485626" x="1170" y="936" w="80" h="37" z="1810" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="919485626" x="1170" y="936" w="80" h="38" z="1810" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -18873,7 +18945,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="208055014" x="1170" y="1080" w="80" h="37" z="1700" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="208055014" x="1170" y="1080" w="80" h="38" z="1700" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -18934,7 +19006,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="AL2" value="0: Normal mode" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="793596159" x="972" y="1782" w="82" h="91" z="1570" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="793596159" x="972" y="1782" w="82" h="90" z="1570" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -19052,7 +19124,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:sumjct" id="368291572" x="954" y="1908" w="80" h="63" z="1120" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:sumjct" id="368291572" x="954" y="1908" w="80" h="64" z="1120" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -19097,7 +19169,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:realpole" id="1651150131" x="1260" y="1944" w="80" h="37" z="1680" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="1651150131" x="1260" y="1944" w="80" h="38" z="1680" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -19169,7 +19241,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="0" />
           <vertex x="36" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:select" id="1481228432" x="1260" y="1710" w="82" h="91" z="1690" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1481228432" x="1260" y="1710" w="82" h="90" z="1690" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -19232,7 +19304,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="AL2" value="Freeze during fault" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="2056108882" x="1260" y="1836" w="82" h="91" z="1630" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="2056108882" x="1260" y="1836" w="82" h="90" z="1630" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -19324,10 +19396,10 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="FRT_Off_Delay" />
           </paramlist>
         </User>
-        <Frame classid="GraphFrame" id="1900602768" name="frame" link="-1" x="2592" y="1548" w="576" h="288">
+        <Frame classid="GraphFrame" id="1900602768" name="frame" link="-1" x="2142" y="1566" w="576" h="288">
           <paramlist link="-1" name="">
             <param name="Icon" value="2142,1566" />
-            <param name="state" value="1" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -20626,10 +20698,10 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Min" value="-2.0" />
           </paramlist>
         </User>
-        <Frame classid="GraphFrame" id="1713747043" name="frame" link="-1" x="2250" y="1242" w="576" h="288">
+        <Frame classid="GraphFrame" id="1713747043" name="frame" link="-1" x="2754" y="900" w="576" h="288">
           <paramlist link="-1" name="">
             <param name="Icon" value="2754,900" />
-            <param name="state" value="1" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -20702,7 +20774,7 @@ Based on "best practices" guidelines]]></Sticky>
               <param name="curve_colours2" value="Blue;Lime;Red;Aqua;Fuchsia;Yellow" />
             </paramlist>
             <paramlist name="" link="1197148961" />
-            <Curve classid="Curve" id="498920686" name="BRK" link="1753891946" color="0" bold="0" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
+            <Curve classid="Curve" id="498920686" name="BRK" link="1753891946" color="0" bold="0" show="-1" mode="1" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
               <path />
             </Curve>
             <Curve classid="Curve" id="1305612421" name="DBLK" link="1448218888" color="0" bold="0" show="-1" mode="0" gradient="false" transparency="255" thresh="0.5" above="High" below="Low" style="0">
@@ -20960,8 +21032,8 @@ Based on "best practices" guidelines]]></Sticky>
         </User>
         <Frame classid="GraphFrame" id="1511693494" name="frame" link="-1" x="1458" y="414" w="576" h="288">
           <paramlist link="-1" name="">
-            <param name="Icon" value="-1,0" />
-            <param name="state" value="1" />
+            <param name="Icon" value="1458,414" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -21081,8 +21153,8 @@ Based on "best practices" guidelines]]></Sticky>
         </Wire>
         <Frame classid="GraphFrame" id="1869164282" name="frame" link="-1" x="2142" y="1584" w="576" h="486">
           <paramlist link="-1" name="">
-            <param name="Icon" value="-1,0" />
-            <param name="state" value="1" />
+            <param name="Icon" value="2142,1584" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -21215,7 +21287,7 @@ Based on "best practices" guidelines]]></Sticky>
             </Curve>
           </Graph>
         </Frame>
-        <User classid="UserCmp" id="728145905" name="master:source_1" x="990" y="162" w="80" h="55" z="2110" orient="6" defn="master:source_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="728145905" name="master:source_1" x="990" y="162" w="80" h="56" z="2110" orient="6" defn="master:source_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="49505675">
             <param name="Name" value="Source_2" />
             <param name="Type" value="6" />
@@ -21268,7 +21340,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Name" value="Vavm_c" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1674294668" name="master:source_1" x="990" y="90" w="80" h="55" z="2120" orient="6" defn="master:source_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1674294668" name="master:source_1" x="990" y="90" w="80" h="56" z="2120" orient="6" defn="master:source_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="49505675">
             <param name="Name" value="Source_2" />
             <param name="Type" value="6" />
@@ -21294,7 +21366,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="CUR" value="Iavm_a" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1739306742" name="master:source_1" x="990" y="234" w="80" h="55" z="2220" orient="6" defn="master:source_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1739306742" name="master:source_1" x="990" y="234" w="80" h="56" z="2220" orient="6" defn="master:source_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="49505675">
             <param name="Name" value="Source_2" />
             <param name="Type" value="6" />
@@ -21417,7 +21489,7 @@ Based on "best practices" guidelines]]></Sticky>
           <vertex x="0" y="108" />
           <vertex x="90" y="108" />
         </Wire>
-        <User classid="UserCmp" id="1489359091" name="master:sumjct" x="1242" y="144" w="80" h="82" z="2240" orient="0" defn="master:sumjct" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1489359091" name="master:sumjct" x="1242" y="144" w="80" h="83" z="2240" orient="0" defn="master:sumjct" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="16672553">
             <param name="Name" value="" />
             <param name="DPath" value="1" />
@@ -21544,7 +21616,7 @@ Based on "best practices" guidelines]]></Sticky>
         <Frame classid="GraphFrame" id="821627865" name="frame" link="-1" x="2052" y="54" w="576" h="288">
           <paramlist link="-1" name="">
             <param name="Icon" value="2052,54" />
-            <param name="state" value="1" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -21642,8 +21714,8 @@ Based on "best practices" guidelines]]></Sticky>
         </User>
         <Frame classid="GraphFrame" id="596714741" name="frame" link="-1" x="54" y="234" w="396" h="288">
           <paramlist link="-1" name="">
-            <param name="Icon" value="-1,0" />
-            <param name="state" value="1" />
+            <param name="Icon" value="54,234" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -21954,8 +22026,8 @@ Based on "best practices" guidelines]]></Sticky>
         </User>
         <Frame classid="GraphFrame" id="1898783122" name="frame" link="-1" x="1998" y="918" w="576" h="288">
           <paramlist link="-1" name="">
-            <param name="Icon" value="-1,0" />
-            <param name="state" value="1" />
+            <param name="Icon" value="1998,918" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -22020,8 +22092,8 @@ Based on "best practices" guidelines]]></Sticky>
         </Frame>
         <Frame classid="GraphFrame" id="192292780" name="frame" link="-1" x="54" y="522" w="396" h="288">
           <paramlist link="-1" name="">
-            <param name="Icon" value="-1,0" />
-            <param name="state" value="1" />
+            <param name="Icon" value="54,522" />
+            <param name="state" value="0" />
             <param name="title" value="$(GROUP) : Graphs" />
             <param name="XLabel" value="sec" />
             <param name="Pan" value="false" />
@@ -22153,7 +22225,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="Freq" value="System_Freq" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="85228504" name="Solar_Lib:PIwithFreeze" x="1674" y="828" w="87" h="68" z="1970" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="85228504" name="Solar_Lib:PIwithFreeze" x="1674" y="828" w="87" h="67" z="1970" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="13182031">
             <param name="Name" value="" />
             <param name="Kp" value="Kpq" />
@@ -22162,7 +22234,7 @@ Based on "best practices" guidelines]]></Sticky>
             <param name="MinOut" value="-1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="821460229" name="Solar_Lib:PIwithFreeze" x="1674" y="1044" w="87" h="68" z="1930" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="821460229" name="Solar_Lib:PIwithFreeze" x="1674" y="1044" w="87" h="67" z="1930" orient="0" defn="Solar_Lib:PIwithFreeze" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="13182031">
             <param name="Name" value="" />
             <param name="Kp" value="Kpd" />
@@ -22699,7 +22771,7 @@ Output]]></segment>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="PI_AntiWindUp" group="" url="" version="" build="" crc="5078875" instances="10" key="" view="false" date="1690927616" id="2054552066">
+    <Definition classid="UserCmpDefn" name="PI_AntiWindUp" group="" url="" version="" build="" crc="84344937" instances="10" key="" view="false" date="1690927616" id="2054552066">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -22838,7 +22910,7 @@ Output]]></segment>
             <param name="DPath" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:integral" id="366062926" x="792" y="450" w="80" h="73" z="160" orient="0" link="-1" q="4" layer="" disable="false">
+        <User classid="UserCmp" defn="master:integral" id="366062926" x="792" y="450" w="80" h="74" z="160" orient="0" link="-1" q="4" layer="" disable="false">
           <paramlist link="-1" name="" crc="126573893">
             <param name="Extrn" value="0" />
             <param name="Reset" value="1" />
@@ -23022,7 +23094,7 @@ Output]]></segment>
             <param name="Name" value="frz" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="1731980584" x="684" y="450" w="82" h="91" z="150" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1731980584" x="684" y="450" w="82" h="90" z="150" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -23440,7 +23512,7 @@ Output]]></segment>
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="UserCmpDefn" name="IBR1" build="" crc="98196265" view="false" instances="0" date="1694638666" id="1382391733" w="320" h="400">
+    <Definition classid="UserCmpDefn" name="IBR1" build="" crc="20550701" view="false" instances="0" date="1694638666" id="1382391733" w="320" h="400">
       <paramlist>
         <param name="Description" value="" />
       </paramlist>
@@ -23748,7 +23820,7 @@ Output]]></segment>
             <param name="gaddress" value="100663306" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:freq-meas" id="1621787765" x="666" y="108" w="153" h="101" z="20" orient="4" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:freq-meas" id="1621787765" x="666" y="108" w="153" h="100" z="20" orient="4" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="74242569">
             <param name="Ts" value="0.02 [s]" />
             <param name="Vbas" value="33 [kV]" />
@@ -23782,7 +23854,7 @@ Output]]></segment>
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:realpole" id="1792269247" x="558" y="72" w="80" h="37" z="210" orient="4" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:realpole" id="1792269247" x="558" y="72" w="80" h="38" z="210" orient="4" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="96177319">
             <param name="Limit" value="0" />
             <param name="COM" value="Real_Pole" />
@@ -25320,7 +25392,7 @@ Output]]></segment>
             <param name="ymax" value="2.000000" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="274203381" name="Solar_Lib:Simple_PPC" x="450" y="360" w="196" h="152" z="-1" orient="4" defn="Solar_Lib:Simple_PPC" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="274203381" name="Solar_Lib:Simple_PPC" x="450" y="360" w="196" h="153" z="-1" orient="4" defn="Solar_Lib:Simple_PPC" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="45848122">
             <param name="Scale" value="50" />
             <param name="Sbase" value="2.5 [MVA]" />
@@ -25370,7 +25442,7 @@ Output]]></segment>
         </User>
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="avr_IEEET1" build="" crc="12404391" view="false" instances="0" date="1688495471" id="1209495244" url="" group="">
+    <Definition classid="UserCmpDefn" name="avr_IEEET1" build="" crc="83989118" view="false" instances="0" date="1688495471" id="1209495244" url="" group="">
       <paramlist>
         <param name="Description" value="" />
       </paramlist>
@@ -26010,7 +26082,7 @@ Output]]></segment>
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:sumjct" id="687386149" x="540" y="90" w="63" h="80" z="340" orient="1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:sumjct" id="687386149" x="540" y="90" w="64" h="80" z="340" orient="1" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -26024,7 +26096,7 @@ Output]]></segment>
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:sumjct" id="154215112" x="540" y="198" w="80" h="82" z="350" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:sumjct" id="154215112" x="540" y="198" w="80" h="83" z="350" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -26076,7 +26148,7 @@ Output]]></segment>
             <param name="Disp" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="1871285094" x="324" y="198" w="82" h="91" z="290" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="1871285094" x="324" y="198" w="82" h="90" z="290" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="0" />
             <param name="DPath" value="1" />
@@ -26103,7 +26175,7 @@ Output]]></segment>
             <param name="Name" value="Vbias" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:sumjct" id="1485524924" x="612" y="198" w="80" h="63" z="380" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:sumjct" id="1485524924" x="612" y="198" w="80" h="64" z="380" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -26147,7 +26219,7 @@ Output]]></segment>
             <param name="Name" value="Re" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="738643719" x="486" y="324" w="82" h="91" z="310" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="738643719" x="486" y="324" w="82" h="90" z="310" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -26223,7 +26295,7 @@ Output]]></segment>
             <param name="Name" value="KF_TF" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:select" id="413532211" x="396" y="90" w="82" h="91" z="330" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:select" id="413532211" x="396" y="90" w="82" h="90" z="330" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="108938206">
             <param name="A" value="1" />
             <param name="DPath" value="1" />
@@ -26306,7 +26378,7 @@ Output]]></segment>
             <param name="Name" value="EFD" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:sumjct" id="380443502" x="756" y="198" w="80" h="82" z="400" orient="6" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:sumjct" id="380443502" x="756" y="198" w="80" h="83" z="400" orient="6" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="16672553">
             <param name="DPath" value="1" />
             <param name="A" value="0" />
@@ -26335,7 +26407,7 @@ Output]]></segment>
             <param name="Name" value="Se" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:integral" id="1316075291" x="864" y="198" w="80" h="73" z="410" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:integral" id="1316075291" x="864" y="198" w="80" h="74" z="410" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="126573893">
             <param name="Extrn" value="0" />
             <param name="Reset" value="1" />
@@ -26377,7 +26449,7 @@ Output]]></segment>
           <vertex x="0" y="0" />
           <vertex x="36" y="0" />
         </Wire>
-        <User classid="UserCmp" id="46240794" name="Solar_Lib:ieeet1_bc" x="180" y="324" w="186" h="140" z="-1" orient="0" defn="Solar_Lib:ieeet1_bc" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="46240794" name="Solar_Lib:ieeet1_bc" x="180" y="324" w="204" h="149" z="-1" orient="0" defn="Solar_Lib:ieeet1_bc" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="30484309">
             <param name="KA" value="KA" />
             <param name="KE" value="KE" />
@@ -26385,7 +26457,7 @@ Output]]></segment>
             <param name="TF" value="TF" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1045984154" name="Solar_Lib:se_efd" x="864" y="126" w="150" h="32" z="-1" orient="4" defn="Solar_Lib:se_efd" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1045984154" name="Solar_Lib:se_efd" x="864" y="126" w="150" h="37" z="-1" orient="4" defn="Solar_Lib:se_efd" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="27280312">
             <param name="E1" value="E1" />
             <param name="Se1" value="SE_E1" />
@@ -27129,23 +27201,23 @@ Output]]></segment>
   </definitions>
   <List classid="Resource" />
   <hierarchy>
-    <call link="1560523836" name="Solar_Lib:DS" z="-1" view="false" instance="0">
-      <call link="1325054872" name="Solar_Lib:Main" z="-1" view="false" instance="0">
-        <call link="642121291" name="Solar_Lib:avr_IEEET1" z="-1" view="true" instance="0" />
+    <call link="1615497149" name="Solar_Lib:DS" z="-1" view="false" instance="0">
+      <call link="1325054872" name="Solar_Lib:Main" z="-1" view="true" instance="0">
+        <call link="642121291" name="Solar_Lib:avr_IEEET1" z="-1" view="false" instance="0" />
         <call link="1282347228" name="Solar_Lib:VSC_AVM" z="-1" view="false" instance="0">
-          <call link="85228504" name="Solar_Lib:PIwithFreeze" z="1970" view="false" instance="0" />
-          <call link="821460229" name="Solar_Lib:PIwithFreeze" z="1930" view="false" instance="1" />
+          <call link="821460229" name="Solar_Lib:PIwithFreeze" z="1930" view="false" instance="0" />
+          <call link="85228504" name="Solar_Lib:PIwithFreeze" z="1970" view="false" instance="1" />
         </call>
         <call link="1653442091" name="Solar_Lib:IBR1" z="50" view="false" instance="0">
+          <call link="1785796519" name="Solar_Lib:VSC_AVM" z="-1" view="false" instance="1">
+            <call link="821460229" name="Solar_Lib:PIwithFreeze" z="1930" view="false" instance="2" />
+            <call link="85228504" name="Solar_Lib:PIwithFreeze" z="1970" view="false" instance="3" />
+          </call>
           <call link="274203381" name="Solar_Lib:Simple_PPC" z="-1" view="false" instance="0">
             <call link="1808962177" name="Solar_Lib:PI_AntiWindUp_PPC" z="560" view="false" instance="0" />
             <call link="1148544568" name="Solar_Lib:PI_AntiWindUp_PPC" z="630" view="false" instance="1" />
             <call link="1586712796" name="Solar_Lib:PI_AntiWindUp_PPC" z="650" view="false" instance="2" />
             <call link="1863956614" name="Solar_Lib:PI_AntiWindUp_PPC" z="690" view="false" instance="3" />
-          </call>
-          <call link="1785796519" name="Solar_Lib:VSC_AVM" z="-1" view="false" instance="1">
-            <call link="85228504" name="Solar_Lib:PIwithFreeze" z="1970" view="false" instance="2" />
-            <call link="821460229" name="Solar_Lib:PIwithFreeze" z="1930" view="false" instance="3" />
           </call>
         </call>
         <call link="1383147584" name="Solar_Lib:Simple_PPC" z="190" view="false" instance="1">

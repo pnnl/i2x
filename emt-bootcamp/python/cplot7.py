@@ -1,6 +1,6 @@
 # Copyright (C) 2018-2023 Battelle Memorial Institute
-# file: cplot6.py
-""" Plots COMTRADE channels from plant model SCR ramping.
+# file: cplot7.py
+""" Plots COMTRADE channels from system study cases.
 """
 
 import sys
@@ -13,7 +13,7 @@ from comtrade import Comtrade
 plt.rcParams['savefig.directory'] = os.getcwd()
 
 kVLNbase = 230.0 / math.sqrt(3.0)
-MVAbase = 100.0
+MVAbase = 300.0
 kAbase = MVAbase / kVLNbase / 3.0
 
 def scale_factor(lbl, bPSCAD):
@@ -42,41 +42,24 @@ def setup_plot_options():
 def show_case_plot(channels, units, title, bPSCAD, tmax=40.0, PNGName=None):
   x_ticks = np.linspace (0.0, tmax, 11)
   t = channels['t']
-  fig, ax = plt.subplots(5, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
+  fig, ax = plt.subplots(3, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle (title)
-  for lbl in ['VA', 'VB', 'VC']:
-    ax[0].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
-    ax[0].set_ylabel ('V(t) [pu]')
-  for lbl in ['IA', 'IB', 'IC']:
-    ax[1].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
-    ax[1].set_ylabel ('I(t) [pu]')
-  for lbl in ['Vrms']:
-    ax[2].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
-    ax[2].set_ylabel ('V [pu]')
-  for lbl in ['P', 'Q']:
-    ax[3].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
-    ax[3].set_ylabel ('P, Q [pu]')
-  for lbl in ['F']:
-    ax[4].plot (t, scale_factor(lbl, bPSCAD) * channels[lbl], label=lbl)
-    ax[4].set_ylabel ('F [Hz]')
-  for i in range(5):
+  tags = ['Vrms', 'P', 'Q']
+  labels = ['Vrms [pu]', 'P [pu]', 'Q [pu]']
+  for i in range(3):
+    ax[i].plot (t, scale_factor(tags[i], bPSCAD) * channels[tags[i]], label=labels[i])
     ax[i].set_xticks (x_ticks)
     ax[i].set_xlim (x_ticks[0], x_ticks[-1])
     ax[i].grid()
     ax[i].legend(loc='lower right')
-  ax[4].set_xlabel ('seconds')
+  ax[2].set_xlabel ('seconds')
   if PNGName is not None:
     plt.savefig(PNGName)
   plt.show()
   plt.close(fig)
 
 # load all the analog channels from each case into dictionaries of numpy arrays. Expecting:
-#   1..3 = Va..Vc
-#   4..6 = Ia..Ic
-#   7 = Vrms
-#   8 = P
-#   9 = Q
-#   10 = F
+#   Vrms, P, Q
 def load_channels(comtrade_path, bDebug=False):
   if bDebug:
     print (comtrade_path)
@@ -110,7 +93,6 @@ def load_channels(comtrade_path, bDebug=False):
 if __name__ == '__main__':
   bPSCAD = True
   bSavePNG = False
-  test = 'rampscr'
   if len(sys.argv) > 1:
     if int(sys.argv[1]) == 1:
       bPSCAD = False
@@ -123,8 +105,8 @@ if __name__ == '__main__':
   # set the session_path to match location of your unzipped sample cases
   if bPSCAD:
     case_tag = 'Solar'
-    session_path = 'c:/temp/i2x/pscad/Solar6.if18_x86/rank_00001/Run_00001'
-    tmax = 40.0
+    session_path = 'c:/temp/i2x/pscad/SolarSystem.if18_x86/rank_00001/Run_00001'
+    tmax = 6.0
   else:
     session_path = 'c:/temp/i2x/emtp'
     case_tag = 'Wind'
@@ -134,9 +116,7 @@ if __name__ == '__main__':
   else:
     PNGName = None
 
-  tag_path = os.path.join (session_path, 'rampscr')
+  tag_path = os.path.join (session_path, 'cs')
   channels, units = load_channels (tag_path)
-  if bPSCAD: # cosmetic initialization of the frequency plot
-    channels['F'][0] = 60.0
-  show_case_plot (channels, units, 'Ramping SCR test: {:s}'.format(case_tag), bPSCAD, tmax, PNGName)
+  show_case_plot (channels, units, 'System Study Case: {:s}'.format(case_tag), bPSCAD, tmax, PNGName)
 

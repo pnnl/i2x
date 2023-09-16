@@ -60,6 +60,8 @@ def setup_plot_options():
   plt.rc('ytick', labelsize=lsize)
   plt.rc('axes', labelsize=lsize)
   plt.rc('legend', fontsize=6)
+#  clr = plt.get_cmap('tab20c').colors
+#  plt.axes().set_prop_cycle('color', clr)
 
 def show_case_plot(channels, units, case_title, bPSCAD):
   t = channels['t']
