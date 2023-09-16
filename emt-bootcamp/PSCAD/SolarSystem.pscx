@@ -25,7 +25,7 @@
     <param name="Warn" value="0" />
     <param name="Check" value="0" />
     <param name="description" value="" />
-    <param name="revisor" value="mcde601, 1694827613" />
+    <param name="revisor" value="mcde601, 1694880922" />
     <param name="Debug" value="0" />
   </paramlist>
   <paramlist name="Libs" />
@@ -3173,7 +3173,7 @@
         </Wire>
       </schematic>
     </Definition>
-    <Definition classid="UserCmpDefn" name="Main" id="1407254331" group="" url="" version="" build="" crc="84121295" view="false" date="1694826119">
+    <Definition classid="UserCmpDefn" name="Main" id="1407254331" group="" url="" version="" build="" crc="91203323" view="false" date="1694880408">
       <paramlist name="">
         <param name="Description" value="" />
       </paramlist>
@@ -3282,7 +3282,7 @@
             <param name="C1" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1689540759" name="master:db_xfmr_3p2w" x="468" y="234" w="45" h="98" z="220" orient="3" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1689540759" name="master:db_xfmr_3p2w" x="468" y="234" w="45" h="98" z="260" orient="3" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_2_30_1" />
             <param name="CoreType" value="1" />
@@ -3634,7 +3634,7 @@
             </paramlist>
           </User>
         </Wire>
-        <User classid="UserCmp" id="201019" name="master:db_xfmr_3p2w" x="630" y="180" w="45" h="98" z="210" orient="3" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="201019" name="master:db_xfmr_3p2w" x="630" y="180" w="45" h="98" z="250" orient="3" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_25_37_1" />
             <param name="CoreType" value="1" />
@@ -4498,7 +4498,7 @@
             <param name="definition" value="synchronous_machine_template" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1183087378" name="master:db_xfmr_3p2w" x="1476" y="360" w="45" h="98" z="230" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1183087378" name="master:db_xfmr_3p2w" x="1476" y="360" w="45" h="98" z="270" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_29_38_1" />
             <param name="CoreType" value="1" />
@@ -6682,7 +6682,7 @@
             </paramlist>
           </User>
         </Wire>
-        <Wire classid="TLine" id="535321597" name="IEEE39_Complete_EMT:TLine_4_14" x="450" y="828" w="299" h="120" orient="0" disable="false" defn="IEEE39_Complete_EMT:TLine_4_14" recv="-1" send="-1" back="-1" crc="32129743">
+        <Wire classid="TLine" id="535321597" name="IEEE39_Complete_EMT:TLine_4_14" x="450" y="828" w="299" h="120" orient="0" disable="false" defn="IEEE39_Complete_EMT:TLine_4_14" recv="-1" send="-1" back="-1" crc="105445733">
           <vertex x="0" y="0" />
           <vertex x="0" y="54" />
           <vertex x="198" y="-54" />
@@ -6820,7 +6820,7 @@
               </param>
               <param name="gen_cnst" value="1" />
               <param name="const_path" value="C:\Temp\my_constants_file.tlo" />
-              <param name="Date" value="1694826756" />
+              <param name="Date" value="1694880409" />
             </paramlist>
           </User>
         </Wire>
@@ -7904,7 +7904,7 @@
             <param name="VRMS" value="0" />
           </paramlist>
         </Wire>
-        <User classid="UserCmp" id="1897583455" name="SolarSystem:GENERATOR_35_1" x="1962" y="1062" w="42" h="61" z="150" orient="0" defn="SolarSystem:GENERATOR_35_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1897583455" name="SolarSystem:GENERATOR_35_1" x="1962" y="1062" w="42" h="61" z="190" orient="0" defn="SolarSystem:GENERATOR_35_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="111357432" />
           <paramlist name="prsim">
             <param name="component" value="DynamicCmp" />
@@ -7912,7 +7912,7 @@
             <param name="definition" value="synchronous_machine_template" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1578651430" name="master:db_xfmr_3p2w" x="1944" y="990" w="98" h="45" z="260" orient="0" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1578651430" name="master:db_xfmr_3p2w" x="1944" y="990" w="98" h="45" z="300" orient="0" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_22_35_1" />
             <param name="CoreType" value="1" />
@@ -8071,7 +8071,7 @@
             <param name="VRMS" value="0" />
           </paramlist>
         </Wire>
-        <User classid="UserCmp" id="938837069" name="SolarSystem:GENERATOR_36_1" x="1836" y="1332" w="42" h="61" z="170" orient="0" defn="SolarSystem:GENERATOR_36_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="938837069" name="SolarSystem:GENERATOR_36_1" x="1836" y="1332" w="42" h="61" z="210" orient="0" defn="SolarSystem:GENERATOR_36_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="111357432" />
           <paramlist name="prsim">
             <param name="component" value="DynamicCmp" />
@@ -8079,7 +8079,7 @@
             <param name="definition" value="synchronous_machine_template" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="856424761" name="master:db_xfmr_3p2w" x="1836" y="1260" w="43" h="98" z="310" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="856424761" name="master:db_xfmr_3p2w" x="1836" y="1260" w="43" h="98" z="350" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_23_36_1" />
             <param name="CoreType" value="1" />
@@ -8268,7 +8268,7 @@
             <param name="C1" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1705549423" name="master:db_xfmr_3p2w" x="1584" y="1134" w="45" h="98" z="270" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1705549423" name="master:db_xfmr_3p2w" x="1584" y="1134" w="45" h="98" z="310" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_19_20_1" />
             <param name="CoreType" value="1" />
@@ -8427,7 +8427,7 @@
             <param name="VRMS" value="0" />
           </paramlist>
         </Wire>
-        <User classid="UserCmp" id="862768334" name="SolarSystem:GENERATOR_34_1" x="1584" y="1386" w="42" h="61" z="190" orient="0" defn="SolarSystem:GENERATOR_34_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="862768334" name="SolarSystem:GENERATOR_34_1" x="1584" y="1386" w="42" h="61" z="230" orient="0" defn="SolarSystem:GENERATOR_34_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="111357432" />
           <paramlist name="prsim">
             <param name="component" value="DynamicCmp" />
@@ -8435,7 +8435,7 @@
             <param name="definition" value="synchronous_machine_template" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="566796490" name="master:db_xfmr_3p2w" x="1584" y="1314" w="45" h="98" z="320" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="566796490" name="master:db_xfmr_3p2w" x="1584" y="1314" w="45" h="98" z="360" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_20_34_1" />
             <param name="CoreType" value="1" />
@@ -8594,7 +8594,7 @@
             <param name="VRMS" value="0" />
           </paramlist>
         </Wire>
-        <User classid="UserCmp" id="618746275" name="SolarSystem:GENERATOR_33_1" x="1692" y="1386" w="42" h="61" z="200" orient="0" defn="SolarSystem:GENERATOR_33_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="618746275" name="SolarSystem:GENERATOR_33_1" x="1692" y="1386" w="42" h="61" z="240" orient="0" defn="SolarSystem:GENERATOR_33_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="111357432" />
           <paramlist name="prsim">
             <param name="component" value="DynamicCmp" />
@@ -8602,7 +8602,7 @@
             <param name="definition" value="synchronous_machine_template" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1219893266" name="master:db_xfmr_3p2w" x="1692" y="1224" w="45" h="98" z="280" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1219893266" name="master:db_xfmr_3p2w" x="1692" y="1224" w="45" h="98" z="320" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_19_33_1" />
             <param name="CoreType" value="1" />
@@ -8791,7 +8791,7 @@
             <param name="C1" value="" />
           </paramlist>
         </User>
-        <Wire classid="TLine" id="1624598020" name="IEEE39_Complete_EMT:TLine_13_14" x="774" y="1170" w="102" h="192" orient="0" disable="false" defn="IEEE39_Complete_EMT:TLine_13_14" recv="-1" send="-1" back="-1" crc="131148540">
+        <Wire classid="TLine" id="1624598020" name="IEEE39_Complete_EMT:TLine_13_14" x="774" y="1170" w="102" h="192" orient="0" disable="false" defn="IEEE39_Complete_EMT:TLine_13_14" recv="-1" send="-1" back="-1" crc="7573846">
           <vertex x="0" y="0" />
           <vertex x="36" y="0" />
           <vertex x="36" y="-180" />
@@ -8929,7 +8929,7 @@
               </param>
               <param name="gen_cnst" value="1" />
               <param name="const_path" value="C:\Temp\my_constants_file.tlo" />
-              <param name="Date" value="1694826756" />
+              <param name="Date" value="1694880409" />
             </paramlist>
           </User>
         </Wire>
@@ -8976,7 +8976,7 @@
             <param name="C1" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1269327015" name="master:db_xfmr_3p2w" x="630" y="1116" w="98" h="45" z="250" orient="0" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1269327015" name="master:db_xfmr_3p2w" x="630" y="1116" w="98" h="45" z="290" orient="0" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_12_13_1" />
             <param name="CoreType" value="1" />
@@ -9320,7 +9320,7 @@
             <param name="VRMS" value="0" />
           </paramlist>
         </Wire>
-        <User classid="UserCmp" id="1873232575" name="SolarSystem:GENERATOR_32_1" x="540" y="1458" w="42" h="61" z="160" orient="0" defn="SolarSystem:GENERATOR_32_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1873232575" name="SolarSystem:GENERATOR_32_1" x="540" y="1458" w="42" h="61" z="200" orient="0" defn="SolarSystem:GENERATOR_32_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="111357432" />
           <paramlist name="prsim">
             <param name="component" value="DynamicCmp" />
@@ -9328,7 +9328,7 @@
             <param name="definition" value="synchronous_machine_template" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1364059293" name="master:db_xfmr_3p2w" x="540" y="1386" w="45" h="98" z="300" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1364059293" name="master:db_xfmr_3p2w" x="540" y="1386" w="45" h="98" z="340" orient="1" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_10_32_1" />
             <param name="CoreType" value="1" />
@@ -9659,7 +9659,7 @@
             </paramlist>
           </User>
         </Wire>
-        <User classid="UserCmp" id="1384033579" name="master:db_xfmr_3p2w" x="450" y="1062" w="98" h="45" z="240" orient="2" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1384033579" name="master:db_xfmr_3p2w" x="450" y="1062" w="98" h="45" z="280" orient="2" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_12_11_1" />
             <param name="CoreType" value="1" />
@@ -11178,7 +11178,7 @@
             <param name="VRMS" value="0" />
           </paramlist>
         </Wire>
-        <User classid="UserCmp" id="768530460" name="SolarSystem:GENERATOR_31_1" x="252" y="1512" w="42" h="61" z="180" orient="0" defn="SolarSystem:GENERATOR_31_1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="768530460" name="SolarSystem:GENERATOR_31_1" x="252" y="1512" w="42" h="61" z="220" orient="0" defn="SolarSystem:GENERATOR_31_1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="111357432" />
           <paramlist name="prsim">
             <param name="component" value="DynamicCmp" />
@@ -11216,7 +11216,7 @@
             <param name="C1" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="768863192" name="master:db_xfmr_3p2w" x="234" y="1404" w="45" h="98" z="290" orient="3" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="768863192" name="master:db_xfmr_3p2w" x="234" y="1404" w="45" h="98" z="330" orient="3" defn="master:db_xfmr_3p2w" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="88258156">
             <param name="Name" value="TR_31_6_1" />
             <param name="CoreType" value="1" />
@@ -11888,7 +11888,7 @@
             <param name="animate" value="0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:tpflt" id="1031142485" x="1368" y="864" w="73" h="80" z="350" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:tpflt" id="1031142485" x="1062" y="864" w="73" h="80" z="420" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="5223703">
             <param name="Ctype" value="0" />
             <param name="OpCur" value="0" />
@@ -11912,11 +11912,11 @@
           <vertex x="0" y="0" />
           <vertex x="18" y="0" />
         </Wire>
-        <User classid="UserCmp" defn="master:tfaultn" id="1199387980" x="1440" y="900" w="79" h="59" z="50" orient="0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:tfaultn" id="1199387980" x="1134" y="900" w="79" h="59" z="70" orient="0" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="79534367">
-            <param name="TF" value="5 [s]" />
+            <param name="TF" value="5.0" />
             <param name="DF" value="0.05 [s]" />
-            <param name="Name" value="" />
+            <param name="Name" value="FaultTime1" />
           </paramlist>
         </User>
         <User classid="UserCmp" id="312499285" name="master:multimeter" x="846" y="900" w="54" h="44" z="1" orient="1" defn="master:multimeter" link="-1" q="4" disable="false">
@@ -11950,7 +11950,7 @@
             <param name="Vd" value="0.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="583317329" name="master:multimeter" x="900" y="864" w="54" h="44" z="40" orient="3" defn="master:multimeter" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="583317329" name="master:multimeter" x="900" y="864" w="54" h="44" z="60" orient="3" defn="master:multimeter" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="27440011">
             <param name="MeasV" value="1" />
             <param name="MeasI" value="0" />
@@ -12047,7 +12047,7 @@
           <vertex x="0" y="0" />
           <vertex x="0" y="36" />
         </Wire>
-        <User classid="UserCmp" id="501986296" name="master:breaker3" x="1188" y="774" w="80" h="41" z="380" orient="0" defn="master:breaker3" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="501986296" name="master:breaker3" x="1188" y="774" w="80" h="41" z="450" orient="0" defn="master:breaker3" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="72525059">
             <param name="Ctrl" value="0" />
             <param name="OPCUR" value="0" />
@@ -12088,12 +12088,12 @@
             <param name="Q" value="0.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="620397819" name="master:tbreakn" x="1440" y="1044" w="78" h="59" z="130" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="620397819" name="master:tbreakn" x="1440" y="1044" w="78" h="59" z="170" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="130641473">
-            <param name="Name" value="" />
+            <param name="Name" value="Brk6Time" />
             <param name="NUMS" value="1" />
             <param name="INIT" value="0" />
-            <param name="TO1" value="95.035 [s]" />
+            <param name="TO1" value="95.0" />
             <param name="TO2" value="1.05 [s]" />
           </paramlist>
         </User>
@@ -12106,12 +12106,12 @@
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" id="576503342" name="master:tbreakn" x="1440" y="972" w="78" h="59" z="100" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="576503342" name="master:tbreakn" x="1440" y="972" w="78" h="59" z="140" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="130641473">
-            <param name="Name" value="" />
+            <param name="Name" value="Brk5Time" />
             <param name="NUMS" value="1" />
             <param name="INIT" value="0" />
-            <param name="TO1" value="95.035 [s]" />
+            <param name="TO1" value="95.0" />
             <param name="TO2" value="1.05 [s]" />
           </paramlist>
         </User>
@@ -12128,7 +12128,7 @@
           <vertex x="0" y="0" />
           <vertex x="54" y="0" />
         </Wire>
-        <User classid="UserCmp" id="2092932810" name="master:breaker3" x="936" y="774" w="80" h="41" z="410" orient="4" defn="master:breaker3" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="2092932810" name="master:breaker3" x="936" y="774" w="80" h="41" z="470" orient="4" defn="master:breaker3" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="72525059">
             <param name="Ctrl" value="0" />
             <param name="OPCUR" value="0" />
@@ -12177,12 +12177,12 @@
           <vertex x="0" y="0" />
           <vertex x="0" y="-72" />
         </Wire>
-        <User classid="UserCmp" id="1868682455" name="master:datalabel" x="792" y="792" w="46" h="23" z="1" orient="0" defn="master:datalabel" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1868682455" name="master:datalabel" x="972" y="828" w="46" h="23" z="1" orient="0" defn="master:datalabel" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="127230955">
             <param name="Name" value="Vbus14" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1587354797" name="master:pgb" x="792" y="792" w="58" h="40" z="400" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1587354797" name="master:pgb" x="972" y="828" w="58" h="40" z="440" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="55341900">
             <param name="Name" value="Vbus14" />
             <param name="Group" value="" />
@@ -12295,18 +12295,18 @@
             </Curve>
           </Graph>
         </Frame>
-        <User classid="UserCmp" defn="master:nodelabel" id="2101392912" x="1386" y="864" w="50" h="23" z="1" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:nodelabel" id="2101392912" x="1080" y="864" w="58" h="23" z="1" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="124067735">
-            <param name="Name" value="FaultLoc" />
+            <param name="Name" value="FaultLoc1" />
             <param name="MeasV" value="0" />
             <param name="PU" value="0" />
             <param name="VName" value="VNode" />
             <param name="VBase" value="1 [kV]" />
           </paramlist>
         </User>
-        <User classid="UserCmp" defn="master:nodelabel" id="1358192950" x="972" y="738" w="50" h="23" z="1" orient="2" link="-1" q="4" disable="false">
+        <User classid="UserCmp" defn="master:nodelabel" id="1358192950" x="972" y="738" w="58" h="23" z="1" orient="2" link="-1" q="4" disable="false">
           <paramlist link="-1" name="" crc="124067735">
-            <param name="Name" value="FaultLoc" />
+            <param name="Name" value="FaultLoc1" />
             <param name="MeasV" value="0" />
             <param name="PU" value="0" />
             <param name="VName" value="VNode" />
@@ -12317,12 +12317,12 @@
           <vertex x="0" y="0" />
           <vertex x="0" y="36" />
         </Wire>
-        <User classid="UserCmp" id="248823773" name="SolarSystem:IBR1" x="972" y="1008" w="116" h="84" z="90" orient="0" defn="SolarSystem:IBR1" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="248823773" name="SolarSystem:IBR1" x="972" y="1008" w="116" h="84" z="130" orient="0" defn="SolarSystem:IBR1" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="14242604">
             <param name="Name" value="" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="970153759" name="master:breaker3" x="450" y="792" w="41" h="80" z="420" orient="3" defn="master:breaker3" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="970153759" name="master:breaker3" x="450" y="792" w="41" h="80" z="480" orient="3" defn="master:breaker3" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="72525059">
             <param name="Ctrl" value="0" />
             <param name="OPCUR" value="0" />
@@ -12363,7 +12363,7 @@
             <param name="Q" value="0.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="75570534" name="master:breaker3" x="738" y="810" w="41" h="80" z="390" orient="1" defn="master:breaker3" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="75570534" name="master:breaker3" x="738" y="810" w="41" h="80" z="460" orient="1" defn="master:breaker3" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="72525059">
             <param name="Ctrl" value="0" />
             <param name="OPCUR" value="0" />
@@ -12404,7 +12404,7 @@
             <param name="Q" value="0.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1651036531" name="master:breaker3" x="846" y="954" w="41" h="80" z="330" orient="3" defn="master:breaker3" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1651036531" name="master:breaker3" x="846" y="954" w="41" h="80" z="370" orient="3" defn="master:breaker3" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="72525059">
             <param name="Ctrl" value="0" />
             <param name="OPCUR" value="0" />
@@ -12445,7 +12445,7 @@
             <param name="Q" value="0.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="169083890" name="master:breaker3" x="738" y="1170" w="80" h="41" z="140" orient="4" defn="master:breaker3" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="169083890" name="master:breaker3" x="738" y="1170" w="80" h="41" z="180" orient="4" defn="master:breaker3" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="72525059">
             <param name="Ctrl" value="0" />
             <param name="OPCUR" value="0" />
@@ -12486,12 +12486,12 @@
             <param name="Q" value="0.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="244577263" name="master:tbreakn" x="1296" y="1044" w="78" h="59" z="120" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="244577263" name="master:tbreakn" x="1296" y="1044" w="78" h="59" z="160" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="130641473">
-            <param name="Name" value="" />
+            <param name="Name" value="Brk4Time" />
             <param name="NUMS" value="1" />
-            <param name="INIT" value="1" />
-            <param name="TO1" value="95.035 [s]" />
+            <param name="INIT" value="0" />
+            <param name="TO1" value="95.0" />
             <param name="TO2" value="1.05 [s]" />
           </paramlist>
         </User>
@@ -12504,12 +12504,12 @@
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" id="917319956" name="master:tbreakn" x="1296" y="972" w="78" h="59" z="80" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="917319956" name="master:tbreakn" x="1296" y="972" w="78" h="59" z="120" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="130641473">
-            <param name="Name" value="" />
+            <param name="Name" value="Brk3Time" />
             <param name="NUMS" value="1" />
-            <param name="INIT" value="1" />
-            <param name="TO1" value="95.035 [s]" />
+            <param name="INIT" value="0" />
+            <param name="TO1" value="95.0" />
             <param name="TO2" value="1.05 [s]" />
           </paramlist>
         </User>
@@ -12522,12 +12522,12 @@
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" id="2134100098" name="master:tbreakn" x="1152" y="1044" w="78" h="59" z="110" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="2134100098" name="master:tbreakn" x="1152" y="1044" w="78" h="59" z="150" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="130641473">
-            <param name="Name" value="" />
+            <param name="Name" value="Brk2Time" />
             <param name="NUMS" value="1" />
             <param name="INIT" value="0" />
-            <param name="TO1" value="5.035 [s]" />
+            <param name="TO1" value="5.035" />
             <param name="TO2" value="1.05 [s]" />
           </paramlist>
         </User>
@@ -12540,12 +12540,12 @@
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" id="133452810" name="master:tbreakn" x="1152" y="972" w="78" h="59" z="70" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="133452810" name="master:tbreakn" x="1152" y="972" w="78" h="59" z="110" orient="0" defn="master:tbreakn" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="130641473">
-            <param name="Name" value="" />
+            <param name="Name" value="Brk1Time" />
             <param name="NUMS" value="1" />
             <param name="INIT" value="0" />
-            <param name="TO1" value="5.035 [s]" />
+            <param name="TO1" value="5.035" />
             <param name="TO2" value="1.05 [s]" />
           </paramlist>
         </User>
@@ -12558,7 +12558,7 @@
           <vertex x="0" y="0" />
           <vertex x="-36" y="0" />
         </Wire>
-        <User classid="UserCmp" id="448462586" name="master:multimeter" x="918" y="972" w="54" h="44" z="60" orient="5" defn="master:multimeter" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="448462586" name="master:multimeter" x="918" y="972" w="54" h="44" z="100" orient="5" defn="master:multimeter" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="27440011">
             <param name="MeasV" value="0" />
             <param name="MeasI" value="0" />
@@ -12612,7 +12612,7 @@
             <param name="Name" value="Pplant" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="2133137503" name="master:pgb" x="972" y="864" w="51" h="40" z="370" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="2133137503" name="master:pgb" x="972" y="864" w="51" h="40" z="430" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="55341900">
             <param name="Name" value="Pplant" />
             <param name="Group" value="" />
@@ -12627,7 +12627,7 @@
             <param name="Min" value="-2.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1394328011" name="master:pgb" x="972" y="900" w="53" h="40" z="360" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1394328011" name="master:pgb" x="972" y="900" w="53" h="40" z="400" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="55341900">
             <param name="Name" value="Qplant" />
             <param name="Group" value="" />
@@ -12642,7 +12642,7 @@
             <param name="Min" value="-2.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1608014048" name="master:pgb" x="972" y="936" w="52" h="40" z="340" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1608014048" name="master:pgb" x="972" y="936" w="52" h="40" z="380" orient="0" defn="master:pgb" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="55341900">
             <param name="Name" value="Vplant" />
             <param name="Group" value="" />
@@ -12657,10 +12657,10 @@
             <param name="Min" value="-2.0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="928858041" name="master:recorder2_0" x="702" y="702" w="245" h="133" z="-1" orient="0" defn="master:recorder2_0" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="928858041" name="master:recorder2_0" x="702" y="702" w="245" h="133" z="490" orient="0" defn="master:recorder2_0" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="75979185">
             <param name="Name" value="Recorder" />
-            <param name="FName" value="cs" />
+            <param name="FName" value="L15_xL13" />
             <param name="FFMT" value="2" />
             <param name="Rstep" value="50" />
             <param name="Mfilter" value="0" />
@@ -12825,14 +12825,14 @@
             <param name="NT16" value="0" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="968069653" name="master:consti" x="558" y="702" w="76" h="22" z="150" orient="0" defn="master:consti" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="968069653" name="master:consti" x="558" y="702" w="76" h="22" z="40" orient="0" defn="master:consti" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="74846674">
             <param name="Name" value="" />
             <param name="Value" value="4" />
             <param name="Dim" value="1" />
           </paramlist>
         </User>
-        <User classid="UserCmp" id="1463190910" name="master:consti" x="558" y="738" w="76" h="22" z="150" orient="0" defn="master:consti" link="-1" q="4" disable="false">
+        <User classid="UserCmp" id="1463190910" name="master:consti" x="558" y="738" w="76" h="22" z="50" orient="0" defn="master:consti" link="-1" q="4" disable="false">
           <paramlist name="" link="-1" crc="74846674">
             <param name="Name" value="" />
             <param name="Value" value="10" />
@@ -12868,6 +12868,105 @@
           <vertex x="0" y="0" />
           <vertex x="108" y="0" />
           <vertex x="108" y="54" />
+        </Wire>
+        <User classid="UserCmp" defn="master:tpflt" id="1948234902" x="1206" y="864" w="73" h="80" z="410" orient="0" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="5223703">
+            <param name="Ctype" value="0" />
+            <param name="OpCur" value="0" />
+            <param name="Grnd" value="1" />
+            <param name="View" value="1" />
+            <param name="CLVL" value="0.0 [kA]" />
+            <param name="RON" value="1e-6 [ohm]" />
+            <param name="ROFF" value="1.0E6 [ohm]" />
+            <param name="A" value="1" />
+            <param name="B" value="1" />
+            <param name="C" value="1" />
+            <param name="G" value="1" />
+            <param name="Ifla" value="" />
+            <param name="Iflb" value="" />
+            <param name="Iflc" value="" />
+            <param name="AG1" value="0" />
+            <param name="Name" value="" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" defn="master:tfaultn" id="107620165" x="1278" y="900" w="79" h="59" z="80" orient="0" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="79534367">
+            <param name="TF" value="95.0" />
+            <param name="DF" value="0.05 [s]" />
+            <param name="Name" value="FaultTime2" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" defn="master:nodelabel" id="846600656" x="1224" y="864" w="58" h="23" z="1" orient="2" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="124067735">
+            <param name="Name" value="FaultLoc2" />
+            <param name="MeasV" value="0" />
+            <param name="PU" value="0" />
+            <param name="VName" value="VNode" />
+            <param name="VBase" value="1 [kV]" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" defn="master:tpflt" id="2135838467" x="1368" y="864" w="73" h="80" z="390" orient="0" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="5223703">
+            <param name="Ctype" value="0" />
+            <param name="OpCur" value="0" />
+            <param name="Grnd" value="1" />
+            <param name="View" value="1" />
+            <param name="CLVL" value="0.0 [kA]" />
+            <param name="RON" value="1e-6 [ohm]" />
+            <param name="ROFF" value="1.0E6 [ohm]" />
+            <param name="A" value="1" />
+            <param name="B" value="1" />
+            <param name="C" value="1" />
+            <param name="G" value="1" />
+            <param name="Ifla" value="" />
+            <param name="Iflb" value="" />
+            <param name="Iflc" value="" />
+            <param name="AG1" value="0" />
+            <param name="Name" value="" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" defn="master:tfaultn" id="1109032765" x="1440" y="900" w="79" h="59" z="90" orient="0" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="79534367">
+            <param name="TF" value="95.0" />
+            <param name="DF" value="0.05 [s]" />
+            <param name="Name" value="FaultTime3" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" defn="master:nodelabel" id="44575990" x="1386" y="864" w="58" h="23" z="1" orient="2" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="124067735">
+            <param name="Name" value="FaultLoc3" />
+            <param name="MeasV" value="0" />
+            <param name="PU" value="0" />
+            <param name="VName" value="VNode" />
+            <param name="VBase" value="1 [kV]" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" defn="master:nodelabel" id="695661415" x="882" y="1044" w="58" h="23" z="1" orient="2" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="124067735">
+            <param name="Name" value="FaultLoc3" />
+            <param name="MeasV" value="0" />
+            <param name="PU" value="0" />
+            <param name="VName" value="VNode" />
+            <param name="VBase" value="1 [kV]" />
+          </paramlist>
+        </User>
+        <User classid="UserCmp" defn="master:nodelabel" id="589766184" x="774" y="774" w="58" h="23" z="1" orient="2" link="-1" q="4" disable="false">
+          <paramlist link="-1" name="" crc="124067735">
+            <param name="Name" value="FaultLoc2" />
+            <param name="MeasV" value="0" />
+            <param name="PU" value="0" />
+            <param name="VName" value="VNode" />
+            <param name="VBase" value="1 [kV]" />
+          </paramlist>
+        </User>
+        <Wire classid="WireOrthogonal" id="1685740126" name="" x="774" y="774" w="46" h="10" orient="0" disable="false">
+          <vertex x="0" y="0" />
+          <vertex x="-36" y="0" />
+        </Wire>
+        <Wire classid="WireOrthogonal" id="1516431880" name="" x="882" y="1044" w="46" h="64" orient="0" disable="false">
+          <vertex x="0" y="0" />
+          <vertex x="-36" y="0" />
+          <vertex x="-36" y="-54" />
         </Wire>
       </schematic>
     </Definition>
@@ -16023,7 +16122,7 @@
         <grouping />
       </schematic>
     </Definition>
-    <Definition classid="RowDefn" name="TLine_4_14" group="" url="" version="" build="" crc="117232363" date="1694826756" instances="1" view="false" key="" id="750008715">
+    <Definition classid="RowDefn" name="TLine_4_14" group="" url="" version="" build="" crc="117232363" date="1694880409" instances="1" view="false" key="" id="750008715">
       <paramlist name="">
         <param name="Description" value="" />
         <param name="type" value="TLine" />
@@ -18627,7 +18726,7 @@
         </Gfx>
       </graphics>
     </Definition>
-    <Definition classid="RowDefn" name="TLine_13_14" group="" url="" version="" build="" crc="10277708" date="1694826756" instances="1" view="false" key="" id="1718546493">
+    <Definition classid="RowDefn" name="TLine_13_14" group="" url="" version="" build="" crc="10277708" date="1694880409" instances="1" view="false" key="" id="1718546493">
       <paramlist name="">
         <param name="Description" value="" />
         <param name="type" value="TLine" />
@@ -23335,7 +23434,7 @@
         <call link="617116508" name="SolarSystem:GENERATOR_38_1" z="30" view="false" instance="0">
           <call link="959188897" name="SolarSystem:avr_IEEET1" z="140" view="false" instance="2" />
         </call>
-        <call link="248823773" name="SolarSystem:IBR1" z="90" view="false" instance="0">
+        <call link="248823773" name="SolarSystem:IBR1" z="130" view="false" instance="0">
           <call link="733226176" name="Solar_Lib:Simple_PPC" z="220" view="false" instance="0">
             <call link="1808962177" name="Solar_Lib:PI_AntiWindUp_PPC" z="560" view="false" instance="0" />
             <call link="1148544568" name="Solar_Lib:PI_AntiWindUp_PPC" z="630" view="false" instance="1" />
@@ -23347,22 +23446,22 @@
             <call link="85228504" name="Solar_Lib:PIwithFreeze" z="1970" view="false" instance="1" />
           </call>
         </call>
-        <call link="1897583455" name="SolarSystem:GENERATOR_35_1" z="150" view="false" instance="0">
+        <call link="1897583455" name="SolarSystem:GENERATOR_35_1" z="190" view="false" instance="0">
           <call link="1276882707" name="SolarSystem:avr_IEEET1" z="140" view="false" instance="3" />
         </call>
-        <call link="1873232575" name="SolarSystem:GENERATOR_32_1" z="160" view="false" instance="0">
+        <call link="1873232575" name="SolarSystem:GENERATOR_32_1" z="200" view="false" instance="0">
           <call link="1515954798" name="SolarSystem:avr_IEEET1" z="110" view="false" instance="4" />
         </call>
-        <call link="938837069" name="SolarSystem:GENERATOR_36_1" z="170" view="false" instance="0">
+        <call link="938837069" name="SolarSystem:GENERATOR_36_1" z="210" view="false" instance="0">
           <call link="1393578620" name="SolarSystem:avr_IEEET1" z="110" view="false" instance="5" />
         </call>
-        <call link="768530460" name="SolarSystem:GENERATOR_31_1" z="180" view="false" instance="0">
+        <call link="768530460" name="SolarSystem:GENERATOR_31_1" z="220" view="false" instance="0">
           <call link="224493767" name="SolarSystem:avr_IEEET1" z="110" view="false" instance="6" />
         </call>
-        <call link="862768334" name="SolarSystem:GENERATOR_34_1" z="190" view="false" instance="0">
+        <call link="862768334" name="SolarSystem:GENERATOR_34_1" z="230" view="false" instance="0">
           <call link="172467254" name="SolarSystem:avr_IEEET1" z="110" view="false" instance="7" />
         </call>
-        <call link="618746275" name="SolarSystem:GENERATOR_33_1" z="200" view="false" instance="0">
+        <call link="618746275" name="SolarSystem:GENERATOR_33_1" z="240" view="false" instance="0">
           <call link="1412402305" name="SolarSystem:avr_IEEET1" z="110" view="false" instance="8" />
         </call>
       </call>

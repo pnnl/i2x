@@ -58,6 +58,33 @@ def show_case_plot(channels, units, title, bPSCAD, tmax=40.0, PNGName=None):
   plt.show()
   plt.close(fig)
 
+def show_comparison_plot(chd, unitd, title, bPSCAD, tmax=40.0, PNGName=None):
+  fig, ax = plt.subplots(3, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
+  fig.suptitle (title)
+
+  x_ticks = np.linspace (0.0, tmax, 11)
+  channel_labels = ['Vrms', 'P', 'Q']
+  y_labels = ['Vrms [pu]', 'P [pu]', 'Q [pu]']
+
+  for key in chd:
+    ch = chd[key]
+    for i in range(3):
+      lbl = channel_labels[i]
+      ax[i].plot (ch['t'], scale_factor(lbl, bPSCAD) * ch[lbl], label=key)
+
+  for i in range(3):
+    ax[i].set_ylabel (y_labels[i])
+    ax[i].set_xticks (x_ticks)
+    ax[i].set_xlim (x_ticks[0], x_ticks[-1])
+    ax[i].grid()
+    ax[i].legend(loc='lower right')
+  ax[2].set_xlabel ('Time [s]')
+
+  if PNGName is not None:
+    plt.savefig(PNGName)
+  plt.show()
+  plt.close(fig)
+
 # load all the analog channels from each case into dictionaries of numpy arrays. Expecting:
 #   Vrms, P, Q
 def load_channels(comtrade_path, bDebug=False):
@@ -102,21 +129,31 @@ if __name__ == '__main__':
 
   setup_plot_options()
 
+  cases = ['L13_x0', 'L13_xL15', 'L13_xL4',
+           'L15_x0', 'L15_xL13', 'L15_xL4',
+           'L4_x0', 'L4_xL13', 'L4_xL15']
+
   # set the session_path to match location of your unzipped sample cases
   if bPSCAD:
-    case_tag = 'Solar'
     session_path = 'c:/temp/i2x/pscad/SolarSystem.if18_x86/rank_00001/Run_00001'
+    plant = 'Solar'
     tmax = 6.0
   else:
     session_path = 'c:/temp/i2x/emtp'
-    case_tag = 'Wind'
+    plant = 'Wind'
     tmax = 40.0
   if bSavePNG:
-    PNGName = '{:s}_{:s}.png'.format (case_tag, test)
+    PNGName = '{:s}_study.png'.format (plant)
   else:
     PNGName = None
 
-  tag_path = os.path.join (session_path, 'cs')
-  channels, units = load_channels (tag_path)
-  show_case_plot (channels, units, 'System Study Case: {:s}'.format(case_tag), bPSCAD, tmax, PNGName)
+  channels = {}
+  units = {}
+  for tag in cases:
+    tag_path = os.path.join (session_path, tag)
+    channels[tag], units[tag] = load_channels (tag_path)
+    #show_case_plot (channels[tag], units[tag], 'System Study Case: {:s} {:s}'.format(plant, tag), bPSCAD, tmax, PNGName)
+
+  title = '300-MW {:s} Plant Study at Bus 14 of IEEE 39-bus Test System'.format (plant)
+  show_comparison_plot (channels, units, title, bPSCAD, tmax, PNGName)
 

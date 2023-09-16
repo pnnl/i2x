@@ -9,13 +9,12 @@ resources (IBR).
 | Pre-session (7/27/2023) | [Intro Slides](EMT_Bootcamp_July_27.pdf)<br>[EMTP Slides](EMTP/EMTP_training_session_1.pdf)<br>[PSCAD Slides](PSCAD/EMT-largescale-simulations.pdf) |
 | Plant-Level Session (8/3/2023) | [Slides](EMT_Bootcamp_Aug_3.pdf)<br>[Models](Plant-Level.zip) |
 | Comparing rotating machine and IBR behaviors in EMT | [Slides](MachineIBR.pdf)<br>[Models](MachineIBR.zip)<br>[Intro Video](https://youtu.be/xEy14ngf5S8)<br>[EMTP Video](https://youtu.be/hL52Ou9pnms)<br>[PSCAD Video](https://youtu.be/_fqEFi1c2RE) |
-| Comparing switching and average models | TBD |
-| Automation of faults | TBD |
-| Automation of IEEE P2800.2 type tests | TBD |
+| Comparing switching and average models | [Slides](AVMvsSwitching.pdf)<br>[Intro Video]()<br>[EMTP Video]()<br>[PSCAD Video]() |
+| Automation of faults | [Slides](FaultTests.pdf)<br>[Intro Video]()<br>[EMTP Video]()<br>[PSCAD Video]() |
+| Automation of IEEE P2800.2 type tests | [Slides](PlantTests.pdf)<br>[Intro Video]()<br>[EMTP Video]()<br>[PSCAD Video]() |
+| Automation of system study | [Slides](SystemStudy.pdf)<br>[Intro Video]()<br>[EMTP Video]()<br>[PSCAD Video]() |
 | Automation of waveform evaluations | TBD |
-| System-Level Session (9/14/2023) | [Updated Slides](EMT_Bootcamp_Sep_14.pdf)<br>[Models](System-Level.zip)<br>[PDH Request Form](PDH_Hours.xlsx)<br>[Model Updates](System-Level-Updates.zip) |
-
-$${\color{red}\text{September 14 downloads are in the table row above.}}$$
+| System-Level Session (9/14/2023)<br>Updated 9/16/2023 | [Slides](EMT_Bootcamp_Sep_14.pdf)<br>[Models](System-Level.zip)<br>[PDH Request Form](PDH_Hours.xlsx) |
 
 ## Obtaining the Sample Models and Scripts
 
