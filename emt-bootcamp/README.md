@@ -6,27 +6,45 @@ resources (IBR).
 
 | Topic | Shared Materials | EMTP Track | PSCAD Track |
 | ----- | ---------------- | ---------- | ----------- |
-| Models and Scripts **Updated 9/18/2023** | [Scripts and Data](emt-bootcamp.zip) | [EMTP Models](EMTP.zip) | [PSCAD Models](PSCAD.zip) |
+| **All** Models and Scripts **Updated 9/18/2023** | [Scripts and Data](emt-bootcamp.zip) | [EMTP Models](EMTP.zip) | [PSCAD Models](PSCAD.zip) |
 | Pre-session (7/27/2023) | [Intro Slides](EMT_Bootcamp_July_27.pdf) | [EMTP Slides](EMTP/EMTP_training_session_1.pdf) | [PSCAD Slides](PSCAD/EMT-largescale-simulations.pdf) |
 | Plant-Level Session (8/3/2023) | [Slides](EMT_Bootcamp_Aug_3.pdf) | | |
 | Comparing rotating machine and IBR behaviors in EMT | [Slides](MachineIBR.pdf) and [Intro Video](https://youtu.be/xEy14ngf5S8) | [EMTP Video](https://youtu.be/hL52Ou9pnms) | [PSCAD Video](https://youtu.be/_fqEFi1c2RE) |
-| Comparing switching and average models | [Slides](AVMvsSwitching.pdf) and [Intro Video](https://youtu.be/I_r8cAxrhbI) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=puneEQfquRQ) |
-| Automation of faults | [Slides](FaultTests.pdf) and [IntroVideo](https://youtu.be/AfuLv0IZJmg) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=COSS0iXmNU4) |
-| Automation of IEEE P2800.2 type tests | [Slides](PlantTests.pdf) and [Intro Video](https://youtu.be/nfA5zHqVcfE) and [SCR Test Video](https://youtu.be/c95BJ9WOk04) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=9WVdVTPErD8)<br>[PSCAD SCR](https://www.youtube.com/watch?v=ExsLqhpGrH0) |
-| Automation of system study | [Slides](SystemStudy.pdf) and [Intro Video](https://youtu.be/99ZjOcmDR3o) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=9ci4Qkclt1c) |
+| Comparing switching and average models | [Slides](AVMvsSwitching.pdf) and [Intro Video](https://youtu.be/I_r8cAxrhbI) | TBD | [PSCAD Video](https://www.youtube.com/watch?v=puneEQfquRQ) |
+| Automation of faults | [Slides](FaultTests.pdf) and [IntroVideo](https://youtu.be/AfuLv0IZJmg) | TBD | [PSCAD Video](https://www.youtube.com/watch?v=COSS0iXmNU4) |
+| Automation of IEEE P2800.2 type tests | [Slides](PlantTests.pdf) and [Intro Video](https://youtu.be/nfA5zHqVcfE) and [SCR Test Video](https://youtu.be/c95BJ9WOk04) | TBD | [PSCAD Video](https://www.youtube.com/watch?v=9WVdVTPErD8)<br>[PSCAD SCR](https://www.youtube.com/watch?v=ExsLqhpGrH0) |
+| Automation of system study | [Slides](SystemStudy.pdf) and [Intro Video](https://youtu.be/99ZjOcmDR3o) | TBD | [PSCAD Video](https://www.youtube.com/watch?v=9ci4Qkclt1c) |
 | Automation of waveform evaluations | TBD | TBD | TBD |
 | System-Level Session (9/14/2023) | [Slides](EMT_Bootcamp_Sep_14.pdf) and [PDH Request Form](PDH_Hours.xlsx) | [EMTP Slides](EMTP/EMT_Bootcamp_Sep_14_EMTP_Session.pdf) | |
 
 ## Obtaining the Sample Models and Scripts
 
-There are two options available:
+The example data files for all bootcamp sessions and video examples have 
+been consolidated into three archives, as listed in the table above: 
 
-1. Download a zip file just before you need it:
-   - For example, the [Plant-Level Session Models](Plant-Level.zip)
-   - Extract the contents into a local directory. You may use the same local directory each time, i.e., only "safe" updates will be made to earlier files.
-   - Because the material is brand new, there may be last-minute updates. We will announce the time of last update as each session begins.
-   - You may download individual updated files through the web browser, but make sure they go to the correct relative directory.
-2. If you're comfortable using [git](https://git-scm.com/download/win), feel free to clone [the i2X repository](https://github.com/pnnl/i2x/tree/develop). We don't suggest installing git just for this bootcamp.
+- [Scripts and Data](emt-bootcamp.zip) includes post-processing scripts, data for the post-processing example, a spreadsheet with supporting calculations, and copies of the slides. Everyone should download and extract this file.
+- [EMTP Models](EMTP.zip) includes the EMTP examples used in virtual sessions and videos.
+- [PSCAD Models](PSCAD.zip) includes the PSCAD examples used in virtual sessions and videos.
+
+When you click one of those links, use the download button shown below to download the zip file.
+
+[Download Button](download.png)
+
+Please unzip the model and script archives that you plan to use into the 
+same directory.  In the bootcamp, we used **c:\\temp\\i2x**.  You may 
+choose a different location, but then it will be necessary to edit some of 
+the scripts to use your chosen location.  
+  
+If you unzipped previous versions of these models and scripts:
+  
+- Copy or rename any files that you edited and wish to keep.
+- It will then be safe to extract newer zip files into **c:\\temp\\i2x**, overwriting any existing files from the bootcamp.
+
+If you're comfortable using [git](https://git-scm.com/download/win), feel 
+free to clone the [i2X 
+repository](https://github.com/pnnl/i2x/tree/develop).  We don't suggest 
+installing git just for the bootcamp, but it's a good idea for those 
+planning to modify or extend the material.  
 
 ## Python and Jupyter Notebook Support
 
@@ -44,7 +62,7 @@ examples in this bootcamp. To prepare your computer for these examples:
 
 To test these installations:
 
-1. Make sure you have extracted the [Plant-Level Session Models](Plant-Level.zip) to your computer.
+1. Make sure you have extracted the [Scripts and Data](emt-bootcamp.zip) to your computer.
 2. In Windows Explorer, double-click on the batch script **notebook.bat**, which you'll find in the **python** subdirectory of your local copy of this repository. This will open a command prompt in the background, which starts the notebook server.
    - Alternatively, you may open a Command Prompt from the Start / Windows System menu, change to the python subdirectory in your local copy of this repository, and enter **jupyter notebook cplot.ipynb** from the command prompt.
 3. Your browser should start display some code from the notebook, and possibly some saved text results, but no plot.
