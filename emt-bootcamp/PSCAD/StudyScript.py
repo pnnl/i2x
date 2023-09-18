@@ -1,5 +1,5 @@
 # Copyright (C) 2023 Battelle Memorial Institute
-# file: PlantScript.py
+# file: StudyScript.py
 """ Automating system study cases in PSCAD for the EMT bootcamp.
 
 Preconditions:
