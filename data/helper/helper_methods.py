@@ -29,10 +29,13 @@ def get_centroids():
     centroids_county_geoid = centroids_county.rename(columns={"FIPS": "geo_id"})
     centroids_county_geoid['NAME'] = centroids_county_geoid['NAME'].apply(lambda x: x.split(' ')[0].lower())
     centroids_county_geoid['state_county'] = centroids_county_geoid.STATE_ABBR.str.cat(centroids_county_geoid.NAME, sep='_')
-    selected_cenrtroids = centroids_county_geoid[['STATE_NAME', 'STATE_ABBR', 'state_county', 'lat', 'lon']]
-    selected_cenrtroids['state_county'] = selected_cenrtroids['state_county'].astype('string') # Change the type from object to string to use the string class.
+    selected_centroids = centroids_county_geoid[['STATE_NAME', 'STATE_ABBR', 'state_county', 'lat', 'lon']]
+    selected_centroids['state_county'] = selected_centroids['state_county'].astype('string') # Change the type from object to string to use the string class.
+    # round the coordinates to 6 digits
+    for tag in ['lat', 'lon']:
+      selected_centroids[tag] = round (selected_centroids[tag], 6)
 
-    return selected_cenrtroids
+    return selected_centroids
 
 
 def read_input(input_str, sheet, header=None, index_col=None):
