@@ -28,7 +28,7 @@ been consolidated into three archives, as listed in the table above:
 
 When you click one of those links, use the download button shown below to download the zip file.
 
-[Download Button](download.png)
+![Download Button](download.png)
 
 Please unzip the model and script archives that you plan to use into the 
 same directory.  In the bootcamp, we used **c:\\temp\\i2x**.  You may 
