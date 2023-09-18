@@ -4,18 +4,18 @@ This repository contains presentations and examples for the NERC/i2X
 bootcamps in electromagnetic transient (EMT) modeling of inverter-based
 resources (IBR).
 
-| Topic | Common Materials | EMTP Track | PSCAD Track |
+| Topic | Shared Materials | EMTP Track | PSCAD Track |
 | ----- | ---------------- | ---------- | ----------- |
-| Models and Scripts<br>Updated 9/18/2023 | [Scripts and Data](emt-bootcamp.zip) | [EMTP Models](EMTP.zip) | PSCAD Models(PSCAD.zip) |
-| Pre-session (7/27/2023) | [Intro Slides](EMT_Bootcamp_July_27.pdf) | [EMTP Slides](EMTP/EMTP_training_session_1.pdf)< | [PSCAD Slides](PSCAD/EMT-largescale-simulations.pdf) |
-| Plant-Level Session (8/3/2023) | [Slides](EMT_Bootcamp_Aug_3.pdf) | see first row | see first row |
-| Comparing rotating machine and IBR behaviors in EMT | [Slides](MachineIBR.pdf), [Intro](https://youtu.be/xEy14ngf5S8)<br>[EMTP Video](https://youtu.be/hL52Ou9pnms) | [PSCAD Video](https://youtu.be/_fqEFi1c2RE) |
-| Comparing switching and average models | [Slides](AVMvsSwitching.pdf), [Intro](https://youtu.be/I_r8cAxrhbI)<br>[EMTP Video]()<br>[PSCAD Video](https://www.youtube.com/watch?v=puneEQfquRQ) |
-| Automation of faults | [Slides](FaultTests.pdf), [Video](https://youtu.be/AfuLv0IZJmg) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=COSS0iXmNU4) |
-| Automation of IEEE P2800.2 type tests | [Slides](PlantTests.pdf), [Intro Video](https://youtu.be/nfA5zHqVcfE), [SCR Test Video](https://youtu.be/c95BJ9WOk04) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=9WVdVTPErD8)<br>[PSCAD SCR](https://www.youtube.com/watch?v=ExsLqhpGrH0) |
-| Automation of system study | [Slides](SystemStudy.pdf), [Video](https://youtu.be/99ZjOcmDR3o) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=9ci4Qkclt1c) |
+| Models and Scripts **Updated 9/18/2023** | [Scripts and Data](emt-bootcamp.zip) | [EMTP Models](EMTP.zip) | [PSCAD Models](PSCAD.zip) |
+| Pre-session (7/27/2023) | [Intro Slides](EMT_Bootcamp_July_27.pdf) | [EMTP Slides](EMTP/EMTP_training_session_1.pdf) | [PSCAD Slides](PSCAD/EMT-largescale-simulations.pdf) |
+| Plant-Level Session (8/3/2023) | [Slides](EMT_Bootcamp_Aug_3.pdf) | | |
+| Comparing rotating machine and IBR behaviors in EMT | [Slides](MachineIBR.pdf) and [Intro Video](https://youtu.be/xEy14ngf5S8) | [EMTP Video](https://youtu.be/hL52Ou9pnms) | [PSCAD Video](https://youtu.be/_fqEFi1c2RE) |
+| Comparing switching and average models | [Slides](AVMvsSwitching.pdf) and [Intro Video](https://youtu.be/I_r8cAxrhbI)<br>[EMTP Video]()<br>[PSCAD Video](https://www.youtube.com/watch?v=puneEQfquRQ) |
+| Automation of faults | [Slides](FaultTests.pdf) and [IntroVideo](https://youtu.be/AfuLv0IZJmg) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=COSS0iXmNU4) |
+| Automation of IEEE P2800.2 type tests | [Slides](PlantTests.pdf) and [Intro Video](https://youtu.be/nfA5zHqVcfE) and [SCR Test Video](https://youtu.be/c95BJ9WOk04) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=9WVdVTPErD8)<br>[PSCAD SCR](https://www.youtube.com/watch?v=ExsLqhpGrH0) |
+| Automation of system study | [Slides](SystemStudy.pdf) and [Intro Video](https://youtu.be/99ZjOcmDR3o) | [EMTP Video]() | [PSCAD Video](https://www.youtube.com/watch?v=9ci4Qkclt1c) |
 | Automation of waveform evaluations | TBD | TBD | TBD |
-| System-Level Session (9/14/2023) | [Slides](EMT_Bootcamp_Sep_14.pdf)<br>[PDH Request Form](PDH_Hours.xlsx) | see first row | see first row |
+| System-Level Session (9/14/2023) | [Slides](EMT_Bootcamp_Sep_14.pdf) and [PDH Request Form](PDH_Hours.xlsx) | | |
 
 ## Obtaining the Sample Models and Scripts
 
