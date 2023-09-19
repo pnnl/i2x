@@ -1,13 +1,17 @@
 import pandas as pd
-from helper.helper_methods import get_api_result
+from helper.helper_methods import get_api_result, start_api_tracking
 
 
-def api_call(df):
+def api_call(df, bProgress=False):
     '''
     This function calls the NOMINATIM API and loops through all the rows of solar trace data finding lat lon for each row.
     '''
     df_temp = df.copy()
-    df_temp[['lat', 'lon']] = df[['state_full', 'ahj']].apply(get_api_result, axis=1)
+    if bProgress:
+        n = len(df_temp)
+        print ('    NOMINATIM API call on {:d} rows'.format (n))
+        start_api_tracking (n)
+    df_temp[['lat', 'lon']] = df[['state_full', 'ahj']].apply(get_api_result, axis=1, args=(bProgress,))
     return df_temp
 
 

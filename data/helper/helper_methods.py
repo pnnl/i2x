@@ -57,9 +57,13 @@ def read_input(input_str, sheet, header=None, index_col=None):
     all_files = list(INPUT_DIR.glob('*'))
     for file in all_files: # Loop over all files
         if input_str in file.name: # Check if input string is in the file name
+            print ('    {:s} includes {:s}'.format (file.name, input_str))
             xlsx = pd.ExcelFile(file) # Read the corresponding file
+            print ('      create pandas xlsx')
             df = pd.read_excel(xlsx, sheet, header=header, index_col=index_col)
+            print ('      read xlsx, header={:s}, index_col={:s}'.format (str(header), str(index_col)))
             if header is None and index_col is None:
+                print ('      read xlsx without header/index_col')
                 df = pd.read_excel(xlsx, sheet)
             return df
     return None
@@ -75,12 +79,20 @@ def add_state_full(df):
     temp_df.insert(1, 'state_full', df['state'].map(state_dict))
     return temp_df
 
+API_TOTAL = 0
+API_IDX = 0
 
-def get_api_result(row):
+def start_api_tracking(n):
+    global API_TOTAL, API_IDX
+    API_TOTAL = n
+    API_IDX = 0
+
+def get_api_result(row, bProgress=False):
     '''
     This function is used to call the api for one row. The for loop that goes over all the rows is in the 
     final_processing.py file implemented in the api_call function.
     '''
+    global API_TOTAL, API_IDX
     try:
         if row.get('ahj') is None:
             return pd.Series([None, None])
@@ -89,7 +101,12 @@ def get_api_result(row):
         response = requests.get(f'{API_STRING}&state={row_state}&city={row_ahj}')
         data = response.json()
         if data and len(data) >= 1:
-            result = pd.Series([data[0]['lat'], data[0]['lon']])
+            lat = round(float(data[0]['lat']),6)
+            lon = round(float(data[0]['lon']),6)
+            result = pd.Series([lat, lon])
+            if bProgress:
+                API_IDX += 1
+                print ('      API request {:d} of {:d} returns [{:.6f},{:.6f}]'.format (API_IDX, API_TOTAL, lon, lat))
             return result
         else:
             return pd.Series([None, None])  # Default values

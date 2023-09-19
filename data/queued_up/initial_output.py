@@ -40,6 +40,7 @@ def init_output(df):
     4. Get project counts
     5. *Get q_status counts
     6. Concatenate all the entries of type_clean column for each grouping of state_county
+    7. Want type_clean in alphabetical order
     '''
     # Count utilities 
     utility_count = df.groupby(['state_county'])['utility'].nunique()
@@ -55,8 +56,8 @@ def init_output(df):
     # Get status counts --> ADD????????????????????????????????
     status_count = df.groupby(['state_county'])['q_status'].count()
     # Aggregate types of energy generation for each
-    type_clean = df.fillna('Unknown').groupby('state_county').agg({'type_clean': lambda d: ", ".join(set(d))}).reset_index()
-    # format type_clean to match the pervious pd series with state_county as index
+    type_clean = df.fillna('Unknown').groupby('state_county').agg({'type_clean': lambda d: ", ".join(sorted(set(d)))}).reset_index()
+    # format type_clean to match the previous pd series with state_county as index
     type_clean = type_clean.set_index('state_county')
     # Combine the series to create an intitial version of the queued up output
     queued_up_initial = pd.concat([utility_count, mw_max, project_count, days, type_clean['type_clean']], axis=1, keys=['utility_count', 'mw_max', 'project_count', 'days_max', 'type_clean']).reset_index()
