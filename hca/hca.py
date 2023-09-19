@@ -797,9 +797,10 @@ class HCA:
     self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint + self.upgrade_change_lines, 
                                          "dss": self.dss, "demandinterval": True}, 
                                          **self.inputs} )  
-    self.lastres["compflows"] = isl.all_island_flows(self.comp2rec, self.lastres["recdict"])
-    os.chdir(pwd)
-    self.read_di_outputs()
+    if self.lastres["converged"]:
+      self.lastres["compflows"] = isl.all_island_flows(self.comp2rec, self.lastres["recdict"])
+      os.chdir(pwd)
+      self.read_di_outputs()
 
   def summary_outputs(self):
     summary_outputs(self.lastres, self.pvbases, print=self.logger.info)
@@ -807,28 +808,52 @@ class HCA:
   def read_di_outputs(self):
     path = os.path.join(self.dss.dssinterface.datapath, self.dss.circuit.name, "DI_yr_0")
     ### Thermal overloads
-    df, cols = self._load_di(path, "DI_Overloads_1.CSV")
+    dtypes = {(float, int): ["NormalAmps", "EmergAmps", "%Normal", "%Emerg", "kVBase", "I1(A)", "I2(A)", "I3(A)"]}
+    df, cols, err = self._load_di(path, "DI_Overloads_1.CSV", dtypes=dtypes)
     cols.remove("Hour")
     cols.remove("Element")
     self.lastres["di_overloads"] = df.groupby("Element").agg('max').loc[:, cols]
     self.lastres["di_overloads"].index = self.lastres["di_overloads"].index.str.strip(' "') # remove spaces and quotes
+    if err:
+      self.lastres["converged"] = False
     ### Voltage violations
-    df, cols = self._load_di(path, "DI_VoltExceptions_1.CSV")
+    dtypes = {int: ["Undervoltages", "Overvoltage", "LVUndervoltages", "LVOvervoltage"],
+              float: ["MinVoltage","MaxVoltage", "MinLVVoltage", "MaxLVVoltage"]}
+    df, cols, err = self._load_di(path, "DI_VoltExceptions_1.CSV", dtypes=dtypes)
     self.lastres["di_voltexceptions"] = df.set_index("Hour")
+    if err:
+      self.lastres["converged"] = False
     ### Totals (just use to keep finer grain track of EEN and UE for now)
-    df, cols = self._load_di(path, "DI_Totals_1.CSV")
-    cols = ["LoadEEN", "LoadUE"]
+    dtypes = {float: ["LoadEEN", "LoadUE"]}
+    df, cols, err = self._load_di(path, "DI_Totals_1.CSV", dtypes=dtypes)
+    cols = ["LoadEEN", "LoadUE", "kWh", "kvarh", "MaxkW", "MaxkVA"]
     self.lastres["di_totals"] = df.set_index("Time").loc[:, cols]
+    if err:
+      self.lastres["converged"] = False
 
   def calc_total_een_ue(self, ditotals:pd.DataFrame):
     """perform integration of EEN and UE in the totals result"""
     return ditotals.transpose().dot(np.diff(np.insert(ditotals.index, 0, [0])))
 
-  def _load_di(self, path:str, name:str) -> tuple[pd.DataFrame, list]:
+  def _load_di(self, path:str, name:str, dtypes=None) -> tuple[pd.DataFrame, list]:
     df = pd.read_csv(os.path.join(path, name))
     cols = [c.replace('"','').replace(' ','') for c in df.columns] # some cleanup
     df.columns = cols
-    return df, cols
+    
+    err = False
+    if dtypes is not None:
+      ## check dtype. Prolems can happen this can happen if there are INFs or NANs
+      for typ, typcols in dtypes.items():
+        dfcols = df.select_dtypes(typ)
+        for col in typcols:
+          if col not in dfcols:
+            self.logger.warn(f"_load_di {name}: column {col} is not of type {typ} but of type {df[col].dtype}")
+            if isinstance(typ, tuple):
+              df[col] = df[col].str.strip().astype(typ[0])
+            else:
+              df[col] = df[col].str.strip().astype(typ)
+            err = True
+    return df, cols, err
   
   def sample_capacity(self, typ):
     """sample unit capacity based on typ"""
@@ -984,16 +1009,18 @@ class HCA:
 
     ### Step 3: Solve
     self.rundss()
-    if not self.lastres["converged"]:
-      raise ValueError("Open DSS Run did not converge")
+    if self.lastres["converged"]:
+      # raise ValueError("Open DSS Run did not converge")
 
-    ### Step 4: evaluate
-    # evaluate the run with following options:
-    # 1. no violations: fix capaity Sij, increment until violations occure to determine hc
-    # 2. violations: decrease capacity until no violations. set hc=0 (mark bus as exauhsted)
-    self.metrics.load_res(self.lastres)
-    self.metrics.calc_metrics()
-    if self.metrics.violation_count == 0:
+      ### Step 4: evaluate
+      # evaluate the run with following options:
+      # 1. no violations: fix capaity Sij, increment until violations occure to determine hc
+      # 2. violations: decrease capacity until no violations. set hc=0 (mark bus as exauhsted)
+      self.metrics.load_res(self.lastres)
+      self.metrics.calc_metrics()
+    else:
+      self.logger.warn(f"hca_round: DSS appears to have not converged")
+    if self.lastres["converged"] and (self.metrics.violation_count == 0):
       # no violations
       self.logger.info(f"No violations with capacity {Sij}.")
       self.update_data("Sij", typ, Sij)  # save installed capacity
@@ -1004,10 +1031,11 @@ class HCA:
         self.update_data("hc", typ, hc)
       self.update_data("eval", typ, self.metrics.eval)
     else:
-      # violations: decrease capacity to find limit
+      # violations: decrease capacity to find limit (or non-convergence)
       self.logger.info(f"Violations with capacity {Sij} (allow_violations is {allow_violations}).")
-      self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
-      self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
+      if self.lastres["converged"]:
+        self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
+        self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
       if allow_violations:
         self.update_data("Sij", typ, Sij)
         self.update_data("eval", typ, self.metrics.eval)
@@ -1040,7 +1068,7 @@ class HCA:
     for ln in self.change_lines:
       self.logger.info (f' {ln}')
     self.rundss()
-    if not self.lastres["converged"]:
+    if not self.lastres["converged"]: #don't allow non-convergence here
       raise ValueError("Open DSS Run did not converge")
     
     if allow_violations and hciter and (Sijlim["kw"] < Sij["kw"]):
@@ -1086,12 +1114,14 @@ class HCA:
 
     ### Solve
     self.rundss()
-    if not self.lastres["converged"]:
-      raise ValueError("Open DSS Run did not converge")
+    if self.lastres["converged"]:
+      # raise ValueError("Open DSS Run did not converge")
     
-    self.metrics.load_res(self.lastres)
-    self.metrics.calc_metrics()
-    if self.metrics.violation_count == 0:
+      self.metrics.load_res(self.lastres)
+      self.metrics.calc_metrics()
+    else:
+      self.logger.warn(f"hc_bisection: DSS appears to have not converged")
+    if self.lastres["converged"] and (self.metrics.violation_count == 0):
       self.logger.info(f"\tNo violations with capacity {Sijnew}. Iterating to find HC")
       if Sij2 is None:
         # still uknown upper bound
@@ -1107,8 +1137,9 @@ class HCA:
         return self.hc_bisection(typ, key, Sijnew, Sij2, kwtol, kwmin)
     else:
       self.logger.info(f"\tViolations with capacity {Sijnew}. Iterating to find Limit.")
-      self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
-      self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
+      if self.lastres["converged"]:
+        self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
+        self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
       if Sijnew["kw"] < kwmin:
         # End criterion: upperbound is below minimum threshold set to 0 and exit
         return {k: 0 for k in Sijnew.keys()}
@@ -1382,10 +1413,10 @@ class HCAMetrics:
       #   \-> take the sum: options are 2, -2 (both in same direction), 0 (opposite direction), 1 or -1 (unlikely, one element is exactly 0)
       #   \-> take abs and subtract 1. If this is greater than 0 then both were in the same direction.
     test = pd.concat([ 
-      pd.Series({i: np.abs(self.res["compflows"][i]["lims"].loc[["min", "max"], pq].apply(np.sign).sum()) 
+      pd.Series({i: np.abs(self.res["compflows"][i]["lims"].loc[["min", "max"], pq].apply(np.sign).sum()) - 1
                  for i in self.res["compflows"].keys()}, name=f"{pq}_dir")
                  for pq in ["p", "q"]], axis=1)
-    return self._test(test, 0, 1, self.tol["island"])
+    return self._test(test, 0, 1, 0) # this is an integer test so tolerance is 0
     if i is not None:
       # self.res["compflows"][i]["lims"].loc[["min", "max"], pq] -> the minimum and maximum p or q flow for component
       #   \-> take the sign -> leads to array of [1, -1, etc.] of length 2
