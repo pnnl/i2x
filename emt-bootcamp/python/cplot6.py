@@ -40,7 +40,7 @@ def setup_plot_options():
   plt.rc('legend', fontsize=10)
 
 def show_case_plot(channels, units, title, bPSCAD, tmax=40.0, PNGName=None):
-  x_ticks = np.linspace (0.0, tmax, 11)
+  x_ticks = np.linspace (0.0, tmax, 10)
   t = channels['t']
   fig, ax = plt.subplots(5, 1, sharex = 'col', figsize=(15,10), constrained_layout=True)
   fig.suptitle (title)
@@ -128,7 +128,7 @@ if __name__ == '__main__':
   else:
     session_path = 'c:/temp/i2x/emtp'
     case_tag = 'Wind'
-    tmax = 40.0
+    tmax = 45.0
   if bSavePNG:
     PNGName = '{:s}_{:s}.png'.format (case_tag, test)
   else:
