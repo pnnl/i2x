@@ -163,10 +163,11 @@ def phases_ndata (phases):
     'pvkva': 0.0, 'pvkw': 0.0, 'batkva': 0.0, 'batkw': 0.0, 'batkwh': 0.0, 'capkvar': 0.0, 
     'shunts':[], 'source':False}
 
-def xy_ndata (x, y):
+def xy_kv_ndata (x, y, kv):
   ndata = phases_ndata(0)
   ndata['x'] = x
   ndata['y'] = y
+  ndata['nomkv'] = kv
   return ndata
 
 def update_node_phases (G, nd, phases):
@@ -190,13 +191,25 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   #-----------------------
   # Pull Model Into Memory
   #-----------------------
-  busxy = {}
+  bus_xy_kv = {}
   fp = open (os.path.join (saved_path, 'BusCoords.dss'), 'r')
   rdr = csv.reader (fp)
   for row in rdr:
     bus = row[0].lower()
-    if bus not in busxy:
-      busxy[bus] = {'x':float(row[1]),'y':float(row[2])}
+    if bus not in bus_xy_kv:
+      bus_xy_kv[bus] = {'x':float(row[1]),'y':float(row[2]), 'kv':0.0}
+  fp.close()
+
+  fp = open (os.path.join (saved_path, 'voltages.dat'), 'r')
+  rdr = csv.reader (fp)
+  next (rdr) # skip the header
+  for row in rdr:
+    bus = row[0].lower().replace('"', '')
+    kv = float(row[1])
+    if bus not in bus_xy_kv:
+      print ('** {:s} with kv={:.3f} not found in bus_xy list'.format(bus, kv))
+    else:
+      bus_xy_kv[bus]['kv'] = kv
   fp.close()
 
   sources = dict_from_file (os.path.join (saved_path, 'Vsource.dss'),
@@ -226,10 +239,19 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   relays = dict_from_file (os.path.join (saved_path, 'Relay.dss'),
                           ['MonitoredObj', 'type', 'MonitoredTerm'], 
                           ['MonitoredObj', 'type'])
+  reclosers = dict_from_file (os.path.join (saved_path, 'Recloser.dss'),
+                          ['MonitoredObj', 'MonitoredTerm', 'PhaseTrip', 'GroundTrip'], 
+                          ['MonitoredObj'])
+  fuses = dict_from_file (os.path.join (saved_path, 'Fuse.dss'),
+                          ['MonitoredObj', 'MonitoredTerm', 'RatedCurrent'], 
+                          ['MonitoredObj'])
   regulators = dict_from_file (os.path.join (saved_path, 'RegControl.dss'),
                             ['transformer', 'winding', 'tapwinding', 'ptratio', 'vreg', 'band', 
                              'reversible', 'revvreg', 'revband','revThreshold', 'delay', 'revDelay'], 
                             ['transformer', 'reversible'])
+  swtcontrols = dict_from_file (os.path.join (saved_path, 'SwtControl.dss'),
+                          ['SwitchedObj', 'State', 'Normal', 'SwitchedTerm'], 
+                          ['SwitchedObj', 'State', 'Normal'])
   transformers = xfmr_dict_from_file (os.path.join (saved_path, 'Transformer.dss'))
 
   for key, row in regulators.items():
@@ -239,6 +261,7 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
     if 'Switch' in row:
       if row['Switch'] == 'true':
         row['Switch'] = True
+        row['SwtControl'] = False # till proven otherwise
         nswitch += 1
       else:
         row['Switch'] = False
@@ -248,6 +271,28 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
     if 'line.' in row['MonitoredObj']:
       branch = row['MonitoredObj'][5:]
       lines[branch]['Relay'] = True
+  for key, row in reclosers.items():
+    if 'line.' in row['MonitoredObj']:
+      branch = row['MonitoredObj'][5:]
+      lines[branch]['Recloser'] = True
+  for key, row in fuses.items():
+    if 'line.' in row['MonitoredObj']:
+      branch = row['MonitoredObj'][5:]
+      lines[branch]['Fuse'] = True
+  for key, row in swtcontrols.items():
+    if 'line.' in row['SwitchedObj']:
+      branch = row['SwitchedObj'][5:]
+      lines[branch]['SwtControl'] = True
+      lines[branch]['SwitchedTerminal'] = int(row['SwitchedTerm'])
+      SwtOpen = False
+      if 'State' in row:
+        if row['State'] == 'open':
+          SwtOpen = True
+      elif 'Normal' in row:
+        if row['Normal'] == 'open':
+          SwtOpen = True
+      lines[branch]['SwtOpen'] = SwtOpen
+
   set_branch_phasing (lines)
   set_shunt_phasing (capacitors)
   set_shunt_phasing (solars)
@@ -280,26 +325,36 @@ def make_opendss_graph(saved_path, outfile, extra_source_buses=[]):
   print ('read {:4d} transformers'.format (len(transformers)))
   print ('read {:4d} regulators (as transformers)'.format (len(regulators)))
   print ('read {:4d} lines'.format (len(lines)))
-  print ('read {:4d} switches (as lines)'.format (nswitch))
+  print ('read {:4d} switches (in lines)'.format (nswitch))
+  print ('read {:4d} switch controls'.format (len(swtcontrols)))
+  print ('read {:4d} reclosers'.format (len(reclosers)))
+  print ('read {:4d} fuses'.format (len(fuses)))
   print ('read {:4d} relays'.format (len(relays)))
   print ('read {:4d} reactors'.format (len(reactors)))
   print ('read {:4d} sources'.format (len(sources)))
-  print ('read {:4d} busxy'.format (len(busxy)))
+  print ('read {:4d} bus_xy_kv'.format (len(bus_xy_kv)))
 
   # construct a graph of the model, starting with all known buses that have XY coordinates
-  G = nx.Graph()
-  for key, data in busxy.items():
+  G = nx.DiGraph()
+  for key, data in bus_xy_kv.items():
     nclass='bus'
     if key in extra_source_buses:
       nclass = 'source'
-    G.add_node (key, nclass=nclass, ndata=xy_ndata (data['x'], data['y']))
+    G.add_node (key, nclass=nclass, ndata=xy_kv_ndata (data['x'], data['y'], data['kv']))
 
   # add series power delivery branches (not handling series capacitors)
   for key, data in lines.items():
     if 'Relay' in data:
       eclass = 'nwp'
+    elif 'Recloser' in data:
+      eclass = 'recloser'
+    elif 'Fuse' in data:
+      eclass = 'fuse'
     elif data['Switch']:
-      eclass = 'switch'
+      if data['SwtControl']:
+        eclass = 'swtcontrol'
+      else:
+        eclass = 'switch'
     else:
       eclass = 'line'
     G.add_edge(data['bus1'],data['bus2'],eclass=eclass,ename=key,edata=data)

@@ -1,0 +1,7 @@
+{
+    "case_title": "baseline_hca",
+    "sys_name": "hca",
+    "load_scale": 2.75,
+    "hca_buses": null,
+    "upgrades": null
+}

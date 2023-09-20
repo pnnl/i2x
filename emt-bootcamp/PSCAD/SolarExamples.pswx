@@ -1,0 +1,24 @@
+<workspace name="SolarExamples" version="5.0.1" crc="3331425">
+  <projects>
+    <project type="project" name="Machine2" filepath=".\Machine2.pscx" />
+    <project type="project" name="Solar3avm" filepath=".\Solar3avm.pscx" />
+    <project type="library" name="Solar_Lib" filepath=".\Solar_Lib.pslx" />
+    <project type="project" name="Solar3dm" filepath=".\Solar3dm.pscx" />
+    <project type="project" name="Solar6" filepath=".\Solar6.pscx" />
+    <project type="project" name="Solar4" filepath=".\Solar4.pscx" />
+    <project type="project" name="Solar5" filepath=".\Solar5.pscx" />
+    <project type="project" name="SolarSystem" filepath=".\SolarSystem.pscx" />
+    <project type="project" name="IEEE39_Complete_EMT" filepath=".\IEEE39_Complete_EMT.pscx" />
+    <project type="project" name="IEEE39_Complete_IBR_EMT" filepath=".\IEEE39_Complete_IBR_EMT.pscx" />
+    <project type="project" name="IEEE39_Complete_IBR_NM1_EMT" filepath=".\IEEE39_Complete_IBR_NM1_EMT.pscx" />
+  </projects>
+  <simulations />
+  <pmr />
+  <messagegrid expanded="">
+    <column name="Icon" />
+    <column name="Id" />
+    <column name="Component" />
+    <column name="Namespace" />
+    <column name="Description" />
+  </messagegrid>
+</workspace>

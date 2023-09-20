@@ -1,0 +1,277 @@
+!
+! SYNERGEE ELECTRIC EXPORT TO OPENDSS
+! Created by Catie McEntee July 2018
+
+Clear
+set eventlogdefault=yes
+
+///////////////////////////////////
+// adding substation transformer and recloser
+
+new object=circuit.F bus1=bus_HV basekv=115.0 pu=1.04 
+R1=0.001 X1=0.001 R0=0.001 X0=0.001 
+
+new transformer.sub phases=3 windings=2 buses=(bus_HV bus_XF) 
+~ kvs=(115 12.47) kvas=(20000 20000) conns=(d w) xhl=8.0 %loadloss=1.0
+~ sub=yes subname=Substation
+
+new line.R1 Bus1=bus_XF Bus2=bus_F r1=0 x1=0.001 r0=0 r1=0.001 c0=0 c1=0 length=10.0 units=ft
+new recloser.R1 monitoredobj=line.R1 MonitoredTerm=2 phasetrip=600.0 groundtrip=300.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+
+///////////////////////////////////
+
+redirect ../support/loadshapes_and_xycurves.dss
+
+new linecode.1 nphases=3 units=mi
+~ rmatrix=[ .416 | .112 .416 | .104 .112 .408 ]
+~ xmatrix=[ 1.008 | .384 .976 | .328 .4 1.024 ]
+~ cmatrix=[ 91.3 | -23.6 98.5 | -12.1 -25.1 91 ] 
+~ normamps=530 emergamps=630
+
+new linecode.2 nphases=3 units=mi
+~ rmatrix=[ 1.92 | .24 1.936 | .232 .232 1.912 ]
+~ xmatrix=[ 1.424 | .592 1.408 | .52 .608 1.432 ]
+~ cmatrix=[ 79.5 | -18.9 84.5 | -10.2 -20 79.2 ]
+~ normamps=180 emergamps=210
+
+new linecode.3 nphases=3 units=mi
+~ rmatrix=[ 5.624 | .188 5.628 | .184 .184 5.62 ]
+~ xmatrix=[ 1.568 | .752 1.564 | .676 .76 1.568 ]
+~ cmatrix=[ 71.2 | -15.8 74.93 | -9.06 -16.67 71 ]
+~ normamps=80 emergamps=90
+
+! single phase B
+new linecode.4 nphases=1 units=mi 
+~ rmatrix= [(.704 8 *)]
+~ xmatrix= [(.196 8 *)]
+~ cmatrix=[(8.3 8 *)]
+~ normamps=80 emergamps=90
+
+! single phase A
+new linecode.5 nphases=1 units=mi
+~ rmatrix=[(.703 8 *)]
+~ xmatrix= [(.196 8 *)]
+~ cmatrix=[(8.18 8 *)]
+~ normamps=80 emergamps=90
+
+! single phase C
+new linecode.6 nphases=1 units=mi
+~ rmatrix=[(.702 8 *)]
+~ xmatrix= [(.196 8 *)]
+~ cmatrix=[(8.11 8 *)]
+~ normamps=80 emergamps=90
+
+
+new line.line1 Bus1=bus_F.1.2.3 Bus2=bus_1.1.2.3 linecode=1 length=10.0 units=ft
+new line.line10 Bus1=bus_9.1.2.3 Bus2=bus_10.1.2.3 linecode=1 length=660.0 units=ft
+new line.line11 Bus1=bus_10.1.2.3 Bus2=bus_11.1.2.3 linecode=1 length=660.0 units=ft
+new line.line2 Bus1=bus_1.1.2.3 Bus2=bus_2.1.2.3 linecode=1 length=650.0 units=ft
+new line.line3 Bus1=bus_2.1.2.3 Bus2=bus_3.1.2.3 linecode=1 length=660.0 units=ft
+new line.line4 Bus1=bus_3.1.2.3 Bus2=bus_4.1.2.3 linecode=1 length=660.0 units=ft
+new line.line5 Bus1=bus_4.1.2.3 Bus2=bus_5.1.2.3 linecode=1 length=660.0 units=ft
+new line.line6 Bus1=bus_5.1.2.3 Bus2=bus_6.1.2.3 linecode=1 length=660.0 units=ft
+new line.line7 Bus1=bus_6.1.2.3 Bus2=bus_7.1.2.3 linecode=1 length=660.0 units=ft
+new line.line8 Bus1=bus_7.1.2.3 Bus2=bus_8.1.2.3 linecode=1 length=660.0 units=ft
+new line.line9 Bus1=bus_8.1.2.3 Bus2=bus_9.1.2.3 linecode=1 length=660.0 units=ft
+new line.line1101 Bus1=bus_11.1.2.3 Bus2=bus_1101.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1102 Bus1=bus_1101.1.2.3 Bus2=bus_1102.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line11021 Bus1=bus_1102.1.2.3 Bus2=bus_11021.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line11022 Bus1=bus_11021.1.2.3 Bus2=bus_11022.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1103 Bus1=bus_1102.1.2.3 Bus2=bus_1103.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1104 Bus1=bus_1103.1.2.3 Bus2=bus_1104.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1105 Bus1=bus_1104.1.2.3 Bus2=bus_1105.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1106 Bus1=bus_1105.1.2.3 Bus2=bus_1106.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1107 Bus1=bus_1106.1.2.3 Bus2=bus_1107.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1108 Bus1=bus_1107.1.2.3 Bus2=bus_1108.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line1109 Bus1=bus_1108.1.2.3 Bus2=bus_1109.1.2.3 linecode=2 length=1320.0 units=ft
+new line.line12 Bus1=bus_11.1.2.3 Bus2=bus_12.1.2.3 linecode=2 length=660.0 units=ft
+new line.line13 Bus1=bus_12.1.2.3 Bus2=bus_13.1.2.3 linecode=2 length=660.0 units=ft
+new line.line1305 Bus1=bus_13.1.2.3 Bus2=bus_1305.1.2.3 linecode=2 length=330.0 units=ft
+new line.line1305_cap Bus1=bus_1305.1.2.3 Bus2=bus_1305cap.1.2.3 linecode=2 length=1.0 units=ft
+new line.line14 Bus1=bus_13.1.2.3 Bus2=bus_14.1.2.3 linecode=2 length=660.0 units=ft
+new line.line15 Bus1=bus_14.1.2.3 Bus2=bus_15.1.2.3 linecode=2 length=660.0 units=ft
+new line.line16 Bus1=bus_15.1.2.3 Bus2=bus_16.1.2.3 linecode=2 length=660.0 units=ft
+new line.line17 Bus1=bus_16.1.2.3 Bus2=bus_17.1.2.3 linecode=2 length=660.0 units=ft
+new line.line18 Bus1=bus_17.1.2.3 Bus2=bus_18.1.2.3 linecode=2 length=660.0 units=ft
+new line.line19 Bus1=bus_18.1.2.3 Bus2=bus_19.1.2.3 linecode=2 length=660.0 units=ft
+new line.line20 Bus1=bus_19.1.2.3 Bus2=bus_20.1.2.3 linecode=2 length=660.0 units=ft
+new line.line21 Bus1=bus_20.1.2.3 Bus2=bus_21.1.2.3 linecode=2 length=660.0 units=ft
+new line.line21s Bus1=bus_21.1.2.3 Bus2=bus_21s.1.2.3 switch=True linecode=2 length=1.0 units=ft
+new line.line22 Bus1=bus_21s.1.2.3 Bus2=bus_22.1.2.3 linecode=2 length=659.0 units=ft
+
+new line.line23 Bus1=bus_22r.1.2.3 Bus2=bus_23.1.2.3 linecode=2 length=659.0 units=ft
+new line.line24 Bus1=bus_23.1.2.3 Bus2=bus_24.1.2.3 linecode=2 length=660.0 units=ft
+new line.line25 Bus1=bus_24.1.2.3 Bus2=bus_25.1.2.3 linecode=2 length=660.0 units=ft
+new line.line11031 Bus1=bus_1103.1.2.3 Bus2=bus_11031.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line11051 Bus1=bus_1105.1.2.3 Bus2=bus_11051.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line11071 Bus1=bus_1107.1.2.3 Bus2=bus_11071.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line11091 Bus1=bus_1109.1.2.3 Bus2=bus_11091.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line1110 Bus1=bus_1109.1.2.3 Bus2=bus_1110.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line1111 Bus1=bus_1110.1.2.3 Bus2=bus_1111.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line11111 Bus1=bus_1111.1.2.3 Bus2=bus_11111.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line1112 Bus1=bus_1111.1.2.3 Bus2=bus_1112.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line1113 Bus1=bus_1112.1.2.3 Bus2=bus_1113.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line11131 Bus1=bus_1113.1.2.3 Bus2=bus_11131.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line1301 Bus1=bus_13.1.2.3 Bus2=bus_1301.1.2.3 linecode=3 length=660.0 units=ft
+new line.line1302 Bus1=bus_1301.1.2.3 Bus2=bus_1302.1.2.3 linecode=3 length=660.0 units=ft
+new line.line1303 Bus1=bus_1302.1.2.3 Bus2=bus_1303.1.2.3 linecode=3 length=660.0 units=ft
+new line.line1304 Bus1=bus_1303.1.2.3 Bus2=bus_1304.1.2.3 linecode=3 length=660.0 units=ft
+new line.line2301 Bus1=bus_23.1.2.3 Bus2=bus_2301.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line2501 Bus1=bus_25f.1.2.3 Bus2=bus_2501.1.2.3 linecode=3 length=1319.0 units=ft
+new line.line2502 Bus1=bus_2501.1.2.3 Bus2=bus_2502.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line2503 Bus1=bus_2502.1.2.3 Bus2=bus_2503.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line2504 Bus1=bus_2502.1.2.3 Bus2=bus_2504.1.2.3 linecode=3 length=660.0 units=ft
+new line.line2505 Bus1=bus_2504.1.2.3 Bus2=bus_2505.1.2.3 linecode=3 length=660.0 units=ft
+new line.line25f Bus1=bus_25.1.2.3 Bus2=bus_25f.1.2.3 linecode=3 length=1.0 units=ft normamps=40
+new line.line26 Bus1=bus_25.1.2.3 Bus2=bus_26.1.2.3 linecode=3 length=660.0 units=ft
+new line.line27 Bus1=bus_26.1.2.3 Bus2=bus_27.1.2.3 linecode=3 length=660.0 units=ft
+new line.line2701 Bus1=bus_27.1.2.3 Bus2=bus_2701.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line28 Bus1=bus_27.1.2.3 Bus2=bus_28.1.2.3 linecode=3 length=660.0 units=ft
+new line.line29 Bus1=bus_28.1.2.3 Bus2=bus_29.1.2.3 linecode=3 length=660.0 units=ft
+new line.line30 Bus1=bus_29.1.2.3 Bus2=bus_30.1.2.3 linecode=3 length=660.0 units=ft
+new line.line31 Bus1=bus_30.1.2.3 Bus2=bus_31.1.2.3 linecode=3 length=660.0 units=ft
+new line.line901 Bus1=bus_9.1.2.3 Bus2=bus_901.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line902 Bus1=bus_901.1.2.3 Bus2=bus_902.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line903 Bus1=bus_902.1.2.3 Bus2=bus_903.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line904 Bus1=bus_903.1.2.3 Bus2=bus_904.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line905 Bus1=bus_903.1.2.3 Bus2=bus_905.1.2.3 linecode=3 length=1320.0 units=ft
+new line.line1701 Bus1=bus_17.2 Bus2=bus_1701.2 linecode=4 length=660.0 units=ft
+new line.line1702 Bus1=bus_1701.2 Bus2=bus_1702.2 linecode=4 length=660.0 units=ft
+new line.line1703 Bus1=bus_1702.2 Bus2=bus_1703.2 linecode=4 length=660.0 units=ft
+new line.line1704 Bus1=bus_1703.2 Bus2=bus_1704.2 linecode=4 length=660.0 units=ft
+new line.line3101 Bus1=bus_31.2 Bus2=bus_3101.2 linecode=4 length=660.0 units=ft
+new line.line3102 Bus1=bus_3101.2 Bus2=bus_3102.2 linecode=4 length=660.0 units=ft
+new line.line501 Bus1=bus_5.2 Bus2=bus_501.2 linecode=4 length=660.0 units=ft
+new line.line502 Bus1=bus_501.2 Bus2=bus_502.2 linecode=4 length=660.0 units=ft
+new line.line503 Bus1=bus_502.2 Bus2=bus_503.2 linecode=4 length=660.0 units=ft
+new line.line504 Bus1=bus_503.2 Bus2=bus_504.2 linecode=4 length=660.0 units=ft
+new line.line1901 Bus1=bus_19.1 Bus2=bus_1901.1 linecode=5 length=660.0 units=ft
+new line.line1902 Bus1=bus_1901.1 Bus2=bus_1902.1 linecode=5 length=660.0 units=ft
+new line.line1903 Bus1=bus_1902.1 Bus2=bus_1903.1 linecode=5 length=660.0 units=ft
+new line.line1904 Bus1=bus_1903.1 Bus2=bus_1904.1 linecode=5 length=660.0 units=ft
+new line.line301 Bus1=bus_3.1 Bus2=bus_301.1 linecode=5 length=660.0 units=ft
+new line.line302 Bus1=bus_301.1 Bus2=bus_302.1 linecode=5 length=660.0 units=ft
+new line.line303 Bus1=bus_302.1 Bus2=bus_303.1 linecode=5 length=660.0 units=ft
+new line.line304 Bus1=bus_303.1 Bus2=bus_304.1 linecode=5 length=660.0 units=ft
+new line.line32 Bus1=bus_31.1 Bus2=bus_32.1 linecode=5 length=660.0 units=ft
+new line.line33 Bus1=bus_32.1 Bus2=bus_33.1 linecode=5 length=660.0 units=ft
+new line.line2101 Bus1=bus_21.3 Bus2=bus_2101.3 linecode=6 length=660.0 units=ft
+new line.line2102 Bus1=bus_2101.3 Bus2=bus_2102.3 linecode=6 length=660.0 units=ft
+new line.line2103 Bus1=bus_2102.3 Bus2=bus_2103.3 linecode=6 length=660.0 units=ft
+new line.line2104 Bus1=bus_2103.3 Bus2=bus_2104.3 linecode=6 length=660.0 units=ft
+new line.line2901 Bus1=bus_29.3 Bus2=bus_2901.3 linecode=6 length=660.0 units=ft
+new line.line2902 Bus1=bus_2901.3 Bus2=bus_2902.3 linecode=6 length=660.0 units=ft
+new line.line701 Bus1=bus_7f.3 Bus2=bus_701.3 linecode=6 length=659.0 units=ft
+new line.line702 Bus1=bus_701.3 Bus2=bus_702.3 linecode=6 length=660.0 units=ft
+new line.line703 Bus1=bus_702.3 Bus2=bus_703.3 linecode=6 length=660.0 units=ft
+new line.line704 Bus1=bus_703.3 Bus2=bus_704.3 linecode=6 length=660.0 units=ft
+new line.line7f Bus1=bus_7.3 Bus2=bus_7f.3 linecode=6 length=1.0 units=ft normamps=40
+
+! Add fuses manually
+new fuse.fuse7f MonitoredObj=line.line7f MonitoredTerm=1 SwitchedObj=line.line7f SwitchedTerm=1 FuseCurve=Tlink RatedCurrent=40 action=close
+new fuse.fuse25f MonitoredObj=line.line25f MonitoredTerm=1 SwitchedObj=line.line25f SwitchedTerm=1 FuseCurve=Tlink RatedCurrent=40 action=close
+
+! add a recloser out on the line
+new recloser.R2 monitoredobj=line.line12 MonitoredTerm=1 phasetrip=400.0 groundtrip=200.0
+~ TdPhDelayed=1.5 TdPhFast=1.5 TdGrDelayed=1.5 TdGrFast=1.5
+
+! Add Regulators Manually
+new transformer.reg22r_a phases=1 windings=2 kVs=[7.2 7.2] kVAs=[1666 1666] XHL=0.001 %LoadLoss=.001
+~ wdg=1 Bus=bus_22.1 
+~ wdg=2 Bus=bus_22r.1 MaxTap=1.1 MinTap=.9 NumTaps=32 
+New RegControl.reg22rctrl_a transformer=reg22r_a winding=2 vreg=124 band=2 ptratio=60 CTprim=100 delay=120
+
+new transformer.reg22r_b phases=1 windings=2 kVs=[7.2 7.2] kVAs=[1666 1666] XHL=0.001 %LoadLoss=.001
+~ wdg=1 Bus=bus_22.2 
+~ wdg=2 Bus=bus_22r.2 MaxTap=1.1 MinTap=.9 NumTaps=32 
+New RegControl.reg22rctrl_b transformer=reg22r_b winding=2 vreg=124 band=2 ptratio=60 CTprim=100 delay=120
+
+new transformer.reg22r_c phases=1 windings=2 kVs=[7.2 7.2] kVAs=[1666 1666] XHL=0.001 %LoadLoss=.001
+~ wdg=1 Bus=bus_22.3 
+~ wdg=2 Bus=bus_22r.3 MaxTap=1.1 MinTap=.9 NumTaps=32 
+New RegControl.reg22rctrl_c transformer=reg22r_c winding=2 vreg=124 band=2 ptratio=60 CTprim=100 delay=120
+
+new capacitor.cap_line_1305cap Bus1=bus_1305cap phases=3 kvar=1200.00 kv=12.47
+
+new load.bus_11022 Bus1=bus_11022.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_11031 Bus1=bus_11031.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_11051 Bus1=bus_11051.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_11071 Bus1=bus_11071.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_11091 Bus1=bus_11091.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_11111 Bus1=bus_11111.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_11131 Bus1=bus_11131.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=99.9 kvar=33.0
+new load.bus_1301 Bus1=bus_1301.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=99.9 kvar=33.0
+new load.bus_1302 Bus1=bus_1302.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_1303 Bus1=bus_1303.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_1304 Bus1=bus_1304.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_1701 Bus1=bus_1701.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_1702 Bus1=bus_1702.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_1703 Bus1=bus_1703.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_1704 Bus1=bus_1704.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_1901 Bus1=bus_1901.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_1902 Bus1=bus_1902.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_1903 Bus1=bus_1903.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_1904 Bus1=bus_1904.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_2101 Bus1=bus_2101.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_2102 Bus1=bus_2102.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_2103 Bus1=bus_2103.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_2104 Bus1=bus_2104.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_2301 Bus1=bus_2301.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_2501 Bus1=bus_2501.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_2503 Bus1=bus_2503.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_2504 Bus1=bus_2504.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=99.9 kvar=33.0
+new load.bus_2505 Bus1=bus_2505.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=99.9 kvar=33.0
+new load.bus_2701 Bus1=bus_2701.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_2901 Bus1=bus_2901.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_2902 Bus1=bus_2902.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_301 Bus1=bus_301.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_302 Bus1=bus_302.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_303 Bus1=bus_303.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_304 Bus1=bus_304.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=100.0 kvar=33.0
+new load.bus_3101 Bus1=bus_3101.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_3102 Bus1=bus_3102.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_32 Bus1=bus_32.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_33 Bus1=bus_33.1 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_501 Bus1=bus_501.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_502 Bus1=bus_502.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_503 Bus1=bus_503.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_504 Bus1=bus_504.2 phases=1 Conn=Wye Model=1 kV=7.2 kw=100.0 kvar=33.0
+new load.bus_701 Bus1=bus_701.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_702 Bus1=bus_702.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_703 Bus1=bus_703.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=50.0 kvar=16.0
+new load.bus_704 Bus1=bus_704.3 phases=1 Conn=Wye Model=1 kV=7.2 kw=100.0 kvar=33.0
+new load.bus_901 Bus1=bus_901.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_902 Bus1=bus_902.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=200.1 kvar=66.0
+new load.bus_904 Bus1=bus_904.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+new load.bus_905 Bus1=bus_905.1.2.3 phases=3 Conn=Wye Model=1 kV=12.47 kw=300.0 kvar=99.9
+
+! set load model to constant current
+BatchEdit Load..* model=5 
+
+!Add generator manually
+new Generator.SolarFarm phases=3 bus1=bus_11031 kV=12.47 kW=1000 pf=1 model=7 Vminpu=.8 Vmaxpu=1.2
+~ kVA=1000 
+~ enabled=no
+
+! Add Energy Storage Manually - Initialize with kW=0 to prevent output until control is added.
+New Storage.Battery phases=3 bus1=bus_11022 kv=12.47 kW=0 pf=1 conn=wye kVA=1000 kWrated=1000 kWhrated=1000 
+~ %EffCharge=82 %EffDischarge=84 %IdlingkW=0 %Idlingkvar=0 model=1 Vminpu=.8 Vmaxpu=1.2 LimitCurrent=True State=Idling
+~ enabled=no
+
+// energy meters at each recloser
+New EnergyMeter.m1 element=Line.line1 Terminal=1
+New EnergyMeter.m2 element=Line.line12 Terminal=1
+
+Set Maxiterations=30     ! Sometimes the solution takes more than the default 15 iterations
+Set MaxControlIter=100
+
+Set loadmult=1.0
+
+Set VoltageBases=[115.0 12.47]
+CalcVoltageBases
+
+Buscoords Buscoords.dat
+
+Solve
+

@@ -1,0 +1,12 @@
+New "Generator.steamgen1" bus1=M1026CHP-3 kv=12.47 kVA=4000 Xdp=0.27 Xdpp=0.2 H=2 model=3 kW=1000 Vpu=1.00
+New "Generator.diesel620" bus1=m1209-DIES1 kv=0.48 kvar=0 kVA=775 conn=wye model=7 kW=0
+New "Generator.lngengine100" bus1=M1142-LNG1 kv=0.48 kvar=0 kVA=125 conn=wye model=7 kW=0
+New "Generator.microturb-1" bus1=m2001-MT1 kv=0.48 kVA=250 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=50
+New "Generator.microturb-2" bus1=m2001-MT2 kv=0.48 kVA=250 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=0
+New "Generator.microturb-3" bus1=m2001-MT3 kv=0.48 kVA=250 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=0
+New "Generator.lngengine1800" bus1=m1089-LNG1 kv=0.48 kVA=2250 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=0
+New "Generator.diesel590" bus1=m1089-DIES1 kv=0.48 kvar=0 kVA=737 conn=wye model=7 kW=0
+New "Generator.microturb-4" bus1=m1069-MT1 kv=0.48 kVA=250 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=100
+New "Generator.windturb-1" bus1=m1186-WT1 kv=0.48 kVA=75 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=20
+New "Generator.windturb-2" bus1=m1186-WT2 kv=0.48 kVA=75 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=20
+New "Generator.windturb-3" bus1=m1186-WT3 kv=0.48 kVA=75 pf=0.95 Xdp=0.27 Xdpp=0.2 H=2 conn=wye model=1 kW=20

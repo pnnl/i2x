@@ -1,0 +1,3854 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "nclass": "source",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 115.0,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "vsource.source"
+        ],
+        "source": true,
+        "x": 0.0,
+        "y": 1000.0
+      },
+      "id": "bus_hv"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 0.0,
+        "y": 500.0
+      },
+      "id": "bus_xf"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "id": "bus_f"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 10.0,
+        "y": 0.0
+      },
+      "id": "bus_1"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 5280.0,
+        "y": 0.0
+      },
+      "id": "bus_9"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 5940.0,
+        "y": 0.0
+      },
+      "id": "bus_10"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 6600.0,
+        "y": 0.0
+      },
+      "id": "bus_11"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 660.0,
+        "y": 0.0
+      },
+      "id": "bus_2"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 1320.0,
+        "y": 0.0
+      },
+      "id": "bus_3"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 1980.0,
+        "y": 0.0
+      },
+      "id": "bus_4"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 2640.0,
+        "y": 0.0
+      },
+      "id": "bus_5"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 3300.0,
+        "y": 0.0
+      },
+      "id": "bus_6"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 3960.0,
+        "y": 0.0
+      },
+      "id": "bus_7"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 4620.0,
+        "y": 0.0
+      },
+      "id": "bus_8"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 6600.0,
+        "y": -1320.0
+      },
+      "id": "bus_1101"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 6600.0,
+        "y": -2640.0
+      },
+      "id": "bus_1102"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 6600.0,
+        "y": -3960.0
+      },
+      "id": "bus_11021"
+    },
+    {
+      "nclass": "storage",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 1000.0,
+        "batkw": 1000.0,
+        "batkwh": 1000.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_11022",
+          "storage.battery"
+        ],
+        "source": false,
+        "x": 5280.0,
+        "y": -3960.0
+      },
+      "id": "bus_11022"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 7920.0,
+        "y": -2640.0
+      },
+      "id": "bus_1103"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 9240.0,
+        "y": -2640.0
+      },
+      "id": "bus_1104"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 10560.0,
+        "y": -2640.0
+      },
+      "id": "bus_1105"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 11880.0,
+        "y": -2640.0
+      },
+      "id": "bus_1106"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 13200.0,
+        "y": -2640.0
+      },
+      "id": "bus_1107"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 14520.0,
+        "y": -2640.0
+      },
+      "id": "bus_1108"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 15840.0,
+        "y": -2640.0
+      },
+      "id": "bus_1109"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 7260.0,
+        "y": 0.0
+      },
+      "id": "bus_12"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 7920.0,
+        "y": 0.0
+      },
+      "id": "bus_13"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 7920.0,
+        "y": -330.0
+      },
+      "id": "bus_1305"
+    },
+    {
+      "nclass": "capacitor",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 1200.0,
+        "shunts": [
+          "capacitor.cap_line_1305cap"
+        ],
+        "source": false,
+        "x": 7920.0,
+        "y": -331.0
+      },
+      "id": "bus_1305cap"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 8580.0,
+        "y": 0.0
+      },
+      "id": "bus_14"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 9240.0,
+        "y": 0.0
+      },
+      "id": "bus_15"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 9900.0,
+        "y": 0.0
+      },
+      "id": "bus_16"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 10560.0,
+        "y": 0.0
+      },
+      "id": "bus_17"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 11220.0,
+        "y": 0.0
+      },
+      "id": "bus_18"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 11880.0,
+        "y": 0.0
+      },
+      "id": "bus_19"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 12540.0,
+        "y": 0.0
+      },
+      "id": "bus_20"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 13200.0,
+        "y": 0.0
+      },
+      "id": "bus_21"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 13201.0,
+        "y": 0.0
+      },
+      "id": "bus_21s"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 13860.0,
+        "y": 0.0
+      },
+      "id": "bus_22"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 14061.0,
+        "y": 0.0
+      },
+      "id": "bus_22r"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 14520.0,
+        "y": 0.0
+      },
+      "id": "bus_23"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 15180.0,
+        "y": 0.0
+      },
+      "id": "bus_24"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 15840.0,
+        "y": 0.0
+      },
+      "id": "bus_25"
+    },
+    {
+      "nclass": "generator",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 1000.0,
+        "genkw": 1000.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_11031",
+          "generator.solarfarm"
+        ],
+        "source": false,
+        "x": 7920.0,
+        "y": -3960.0
+      },
+      "id": "bus_11031"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_11051"
+        ],
+        "source": false,
+        "x": 10560.0,
+        "y": -3960.0
+      },
+      "id": "bus_11051"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_11071"
+        ],
+        "source": false,
+        "x": 13200.0,
+        "y": -3960.0
+      },
+      "id": "bus_11071"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_11091"
+        ],
+        "source": false,
+        "x": 15840.0,
+        "y": -3960.0
+      },
+      "id": "bus_11091"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 17160.0,
+        "y": -2640.0
+      },
+      "id": "bus_1110"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 18480.0,
+        "y": -2640.0
+      },
+      "id": "bus_1111"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_11111"
+        ],
+        "source": false,
+        "x": 18480.0,
+        "y": -3960.0
+      },
+      "id": "bus_11111"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 19800.0,
+        "y": -2640.0
+      },
+      "id": "bus_1112"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 21120.0,
+        "y": -2640.0
+      },
+      "id": "bus_1113"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 99.9,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_11131"
+        ],
+        "source": false,
+        "x": 21120.0,
+        "y": -3960.0
+      },
+      "id": "bus_11131"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 99.9,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1301"
+        ],
+        "source": false,
+        "x": 7920.0,
+        "y": 660.0
+      },
+      "id": "bus_1301"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1302"
+        ],
+        "source": false,
+        "x": 7920.0,
+        "y": 1320.0
+      },
+      "id": "bus_1302"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1303"
+        ],
+        "source": false,
+        "x": 7920.0,
+        "y": 1980.0
+      },
+      "id": "bus_1303"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1304"
+        ],
+        "source": false,
+        "x": 7920.0,
+        "y": 2640.0
+      },
+      "id": "bus_1304"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2301"
+        ],
+        "source": false,
+        "x": 14520.0,
+        "y": -1320.0
+      },
+      "id": "bus_2301"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 15840.0,
+        "y": 101.0
+      },
+      "id": "bus_25f"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2501"
+        ],
+        "source": false,
+        "x": 15840.0,
+        "y": 1320.0
+      },
+      "id": "bus_2501"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 15840.0,
+        "y": 2640.0
+      },
+      "id": "bus_2502"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2503"
+        ],
+        "source": false,
+        "x": 14520.0,
+        "y": 2640.0
+      },
+      "id": "bus_2503"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 99.9,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2504"
+        ],
+        "source": false,
+        "x": 15840.0,
+        "y": 3300.0
+      },
+      "id": "bus_2504"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 99.9,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2505"
+        ],
+        "source": false,
+        "x": 15840.0,
+        "y": 3960.0
+      },
+      "id": "bus_2505"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 16500.0,
+        "y": 0.0
+      },
+      "id": "bus_26"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 17160.0,
+        "y": 0.0
+      },
+      "id": "bus_27"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2701"
+        ],
+        "source": false,
+        "x": 17160.0,
+        "y": -1320.0
+      },
+      "id": "bus_2701"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 17820.0,
+        "y": 0.0
+      },
+      "id": "bus_28"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 18480.0,
+        "y": 0.0
+      },
+      "id": "bus_29"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 19140.0,
+        "y": 0.0
+      },
+      "id": "bus_30"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 19800.0,
+        "y": 0.0
+      },
+      "id": "bus_31"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_901"
+        ],
+        "source": false,
+        "x": 5280.0,
+        "y": 1320.0
+      },
+      "id": "bus_901"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 200.1,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_902"
+        ],
+        "source": false,
+        "x": 5280.0,
+        "y": 2640.0
+      },
+      "id": "bus_902"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 5280.0,
+        "y": 3960.0
+      },
+      "id": "bus_903"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_904"
+        ],
+        "source": false,
+        "x": 6600.0,
+        "y": 3960.0
+      },
+      "id": "bus_904"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 3,
+        "nomkv": 12.47,
+        "loadkw": 300.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_905"
+        ],
+        "source": false,
+        "x": 3960.0,
+        "y": 3960.0
+      },
+      "id": "bus_905"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1701"
+        ],
+        "source": false,
+        "x": 10560.0,
+        "y": 660.0
+      },
+      "id": "bus_1701"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1702"
+        ],
+        "source": false,
+        "x": 10560.0,
+        "y": 1320.0
+      },
+      "id": "bus_1702"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1703"
+        ],
+        "source": false,
+        "x": 10560.0,
+        "y": 1980.0
+      },
+      "id": "bus_1703"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1704"
+        ],
+        "source": false,
+        "x": 10560.0,
+        "y": 2640.0
+      },
+      "id": "bus_1704"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_3101"
+        ],
+        "source": false,
+        "x": 19800.0,
+        "y": -660.0
+      },
+      "id": "bus_3101"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_3102"
+        ],
+        "source": false,
+        "x": 19800.0,
+        "y": -1320.0
+      },
+      "id": "bus_3102"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_501"
+        ],
+        "source": false,
+        "x": 2640.0,
+        "y": 660.0
+      },
+      "id": "bus_501"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_502"
+        ],
+        "source": false,
+        "x": 2640.0,
+        "y": 1320.0
+      },
+      "id": "bus_502"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_503"
+        ],
+        "source": false,
+        "x": 2640.0,
+        "y": 1980.0
+      },
+      "id": "bus_503"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 100.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_504"
+        ],
+        "source": false,
+        "x": 2640.0,
+        "y": 2640.0
+      },
+      "id": "bus_504"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1901"
+        ],
+        "source": false,
+        "x": 11880.0,
+        "y": -660.0
+      },
+      "id": "bus_1901"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1902"
+        ],
+        "source": false,
+        "x": 11880.0,
+        "y": -1320.0
+      },
+      "id": "bus_1902"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1903"
+        ],
+        "source": false,
+        "x": 12540.0,
+        "y": -1320.0
+      },
+      "id": "bus_1903"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_1904"
+        ],
+        "source": false,
+        "x": 13200.0,
+        "y": -1320.0
+      },
+      "id": "bus_1904"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_301"
+        ],
+        "source": false,
+        "x": 1320.0,
+        "y": -660.0
+      },
+      "id": "bus_301"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_302"
+        ],
+        "source": false,
+        "x": 1320.0,
+        "y": -1320.0
+      },
+      "id": "bus_302"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_303"
+        ],
+        "source": false,
+        "x": 1320.0,
+        "y": -1980.0
+      },
+      "id": "bus_303"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 100.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_304"
+        ],
+        "source": false,
+        "x": 1320.0,
+        "y": -2640.0
+      },
+      "id": "bus_304"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_32"
+        ],
+        "source": false,
+        "x": 20460.0,
+        "y": 0.0
+      },
+      "id": "bus_32"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_33"
+        ],
+        "source": false,
+        "x": 21120.0,
+        "y": 0.0
+      },
+      "id": "bus_33"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2101"
+        ],
+        "source": false,
+        "x": 13200.0,
+        "y": 660.0
+      },
+      "id": "bus_2101"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2102"
+        ],
+        "source": false,
+        "x": 13200.0,
+        "y": 1320.0
+      },
+      "id": "bus_2102"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2103"
+        ],
+        "source": false,
+        "x": 13200.0,
+        "y": 1980.0
+      },
+      "id": "bus_2103"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2104"
+        ],
+        "source": false,
+        "x": 13200.0,
+        "y": 2640.0
+      },
+      "id": "bus_2104"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2901"
+        ],
+        "source": false,
+        "x": 18480.0,
+        "y": 660.0
+      },
+      "id": "bus_2901"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_2902"
+        ],
+        "source": false,
+        "x": 18480.0,
+        "y": 1320.0
+      },
+      "id": "bus_2902"
+    },
+    {
+      "nclass": "bus",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 0.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [],
+        "source": false,
+        "x": 3960.0,
+        "y": -101.0
+      },
+      "id": "bus_7f"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_701"
+        ],
+        "source": false,
+        "x": 3960.0,
+        "y": -660.0
+      },
+      "id": "bus_701"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_702"
+        ],
+        "source": false,
+        "x": 3960.0,
+        "y": -1320.0
+      },
+      "id": "bus_702"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 50.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_703"
+        ],
+        "source": false,
+        "x": 3960.0,
+        "y": -1980.0
+      },
+      "id": "bus_703"
+    },
+    {
+      "nclass": "load",
+      "ndata": {
+        "phases": 1,
+        "nomkv": 12.47,
+        "loadkw": 100.0,
+        "genkva": 0.0,
+        "genkw": 0.0,
+        "pvkva": 0.0,
+        "pvkw": 0.0,
+        "batkva": 0.0,
+        "batkw": 0.0,
+        "batkwh": 0.0,
+        "capkvar": 0.0,
+        "shunts": [
+          "load.bus_704"
+        ],
+        "source": false,
+        "x": 3960.0,
+        "y": -2640.0
+      },
+      "id": "bus_704"
+    }
+  ],
+  "links": [
+    {
+      "eclass": "transformer",
+      "ename": "sub",
+      "edata": {
+        "phases": 3,
+        "windings": 2,
+        "buses": [
+          "bus_hv",
+          "bus_xf"
+        ]
+      },
+      "source": "bus_hv",
+      "target": "bus_xf"
+    },
+    {
+      "eclass": "recloser",
+      "ename": "r1",
+      "edata": {
+        "bus1": "bus_xf",
+        "bus2": "bus_f",
+        "units": "ft",
+        "length": 10.0,
+        "Switch": false,
+        "Recloser": true,
+        "phases": 3
+      },
+      "source": "bus_xf",
+      "target": "bus_f"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1",
+      "edata": {
+        "bus1": "bus_f",
+        "bus2": "bus_1",
+        "units": "ft",
+        "length": 10.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_f",
+      "target": "bus_1"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2",
+      "edata": {
+        "bus1": "bus_1",
+        "bus2": "bus_2",
+        "units": "ft",
+        "length": 650.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1",
+      "target": "bus_2"
+    },
+    {
+      "eclass": "line",
+      "ename": "line10",
+      "edata": {
+        "bus1": "bus_9",
+        "bus2": "bus_10",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_9",
+      "target": "bus_10"
+    },
+    {
+      "eclass": "line",
+      "ename": "line901",
+      "edata": {
+        "bus1": "bus_9",
+        "bus2": "bus_901",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_9",
+      "target": "bus_901"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11",
+      "edata": {
+        "bus1": "bus_10",
+        "bus2": "bus_11",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_10",
+      "target": "bus_11"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1101",
+      "edata": {
+        "bus1": "bus_11",
+        "bus2": "bus_1101",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_11",
+      "target": "bus_1101"
+    },
+    {
+      "eclass": "recloser",
+      "ename": "line12",
+      "edata": {
+        "bus1": "bus_11",
+        "bus2": "bus_12",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "Recloser": true,
+        "phases": 3
+      },
+      "source": "bus_11",
+      "target": "bus_12"
+    },
+    {
+      "eclass": "line",
+      "ename": "line3",
+      "edata": {
+        "bus1": "bus_2",
+        "bus2": "bus_3",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_2",
+      "target": "bus_3"
+    },
+    {
+      "eclass": "line",
+      "ename": "line4",
+      "edata": {
+        "bus1": "bus_3",
+        "bus2": "bus_4",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_3",
+      "target": "bus_4"
+    },
+    {
+      "eclass": "line",
+      "ename": "line301",
+      "edata": {
+        "bus1": "bus_3",
+        "bus2": "bus_301",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_3",
+      "target": "bus_301"
+    },
+    {
+      "eclass": "line",
+      "ename": "line5",
+      "edata": {
+        "bus1": "bus_4",
+        "bus2": "bus_5",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_4",
+      "target": "bus_5"
+    },
+    {
+      "eclass": "line",
+      "ename": "line6",
+      "edata": {
+        "bus1": "bus_5",
+        "bus2": "bus_6",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_5",
+      "target": "bus_6"
+    },
+    {
+      "eclass": "line",
+      "ename": "line501",
+      "edata": {
+        "bus1": "bus_5",
+        "bus2": "bus_501",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_5",
+      "target": "bus_501"
+    },
+    {
+      "eclass": "line",
+      "ename": "line7",
+      "edata": {
+        "bus1": "bus_6",
+        "bus2": "bus_7",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_6",
+      "target": "bus_7"
+    },
+    {
+      "eclass": "line",
+      "ename": "line8",
+      "edata": {
+        "bus1": "bus_7",
+        "bus2": "bus_8",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_7",
+      "target": "bus_8"
+    },
+    {
+      "eclass": "fuse",
+      "ename": "line7f",
+      "edata": {
+        "bus1": "bus_7",
+        "bus2": "bus_7f",
+        "units": "ft",
+        "length": 1.0,
+        "Switch": false,
+        "Fuse": true,
+        "phases": 1
+      },
+      "source": "bus_7",
+      "target": "bus_7f"
+    },
+    {
+      "eclass": "line",
+      "ename": "line9",
+      "edata": {
+        "bus1": "bus_8",
+        "bus2": "bus_9",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_8",
+      "target": "bus_9"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1102",
+      "edata": {
+        "bus1": "bus_1101",
+        "bus2": "bus_1102",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1101",
+      "target": "bus_1102"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11021",
+      "edata": {
+        "bus1": "bus_1102",
+        "bus2": "bus_11021",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1102",
+      "target": "bus_11021"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1103",
+      "edata": {
+        "bus1": "bus_1102",
+        "bus2": "bus_1103",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1102",
+      "target": "bus_1103"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11022",
+      "edata": {
+        "bus1": "bus_11021",
+        "bus2": "bus_11022",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_11021",
+      "target": "bus_11022"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1104",
+      "edata": {
+        "bus1": "bus_1103",
+        "bus2": "bus_1104",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1103",
+      "target": "bus_1104"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11031",
+      "edata": {
+        "bus1": "bus_1103",
+        "bus2": "bus_11031",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1103",
+      "target": "bus_11031"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1105",
+      "edata": {
+        "bus1": "bus_1104",
+        "bus2": "bus_1105",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1104",
+      "target": "bus_1105"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1106",
+      "edata": {
+        "bus1": "bus_1105",
+        "bus2": "bus_1106",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1105",
+      "target": "bus_1106"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11051",
+      "edata": {
+        "bus1": "bus_1105",
+        "bus2": "bus_11051",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1105",
+      "target": "bus_11051"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1107",
+      "edata": {
+        "bus1": "bus_1106",
+        "bus2": "bus_1107",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1106",
+      "target": "bus_1107"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1108",
+      "edata": {
+        "bus1": "bus_1107",
+        "bus2": "bus_1108",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1107",
+      "target": "bus_1108"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11071",
+      "edata": {
+        "bus1": "bus_1107",
+        "bus2": "bus_11071",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1107",
+      "target": "bus_11071"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1109",
+      "edata": {
+        "bus1": "bus_1108",
+        "bus2": "bus_1109",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1108",
+      "target": "bus_1109"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11091",
+      "edata": {
+        "bus1": "bus_1109",
+        "bus2": "bus_11091",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1109",
+      "target": "bus_11091"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1110",
+      "edata": {
+        "bus1": "bus_1109",
+        "bus2": "bus_1110",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1109",
+      "target": "bus_1110"
+    },
+    {
+      "eclass": "line",
+      "ename": "line13",
+      "edata": {
+        "bus1": "bus_12",
+        "bus2": "bus_13",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_12",
+      "target": "bus_13"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1305",
+      "edata": {
+        "bus1": "bus_13",
+        "bus2": "bus_1305",
+        "units": "ft",
+        "length": 330.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_13",
+      "target": "bus_1305"
+    },
+    {
+      "eclass": "line",
+      "ename": "line14",
+      "edata": {
+        "bus1": "bus_13",
+        "bus2": "bus_14",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_13",
+      "target": "bus_14"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1301",
+      "edata": {
+        "bus1": "bus_13",
+        "bus2": "bus_1301",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_13",
+      "target": "bus_1301"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1305_cap",
+      "edata": {
+        "bus1": "bus_1305",
+        "bus2": "bus_1305cap",
+        "units": "ft",
+        "length": 1.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1305",
+      "target": "bus_1305cap"
+    },
+    {
+      "eclass": "line",
+      "ename": "line15",
+      "edata": {
+        "bus1": "bus_14",
+        "bus2": "bus_15",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_14",
+      "target": "bus_15"
+    },
+    {
+      "eclass": "line",
+      "ename": "line16",
+      "edata": {
+        "bus1": "bus_15",
+        "bus2": "bus_16",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_15",
+      "target": "bus_16"
+    },
+    {
+      "eclass": "line",
+      "ename": "line17",
+      "edata": {
+        "bus1": "bus_16",
+        "bus2": "bus_17",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_16",
+      "target": "bus_17"
+    },
+    {
+      "eclass": "line",
+      "ename": "line18",
+      "edata": {
+        "bus1": "bus_17",
+        "bus2": "bus_18",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_17",
+      "target": "bus_18"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1701",
+      "edata": {
+        "bus1": "bus_17",
+        "bus2": "bus_1701",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_17",
+      "target": "bus_1701"
+    },
+    {
+      "eclass": "line",
+      "ename": "line19",
+      "edata": {
+        "bus1": "bus_18",
+        "bus2": "bus_19",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_18",
+      "target": "bus_19"
+    },
+    {
+      "eclass": "line",
+      "ename": "line20",
+      "edata": {
+        "bus1": "bus_19",
+        "bus2": "bus_20",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_19",
+      "target": "bus_20"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1901",
+      "edata": {
+        "bus1": "bus_19",
+        "bus2": "bus_1901",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_19",
+      "target": "bus_1901"
+    },
+    {
+      "eclass": "line",
+      "ename": "line21",
+      "edata": {
+        "bus1": "bus_20",
+        "bus2": "bus_21",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_20",
+      "target": "bus_21"
+    },
+    {
+      "eclass": "switch",
+      "ename": "line21s",
+      "edata": {
+        "bus1": "bus_21",
+        "bus2": "bus_21s",
+        "units": "ft",
+        "Switch": true,
+        "length": 1.0,
+        "SwtControl": false,
+        "phases": 3
+      },
+      "source": "bus_21",
+      "target": "bus_21s"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2101",
+      "edata": {
+        "bus1": "bus_21",
+        "bus2": "bus_2101",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_21",
+      "target": "bus_2101"
+    },
+    {
+      "eclass": "line",
+      "ename": "line22",
+      "edata": {
+        "bus1": "bus_21s",
+        "bus2": "bus_22",
+        "units": "ft",
+        "length": 659.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_21s",
+      "target": "bus_22"
+    },
+    {
+      "eclass": "regulator",
+      "ename": "reg22r_c",
+      "edata": {
+        "phases": 3,
+        "windings": 2,
+        "buses": [
+          "bus_22",
+          "bus_22r"
+        ],
+        "regulator": true
+      },
+      "source": "bus_22",
+      "target": "bus_22r"
+    },
+    {
+      "eclass": "line",
+      "ename": "line23",
+      "edata": {
+        "bus1": "bus_22r",
+        "bus2": "bus_23",
+        "units": "ft",
+        "length": 659.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_22r",
+      "target": "bus_23"
+    },
+    {
+      "eclass": "line",
+      "ename": "line24",
+      "edata": {
+        "bus1": "bus_23",
+        "bus2": "bus_24",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_23",
+      "target": "bus_24"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2301",
+      "edata": {
+        "bus1": "bus_23",
+        "bus2": "bus_2301",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_23",
+      "target": "bus_2301"
+    },
+    {
+      "eclass": "line",
+      "ename": "line25",
+      "edata": {
+        "bus1": "bus_24",
+        "bus2": "bus_25",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_24",
+      "target": "bus_25"
+    },
+    {
+      "eclass": "fuse",
+      "ename": "line25f",
+      "edata": {
+        "bus1": "bus_25",
+        "bus2": "bus_25f",
+        "units": "ft",
+        "length": 1.0,
+        "Switch": false,
+        "Fuse": true,
+        "phases": 3
+      },
+      "source": "bus_25",
+      "target": "bus_25f"
+    },
+    {
+      "eclass": "line",
+      "ename": "line26",
+      "edata": {
+        "bus1": "bus_25",
+        "bus2": "bus_26",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_25",
+      "target": "bus_26"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1111",
+      "edata": {
+        "bus1": "bus_1110",
+        "bus2": "bus_1111",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1110",
+      "target": "bus_1111"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11111",
+      "edata": {
+        "bus1": "bus_1111",
+        "bus2": "bus_11111",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1111",
+      "target": "bus_11111"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1112",
+      "edata": {
+        "bus1": "bus_1111",
+        "bus2": "bus_1112",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1111",
+      "target": "bus_1112"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1113",
+      "edata": {
+        "bus1": "bus_1112",
+        "bus2": "bus_1113",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1112",
+      "target": "bus_1113"
+    },
+    {
+      "eclass": "line",
+      "ename": "line11131",
+      "edata": {
+        "bus1": "bus_1113",
+        "bus2": "bus_11131",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1113",
+      "target": "bus_11131"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1302",
+      "edata": {
+        "bus1": "bus_1301",
+        "bus2": "bus_1302",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1301",
+      "target": "bus_1302"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1303",
+      "edata": {
+        "bus1": "bus_1302",
+        "bus2": "bus_1303",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1302",
+      "target": "bus_1303"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1304",
+      "edata": {
+        "bus1": "bus_1303",
+        "bus2": "bus_1304",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_1303",
+      "target": "bus_1304"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2501",
+      "edata": {
+        "bus1": "bus_25f",
+        "bus2": "bus_2501",
+        "units": "ft",
+        "length": 1319.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_25f",
+      "target": "bus_2501"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2502",
+      "edata": {
+        "bus1": "bus_2501",
+        "bus2": "bus_2502",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_2501",
+      "target": "bus_2502"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2503",
+      "edata": {
+        "bus1": "bus_2502",
+        "bus2": "bus_2503",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_2502",
+      "target": "bus_2503"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2504",
+      "edata": {
+        "bus1": "bus_2502",
+        "bus2": "bus_2504",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_2502",
+      "target": "bus_2504"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2505",
+      "edata": {
+        "bus1": "bus_2504",
+        "bus2": "bus_2505",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_2504",
+      "target": "bus_2505"
+    },
+    {
+      "eclass": "line",
+      "ename": "line27",
+      "edata": {
+        "bus1": "bus_26",
+        "bus2": "bus_27",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_26",
+      "target": "bus_27"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2701",
+      "edata": {
+        "bus1": "bus_27",
+        "bus2": "bus_2701",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_27",
+      "target": "bus_2701"
+    },
+    {
+      "eclass": "line",
+      "ename": "line28",
+      "edata": {
+        "bus1": "bus_27",
+        "bus2": "bus_28",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_27",
+      "target": "bus_28"
+    },
+    {
+      "eclass": "line",
+      "ename": "line29",
+      "edata": {
+        "bus1": "bus_28",
+        "bus2": "bus_29",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_28",
+      "target": "bus_29"
+    },
+    {
+      "eclass": "line",
+      "ename": "line30",
+      "edata": {
+        "bus1": "bus_29",
+        "bus2": "bus_30",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_29",
+      "target": "bus_30"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2901",
+      "edata": {
+        "bus1": "bus_29",
+        "bus2": "bus_2901",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_29",
+      "target": "bus_2901"
+    },
+    {
+      "eclass": "line",
+      "ename": "line31",
+      "edata": {
+        "bus1": "bus_30",
+        "bus2": "bus_31",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_30",
+      "target": "bus_31"
+    },
+    {
+      "eclass": "line",
+      "ename": "line3101",
+      "edata": {
+        "bus1": "bus_31",
+        "bus2": "bus_3101",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_31",
+      "target": "bus_3101"
+    },
+    {
+      "eclass": "line",
+      "ename": "line32",
+      "edata": {
+        "bus1": "bus_31",
+        "bus2": "bus_32",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_31",
+      "target": "bus_32"
+    },
+    {
+      "eclass": "line",
+      "ename": "line902",
+      "edata": {
+        "bus1": "bus_901",
+        "bus2": "bus_902",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_901",
+      "target": "bus_902"
+    },
+    {
+      "eclass": "line",
+      "ename": "line903",
+      "edata": {
+        "bus1": "bus_902",
+        "bus2": "bus_903",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_902",
+      "target": "bus_903"
+    },
+    {
+      "eclass": "line",
+      "ename": "line904",
+      "edata": {
+        "bus1": "bus_903",
+        "bus2": "bus_904",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_903",
+      "target": "bus_904"
+    },
+    {
+      "eclass": "line",
+      "ename": "line905",
+      "edata": {
+        "bus1": "bus_903",
+        "bus2": "bus_905",
+        "units": "ft",
+        "length": 1320.0,
+        "Switch": false,
+        "phases": 3
+      },
+      "source": "bus_903",
+      "target": "bus_905"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1702",
+      "edata": {
+        "bus1": "bus_1701",
+        "bus2": "bus_1702",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_1701",
+      "target": "bus_1702"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1703",
+      "edata": {
+        "bus1": "bus_1702",
+        "bus2": "bus_1703",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_1702",
+      "target": "bus_1703"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1704",
+      "edata": {
+        "bus1": "bus_1703",
+        "bus2": "bus_1704",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_1703",
+      "target": "bus_1704"
+    },
+    {
+      "eclass": "line",
+      "ename": "line3102",
+      "edata": {
+        "bus1": "bus_3101",
+        "bus2": "bus_3102",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_3101",
+      "target": "bus_3102"
+    },
+    {
+      "eclass": "line",
+      "ename": "line502",
+      "edata": {
+        "bus1": "bus_501",
+        "bus2": "bus_502",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_501",
+      "target": "bus_502"
+    },
+    {
+      "eclass": "line",
+      "ename": "line503",
+      "edata": {
+        "bus1": "bus_502",
+        "bus2": "bus_503",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_502",
+      "target": "bus_503"
+    },
+    {
+      "eclass": "line",
+      "ename": "line504",
+      "edata": {
+        "bus1": "bus_503",
+        "bus2": "bus_504",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_503",
+      "target": "bus_504"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1902",
+      "edata": {
+        "bus1": "bus_1901",
+        "bus2": "bus_1902",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_1901",
+      "target": "bus_1902"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1903",
+      "edata": {
+        "bus1": "bus_1902",
+        "bus2": "bus_1903",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_1902",
+      "target": "bus_1903"
+    },
+    {
+      "eclass": "line",
+      "ename": "line1904",
+      "edata": {
+        "bus1": "bus_1903",
+        "bus2": "bus_1904",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_1903",
+      "target": "bus_1904"
+    },
+    {
+      "eclass": "line",
+      "ename": "line302",
+      "edata": {
+        "bus1": "bus_301",
+        "bus2": "bus_302",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_301",
+      "target": "bus_302"
+    },
+    {
+      "eclass": "line",
+      "ename": "line303",
+      "edata": {
+        "bus1": "bus_302",
+        "bus2": "bus_303",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_302",
+      "target": "bus_303"
+    },
+    {
+      "eclass": "line",
+      "ename": "line304",
+      "edata": {
+        "bus1": "bus_303",
+        "bus2": "bus_304",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_303",
+      "target": "bus_304"
+    },
+    {
+      "eclass": "line",
+      "ename": "line33",
+      "edata": {
+        "bus1": "bus_32",
+        "bus2": "bus_33",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_32",
+      "target": "bus_33"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2102",
+      "edata": {
+        "bus1": "bus_2101",
+        "bus2": "bus_2102",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_2101",
+      "target": "bus_2102"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2103",
+      "edata": {
+        "bus1": "bus_2102",
+        "bus2": "bus_2103",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_2102",
+      "target": "bus_2103"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2104",
+      "edata": {
+        "bus1": "bus_2103",
+        "bus2": "bus_2104",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_2103",
+      "target": "bus_2104"
+    },
+    {
+      "eclass": "line",
+      "ename": "line2902",
+      "edata": {
+        "bus1": "bus_2901",
+        "bus2": "bus_2902",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_2901",
+      "target": "bus_2902"
+    },
+    {
+      "eclass": "line",
+      "ename": "line701",
+      "edata": {
+        "bus1": "bus_7f",
+        "bus2": "bus_701",
+        "units": "ft",
+        "length": 659.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_7f",
+      "target": "bus_701"
+    },
+    {
+      "eclass": "line",
+      "ename": "line702",
+      "edata": {
+        "bus1": "bus_701",
+        "bus2": "bus_702",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_701",
+      "target": "bus_702"
+    },
+    {
+      "eclass": "line",
+      "ename": "line703",
+      "edata": {
+        "bus1": "bus_702",
+        "bus2": "bus_703",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_702",
+      "target": "bus_703"
+    },
+    {
+      "eclass": "line",
+      "ename": "line704",
+      "edata": {
+        "bus1": "bus_703",
+        "bus2": "bus_704",
+        "units": "ft",
+        "length": 660.0,
+        "Switch": false,
+        "phases": 1
+      },
+      "source": "bus_703",
+      "target": "bus_704"
+    }
+  ]
+}

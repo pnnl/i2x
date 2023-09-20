@@ -1,0 +1,29 @@
+<workspace name="EMT_Boot_Camp_WS_V4" version="5.0.1" crc="97419536">
+  <projects>
+    <project type="library" name="Solar_Lib" filepath=".\Solar_Lib_V4.pslx" />
+    <project type="project" name="Solar_SMIB_S0_FLAT_V4" filepath=".\Solar_SMIB_S0_FLAT_V4.pscx" />
+    <project type="project" name="Solar_SMIB_S1_FRT_V4" filepath=".\Solar_SMIB_S1_FRT_V4.pscx" />
+    <project type="project" name="Solar_SMIB_S2_P_Step_V4" filepath=".\Solar_SMIB_S2_P_Step_V4.pscx" />
+    <project type="project" name="Solar_SMIB_S3_V_Step_V4" filepath=".\Solar_SMIB_S3_V_Step_V4.pscx" />
+    <project type="project" name="Solar_SMIB_S4_V_Disturbance_V4" filepath=".\Solar_SMIB_S4_V_Disturbance_V4.pscx" />
+    <project type="project" name="Solar_SMIB_S5_F_Disturbance_V4" filepath=".\Solar_SMIB_S5_F_Disturbance_V4.pscx" />
+  </projects>
+  <simulations>
+    <simulation name="default" dependson="None" id="674255640" classid="SimulationSet">
+      <task namespace="Solar_SMIB_S0_FLAT_V4" classid="SimulationTask" id="1879665192" controlgroup="" volley="1" affinity="1" clean="false" />
+      <task namespace="Solar_SMIB_S1_FRT_V4" classid="SimulationTask" id="1527436379" controlgroup="" volley="1" affinity="1" clean="false" />
+      <task namespace="Solar_SMIB_S2_P_Step_V4" classid="SimulationTask" id="944452238" controlgroup="" volley="1" affinity="1" clean="false" />
+      <task namespace="Solar_SMIB_S3_V_Step_V4" classid="SimulationTask" id="1003259048" controlgroup="" volley="1" affinity="1" clean="false" />
+      <task namespace="Solar_SMIB_S4_V_Disturbance_V4" classid="SimulationTask" id="1303091009" controlgroup="" volley="1" affinity="1" clean="false" />
+      <task namespace="Solar_SMIB_S5_F_Disturbance_V4" classid="SimulationTask" id="1904574833" controlgroup="" volley="1" affinity="1" clean="false" />
+    </simulation>
+  </simulations>
+  <pmr />
+  <messagegrid expanded="">
+    <column name="Icon" />
+    <column name="Id" />
+    <column name="Component" />
+    <column name="Namespace" />
+    <column name="Description" />
+  </messagegrid>
+</workspace>

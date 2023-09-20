@@ -1,0 +1,10 @@
+New "Capacitor.capbank1a" bus1=r20185.1 kv=7.2 kvar=300 phases=1 conn=wye
+New "Capacitor.capbank1b" bus1=r20185.2 kv=7.2 kvar=300 phases=1 conn=wye
+New "Capacitor.capbank1c" bus1=r20185.3 kv=7.2 kvar=300 phases=1 conn=wye
+New "Capacitor.capbank2a" bus1=r42247.1 kv=7.2 kvar=300 phases=1 conn=wye
+New "Capacitor.capbank2b" bus1=r42247.2 kv=7.2 kvar=300 phases=1 conn=wye
+New "Capacitor.capbank2c" bus1=r42247.3 kv=7.2 kvar=300 phases=1 conn=wye
+New "Capacitor.capbank3a" bus1=r42246.1 kv=7.2 kvar=400 phases=1 conn=wye
+New "Capacitor.capbank3b" bus1=r42246.2 kv=7.2 kvar=400 phases=1 conn=wye
+New "Capacitor.capbank3c" bus1=r42246.3 kv=7.2 kvar=400 phases=1 conn=wye
+New "Capacitor.capbank4" bus1=r18242 kv=12.47 kvar=900 phases=3 conn=wye

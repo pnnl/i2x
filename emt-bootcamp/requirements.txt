@@ -1,0 +1,6 @@
+matplotlib>=3.5.2
+jupyter>=1.0.0
+ipympl>=0.9.3
+scipy>=1.8.1
+numpy>=1.23.0
+

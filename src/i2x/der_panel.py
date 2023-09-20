@@ -42,51 +42,6 @@ fontchoice=('Segoe UI', 16)
 monochoice=('Courier', fontchoice[1])
 boldchoice=(fontchoice[0], fontchoice[1], 'bold')
 
-# TODO: factor these into a separate file
-feederChoices = {
-  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
-  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
-  }
-
-solarChoices = {
-  'pclear':{'dt':1.0, 'file':'pclear.dat', 'npts':0, 'data':None},
-  'pcloud':{'dt':1.0, 'file':'pcloud.dat', 'npts':0, 'data':None},
-  'pvduty':{'dt':1.0, 'file':'pvloadshape-1sec-2900pts.dat', 'npts':0, 'data':None}
-  }
-
-loadChoices = {
-  'default':{'t':[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
-             'p':[0.677,0.6256,0.6087,0.5833,0.58028,0.6025,0.657,0.7477,0.832,0.88,0.94,0.989,0.985,0.98,0.9898,0.999,1,0.958,0.936,0.913,0.876,0.876,0.828,0.756,0.677]},
-  'flat':{'t':[0,24],'p':[1.0, 1.0]}
-  }
-
-inverterChoices = {
-  'CONSTANT_PF':{'v':[0.90,1.10],
-                 'p':[1.00,1.00],
-                 'q':[0.00,0.00]},
-  'VOLT_WATT':{'v':[0.90,1.06,1.10],
-               'p':[1.00,1.00,0.20],
-               'q':[0.00,0.00,0.00]}, 
-  'VOLT_VAR_CATA':{'v':[0.90,1.10],
-                   'p':[1.00,1.00],
-                   'q':[0.25,-.25]},
-  'VOLT_VAR_CATB':{'v':[0.90,0.92,0.98,1.02,1.08,1.10],
-                   'p':[1.00,1.00,1.00,1.00,1.00,1.00],
-                   'q':[0.44,0.44,0.00,0.00,-.44,-.44]},
-  'VOLT_VAR_AVR':{'v':[0.90,0.98,1.02,1.10],
-                  'p':[1.00,1.00,1.00,1.00],
-                  'q':[0.44,0.44,-.44,-.44]}, 
-  'VOLT_VAR_VOLT_WATT':{'v':[0.90,0.92,0.98,1.02,1.06,1.08,1.10],
-                        'p':[1.00,1.00,1.00,1.00,1.00,0.60,0.20],
-                        'q':[0.44,0.44,0.00,0.00,-.2933,-.44,-.44]},
-  'VOLT_VAR_14H':{'v':[0.90,0.94,0.97,1.03,1.06,1.10],
-                  'p':[1.00,1.00,1.00,1.00,1.00,0.00],
-                  'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
-  }
-
-solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY']#, 'YEARLY']
-controlModeChoices = ['OFF', 'STATIC'] #, 'TIME', 'EVENT']
-
 class DERConfigGUI:
   def __init__(self, master):
     self.master = master
@@ -98,18 +53,26 @@ class DERConfigGUI:
     s = ttk.Style()
     s.configure('.', font=fontchoice)
 
-    for key, row in solarChoices.items():
-      fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
-      row['data'] = np.loadtxt (fname)
-      row['npts'] = row['data'].shape[0]
-      peak = max(np.abs(row['data']))
-      row['data'] /= peak
+    for key, row in i2x.solarChoices.items():
+      if 'file' in row:
+        fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
+        row['data'] = np.loadtxt (fname)
+        row['npts'] = row['data'].shape[0]
+        peak = max(np.abs(row['data']))
+        row['data'] /= peak
+    for key, row in i2x.loadChoices.items():
+      if 'file' in row:
+        fname = pkg_resources.resource_filename (__name__, support_dir + row['file'])
+        row['data'] = np.loadtxt (fname)
+        row['npts'] = row['data'].shape[0]
+        peak = max(np.abs(row['data']))
+        row['data'] /= peak
 
     self.f1 = ttk.Frame(self.nb, name='varsNet')
     lab = ttk.Label(self.f1, text='Feeder Model: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_feeder = ttk.Combobox(self.f1, values=[i for i in feederChoices], name='cbFeeders', font=fontchoice)
-    self.cb_feeder.set(next(iter(feederChoices)))
+    self.cb_feeder = ttk.Combobox(self.f1, values=[i for i in i2x.feederChoices], name='cbFeeders', font=fontchoice)
+    self.cb_feeder.set(next(iter(i2x.feederChoices)))
     self.cb_feeder.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_feeder.bind('<<ComboboxSelected>>', self.UpdateFeeder)
     self.f1.columnconfigure(0, weight=0)
@@ -137,8 +100,8 @@ class DERConfigGUI:
     self.f3 = ttk.Frame(self.nb, name='varsSolar')
     lab = ttk.Label(self.f3, text='Solar Profile: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_solar = ttk.Combobox(self.f3, values=[i for i in solarChoices], name='cbSolars', font=fontchoice)
-    self.cb_solar.set(next(iter(solarChoices)))
+    self.cb_solar = ttk.Combobox(self.f3, values=[i for i in i2x.solarChoices], name='cbSolars', font=fontchoice)
+    self.cb_solar.set(next(iter(i2x.solarChoices)))
     self.cb_solar.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_solar.bind('<<ComboboxSelected>>', self.UpdateSolarProfile)
     self.f3.columnconfigure(0, weight=0)
@@ -157,8 +120,8 @@ class DERConfigGUI:
     self.f4 = ttk.Frame(self.nb, name='varsLoad')
     lab = ttk.Label(self.f4, text='Load Profile: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_load = ttk.Combobox(self.f4, values=[i for i in loadChoices], name='cbLoads', font=fontchoice)
-    self.cb_load.set(next(iter(loadChoices)))
+    self.cb_load = ttk.Combobox(self.f4, values=[i for i in i2x.loadChoices], name='cbLoads', font=fontchoice)
+    self.cb_load.set(next(iter(i2x.loadChoices)))
     self.cb_load.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_load.bind('<<ComboboxSelected>>', self.UpdateLoadProfile)
     lab = ttk.Label(self.f4, text='Load Multiplier: ', relief=tk.RIDGE)
@@ -184,8 +147,8 @@ class DERConfigGUI:
     self.f5 = ttk.Frame(self.nb, name='varsInverter')
     lab = ttk.Label(self.f5, text='Inverter Mode: ', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_inverter = ttk.Combobox(self.f5, values=[i for i in inverterChoices], name='cbInverters', font=fontchoice)
-    self.cb_inverter.set(next(iter(inverterChoices)))
+    self.cb_inverter = ttk.Combobox(self.f5, values=[i for i in i2x.inverterChoices], name='cbInverters', font=fontchoice)
+    self.cb_inverter.set(next(iter(i2x.inverterChoices)))
     self.cb_inverter.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_inverter.bind('<<ComboboxSelected>>', self.UpdateInverterMode)
     lab = ttk.Label(self.f5, text='Power Factor: ', relief=tk.RIDGE)
@@ -211,12 +174,12 @@ class DERConfigGUI:
     self.f6 = ttk.Frame(self.nb, name='varsOutput')
     lab = ttk.Label(self.f6, text='Solution Mode', relief=tk.RIDGE)
     lab.grid(row=0, column=0, sticky=tk.NSEW)
-    self.cb_soln_mode = ttk.Combobox(self.f6, values=solutionModeChoices, name='cbSolutionMode', font=fontchoice)
+    self.cb_soln_mode = ttk.Combobox(self.f6, values=i2x.solutionModeChoices, name='cbSolutionMode', font=fontchoice)
     self.cb_soln_mode.grid(row=0, column=1, sticky=tk.NSEW)
     self.cb_soln_mode.set('DAILY')
     lab = ttk.Label(self.f6, text='Control Mode', relief=tk.RIDGE)
     lab.grid(row=0, column=2, sticky=tk.NSEW)
-    self.cb_ctrl_mode = ttk.Combobox(self.f6, values=controlModeChoices, name='cbControlMode', font=fontchoice)
+    self.cb_ctrl_mode = ttk.Combobox(self.f6, values=i2x.controlModeChoices, name='cbControlMode', font=fontchoice)
     self.cb_ctrl_mode.grid(row=0, column=3, sticky=tk.NSEW)
     self.cb_ctrl_mode.set('STATIC')
     lab = ttk.Label(self.f6, text='Stop Time [min]:', relief=tk.RIDGE)
@@ -300,8 +263,8 @@ class DERConfigGUI:
         errors.append ('In DUTY mode, Step Seconds {:d} must be greater than 0 and no more than 5'.format (step_seconds))
     if (load_mult <= 0.0) or (load_mult > 1.0):
       errors.append ('Load Multiplier {:.4f} must be greater than 0.0 and no more than 1.0'.format (load_mult))
-    if (abs(inv_pf) <= 0.8) or (abs(inv_pf) > 1.0):
-      errors.append ('Inverter Power Factor {:.4f} must have magnitude between 0.8 and 1.0, inclusive'.format (inv_pf))
+    if (abs(inv_pf) < 0.9153) or (abs(inv_pf) > 1.0):
+      errors.append ('Inverter Power Factor {:.4f} must have magnitude between 0.9153 and 1.0, inclusive'.format (inv_pf))
     if len(errors) > 0:
       messagebox.showerror('Please Correct these Errors', '\n'.join(errors))
       return False
@@ -318,7 +281,7 @@ class DERConfigGUI:
       errors.append ('% Rooftops {:.4f} must lie between 0 and 100, inclusive'.format(pct_roofs))
     else:
       pu_roofs = pct_roofs * 0.01
-      for key, row in self.resloads.items():
+      for key, row in self.graph_dirs["resloads"].items():
         if random.random() <= pu_roofs:
           bus = row['bus']
           kv = row['kv']
@@ -327,7 +290,7 @@ class DERConfigGUI:
           rooftop_total += kw
           change_lines.append('new pvsystem.{:s} bus1={:s}.1.2 phases=2 kv={:.3f} kva={:.2f} pmpp={:.2f} irrad=1.0 pf=1.0'.format (key, bus, kv, kva, kw))
 
-    for key, row in self.largeder.items():
+    for key, row in self.graph_dirs["largeder"].items():
       print (key, row)
       kw = float(self.f2.nametowidget('kw_{:s}'.format(key)).get())
       large_total += kw
@@ -369,18 +332,17 @@ class DERConfigGUI:
 
   def get_pv_kv_base(self, name):
     kvnom = 0.120
-    if name in self.pvder:
-      row = self.pvder[name]
+    if name in self.graph_dirs["pvder"]:
+      row = self.graph_dirs["pvder"][name]
       kvnom = row['kv']
       if row['phases'] > 1:
         kvnom /= SQRT3
-    elif name in self.largeder: # maybe user changed the type from generator or storage
-      row = self.largeder[name]
+    elif name in self.graph_dirs["largeder"]: # maybe user changed the type from generator or storage
+      row = self.graph_dirs["largeder"][name]
       kvnom = row['kv']
       if row['phases'] > 1:
         kvnom /= SQRT3
     return kvnom
-
 
   def update_entry(self, ctl, val):
     ctl.delete(0, tk.END)
@@ -389,6 +351,10 @@ class DERConfigGUI:
   def clear_label(self, lbl, text):
     lbl.config(text=text)
     lbl.configure(style='Black.TLabel')
+
+  def failed_label(self, lbl):
+    lbl.config(text='FAILED')
+    lbl.configure(style='Red.TLabel')
 
   def update_label(self, lbl, val, fmt, thresh):
     valstr = fmt.format(val)
@@ -423,38 +389,45 @@ class DERConfigGUI:
 
     print (feeder_choice, solar_profile, load_mult, load_profile, inv_mode, inv_pf,
            soln_mode, ctrl_mode, step_seconds, num_steps)
-    dict = i2x.run_opendss(choice = feeder_choice,
-                           pvcurve = solar_profile,
-                           loadmult = load_mult,
-                           loadcurve = load_profile,
-                           invmode = inv_mode,
-                           invpf = inv_pf, 
-                           stepsize = step_seconds, 
-                           numsteps = num_steps,
-                           ctrlmode = ctrl_mode,
-                           solnmode = soln_mode,
-                           change_lines = change_lines)
+    d = i2x.run_opendss(choice = feeder_choice,
+                        pvcurve = solar_profile,
+                        loadmult = load_mult,
+                        loadcurve = load_profile,
+                        invmode = inv_mode,
+                        invpf = inv_pf, 
+                        stepsize = step_seconds, 
+                        numsteps = num_steps,
+                        ctrlmode = ctrl_mode,
+                        solnmode = soln_mode,
+                        change_lines = change_lines)
     self.txt_output.insert(tk.END, 'Analysis Run on {:s} at {:s}'.format(feeder_choice, datetime.datetime.now().strftime('%a %d-%b-%Y %H:%M:%S')))
     self.txt_output.insert(tk.END, '  Large DER={:.2f} kW, Rooftop PV={:.2f} kW\n'.format(large_total, rooftop_total))
     self.txt_output.insert(tk.END, '  LoadMult={:.4f}, LoadProfle={:s}\n'.format(load_mult, load_profile))
     self.txt_output.insert(tk.END, '  SolarProfile={:s}, InvMode={:s}, InvPF={:.3f}\n'.format(solar_profile, inv_mode, inv_pf))
-    self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(dict['num_cap_switches']))
-    self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(dict['num_tap_changes']))
-    self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(dict['num_relay_trips']))
-    self.txt_output.insert(tk.END, '{:d} Nodes with Low Voltage, Lowest={:.4f}pu at {:s}\n'.format(dict['num_low_voltage'], dict['vminpu'], dict['node_vmin']))
-    self.txt_output.insert(tk.END, '{:d} Nodes with High Voltage, Highest={:.4f}pu at {:s}\n'.format(dict['num_high_voltage'], dict['vmaxpu'], dict['node_vmax']))
+    self.txt_output.insert(tk.END, 'Number of Capacitor Switchings = {:d}\n'.format(d['num_cap_switches']))
+    self.txt_output.insert(tk.END, 'Number of Tap Changes = {:d}\n'.format(d['num_tap_changes']))
+    self.txt_output.insert(tk.END, 'Number of Relay Trips = {:d}\n'.format(d['num_relay_trips']))
 
-    self.update_label (self.lab_relay, dict['num_relay_trips'], '{:d} relay trips', 0)
+    if not d['converged']:
+      self.txt_output.insert(tk.END, 'Solution Failed to Converge!')
+      for lbl in [self.lab_vmin, self.lab_vmax, self.lab_vdiff, self.lab_een, self.lab_ue]:
+        self.failed_label (lbl)
+      return
+
+    self.txt_output.insert(tk.END, '{:d} Nodes with Low Final Voltage, Lowest={:.4f}pu at {:s}\n'.format(d['num_low_voltage'], d['vminpu'], d['node_vmin']))
+    self.txt_output.insert(tk.END, '{:d} Nodes with High Final Voltage, Highest={:.4f}pu at {:s}\n'.format(d['num_high_voltage'], d['vmaxpu'], d['node_vmax']))
+
+    self.update_label (self.lab_relay, d['num_relay_trips'], '{:d} relay trips', 0)
 
     if soln_mode == 'SNAPSHOT':
-      self.update_label (self.lab_vmin, dict['vminpu'], 'Vmin={:.4f} pu', -0.95)
-      self.update_label (self.lab_vmax, dict['vmaxpu'], 'Vmax={:.4f} pu', 1.05)
+      self.update_label (self.lab_vmin, d['vminpu'], 'Vmin={:.4f} pu', -0.95)
+      self.update_label (self.lab_vmax, d['vmaxpu'], 'Vmax={:.4f} pu', 1.05)
       self.clear_label (self.lab_vdiff, 'Vdiff %')
       self.clear_label (self.lab_een, 'EEN %')
       self.clear_label (self.lab_ue, 'UE %')
       return
 
-    base = dict['kWh_Load']
+    base = d['kWh_Load']
     pctSource = 0.0
     pctLosses = 0.0
     pctGeneration = 0.0
@@ -462,30 +435,30 @@ class DERConfigGUI:
     pctUE = 0.0
     pctEEN = 0.0
     if base > 0.0:
-      pctSource = 100.0 * dict['kWh_Net'] / base
-      pctLosses = 100.0 * dict['kWh_Loss'] / base
-      pctGeneration = 100.0 * dict['kWh_Gen'] / base
-      pctSolar = 100.0 * dict['kWh_PV'] / base
-      pctEEN = 100.0 * dict['kWh_EEN'] / base
-      pctUE = 100.0 * dict['kWh_UE'] / base
+      pctSource = 100.0 * d['kWh_Net'] / base
+      pctLosses = 100.0 * d['kWh_Loss'] / base
+      pctGeneration = 100.0 * d['kWh_Gen'] / base
+      pctSolar = 100.0 * d['kWh_PV'] / base
+      pctEEN = 100.0 * d['kWh_EEN'] / base
+      pctUE = 100.0 * d['kWh_UE'] / base
     pctReactive = 0.0
-    if dict['kWh_PV'] > 0.0:
-      pctReactive = abs(100.0 * dict['kvarh_PV'] / dict['kWh_PV'])
-    self.txt_output.insert(tk.END, 'Load Served =               {:11.2f} kWh\n'.format(dict['kWh_Load']))
-    self.txt_output.insert(tk.END, 'Substation Energy =         {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Net'], pctSource))
-    self.txt_output.insert(tk.END, 'Losses =                    {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Loss'], pctLosses))
-    self.txt_output.insert(tk.END, 'Generation =                {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_Gen'], pctGeneration))
-    self.txt_output.insert(tk.END, 'Solar Output =              {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_PV'], pctSolar))
-    self.txt_output.insert(tk.END, 'Solar Reactive Energy =     {:11.2f} kvarh, {:.4f}% of P\n'.format(dict['kvarh_PV'], pctReactive))
-    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_EEN'], pctEEN))
-    self.txt_output.insert(tk.END, 'Unserved Energy =           {:11.2f} kWh, {:.4f}% of Load\n'.format(dict['kWh_UE'], pctUE))
-#    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:11.2f} kWh\n'.format(dict['kWh_OverN']))
-#    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:11.2f} kWh\n'.format(dict['kWh_OverE']))
+    if d['kWh_PV'] > 0.0:
+      pctReactive = abs(100.0 * d['kvarh_PV'] / d['kWh_PV'])
+    self.txt_output.insert(tk.END, 'Load Served =               {:11.2f} kWh\n'.format(d['kWh_Load']))
+    self.txt_output.insert(tk.END, 'Substation Energy =         {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_Net'], pctSource))
+    self.txt_output.insert(tk.END, 'Losses =                    {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_Loss'], pctLosses))
+    self.txt_output.insert(tk.END, 'Generation =                {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_Gen'], pctGeneration))
+    self.txt_output.insert(tk.END, 'Solar Output =              {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_PV'], pctSolar))
+    self.txt_output.insert(tk.END, 'Solar Reactive Energy =     {:11.2f} kvarh, {:.4f}% of P\n'.format(d['kvarh_PV'], pctReactive))
+    self.txt_output.insert(tk.END, 'Energy Exceeding Normal =   {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_EEN'], pctEEN))
+    self.txt_output.insert(tk.END, 'Unserved Energy =           {:11.2f} kWh, {:.4f}% of Load\n'.format(d['kWh_UE'], pctUE))
+#    self.txt_output.insert(tk.END, 'Normal Overload Energy =    {:11.2f} kWh\n'.format(d['kWh_OverN']))
+#    self.txt_output.insert(tk.END, 'Emergency Overload Energy = {:11.2f} kWh\n'.format(d['kWh_OverE']))
 
     pv_vmin = 100.0
     pv_vmax = 0.0
     pv_vdiff = 0.0
-    for key, row in dict['pvdict'].items():
+    for key, row in d['pvdict'].items():
       v_base = 1000.0 * self.get_pv_kv_base (key)
       row['vmin'] /= v_base
       row['vmax'] /= v_base
@@ -510,7 +483,7 @@ class DERConfigGUI:
 
     if self.output_details.get() > 0:
       self.txt_output.insert(tk.END, 'PV Name                    kWh     kvarh     Vmin     Vmax    Vmean Vdiff[%]\n')
-      for key, row in dict['pvdict'].items():
+      for key, row in d['pvdict'].items():
         self.txt_output.insert(tk.END, '{:20s} {:9.2f} {:9.2f} {:8.4f} {:8.4f} {:8.4f} {:8.4f}\n'.format(key, row['kWh'], row['kvarh'], 
                                                                                row['vmin'], row['vmax'], row['vmean'], row['vdiff']))
 
@@ -521,26 +494,26 @@ class DERConfigGUI:
 
     pvkw = 0.0
     pvkva = 0.0
-    npv = len(self.pvder)
-    for key, row in self.pvder.items():
+    npv = len(self.graph_dirs["pvder"])
+    for key, row in self.graph_dirs["pvder"].items():
       pvkw += row['kw']
       pvkva += row['kva']
 
     genkw = 0.0
     genkva = 0.0
-    ngen = len(self.gender)
-    for key, row in self.gender.items():
+    ngen = len(self.graph_dirs["gender"])
+    for key, row in self.graph_dirs["gender"].items():
       genkw += row['kw']
       genkva += row['kva']
 
     batkw = 0.0
     batkva = 0.0
-    nbat = len(self.batder)
-    for key, row in self.batder.items():
+    nbat = len(self.graph_dirs["batder"])
+    for key, row in self.graph_dirs["batder"].items():
       batkw += row['kw']
       batkva += row['kva']
 
-    lab_load = ttk.Label(self.f2, text='Total Load = {:.2f} kW'.format(self.loadkw), relief=tk.RIDGE)
+    lab_load = ttk.Label(self.f2, text='Total Load = {:.2f} kW'.format(self.graph_dirs["loadkw"]), relief=tk.RIDGE)
     lab_load.grid(row=0, column=0, sticky=tk.NSEW)
     lab_pv = ttk.Label(self.f2, text='Existing Solar = {:.2f} kVA, {:.2f} kW in {:d} units'.format(pvkva, pvkw, npv), relief=tk.RIDGE)
     lab_pv.grid(row=1, column=0, sticky=tk.NSEW)
@@ -548,7 +521,7 @@ class DERConfigGUI:
     lab_bat.grid(row=2, column=0, sticky=tk.NSEW)
     lab_gen = ttk.Label(self.f2, text='Existing Generation = {:.2f} kVA, {:.2f} kW in {:d} units'.format(genkva, genkw, ngen), relief=tk.RIDGE)
     lab_gen.grid(row=3, column=0, sticky=tk.NSEW)
-    lab_roofs = ttk.Label(self.f2, text='{:d} Available Residential Rooftops, Use [%]:'.format(len(self.resloads)), relief=tk.RIDGE)
+    lab_roofs = ttk.Label(self.f2, text='{:d} Available Residential Rooftops, Use [%]:'.format(len(self.graph_dirs["resloads"])), relief=tk.RIDGE)
     lab_roofs.grid(row=4, column=0, sticky=tk.NSEW)
     self.ent_pct_roofs = ttk.Entry(self.f2, name='pct_roofs', font=fontchoice)
     self.ent_pct_roofs.insert(0, '10.0')
@@ -564,7 +537,7 @@ class DERConfigGUI:
     lab.grid(row=5, column=3, sticky=tk.NSEW)
 
     idx = 6
-    for key, row in self.largeder.items():
+    for key, row in self.graph_dirs["largeder"].items():
       lab = ttk.Label(self.f2, text='Name={:s} Bus={:s} kV={:.2f} kW={:.2f} kVA={:.2f} Type={:s}'.format (key,
                                                                                                           row['bus'],
                                                                                                           row['kv'],
@@ -586,14 +559,15 @@ class DERConfigGUI:
 
   def UpdateFeeder(self, event):
     key = self.cb_feeder.get()
-    row = feederChoices[key]
+    row = i2x.feederChoices[key]
     self.feeder_name = key
     self.feeder_path = row['path']
     self.feeder_base = row['base']
     fname = pkg_resources.resource_filename (__name__, row['path'] + row['network'])
     self.G = i2x.load_opendss_graph(fname)
 
-    self.pvder, self.gender, self.batder, self.largeder, self.resloads, self.loadkw = i2x.parse_opendss_graph(self.G)
+    self.graph_dirs = i2x.parse_opendss_graph(self.G)
+    # self.pvder, self.gender, self.batder, self.largeder, self.resloads, bus3phase, self.loadkw = i2x.parse_opendss_graph(self.G)
 
     self.ax_feeder.cla()
     i2x.plot_opendss_feeder (self.G, plot_labels=True, on_canvas=True, 
@@ -603,12 +577,16 @@ class DERConfigGUI:
 
   def UpdateSolarProfile(self, event):
     key = self.cb_solar.get()
-    row = solarChoices[key]
-    dt = row['dt']
-    npts = row['npts']
-    tmax = dt * (npts - 1)
-    y = row['data']
-    t = np.linspace (0.0, tmax, npts) / 3600.0
+    row = i2x.solarChoices[key]
+    if 'dt' in row:
+      dt = row['dt']
+      npts = row['npts']
+      tmax = dt * (npts - 1)
+      y = row['data']
+      t = np.linspace (0.0, tmax, npts) / 3600.0
+    else:
+      t = row['t']
+      y = row['p']
     self.ax_solar.cla()
     self.ax_solar.plot(t, y, color='blue')
     self.ax_solar.set_xlabel('Time [hr]')
@@ -619,9 +597,18 @@ class DERConfigGUI:
   def UpdateLoadProfile(self, event):
     ticks = [0, 4, 8, 12, 16, 20, 24]
     key = self.cb_load.get()
-    row = loadChoices[key]
+    row = i2x.loadChoices[key]
+    if 'dt' in row:
+      dt = row['dt']
+      npts = row['npts']
+      tmax = dt * (npts - 1)
+      p = row['data']
+      t = np.linspace (0.0, tmax, npts) / 3600.0
+    else:
+      t = row['t']
+      p = row['p']
     self.ax_load.cla()
-    self.ax_load.plot(row['t'], row['p'], color='blue')
+    self.ax_load.plot(t, p, color='blue')
     self.ax_load.set_xlabel('Hour [pu]')
     self.ax_load.set_ylabel('Power [pu]')
     self.ax_load.set_xticks(ticks)
@@ -632,7 +619,7 @@ class DERConfigGUI:
   def UpdateInverterMode(self, event):
     ticks = [0.90, 0.92, 0.94, 0.96, 0.98, 1.00, 1.02, 1.04, 1.06, 1.08, 1.10]
     key = self.cb_inverter.get()
-    row = inverterChoices[key]
+    row = i2x.inverterChoices[key]
     self.ax_inverter.cla()
     self.ax_inverter.plot(row['v'], row['p'], label='Real', color='blue')
     self.ax_inverter.plot(row['v'], row['q'], label='Reactive', color='red')
