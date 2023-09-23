@@ -1,0 +1,121 @@
+// Copyright (C) 2023 Battelle Memorial Institute
+// file: StudyScript.dwj
+// Automating system study cases in EMTP for the EMT bootcamp.
+
+// Each row represents a faultable line from bus 14. The elements are:
+//  faulted line mnemonic
+//  name of the fault object
+//  name of the breaker at bus 14
+//  name of the remote-end breaker
+var line_sets = [
+  ['L15', 'fault1', 'SW1', 'SW2'],
+  ['L4',  'fault3', 'SW6', 'SW5'],
+  ['L13', 'fault2', 'SW3', 'SW4']
+]
+var iTAG = 0;
+var iFLT = 1;
+var iBRK1 = 2;
+var iBRK2 = 3;
+  
+// preamble to load support functions and find interfaces to modified components in d[]
+var idCCT = 0;
+var idSIM = 1;
+var idWRITER = 2;
+var idLINES = 3; // array of arrays for  the line_sets
+var idFLT = 0;
+var idBRK1 = 1;
+var idBRK2 = 2;
+
+var start = new Date();
+
+// preamble to load support functions and find interfaces to modified components
+var d = prepare_case (line_sets);
+
+//run_suite (d);
+
+var end = new Date();
+var seconds = (end - start) / 1000.0;
+writeln (seconds, 's elapsed time.');
+
+// Load support functions that will be used, from the EMTP installed
+//  location, under the directory "Info Scripts/device_services"
+function prepare_case (ls) {
+  parseScriptFile('start_emtp/startemtp_UseRunEMTP.dwj');
+  parseScriptFile('make_file_name.dwj');
+  parseScriptFile('program_.dwj');
+  parseScriptFile('run_emtp.dwj');
+  parseScriptFile('check_my_filename.dwj');
+  parseScriptFile('find_data_in_object.dwj');
+  parseScriptFile('sim_options_m.dwj');
+
+  parseScriptFile('fault_m.dwj');
+  parseScriptFile('sw0_m.dwj');
+  parseScriptFile('comtrade_writer_m.dwj');
+
+  prepare_design_folder();
+
+  var cct = currentCircuit();
+  cct=cct.findByLocator('CC'); //move to top circuit
+  var sim = new oDevice_(cct);
+
+  var designfilename=design_file_name();
+  writeln ('Running study script on ', designfilename);
+
+  var dev = cct.devices('Name', 'write1');
+  var oWriter = new oDevice_comtrade_writer(dev[0]);
+
+  var ls_cmps = []
+  for (i in line_sets) {
+    dev = cct.devices('Name', line_sets[i][1]);
+    var oFault = new oDevice_fault(dev[0]);
+    dev = cct.devices('Name', line_sets[i][2]);
+    var oBrk1 = new oDevice_sw0(dev[0]);
+    dev = cct.devices('Name', line_sets[i][3]);
+    var oBrk2 = new oDevice_sw0(dev[0]);
+    ls_cmps.push([oFault, oBrk1, oBrk2]);
+  }
+
+  return [cct, sim, oWriter, ls_cmps];
+}
+
+function run_suite (d) {
+  set_no_fault (d);
+  set_zero_dref (d);
+  for (i in st_cases) {
+    var tag = st_cases[i][0];
+    set_writer (d[iWRITER], tag);
+    set_tmax (d[iSIM], st_cases[i][2]);
+    // interface, Pref, mode, Vref, Qref, PFref
+    set_ppc (d[iPLANT], 1.0, st_cases[i][1], 1.0, 0.0, 1.0)
+    set_fu_expression (d[idPREF], st_cases[i][3]);
+    set_fu_expression (d[idQREF], st_cases[i][4]);
+    set_fu_expression (d[idPFREF], st_cases[i][5]);
+    set_fu_expression (d[idVREF], st_cases[i][6]);
+    writeln ('Running case: ' + tag);
+    startemtp_UseRunEMTP (true, false, '', false);
+  }
+}
+
+function set_writer (oWriter, root) {
+  oWriter.Parameters.CFGfilename = root + '.cfg';
+  oWriter.Parameters.DATfilename = root + '.dat';
+  oWriter.SaveData();
+}
+
+function set_tmax (oSim, tmax) {
+  oSim.tmax = tmax.toString();
+  oSim.tmaxu = '';
+  // oSim.Dt, oSim.Dtu for time step
+  oSim.SaveData();
+}
+
+// change the fault close and open times
+function set_fault (oFault, tclose, topen) {
+  oFault.Parameters.tclose_A = tclose.toString();
+  oFault.Parameters.tclose_B = tclose.toString();
+  oFault.Parameters.tclose_C = tclose.toString();
+  oFault.Parameters.topen_A = topen.toString();
+  oFault.Parameters.topen_B = topen.toString();
+  oFault.Parameters.topen_C = topen.toString();
+  oFault.SaveData();
+}
