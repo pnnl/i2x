@@ -2,27 +2,6 @@
 // file: PlantScript.dwj
 // Automating plant model testing in EMTP for the EMT bootcamp.
 
-// fault case row elements are:
-//  case mnemonic: including abcg for involved phases, number for retained voltage in percent
-//  Rf from each phase to neutral
-//  Lf from each phase to neutral [H]
-//  Rg from neutral to ground
-//  Lg from neutral to ground [H]
-var cases = [
-  ['abcg80', 0.000, 0.1057, 0.001, 0.0],
-  ['abcg50', 0.000, 0.0264, 0.001, 0.0],
-  ['abcg25', 0.000, 0.0088, 0.001, 0.0],
-  ['abcg01', 0.001, 0.0000, 0.001, 0.0],
-  ['ag80', 0.000, 0.1057, 0.001, 0.0],
-  ['ag50', 0.000, 0.0264, 0.001, 0.0],
-  ['ag25', 0.000, 0.0088, 0.001, 0.0],
-  ['ag01', 0.001, 0.0000, 0.001, 0.0],
-  ['bc80', 0.000, 0.1057, 0.001, 0.0],
-  ['bc50', 0.000, 0.0264, 0.001, 0.0],
-  ['bc25', 0.000, 0.0088, 0.001, 0.0],
-  ['bc01', 0.001, 0.0000, 0.001, 0.0]
-];
-  
 // flat-start cases
 var fsTMAX = 20.0;
 var fsTAG = 'fs';
@@ -67,10 +46,10 @@ var qsteps = '0+0.3287*(t>10)-0.3287*(t>20)-0.3287*(t>30)+0.3287*(t>40)';
 var psteps = '0-0.5*(t>10)-0.46*(t>20)+0.96*(t>30)';
 var pfsteps = '0-0.05*(t>10)+0.05*(t>20)-1.95*(t>30)+1.95*(t>40)';
 var st_cases = [
-//  ['stvref',  2, 50.0, '0', '0', '0', vsteps],
-//  ['stqref',  1, 50.0, '0', qsteps, '0', '0'],
-  ['stpfref', 3, 50.0, '0', '0', pfsteps, '0'] //,
-//  ['stpref',  1, 40.0, psteps, '0', '0', '0'] 
+  ['stvref',  2, 50.0, '0', '0', '0', vsteps],
+  ['stqref',  1, 50.0, '0', qsteps, '0', '0'],
+  ['stpfref', 3, 50.0, '0', '0', pfsteps, '0'],
+  ['stpref',  1, 40.0, psteps, '0', '0', '0'] 
 ]
 
 // preamble to load support functions and find interfaces to modified components
@@ -88,8 +67,8 @@ var start = new Date();
 
 var d = prepare_case();
 
-//run_fs_suite (d);
-//run_uv_suite (d);
+run_fs_suite (d);
+run_uv_suite (d);
 run_st_suite (d);
 
 var end = new Date();
