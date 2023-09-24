@@ -132,7 +132,7 @@ if __name__ == '__main__':
   cases = ['L13_x0', 'L13_xL15', 'L13_xL4',
            'L15_x0', 'L15_xL13', 'L15_xL4',
            'L4_x0', 'L4_xL13', 'L4_xL15']
-  cases = ['L13_x0']
+  #cases = ['L13_x0']
 
   # set the session_path to match location of your unzipped sample cases
   if bPSCAD:

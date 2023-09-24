@@ -56,21 +56,21 @@ var uv_faults = [
 var uv_qvals = [
   ['q0', 0.0],
   ['qp', 0.3287],
-  ['qn', -0.3]  // because -0.3287 triggers undervoltage trip
+  ['qn', -0.3287]  // because -0.3287 triggers undervoltage trip
 ]
   
 // control reference step tests
 // all at nominal Pref=ICR, Vref=1, Qref=0, PFref=1
 // mnemonic, mode, tmax, dPref, dQref, dPFref, dVref
-var vsteps = '0+0.02*(t>10)-0.02*(t>20)-0.02*(t>30)+0.02*(t>40)';
-var qsteps = '0+0.10*(t>10)-0.10*(t>20)-0.10*(t>30)+0.10*(t>40)';
+var vsteps = '0+0.05*(t>10)-0.05*(t>20)-0.05*(t>30)+0.05*(t>40)';
+var qsteps = '0+0.3287*(t>10)-0.3287*(t>20)-0.3287*(t>30)+0.3287*(t>40)';
 var psteps = '0-0.5*(t>10)-0.46*(t>20)+0.96*(t>30)';
 var pfsteps = '0-0.05*(t>10)+0.05*(t>20)-1.95*(t>30)+1.95*(t>40)';
 var st_cases = [
-  ['stvref',  2, 50.0, '0', '0', '0', vsteps],
-  ['stqref',  1, 50.0, '0', qsteps, '0', '0'],
-  ['stpfref', 3, 50.0, '0', '0', pfsteps, '0'],
-  ['stpref',  1, 40.0, psteps, '0', '0', '0'] 
+//  ['stvref',  2, 50.0, '0', '0', '0', vsteps],
+//  ['stqref',  1, 50.0, '0', qsteps, '0', '0'],
+  ['stpfref', 3, 50.0, '0', '0', pfsteps, '0'] //,
+//  ['stpref',  1, 40.0, psteps, '0', '0', '0'] 
 ]
 
 // preamble to load support functions and find interfaces to modified components
@@ -88,9 +88,9 @@ var start = new Date();
 
 var d = prepare_case();
 
-run_fs_suite (d);
-run_uv_suite (d);
-//run_st_suite (d);
+//run_fs_suite (d);
+//run_uv_suite (d);
+run_st_suite (d);
 
 var end = new Date();
 var seconds = (end - start) / 1000.0;

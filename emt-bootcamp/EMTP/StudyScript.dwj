@@ -21,17 +21,13 @@ var iBRK2 = 3;
 var idCCT = 0;
 var idSIM = 1;
 var idWRITER = 2;
-var idLINES = 3; // array of arrays for  the line_sets
-var idFLT = 0;
-var idBRK1 = 1;
-var idBRK2 = 2;
 
-var start = new Date();
+var start = new Date()
 
 // preamble to load support functions and find interfaces to modified components
-var d = prepare_case (line_sets);
+var d = prepare_case();
 
-//run_suite (d);
+run_suite (d, 40);
 
 var end = new Date();
 var seconds = (end - start) / 1000.0;
@@ -39,7 +35,7 @@ writeln (seconds, 's elapsed time.');
 
 // Load support functions that will be used, from the EMTP installed
 //  location, under the directory "Info Scripts/device_services"
-function prepare_case (ls) {
+function prepare_case () {
   parseScriptFile('start_emtp/startemtp_UseRunEMTP.dwj');
   parseScriptFile('make_file_name.dwj');
   parseScriptFile('program_.dwj');
@@ -48,8 +44,8 @@ function prepare_case (ls) {
   parseScriptFile('find_data_in_object.dwj');
   parseScriptFile('sim_options_m.dwj');
 
+  parseScriptFile('sw0_m.dwj'); // order dependency?
   parseScriptFile('fault_m.dwj');
-  parseScriptFile('sw0_m.dwj');
   parseScriptFile('comtrade_writer_m.dwj');
 
   prepare_design_folder();
@@ -64,35 +60,48 @@ function prepare_case (ls) {
   var dev = cct.devices('Name', 'write1');
   var oWriter = new oDevice_comtrade_writer(dev[0]);
 
-  var ls_cmps = []
-  for (i in line_sets) {
-    dev = cct.devices('Name', line_sets[i][1]);
-    var oFault = new oDevice_fault(dev[0]);
-    dev = cct.devices('Name', line_sets[i][2]);
-    var oBrk1 = new oDevice_sw0(dev[0]);
-    dev = cct.devices('Name', line_sets[i][3]);
-    var oBrk2 = new oDevice_sw0(dev[0]);
-    ls_cmps.push([oFault, oBrk1, oBrk2]);
-  }
-
-  return [cct, sim, oWriter, ls_cmps];
+  return [cct, sim, oWriter];
 }
 
-function run_suite (d) {
-  set_no_fault (d);
-  set_zero_dref (d);
-  for (i in st_cases) {
-    var tag = st_cases[i][0];
-    set_writer (d[iWRITER], tag);
-    set_tmax (d[iSIM], st_cases[i][2]);
-    // interface, Pref, mode, Vref, Qref, PFref
-    set_ppc (d[iPLANT], 1.0, st_cases[i][1], 1.0, 0.0, 1.0)
-    set_fu_expression (d[idPREF], st_cases[i][3]);
-    set_fu_expression (d[idQREF], st_cases[i][4]);
-    set_fu_expression (d[idPFREF], st_cases[i][5]);
-    set_fu_expression (d[idVREF], st_cases[i][6]);
-    writeln ('Running case: ' + tag);
-    startemtp_UseRunEMTP (true, false, '', false);
+function run_suite (d, last_idx) {
+  var idx = 0;
+  for (i in line_sets) {
+    var faulted_line = line_sets[i][0];
+    var other_lines = [];
+    for (j in line_sets) {
+      if (j != i) {
+        other_lines.push(j);
+      }
+    }
+    writeln ('Faulted line: ', faulted_line, ' other_lines: ', other_lines);
+
+    // base case with all other_lines in service
+    var tag = faulted_line + '_x0';
+    set_writer (d[idWRITER], tag);
+    writeln ('  Running case: ' + tag);
+    set_line_state (d[idCCT], line_sets[i], false, true);
+    for (j in other_lines) {
+      set_line_state (d[idCCT], line_sets[other_lines[j]], false, false);
+    }
+    startemtp_UseRunEMTP (true, false, idx.toString(), false);
+    idx += 1;
+//    if (idx == last_idx) return;
+    
+    // N-1 contingencies will remove each line, one at a time
+    for (j in other_lines) {
+      tag = faulted_line + '_x' + line_sets[other_lines[j]][0];
+      set_writer (d[idWRITER], tag);
+      writeln ('  Running case: ' + tag);
+      set_line_state (d[idCCT], line_sets[other_lines[j]], true, false);  // this line out of service
+      for (k in other_lines) {
+        if (j != k) {
+          set_line_state (d[idCCT], line_sets[other_lines[k]], false, false);  // this line back in service
+        }
+      }
+      startemtp_UseRunEMTP (true, false, idx.toString(), false);
+      idx += 1;
+//      if (idx == last_idx) return;
+    }
   }
 }
 
@@ -102,15 +111,49 @@ function set_writer (oWriter, root) {
   oWriter.SaveData();
 }
 
-function set_tmax (oSim, tmax) {
-  oSim.tmax = tmax.toString();
-  oSim.tmaxu = '';
-  // oSim.Dt, oSim.Dtu for time step
-  oSim.SaveData();
+function set_line_state (cct, row, bLineOut, bFault) {
+  var dev = cct.devices('Name', row[iFLT]);
+  var oFlt = new oDevice_fault(dev[0]);
+  dev = cct.devices('Name', row[iBRK1]);
+  var oBrk1 = new oDevice_sw0(dev[0]);
+  dev = cct.devices('Name', row[iBRK2]);
+  var oBrk2 = new oDevice_sw0(dev[0]);
+  parseScriptFile('fault_m.dwj');
+  if (bLineOut == true) {
+    set_fault (oFlt, 92.0, 93.0);
+    parseScriptFile('sw0_m.dwj');
+    set_breaker (oBrk1, 92.0, 93.0);
+    set_breaker (oBrk2, 92.0, 93.0);
+  } else if (bFault == true) {
+    set_fault (oFlt, 2.0, 3.0);
+    parseScriptFile('sw0_m.dwj');
+    set_breaker (oBrk1, -1.0, 2.05);
+    set_breaker (oBrk2, -1.0, 2.05);
+  } else { // line stays in service
+    set_fault (oFlt, 92.0, 93.0);
+    parseScriptFile('sw0_m.dwj');
+    set_breaker (oBrk1, -1.0, 93.0);
+    set_breaker (oBrk2, -1.0, 93.0);
+  }
+  write ('    ', oFlt.dev.getAttribute("Name"), ' ', oFlt.Parameters.tclose_A, ' ', oFlt.Parameters.topen_A); 
+  write (': ', oBrk1.dev.getAttribute("Name"), ' ', oBrk1.tclose_A, ' ', oBrk1.topen_A);
+  writeln (': ', oBrk2.dev.getAttribute("Name"), ' ', oBrk2.tclose_A, ' ', oBrk2.topen_A);
+}
+
+// change the fault close and open times
+function set_breaker (oSwitch, tclose, topen) {
+  oSwitch.tclose_A = tclose.toString();
+  oSwitch.tclose_B = tclose.toString();
+  oSwitch.tclose_C = tclose.toString();
+  oSwitch.topen_A = topen.toString();
+  oSwitch.topen_B = topen.toString();
+  oSwitch.topen_C = topen.toString();
+  oSwitch.SaveData();
 }
 
 // change the fault close and open times
 function set_fault (oFault, tclose, topen) {
+//  writeln (oFault.dev.getAttribute('Name'), ':', tclose.toString(), ':', topen.toString());
   oFault.Parameters.tclose_A = tclose.toString();
   oFault.Parameters.tclose_B = tclose.toString();
   oFault.Parameters.tclose_C = tclose.toString();
