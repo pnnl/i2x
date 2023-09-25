@@ -17,11 +17,6 @@ MVA_BASE = 100.0
 # sample code from TESP that automates Matpower in Octave
 # https://github.com/pnnl/tesp/blob/develop/examples/capabilities/ercot/case8/tso_most.py
 
-if sys.platform == 'win32':
-  octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
-else:
-  octave = 'octave --no-window-system --no-gui'
-
 def write_solve_file (root, load_scale):
   fscript = 'solve{:s}.m'.format(root)
   fsolved = '{:s}solved.m'.format(root)
@@ -55,10 +50,7 @@ if __name__ == '__main__':
   d = mpow.read_matpower_casefile ('{:s}.m'.format (sys_name))
   mpow.summarize_casefile (d, 'Input')
   fscript, fsolved, fsummary = write_solve_file (sys_name, load_scale)
-  cmdline = '{:s} {:s}'.format(octave, fscript)
-  print ('running', cmdline)
-  proc = subprocess.Popen(cmdline, shell=True)
-  proc.wait()
+  mpow.run_matpower_and_wait (fscript)
   mpow.print_solution_summary (fsummary, details=True)
   r = mpow.read_matpower_casefile (fsolved)
   mpow.summarize_casefile (r, 'Solved')
