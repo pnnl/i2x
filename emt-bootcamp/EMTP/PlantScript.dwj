@@ -25,7 +25,7 @@ var uvTMAX = 20.0;
 var uvTAG = 'uv';
 // mnemonic, fault type, fault inductance
 var uv_faults = [
-  ['3sag', 'abcg', 0.3915],
+  ['3sag', 'abcg', 0.2957],
   ['3pg', 'abcg', 0.0001],
   ['1pg', 'ag', 0.0001],
   ['2pg', 'bcg', 0.0001],
@@ -35,7 +35,7 @@ var uv_faults = [
 var uv_qvals = [
   ['q0', 0.0],
   ['qp', 0.3287],
-  ['qn', -0.3287]  // because -0.3287 triggers undervoltage trip
+  ['qn', -0.3287]
 ]
   
 // control reference step tests
@@ -67,8 +67,8 @@ var start = new Date();
 
 var d = prepare_case();
 
-run_fs_suite (d);
-run_uv_suite (d);
+//run_fs_suite (d);
+//run_uv_suite (d);
 run_st_suite (d);
 
 var end = new Date();
@@ -206,19 +206,19 @@ function set_ppc (oPlant, Pref, mode, Vref, Qref, PFref) {
   oPlant.Parameters.Vpoi_pu = Vref.toString();
   oPlant.Parameters.Qpoi_pu = Qref.toString();
   oPlant.Parameters.pf_poi = PFref.toString();
-  if (mode == 1) { // Q
-    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
-    oPlant.Parameters.PFFLAG = '0';
-    oPlant.Parameters.QFLAG = '0';
-  } else if (mode == 2) { // V
-    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
-    oPlant.Parameters.PFFLAG = '0';
-    oPlant.Parameters.QFLAG = '1';
-  } else { // PF
-    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0'; // '1';
-    oPlant.Parameters.PFFLAG = '1';
-    oPlant.Parameters.QFLAG = '0';
-  }
+//  if (mode == 1) { // Q
+//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+//    oPlant.Parameters.PFFLAG = '0';
+//    oPlant.Parameters.QFLAG = '0';
+//  } else if (mode == 2) { // V
+//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+//    oPlant.Parameters.PFFLAG = '0';
+//    oPlant.Parameters.QFLAG = '1';
+//  } else { // PF
+//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0'; // '1';
+//    oPlant.Parameters.PFFLAG = '1';
+//    oPlant.Parameters.QFLAG = '0';
+//  }
   oPlant.SaveData();
 }
 
