@@ -78,7 +78,7 @@ def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD, PNGName=None):
   y_labels = ['Vrms [pu]', 'P [pu]', 'Q [pu]', 'F [Hz]']
   x_ticks = [0.75, 1.00, 1.25, 1.50, 1.75]
   if not bPSCAD:
-    x_ticks = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+    x_ticks = [0, 2, 4, 6, 8, 10, 12, 14]
 
   for key in chd:
     ch = chd[key]
@@ -91,7 +91,7 @@ def show_fault_comparison_plot (chd, unitd, case_tag, bPSCAD, PNGName=None):
     ax[i].set_xticks (x_ticks)
     ax[i].set_xlim (x_ticks[0], x_ticks[-1])
     ax[i].grid()
-    ax[i].legend(loc='lower left')
+    ax[i].legend(loc='lower right')
   ax[3].set_xlabel ('Time [s]')
 
   if PNGName is not None:

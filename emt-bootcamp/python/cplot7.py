@@ -12,7 +12,7 @@ from comtrade import Comtrade
 
 plt.rcParams['savefig.directory'] = os.getcwd()
 
-kVLNbase = 230.0 / math.sqrt(3.0)
+kVLNbase = 345.0 / math.sqrt(3.0)
 MVAbase = 300.0
 kAbase = MVAbase / kVLNbase / 3.0
 
@@ -132,6 +132,7 @@ if __name__ == '__main__':
   cases = ['L13_x0', 'L13_xL15', 'L13_xL4',
            'L15_x0', 'L15_xL13', 'L15_xL4',
            'L4_x0', 'L4_xL13', 'L4_xL15']
+  #cases = ['L13_x0']
 
   # set the session_path to match location of your unzipped sample cases
   if bPSCAD:
@@ -141,7 +142,7 @@ if __name__ == '__main__':
   else:
     session_path = 'c:/temp/i2x/emtp'
     plant = 'Wind'
-    tmax = 40.0
+    tmax = 10.0
   if bSavePNG:
     PNGName = '{:s}_study.png'.format (plant)
   else:

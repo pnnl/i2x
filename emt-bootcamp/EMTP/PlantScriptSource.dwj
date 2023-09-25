@@ -1,0 +1,176 @@
+// Copyright (C) 2023 Battelle Memorial Institute
+// file: PlantScriptSource.dwj
+// Automating plant model testing in EMTP for the EMT bootcamp.
+// Uses controllable source for overvoltage, angle, and phase ride-through tests
+
+// overvoltage cases
+var ovTMAX = 20.0;
+// elements are mnemonic, control mode, pref, qref, function
+var ov_steps = '187794.2*(1.0+0.2*((t>5)-(t>6)))';
+var ov_nominal = '187794.2';
+var ov_cases = [
+  ['ovqn', 1, 1.00, -0.3287, ov_steps], 
+  ['ovq0', 1, 1.00,  0.0000, ov_steps], 
+  ['ovqp', 1, 1.00,  0.3287, ov_steps] 
+];
+
+// frequency ride-through cases
+var frTMAX = 40.0;
+// elements are mnemonic, control mode, pref, qref, function
+var frp_steps = '(60.0+1.8*((t>5)-(t>25)))*two_pi';
+var frn_steps = '(60.0-3.0*((t>5)-(t>25)))*two_pi';
+var fr_nominal = '60.0*two_pi';
+var fr_cases = [
+  ['oficr', 1, 1.00, 0.0, frp_steps], 
+  ['uficr', 1, 1.00, 0.0, frn_steps], 
+  ['ofmin', 1, 0.04, 0.0, frp_steps],
+  ['ufmin', 1, 0.04, 0.0, frn_steps]
+];
+  
+// angle ride-through cases
+var anTMAX = 30.0;
+// elements are mnemonic, control mode, pref, qref, function
+var anp_steps = '25.0*((t>5)-(t>25))';
+var ann_steps = '-25.0*((t>5)-(t>25))';
+var an_nominal = '0.0';
+var an_cases = [
+  ['anicr', 1, 1.00, 0.0, ann_steps], 
+  ['apicr', 1, 1.00, 0.0, anp_steps], 
+  ['anmin', 1, 0.04, 0.0, ann_steps],
+  ['apmin', 1, 0.04, 0.0, anp_steps]
+];
+
+// preamble to load support functions and find interfaces to modified components
+var iCCT = 0;
+var iWRITER = 1;
+var iPLANT = 2;
+var idVLN = 3;
+var idFREQ = 4;
+var idANGLE = 5;
+var iSIM = 6;
+
+var start = new Date();
+
+var d = prepare_case();
+
+run_ov_suite (d);
+run_fr_suite (d);
+run_an_suite (d);
+
+var end = new Date();
+var seconds = (end - start) / 1000.0;
+writeln (seconds, 's elapsed time.');
+
+function run_ov_suite (d) {
+  set_tmax (d[iSIM], ovTMAX);
+  set_fu_expression (d[idFREQ], fr_nominal);
+  set_fu_expression (d[idANGLE], an_nominal);
+  for (i in ov_cases) {
+    var tag = ov_cases[i][0];
+    set_writer (d[iWRITER], tag);
+    set_ppc (d[iPLANT], ov_cases[i][2], ov_cases[i][3])
+    set_fu_expression (d[idVLN], ov_cases[i][4]);
+    writeln ('Running case: ' + tag);
+    startemtp_UseRunEMTP (true, false, '', false);
+  }
+}
+
+function run_fr_suite (d) {
+  set_tmax (d[iSIM], frTMAX);
+  set_fu_expression (d[idVLN], ov_nominal);
+  set_fu_expression (d[idANGLE], an_nominal);
+  for (i in fr_cases) {
+    var tag = fr_cases[i][0];
+    set_writer (d[iWRITER], tag);
+    set_ppc (d[iPLANT], fr_cases[i][2], fr_cases[i][3])
+    set_fu_expression (d[idFREQ], fr_cases[i][4]);
+    writeln ('Running case: ' + tag);
+    startemtp_UseRunEMTP (true, false, '', false);
+  }
+}
+
+function run_an_suite (d) {
+  set_tmax (d[iSIM], anTMAX);
+  set_fu_expression (d[idVLN], ov_nominal);
+  set_fu_expression (d[idFREQ], fr_nominal);
+  for (i in an_cases) {
+    var tag = an_cases[i][0];
+    set_writer (d[iWRITER], tag);
+    set_ppc (d[iPLANT], an_cases[i][2], an_cases[i][3])
+    set_fu_expression (d[idANGLE], an_cases[i][4]);
+    writeln ('Running case: ' + tag);
+    startemtp_UseRunEMTP (true, false, '', false);
+  }
+}
+
+// Load support functions that will be used, from the EMTP installed
+//  location, under the directory "Info Scripts/device_services"
+function prepare_case(){
+  parseScriptFile('start_emtp/startemtp_UseRunEMTP.dwj');
+  parseScriptFile('make_file_name.dwj');
+  parseScriptFile('program_.dwj');
+  parseScriptFile('run_emtp.dwj');
+  parseScriptFile('check_my_filename.dwj');
+  parseScriptFile('find_data_in_object.dwj');
+  parseScriptFile('sim_options_m.dwj');
+  parseScriptFile('comtrade_writer_m.dwj');
+
+  prepare_design_folder();
+
+  var cct = currentCircuit();
+  cct=cct.findByLocator('CC'); //move to top circuit
+  var sim = new oDevice_(cct);
+
+  var designfilename=design_file_name();
+  writeln ('Running controlled source script on ', designfilename);
+
+  var dev = cct.devices('Name', 'write1');
+  var oWriter = new oDevice_comtrade_writer(dev[0]);
+
+  var oFuVln = cct.devices('Name', 'FuVln')[0];
+  var oFuFreq = cct.devices('Name', 'FuFreq')[0];
+  var oFuAngle = cct.devices('Name', 'FuAngle')[0];
+
+  dev = cct.devices('Name', 'WECC_WP_1')[0];
+  var scriptToParse = dev.getAttribute('Script.DevObj');
+  writeln (scriptToParse);
+  parseScriptFile(scriptToParse);
+  var oPlant = get_dev_methods(dev);
+  
+  return [cct, oWriter, oPlant, oFuVln, oFuFreq, oFuAngle, sim];
+}
+
+function set_writer (oWriter, root) {
+  oWriter.Parameters.CFGfilename = root + '.cfg';
+  oWriter.Parameters.DATfilename = root + '.dat';
+  oWriter.SaveData();
+}
+
+function set_tmax (oSim, tmax) {
+//  writeln (oSim.tmax + '=>' + tmax);
+  oSim.tmax = tmax.toString();
+  oSim.tmaxu = '';
+  // oSim.Dt, oSim.Dtu for time step
+  oSim.SaveData();
+//  writeln ('now='+oSim.tmax);
+}
+
+function set_fu_expression (oF, expr) {
+  oF.setAttribute ('ModelData', expr);
+  oF.setAttribute ('FormData', '@@f(u)@' + expr + '@ON@@@@');
+//  oF.SaveData();
+}
+
+// only using mode 1, fixed Q
+function set_ppc (oPlant, Pref, Qref) {
+  var mode=1;
+  var Vref=1;
+  oPlant.Parameters.Pref_poi = Pref.toString();
+  oPlant.Parameters.QC_select = mode.toString();
+  oPlant.Parameters.Vpoi_pu = Vref.toString();
+  oPlant.Parameters.Qpoi_pu = Qref.toString();
+  oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+  oPlant.Parameters.PFFLAG = '0';
+  oPlant.Parameters.QFLAG = '0';
+  oPlant.SaveData();
+}

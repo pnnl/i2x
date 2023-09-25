@@ -77,7 +77,8 @@ def show_zoomed_q_plot(channels):
 
 if __name__ == '__main__':
   setup_plot_options()
-  root = '../PSCAD/COMTRADEtest/playback'
+  root = '../data/playback'
+#  root = '../PSCAD/COMTRADEtest/playback'
 #  root = '../PSCAD/gen.if18_x86/rank_00001/Run_00001/playback'
   if len(sys.argv) > 1:
     root = sys.argv[1]

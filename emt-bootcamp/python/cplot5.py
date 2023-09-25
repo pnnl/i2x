@@ -31,12 +31,18 @@ angles = ['anicr', 'apicr', 'anmin', 'apmin']
 
 steps = ['stvref', 'stqref', 'stpfref', 'stpref']
 
-test_suites = {'fs': {'title': 'Weak-grid model initialization tests', 'files': flats, 'tmax': 20.0},
-               'uv': {'title': 'Weak-grid undervoltage ride-through tests', 'files': uvrts, 'tmax': 20.0},
-               'ov': {'title': 'Weak-grid overvoltage ride-through tests', 'files': ovrts, 'tmax': 20.0},
-               'fr': {'title': 'Weak-grid frequency ride-through tests', 'files': freqs, 'tmax': 40.0},
-               'an': {'title': 'Weak-grid angle ride-through tests', 'files': angles, 'tmax': 40.0},
-               'st': {'title': 'Control reference step tests', 'files': steps, 'tmax': 50.0}}
+test_suites = {'fs': {'title': 'Weak-grid model initialization tests', 'files': flats, 
+                      'tmax_pscad': 20.0, 'tmax_emtp':20.0},
+               'uv': {'title': 'Weak-grid undervoltage ride-through tests', 'files': uvrts, 
+                      'tmax_pscad': 20.0, 'tmax_emtp':20.0},
+               'ov': {'title': 'Weak-grid overvoltage ride-through tests', 'files': ovrts, 
+                      'tmax_pscad': 20.0, 'tmax_emtp':20.0},
+               'fr': {'title': 'Weak-grid frequency ride-through tests', 'files': freqs, 
+                      'tmax_pscad': 40.0, 'tmax_emtp':40.0},
+               'an': {'title': 'Weak-grid angle ride-through tests', 'files': angles, 
+                      'tmax_pscad': 40.0, 'tmax_emtp':30.0},
+               'st': {'title': 'Control reference step tests', 'files': steps, 
+                      'tmax_pscad': 50.0, 'tmax_emtp':50.0}}
 
 def scale_factor(lbl, bPSCAD):
   if 'P' in lbl:
@@ -191,14 +197,16 @@ if __name__ == '__main__':
   if bPSCAD:
     case_tag = 'Solar'
     session_path = 'c:/temp/i2x/pscad/Solar5.if18_x86/rank_00001/Run_00001'
+    tmax = test_suites[test]['tmax_pscad']
   else:
     session_path = 'c:/temp/i2x/emtp'
     case_tag = 'Wind'
+    tmax = test_suites[test]['tmax_emtp']
   if bSavePNG:
     PNGName = '{:s}_{:s}.png'.format (case_tag, test)
   else:
     PNGName = None
 
   process_test_suite (session_path, case_tag, bPSCAD, test_suites[test]['title'], 
-                      test_suites[test]['files'], test_suites[test]['tmax'], PNGName)
+                      test_suites[test]['files'], tmax, PNGName)
 

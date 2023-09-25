@@ -2,27 +2,6 @@
 // file: PlantScript.dwj
 // Automating plant model testing in EMTP for the EMT bootcamp.
 
-// fault case row elements are:
-//  case mnemonic: including abcg for involved phases, number for retained voltage in percent
-//  Rf from each phase to neutral
-//  Lf from each phase to neutral [H]
-//  Rg from neutral to ground
-//  Lg from neutral to ground [H]
-var cases = [
-  ['abcg80', 0.000, 0.1057, 0.001, 0.0],
-  ['abcg50', 0.000, 0.0264, 0.001, 0.0],
-  ['abcg25', 0.000, 0.0088, 0.001, 0.0],
-  ['abcg01', 0.001, 0.0000, 0.001, 0.0],
-  ['ag80', 0.000, 0.1057, 0.001, 0.0],
-  ['ag50', 0.000, 0.0264, 0.001, 0.0],
-  ['ag25', 0.000, 0.0088, 0.001, 0.0],
-  ['ag01', 0.001, 0.0000, 0.001, 0.0],
-  ['bc80', 0.000, 0.1057, 0.001, 0.0],
-  ['bc50', 0.000, 0.0264, 0.001, 0.0],
-  ['bc25', 0.000, 0.0088, 0.001, 0.0],
-  ['bc01', 0.001, 0.0000, 0.001, 0.0]
-];
-  
 // flat-start cases
 var fsTMAX = 20.0;
 var fsTAG = 'fs';
@@ -46,7 +25,7 @@ var uvTMAX = 20.0;
 var uvTAG = 'uv';
 // mnemonic, fault type, fault inductance
 var uv_faults = [
-  ['3sag', 'abcg', 0.3915],
+  ['3sag', 'abcg', 0.2957],
   ['3pg', 'abcg', 0.0001],
   ['1pg', 'ag', 0.0001],
   ['2pg', 'bcg', 0.0001],
@@ -56,14 +35,14 @@ var uv_faults = [
 var uv_qvals = [
   ['q0', 0.0],
   ['qp', 0.3287],
-  ['qn', -0.3]  // because -0.3287 triggers undervoltage trip
+  ['qn', -0.3287]
 ]
   
 // control reference step tests
 // all at nominal Pref=ICR, Vref=1, Qref=0, PFref=1
 // mnemonic, mode, tmax, dPref, dQref, dPFref, dVref
-var vsteps = '0+0.02*(t>10)-0.02*(t>20)-0.02*(t>30)+0.02*(t>40)';
-var qsteps = '0+0.10*(t>10)-0.10*(t>20)-0.10*(t>30)+0.10*(t>40)';
+var vsteps = '0+0.05*(t>10)-0.05*(t>20)-0.05*(t>30)+0.05*(t>40)';
+var qsteps = '0+0.3287*(t>10)-0.3287*(t>20)-0.3287*(t>30)+0.3287*(t>40)';
 var psteps = '0-0.5*(t>10)-0.46*(t>20)+0.96*(t>30)';
 var pfsteps = '0-0.05*(t>10)+0.05*(t>20)-1.95*(t>30)+1.95*(t>40)';
 var st_cases = [
@@ -88,9 +67,9 @@ var start = new Date();
 
 var d = prepare_case();
 
-run_fs_suite (d);
-run_uv_suite (d);
-//run_st_suite (d);
+//run_fs_suite (d);
+//run_uv_suite (d);
+run_st_suite (d);
 
 var end = new Date();
 var seconds = (end - start) / 1000.0;
@@ -227,19 +206,19 @@ function set_ppc (oPlant, Pref, mode, Vref, Qref, PFref) {
   oPlant.Parameters.Vpoi_pu = Vref.toString();
   oPlant.Parameters.Qpoi_pu = Qref.toString();
   oPlant.Parameters.pf_poi = PFref.toString();
-  if (mode == 1) { // Q
-    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
-    oPlant.Parameters.PFFLAG = '0';
-    oPlant.Parameters.QFLAG = '0';
-  } else if (mode == 2) { // V
-    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
-    oPlant.Parameters.PFFLAG = '0';
-    oPlant.Parameters.QFLAG = '1';
-  } else { // PF
-    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0'; // '1';
-    oPlant.Parameters.PFFLAG = '1';
-    oPlant.Parameters.QFLAG = '0';
-  }
+//  if (mode == 1) { // Q
+//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+//    oPlant.Parameters.PFFLAG = '0';
+//    oPlant.Parameters.QFLAG = '0';
+//  } else if (mode == 2) { // V
+//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+//    oPlant.Parameters.PFFLAG = '0';
+//    oPlant.Parameters.QFLAG = '1';
+//  } else { // PF
+//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0'; // '1';
+//    oPlant.Parameters.PFFLAG = '1';
+//    oPlant.Parameters.QFLAG = '0';
+//  }
   oPlant.SaveData();
 }
 
