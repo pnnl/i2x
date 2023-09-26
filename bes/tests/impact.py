@@ -13,11 +13,13 @@ if __name__ == '__main__':
   }
   poc_buses=[6, 3, 8]
 
-  bq.process_auction (poc_buses=poc_buses, sys_config=sys_config)
+  results = bq.process_auction (poc_buses=poc_buses, sys_config=sys_config, bLog=False)
+  bq.print_auction_results (results)
 
   queue = [{'poc':6, 'mw': 5000.0, 'itlim': 3, 'costlim': 1000.0e6},
            {'poc':3, 'mw': 4400.0, 'itlim': 3, 'costlim':  500.0e6},
            {'poc':8, 'mw': 2000.0, 'itlim': 3, 'costlim': 1300.0e6}
           ]
-  bq.process_queue (queue=queue, sys_config=sys_config)
+  results = bq.process_queue (queue=queue, sys_config=sys_config)
+  bq.print_queue_results (results)
 

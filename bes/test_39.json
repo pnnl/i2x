@@ -1,0 +1,35 @@
+{
+  "case_title": "IEEE39",
+  "sys_name": "hca",
+  "load_scale": 1.0,
+  "upgrades": null,
+  "softlims": false,
+  "glpk_opts": null,
+  "hca_buses": [14],
+  "branch_contingencies": [
+    {
+      "branch": 2,
+      "scale": 0.0
+    },
+    {
+      "branch": 10,
+      "scale": 0.0
+    }
+  ],
+  "bus_contingencies": {
+    "14": [
+      {
+        "branch": 9,
+        "scale": 0.0
+      },
+      {
+        "branch": 23,
+        "scale": 0.0
+      },
+      {
+        "branch": 24,
+        "scale": 0.0
+      }
+    ]
+  }
+}

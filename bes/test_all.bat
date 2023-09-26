@@ -16,7 +16,8 @@ python grid_upgrades.py 1
 
 rem IEEE 39-bus hca
 python hca_prep.py 2
+rem python hca.py test_39.json
 python hca.py IEEE39_prep.json
 python grid_upgrades.py 2
 
-
+python impact.py

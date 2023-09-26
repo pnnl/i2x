@@ -171,6 +171,8 @@ def get_branch_next_upgrade (branch, bus, i):
   elif xpu > 0.0:
     newmva = get_default_line_mva (kv)
     npar = int (0.5 + mva/newmva) # how many existing lines on this right-of-way
+    if npar < 1:
+      npar = 1
     zbase = kv*kv/100.0
     x = xpu*zbase
     miles = estimate_overhead_line_length (x*npar, kv)
@@ -331,10 +333,11 @@ def build_matpower_graph (d):
 
 def add_bus_contingencies (G, hca_buses, size_contingencies=[], bLog=True,
                            contingency_mva_threshold=100.0, 
-                           contingency_kv_threshold=100.0):
+                           contingency_kv_threshold=100.0, bAuction=False):
   d = {}
   ncmax = 0
   removals = []
+  exclusions = size_contingencies
   for key in hca_buses:
     bus = int(key)
     d[bus] = []
@@ -354,14 +357,16 @@ def add_bus_contingencies (G, hca_buses, size_contingencies=[], bLog=True,
         edata = br[2]['edata']
         if edata['MVA'] >= contingency_mva_threshold and edata['kV1'] >= contingency_kv_threshold and edata['kV2'] >= contingency_kv_threshold:
           brnum = int(br[2]['ename'])
-          if brnum not in size_contingencies:
+          if brnum not in exclusions:
             scale = br[2]['edata']['scale']
             d[bus].append ({'branch': brnum, 'scale': scale})
+            if bAuction: # no need to duplicate for other buses
+              exclusions.append (brnum)
   if bLog:
     print ('Maximum number of adjacent-bus contingencies is {:d}'.format (ncmax))
   return d, removals, ncmax
 
-def rebuild_contingencies (mpd, G, poc_buses, min_mva=100.0, min_kv=100.0):
+def rebuild_contingencies (mpd, G, poc_buses, size_min_mva, bus_min_mva, min_kv, bLog=False, bAuction=False):
   s = []
   bus = mpd['bus']
   branch = mpd['branch']
@@ -372,12 +377,13 @@ def rebuild_contingencies (mpd, G, poc_buses, min_mva=100.0, min_kv=100.0):
     bus2 = int(branch[i,mpow.T_BUS])
     kv = min(bus[bus1-1,mpow.BASE_KV], bus[bus2-1,mpow.BASE_KV])
     mva = branch[i,mpow.RATE_A]
-    if kv >= min_kv and mva >= min_mva:
+    if kv >= min_kv and mva >= size_min_mva:
       if branch[i,mpow.TAP] > 0.0:
-        outage = get_default_transformer_mva (kv)
+        mva1 = get_default_transformer_mva (kv)
       else:
-        outage = get_default_line_mva (kv)
-      scale = (mva - outage) / mva
+        mva1 = get_default_line_mva (kv)
+      npar = int (mva/mva1 + 0.5)
+      scale = get_parallel_branch_scale (npar)
       if scale < 0.01:
         scale = 0.0
       s.append({'branch':i+1, 'scale':scale})
@@ -386,7 +392,11 @@ def rebuild_contingencies (mpd, G, poc_buses, min_mva=100.0, min_kv=100.0):
   exclusions = []
   for ct in s:
     exclusions.append (ct['branch'])
-  b, _, _ = add_bus_contingencies (G, poc_buses, exclusions, False, min_mva, min_kv)
+  b, _, _ = add_bus_contingencies (G, poc_buses, exclusions, False, bus_min_mva, min_kv, bAuction)
+
+  if bLog:
+    print ('Size-based contingencies', size_min_mva, s)
+    print ('Local contingencies', bus_min_mva, b)
 
   all = s
   for poc in poc_buses:
