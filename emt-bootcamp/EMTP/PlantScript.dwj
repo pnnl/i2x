@@ -7,16 +7,16 @@ var fsTMAX = 20.0;
 var fsTAG = 'fs';
 // elements are mnemonic, control mode, vref, qref, pfref
 var fs_cases = [
-  ['qn', 1, 1.0, -0.3287, -0.95], 
-  ['q0', 1, 1.0,  0.0000,  1.00], 
-  ['qp', 1, 1.0,  0.3287,  0.95], 
-  ['v',  2, 1.0,  0.0, 1.0], 
-  ['pfn', 3, 1.0, -0.3287, -0.95], 
-  ['pf0', 3, 1.0,  0.0000,  1.00], 
-  ['pfp', 3, 1.0,  0.3287,  0.95]
+  ['qn',  1, 1.0, -0.28, -0.96], 
+  ['q0',  1, 1.0,  0.00,  1.00], 
+  ['qp',  1, 1.0,  0.28,  0.96], 
+  ['v',   2, 1.0,  0.00,  1.00], 
+  ['pfn', 3, 1.0, -0.28, -0.96], 
+  ['pf0', 3, 1.0,  0.00,  1.00], 
+  ['pfp', 3, 1.0,  0.28,  0.96]
 ];
 var p_levels = [
-  ['icr', 1.0],
+  ['icr', 1.00],
   ['min', 0.04]
 ];
 
@@ -26,30 +26,39 @@ var uvTAG = 'uv';
 // mnemonic, fault type, fault inductance
 var uv_faults = [
   ['3sag', 'abcg', 0.2957],
-  ['3pg', 'abcg', 0.0001],
-  ['1pg', 'ag', 0.0001],
-  ['2pg', 'bcg', 0.0001],
-  ['2p', 'bc', 0.0001]
+  ['3pg',  'abcg', 0.0001],
+  ['1pg',  'ag',   0.0001],
+  ['2pg',  'bcg',  0.0001],
+  ['2p',  'bc',    0.0001]
 ]
 // mnemonic, qref
 var uv_qvals = [
-  ['q0', 0.0],
-  ['qp', 0.3287],
-  ['qn', -0.3287]
+  ['q0',  0.00],
+  ['qp',  0.28],
+  ['qn', -0.28]
 ]
   
 // control reference step tests
 // all at nominal Pref=ICR, Vref=1, Qref=0, PFref=1
 // mnemonic, mode, tmax, dPref, dQref, dPFref, dVref
+// these are the step tests defined by P2800.2 SG3 in D0.5
 var vsteps = '0+0.05*(t>10)-0.05*(t>20)-0.05*(t>30)+0.05*(t>40)';
 var qsteps = '0+0.3287*(t>10)-0.3287*(t>20)-0.3287*(t>30)+0.3287*(t>40)';
 var psteps = '0-0.5*(t>10)-0.46*(t>20)+0.96*(t>30)';
 var pfsteps = '0-0.05*(t>10)+0.05*(t>20)-1.95*(t>30)+1.95*(t>40)';
+// these are smaller step tests
+//vsteps = '0+0.02*(t>10)-0.02*(t>20)-0.02*(t>30)+0.02*(t>40)';
+qsteps = '0+0.28*(t>10)-0.28*(t>20)-0.28*(t>30)+0.28*(t>40)';
+//psteps = '0-0.3*(t>10)-0.2*(t>20)+0.5*(t>30)';
+pfsteps = '0-0.04*(t>10)+0.04*(t>20)-1.96*(t>30)+1.96*(t>40)';
+
+var change_REEC_D_parameters = false // true
+
 var st_cases = [
   ['stvref',  2, 50.0, '0', '0', '0', vsteps],
   ['stqref',  1, 50.0, '0', qsteps, '0', '0'],
   ['stpfref', 3, 50.0, '0', '0', pfsteps, '0'],
-  ['stpref',  1, 40.0, psteps, '0', '0', '0'] 
+  ['stpref',  1, 50.0, psteps, '0', '0', '0'] 
 ]
 
 // preamble to load support functions and find interfaces to modified components
@@ -67,9 +76,9 @@ var start = new Date();
 
 var d = prepare_case();
 
-//run_fs_suite (d);
-//run_uv_suite (d);
 run_st_suite (d);
+run_fs_suite (d);
+run_uv_suite (d);
 
 var end = new Date();
 var seconds = (end - start) / 1000.0;
@@ -206,19 +215,21 @@ function set_ppc (oPlant, Pref, mode, Vref, Qref, PFref) {
   oPlant.Parameters.Vpoi_pu = Vref.toString();
   oPlant.Parameters.Qpoi_pu = Qref.toString();
   oPlant.Parameters.pf_poi = PFref.toString();
-//  if (mode == 1) { // Q
-//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
-//    oPlant.Parameters.PFFLAG = '0';
-//    oPlant.Parameters.QFLAG = '0';
-//  } else if (mode == 2) { // V
-//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
-//    oPlant.Parameters.PFFLAG = '0';
-//    oPlant.Parameters.QFLAG = '1';
-//  } else { // PF
-//    oPlant.Parameters.adjust_Qpoi_pu_withLF = '0'; // '1';
-//    oPlant.Parameters.PFFLAG = '1';
-//    oPlant.Parameters.QFLAG = '0';
-//  }
+  if (change_REEC_D_parameters) {
+  	if (mode == 1) { // Q
+      oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+      oPlant.Parameters.PFFLAG = '0';
+      oPlant.Parameters.QFLAG = '0';
+    } else if (mode == 2) { // V
+      oPlant.Parameters.adjust_Qpoi_pu_withLF = '0';
+      oPlant.Parameters.PFFLAG = '0';
+      oPlant.Parameters.QFLAG = '1';
+    } else { // PF
+      oPlant.Parameters.adjust_Qpoi_pu_withLF = '0'; // '1';
+      oPlant.Parameters.PFFLAG = '1';
+      oPlant.Parameters.QFLAG = '0';
+    }
+  }
   oPlant.SaveData();
 }
 

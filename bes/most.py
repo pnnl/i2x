@@ -10,11 +10,6 @@ import i2x.bes_upgrades as bes
 
 from bes_cases import *
 
-if sys.platform == 'win32':
-  octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
-else:
-  octave = 'octave --no-window-system --no-gui'
-
 def write_local_solve_file (root, load_scale=1.0, quiet=False, softlims=False):
   fscript = 'solve_{:s}.m'.format(root)
   fsummary = '{:s}_summary.txt'.format(root)

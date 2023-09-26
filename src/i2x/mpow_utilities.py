@@ -147,7 +147,7 @@ ercot8_base_load = np.array ([[7182.65, 6831.0, 6728.83, 6781.1, 6985.44, 7291.9
 
 def run_matpower_and_wait (fscript, quiet=False):
   if sys.platform == 'win32':
-    octave = '"C:\Program Files\GNU Octave\Octave-8.2.0\octave-launch.exe" --no-gui'
+    octave = '"C:\Program Files\GNU Octave\Octave-8.3.0\octave-launch.exe" --no-gui'
   else:
     octave = 'octave --no-window-system --no-gui >octave.log 2>&1 '
   cmdline = '{:s} {:s}'.format(octave, fscript)
