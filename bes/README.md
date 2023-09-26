@@ -306,5 +306,203 @@ the project at bus 8 paid for the same proposed upgrade on branch 1, in
 addition to an upgrade on branch 7. The sizes, locations, and upgrade cost 
 limits are configurable for each application in the Python script. 
 
+## Simulating Interconnection Queues on Medium-Scale Systems
+
+For the IEEE 118-bus system:
+
+```
+C:\src\i2x\bes>python bq_simulations.py 0 3
+Auction Bus List [ 52  30 115 107  41]
+System IEEE118_wmva.m, Req MW=[150.00,400.00], Max $M/MW=[0.10,0.30], Nauc=5, Ncls=5, Napp=10
+***********************************************
+Auction Process on IEEE118_wmva.m, POC buses=[ 52  30 115 107  41]
+AUCTION RESULTS
+Generation by Fuel[GW]
+    hca    wind   solar nuclear   hydro    coal      ng      dl
+  1.267   0.361   1.234   0.000   0.000   0.000   0.000   0.000
+ Bus    HC [MW]
+  52    169.146
+  30    553.698
+ 115    171.846
+ 107    190.740
+  41    181.968
+Merit order of upgrades:
+ Br# From   To     muF      MVA      kV  Add MVA    Miles  Cost $M
+ 204   30   17  0.0433   257.73  345.00   800.00 Xfmr        12.20
+  72   41   42  0.0267   157.00  138.00   157.00    32.14    68.27
+  93   52   53  0.0256   157.00  138.00   157.00    38.92    81.84
+  11  105  107  0.0251   157.00  138.00   157.00    43.56    91.13
+  48   27  115  0.0231   157.00  138.00   157.00    17.64    39.28
+ 195   19  130  0.0054    49.60  138.00   200.00 Xfmr         3.20
+ 191   15  126  0.0051    53.60  138.00   200.00 Xfmr         3.20
+ 206   31  138  0.0024    62.00  138.00   200.00 Xfmr         3.20
+ 219   54  149  0.0018   105.60  138.00   200.00 Xfmr         3.20
+ 221   55  151  0.0018    12.00  138.00   200.00 Xfmr         3.20
+ 177  104  183  0.0013   186.40  138.00   200.00 Xfmr         3.20
+ 179  105  185  0.0013   108.80  138.00   200.00 Xfmr         3.20
+ 173  100  179  0.0013    41.60  138.00   200.00 Xfmr         3.20
+ 174  100  180  0.0013   160.00  138.00   200.00 Xfmr         3.20
+ 253   92  175  0.0013   207.60  138.00   200.00 Xfmr         3.20
+ 244   82  168  0.0013   139.20  138.00   200.00 Xfmr         3.20
+ 233   69  159  0.0012    49.60  138.00   200.00 Xfmr         3.20
+ 240   76  165  0.0010    10.00  138.00   200.00 Xfmr         3.20
+***********************************************
+Queue Process on 3 bus application cluster(s) for IEEE118_wmva.m
+Processing application for 914.86 MW at bus 115
+  HC=171.85 MW, upgrade branch 48 by 2.0000 at $39.279M
+  HC=325.78 MW, upgrade branch 32 by 2.0000 at $78.414M
+Processing application for 681.58 MW at bus 41
+  HC=181.97 MW, upgrade branch 32 by 2.0000 at $78.414M
+  HC=181.97 MW, upgrade branch 72 by 2.0000 at $68.273M
+Processing application for 1413.79 MW at bus 30
+  HC=552.85 MW, upgrade branch 204 by 4.1040 at $12.200M
+  HC=623.36 MW, upgrade branch 28 by 2.0000 at $63.227M
+APPLICATION CLUSTERS
+ Bus   Req [MW]  MaxCost $M  Itlim  #apps
+ 115     914.86      111.07     2     3
+         347.40       42.44     2
+         331.60       38.17     2
+         235.86       30.45     2
+  41     681.58      113.66     2     3
+         230.41       30.78     2
+         194.25       24.30     2
+         256.92       58.58     2
+  30    1413.79      236.76     2     4
+         342.56       99.53     2
+         336.67       49.07     2
+         376.80       38.93     2
+         357.76       49.23     2
+CLUSTER STUDY RESULTS
+ Bus   Req [MW]  Add [MW]   HC [MW]   Cost $M   Branch Upgrades
+ 115     914.86      0.00    325.78    117.69   [48, 32]
+  41     681.58      0.00    181.97    146.69   [32, 72]
+  30    1413.79      0.00    623.36     75.43   [204, 28]
+77.67 seconds elapsed
+```
+
+For the WECC 240-bus system:
+
+```
+C:\src\i2x\bes>python bq_simulations.py 1 4
+Auction Bus List [112 225  20   7 150]
+System WECC240_wmva.m, Req MW=[200.00,1000.00], Max $M/MW=[0.10,0.30], Nauc=5, Ncls=5, Napp=10
+***********************************************
+Auction Process on WECC240_wmva.m, POC buses=[112 225  20   7 150]
+
+AUCTION RESULTS
+Generation by Fuel[GW]
+    hca    wind   solar nuclear   hydro    coal      ng      dl
+ 18.451  20.039  34.120   4.210  38.435   0.000  25.043   0.000
+ Bus    HC [MW]
+ 112   1642.016
+ 225   7319.623
+  20    600.000
+   7   7548.477
+ 150   1340.467
+Merit order of upgrades:
+ Br# From   To     muF      MVA      kV  Add MVA    Miles  Cost $M
+ 393  112  218 14.6532   334.45  115.00   100.00 Xfmr         2.45
+ 442  222  231 11.1031  1000.00  345.00   800.00 Xfmr        12.20
+ 406  134  151  7.8665   750.00  500.00  1200.00 Xfmr        24.40
+ 445  226  227  4.8732   512.82  345.00   800.00 Xfmr        12.20
+ 189  134  135  3.4328  1800.00  500.00  1800.00    14.42    77.67
+ 347   33   24  2.8018   724.64  500.00  1200.00 Xfmr        24.40
+ 336    7    8  2.7388   684.93  500.00  1200.00 Xfmr        24.40
+   9    7   18  2.7277  1800.00  500.00  1800.00    87.92   371.67
+  70   57  225  2.3228  1084.00  345.00  1084.00    48.60   180.11
+ 252  180  182  2.0952  1800.00  500.00  1800.00    83.33   353.33
+ 426  193  194  1.6766  1000.00  500.00  1200.00 Xfmr        24.40
+ 433  204  206  1.5947   552.49  500.00  1200.00 Xfmr        24.40
+ 245  167  168  1.3686   600.00  230.00   600.00     0.77     7.61
+ 436  211  213  1.1675   552.49  345.00   800.00 Xfmr        12.20
+   3    2    4  0.9348  1084.00  345.00  1084.00    10.51    46.80
+  28   22   31  0.7445   600.00  230.00   600.00    35.70    80.97
+ 341   14   15  0.2753  1388.89  500.00  1200.00 Xfmr        24.40
+  26   20   24  0.0681   600.00  230.00   600.00    46.51   103.68
+ 407  135  150  0.0226   574.71  500.00  1200.00 Xfmr        24.40
+ 380   83   85  0.0068   334.45  230.00   400.00 Xfmr         5.80
+***********************************************
+Queue Process on 4 bus application cluster(s) for WECC240_wmva.m
+Processing application for 2801.61 MW at bus 112
+  HC=1811.44 MW, upgrade branch 252 by 2.0000 at $353.333M
+  HC=1767.67 MW, upgrade branch 393 by 1.2990 at $2.450M
+Processing application for 2462.42 MW at bus 7
+  Added 2462.42 MW solar at bus 7 for $0.000M
+Processing application for 244.55 MW at bus 20
+  HC=149.00 MW, upgrade branch 252 by 2.0000 at $353.333M
+  HC=71.21 MW, upgrade branch 307 by 1.5000 at $252.315M
+Processing application for 970.00 MW at bus 150
+  Added 970.00 MW wind at bus 150 for $0.000M
+APPLICATION CLUSTERS
+ Bus   Req [MW]  MaxCost $M  Itlim  #apps
+ 112    2801.61      483.82     2     4
+         847.58       88.29     2
+         750.33       93.95     2
+         276.44       50.74     2
+         927.26      250.84     2
+   7    2462.42      585.98     2     3
+         897.26      217.56     2
+         573.43       98.45     2
+         991.73      269.97     2
+  20     244.55       36.28     2     1
+ 150     970.00      150.47     2     2
+         525.17       90.76     2
+         444.83       59.72     2
+CLUSTER STUDY RESULTS
+ Bus   Req [MW]  Add [MW]   HC [MW]   Cost $M   Branch Upgrades
+ 112    2801.61      0.00   1767.67    355.78   [252, 393]
+   7    2462.42   2462.42   7548.48      0.00   None
+  20     244.55      0.00     71.21    605.65   [252, 307]
+ 150     970.00    970.00    990.89      0.00   None
+221.27 seconds elapsed
+```
+
+For the IEEE 39-bus system:
+
+```
+C:\src\i2x\bes>python bq_simulations.py 2 2
+System IEEE39_wmva.m, Req MW=[500.00,500.00], Max $M/MW=[0.20,0.20], Nauc=6, Ncls=6, Napp=3
+***********************************************
+Auction Process on IEEE39_wmva.m, POC buses=[10, 11, 12, 13, 14, 15]
+
+AUCTION RESULTS
+Generation by Fuel[GW]
+    hca    wind   solar nuclear   hydro    coal      ng      dl
+  1.232   0.000   0.000   0.865   0.870   0.000   3.287   0.000
+ Bus    HC [MW]
+  10      0.000
+  11    488.530
+  12      0.000
+  13      0.000
+  14      0.000
+  15    743.595
+Merit order of upgrades:
+ Br# From   To     muF      MVA      kV  Add MVA    Miles  Cost $M
+   9    4   14  6.5547   500.00  345.00  1084.00    25.59    99.57
+   3    2    3  5.5480   500.00  345.00  1084.00    29.95   114.84
+  13    6   11  1.6699   480.00  345.00  1084.00    16.27    66.93
+***********************************************
+Queue Process on 2 bus application cluster(s) for IEEE39_wmva.m
+Processing application for 1000.00 MW at bus 10
+  HC=586.42 MW, upgrade branch 3 by 3.1680 at $114.841M
+  HC=564.35 MW, upgrade branch 13 by 3.2583 at $66.934M
+Processing application for 500.00 MW at bus 13
+  HC=488.53 MW, upgrade branch 3 by 3.1680 at $114.841M
+  HC=488.53 MW, upgrade branch 13 by 3.2583 at $66.934M
+
+APPLICATION CLUSTERS
+ Bus   Req [MW]  MaxCost $M  Itlim  #apps
+  10    1000.00      200.00     2     2
+         500.00      100.00     2
+         500.00      100.00     2
+  13     500.00      100.00     2     1
+CLUSTER STUDY RESULTS
+ Bus   Req [MW]  Add [MW]   HC [MW]   Cost $M   Branch Upgrades
+  10    1000.00      0.00    564.35    181.77   [3, 13]
+  13     500.00      0.00    488.53    181.77   [3, 13]
+16.67 seconds elapsed
+```
+
+
 Copyright 2022-2023, Battelle Memorial Institute
 

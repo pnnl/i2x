@@ -63,6 +63,7 @@ def form_clusters (napps=3, poc_list=[15], min_mw=500.0, max_mw=500.0, min_dolla
   return clusters, queue
 
 def print_poc_clusters (clusters):
+  print ('APPLICATION CLUSTERS')
   print (' Bus   Req [MW]  MaxCost $M  Itlim  #apps')
   for bus, row in clusters.items():
     napps = len(row['apps'])
@@ -73,6 +74,7 @@ def print_poc_clusters (clusters):
         print ('       {:8.2f}    {:8.2f} {:5d}'.format (app['mw'], app['costlim']/1.0e6, app['itlim']))
 
 def print_queue_results (results):
+  print ('CLUSTER STUDY RESULTS')
   print (' Bus   Req [MW]  Add [MW]   HC [MW]   Cost $M   Branch Upgrades')
   for bus, row in results.items():
     brlist = 'None'
@@ -83,6 +85,7 @@ def print_queue_results (results):
                                                                     row['hc'], row['cost']/1.0e6, brlist))
 
 def print_auction_results (results):
+  print ('AUCTION RESULTS')
   print ('Generation by Fuel[GW]')
   print (' '.join(['{:>7s}'.format(x) for x in mpow.FUEL_LIST]))
   fuel_str = ' '.join(['{:7.3f}'.format(results['fuels'][x]) for x in mpow.FUEL_LIST])
@@ -98,7 +101,7 @@ def print_auction_results (results):
     if row['label'] == 'Line':
       desc = '{:8.2f}'.format (row['miles'])
     else:
-      desc = label
+      desc = row['label']
     print ('{:4d} {:4d} {:4d} {:7.4f} {:8.2f} {:7.2f} {:8.2f} {:8s} {:8.2f}'.format(brnum, row['fbus'], row['tbus'], row['muF'], 
                                                                                   row['rating'], row['kv'], row['addmva'], 
                                                                                   desc, row['cost']/1.0e6))
@@ -153,7 +156,7 @@ def load_starting_case (base_case):
   mpow.write_matpower_casefile (mpd, 'hca_case')
   return mpd, G
 
-def add_renewable (mpd, poc, bes_size, ic_cost, bLog=False):
+def add_renewable (mpd, poc, bes_size, ic_cost, bLog=True, bVerbose=False):
   global bWind
   if bWind:
     genfuel = 'wind'
@@ -174,7 +177,7 @@ def add_renewable (mpd, poc, bes_size, ic_cost, bLog=False):
   mpd['gencost'] = np.vstack((mpd['gencost'], mpow.get_hca_gencosts(genfuel)))
 
   unit_states = np.ones(len(mpd['gen'])) * 24.0
-  mpow.write_xgd_function ('hca_xgd', mpd['gen'], mpd['gencost'], mpd['genfuel'], unit_states, bLog=False)
+  mpow.write_xgd_function ('hca_xgd', mpd['gen'], mpd['gencost'], mpd['genfuel'], unit_states, bLog=bVerbose)
 
   mpow.write_matpower_casefile (mpd, 'hca_case')
   if bLog:
@@ -372,7 +375,7 @@ def process_queue (queue, sys_config, bLog=True, bVerbose=False):
         results[app['poc']]['add_mw'] = app['mw']
         if cost > 0.0:
           results[app['poc']]['upgrades'] = upgrades
-        mpd = add_renewable (mpd, app['poc'], app['mw'], cost, bLog=bLog)
+        mpd = add_renewable (mpd, app['poc'], app['mw'], cost, bLog=True)
       else:
         if bLog:
           print ('  IX Cost ${:.3f}M is too high, HC={:.3f} MW'.format (cost/1.0e6, hc))
