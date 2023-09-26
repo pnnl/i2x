@@ -6,12 +6,14 @@
 // overvoltage cases
 var ovTMAX = 20.0;
 // elements are mnemonic, control mode, pref, qref, function
-var ov_steps = '187794.2*(1.0+0.2*((t>5)-(t>6)))';
+var ov_steps1 = '201929.0*(1.0+0.154*((t>5)-(t>6)))';
+var ov_steps2 = '189690.0*(1.0+0.200*((t>5)-(t>6)))';
+var ov_steps3 = '179022.0*(1.0+0.234*((t>5)-(t>6)))';
 var ov_nominal = '187794.2';
 var ov_cases = [
-  ['ovqn', 1, 1.00, -0.3287, ov_steps], 
-  ['ovq0', 1, 1.00,  0.0000, ov_steps], 
-  ['ovqp', 1, 1.00,  0.3287, ov_steps] 
+  ['ovqn', 1, 1.00, -0.28, ov_steps1], 
+  ['ovq0', 1, 1.00,  0.00, ov_steps2], 
+  ['ovqp', 1, 1.00,  0.28, ov_steps3] 
 ];
 
 // frequency ride-through cases
@@ -54,8 +56,8 @@ var start = new Date();
 var d = prepare_case();
 
 run_ov_suite (d);
-run_fr_suite (d);
-run_an_suite (d);
+//run_fr_suite (d);
+//run_an_suite (d);
 
 var end = new Date();
 var seconds = (end - start) / 1000.0;

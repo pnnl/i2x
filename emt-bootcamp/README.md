@@ -6,7 +6,7 @@ resources (IBR).
 
 | Topic | Shared Materials | EMTP Track | PSCAD Track |
 | ----- | ---------------- | ---------- | ----------- |
-| **All** Models and Scripts **Updated 9/25/2023** | [Scripts and Data](emt-bootcamp.zip) | [EMTP Models](EMTP.zip) | [PSCAD Models](PSCAD.zip) |
+| **All** Models and Scripts **Updated 9/26/2023** | [Scripts and Data](emt-bootcamp.zip) | [EMTP Models](EMTP.zip) | [PSCAD Models](PSCAD.zip) |
 | Pre-session (7/27/2023) | [Intro Slides](EMT_Bootcamp_July_27.pdf) | [EMTP Slides](EMTP/EMTP_training_session_1.pdf) | [PSCAD Slides](PSCAD/EMT-largescale-simulations.pdf) |
 | Plant-Level Session (8/3/2023) | [Slides](EMT_Bootcamp_Aug_3.pdf) | | |
 | Comparing rotating machine and IBR behaviors in EMT | [Slides](MachineIBR.pdf) and [Intro Video](https://youtu.be/xEy14ngf5S8) | [EMTP Video](https://youtu.be/hL52Ou9pnms) | [PSCAD Video](https://youtu.be/_fqEFi1c2RE) |
