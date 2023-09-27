@@ -2,3 +2,5 @@ pandas
 requests
 openpyxl
 pytest
+geopandas
+matplotlib
