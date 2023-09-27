@@ -147,14 +147,28 @@ def test ():
 #   Shape__Area (type: esriFieldTypeDouble, alias: Shape__Area, SQL Type: sqlTypeFloat, nullable: true, editable: false)
 #   Shape__Length (type: esriFieldTypeDouble, alias: Shape__Length, SQL Type: sqlTypeFloat, nullable: true, editable: false)
 
-def nw_block_groups (bLog=False):
+def get_block_groups (lon=-122.33, lat=47.61, bLog=False): # default is Seattle
   if bLog:
-    print ('Entered block groups function, rquesting data...')
-  url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/ArcGIS/rest/services/North_West_Block_Groups_V3/FeatureServer/0/query?'
+    print ('Entered block groups function, requesting data...')
+  #url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/ArcGIS/rest/services/North_West_Block_Groups_V3/FeatureServer/0/query?'
+  # Denver
+  lat = 39.739
+  lon = -104.990
+  # Dallas
+# lat = 32.777
+# lon = -96.797
+# # Houston
+# lat = 29.7604
+# lon = -95.3698
+# # Phoenix
+# lat = 33.4484
+# lon = -112.0740
+  url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/South_West_Block_Groups_V3/FeatureServer/0/query?'
   params = {
-    'geometry': '-122.33, 47.61',  # Seattle
+    'geometry': '{:.3f}, {:.3f}'.format (lon, lat),  
     'geometryType': 'esriGeometryPoint',
     'inSR': '4326',
+    'outSR': '4326',
     'distance': '100000', # about 60 miles?
     'units': 'esriSRUnit_Meter', 
     'returnGeometry': 'true', 
@@ -172,23 +186,111 @@ def nw_block_groups (bLog=False):
     print ('\n\nBlock Group GeoDataFrame result:\n\n', gdf)
   return gdf
 
+def show_plot (gdf, title):
+  gdf.plot()
+  plt.title(title)
+  plt.ylabel('Latitude [deg]')
+  plt.xlabel('Longitude [deg]')
+  plt.show()
+  plt.close()
+
+def overlay_plot (gdf_bg, gdf_st, gdf_qu):
+  f, ax = plt.subplots()
+  plt.title('SolarTrace Centroids in the Block Group Footprint')
+  gdf_bg.plot(ax=ax)
+  gdf_st.plot(ax=ax, color='red')
+  gdf_qu.plot(ax=ax, color='yellow') # there are none for Denver
+  plt.ylabel('Latitude [deg]')
+  plt.xlabel('Longitude [deg]')
+  plt.show()
+  plt.close()
+
+def plot_der_results (df):
+  f, ax = plt.subplots()
+  plt.title('SolarTrace Correlations')
+  plt.xlabel('White Population [%]')
+  plt.ylabel('Total Projects')
+  x = 100.0 * df['p_white']
+  ax.scatter (x, df['Tot10kW'], c='red', label='0-10 kW')
+  ax.scatter (x, df['Tot50kW'], c='blue', label='11-50 kW')
+  ax.legend()
+  ax.grid()
+  plt.show()
+  plt.close()
+
 if __name__ == '__main__':
   #test()
   if False: # build and save GeoDataFrames
     gdf_qu = get_qu (bLog=True)
     gdf_st = get_st (bLog=True)
-    gdf_nw = nw_block_groups (bLog=True)
-    
+    gdf_bg = get_block_groups (bLog=True)
     gdf_qu.to_file ('gdf_qu.shp')
     gdf_st.to_file ('gdf_st.shp')
-    gdf_nw.to_file ('gdf_nw.shp')
+    gdf_bg.to_file ('gdf_bg.shp')
   else: # read the local GeoDataFrames
     gdf_qu = gpd.read_file ('gdf_qu.shp')
-    print ('\n\nLoaded QU GeoDataFrame:\n', gdf_qu)
+    print ('\n\nLoaded QU GeoDataFrame: crs={:s}\n'.format (str(gdf_qu.crs)), gdf_qu)
     gdf_st = gpd.read_file ('gdf_st.shp')
-    print ('\n\nLoaded ST GeoDataFrame:\n', gdf_st)
-    gdf_nw = gpd.read_file ('gdf_nw.shp')
-    print ('\n\nLoaded Block Group GeoDataFrame:\n', gdf_nw)
+    print ('\n\nLoaded ST GeoDataFrame: crs={:s}\n'.format (str(gdf_st.crs)), gdf_st)
+    gdf_bg = gpd.read_file ('gdf_bg.shp')
+    print ('\n\nLoaded Block Group GeoDataFrame: crs={:s}\n'.format (str(gdf_bg.crs)), gdf_bg)
+  if False:
+    show_plot (gdf_bg, 'Block Group Coverage')
+    show_plot (gdf_st, 'SolarTRACE Coverage')
+    show_plot (gdf_qu, 'Queued Up Coverage')
+
+  gdf_st = gdf_st.clip (gdf_bg)
+  gdf_qu = gdf_qu.clip (gdf_bg)
+  print ('{:d} block groups include {:d} SolarTRACE and {:d} Queued Up Centroids'.format (len(gdf_bg), len(gdf_st), len(gdf_qu)))
+  #overlay_plot (gdf_bg, gdf_st, gdf_qu)
+
+  d_der = {}
+  der_fields = ['Tot10kW', 'Tot50kW', 'Wt10kW', 'Wt50kW', 'Wt.1.10kW', 'Wt.1.50kW']
+  d_bes = {}
+  bes_fields = ['MW_RE_WI', 'N_RE_WI', 'MW_RE_OP', 'N_RE_OP', 'MW_RE_AC', 'N_RE_AC', 'MW_RE_SU', 'N_RE_SU']
+  min_p_white = 2.0
+  max_p_lowinc = 0.0
+  for idx, bg in gdf_bg.iterrows():
+    if idx % 200 == 0:
+      print ('processing block group {:d}'.format (idx))
+    pop = bg['POP']
+    p_white = bg['WHITE'] / pop
+    p_lowinc = bg['LOWINC'] / pop
+    if p_white < min_p_white:
+      min_p_white = p_white
+    if p_lowinc > max_p_lowinc:
+      max_p_lowinc = p_lowinc
+    for j, st in gdf_st.iterrows():
+      if bg['geometry'].contains (st['geometry']):
+        if idx not in d_der:
+          d_der[idx] = {'p_white':p_white, 'p_lowinc': p_lowinc, 'n':0}
+          for field in der_fields:
+            d_der[idx][field] = 0.0
+        d_der[idx]['n'] += 1
+        for field in der_fields:
+          d_der[idx][field] += st[field]
+    for j, qu in gdf_qu.iterrows():
+      if bg['geometry'].contains (qu['geometry']):
+        if idx not in d_bes:
+          d_bes[idx] = {'p_white':p_white, 'p_lowinc': p_lowinc, 'n':0}
+          for field in bes_fields:
+            d_bes[idx][field] = 0.0
+        d_bes[idx]['n'] += 1
+        for field in bes_fields:
+          d_bes[idx][field] += qu[field]
+
+  print ('Minimum white population = {:.2f}%, Maximum low-income population = {:.2f}%'.format (100.0*min_p_white, 100.0*max_p_lowinc))
+  print ('{:d} block groups have SolarTRACE Data'.format (len(d_der)))
+# for key, row in d_der.items():
+#   print ('  ', key, row)
+  print ('{:d} block groups with Queued Up Data'.format (len(d_bes)))
+# for key, row in d_bes.items():
+#   print ('  ', key, row)
+
+  df = pd.DataFrame.from_dict (d_der, orient='index')
+  print (df)
+  print (df.corr())
+  plot_der_results (df)
 
   # For a DER report, loop through each block group and build a dataframe for analysis
   #   1) find the ST centroids within this block group
