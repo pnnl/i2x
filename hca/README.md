@@ -220,6 +220,20 @@ Note, however, that the remaining headroom is very low (~33 kW)
 
 In the `PF_CONSTANT` case, the slight increase in regulator set voltage does not resolve the issue and further increases lead to maximum voltage violations.
 
+## Islanding Considerations
+One of often repeated issues with DER interconnection are anit-islanding measures.
+In this HCA implementation, we place monitors on all reclosers (i.e. locations where islands may occur) and measure the net flow in/out of a potential island. 
+The following test is then carried out:
+1. Is the potential island always importing or exporting _real power_?
+	* Yes -> test is passed
+	* No  -> proceed to step 2
+2. Is the ratio of minimum output to maximum output above a certain level. Idea here is that if the minimum is sufficiently "large" then the likelyhood of islanding during a time where load and generation are balanced is very low and therefore no island would occur.
+	* Yes -> test is passed
+	* No  -> proceed to step 2
+3. Repeat steps 1 and 2 for _reactive power_
+
+Test `island_test.py`
+
 ## Testing/Example
 An example/test is available in the `tests` folder, which performs 3 rounds of HCA on the IEEE 9500 Node feeder, and can be run (in the `tests` folder) via:
 ```
