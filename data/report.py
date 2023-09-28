@@ -3,6 +3,7 @@
 """Generating a sample geospatial data report for i2X.
 """
 
+import sys
 import os
 import requests
 import urllib.parse
@@ -91,79 +92,67 @@ def test ():
   gdf_temp = gpd.read_file(data)
   print ('\n\nGEOPANDAS result:\n\n', gdf_temp)
 
-# From https://services7.arcgis.com/F8VN7MYN9lP1oiiV/ArcGIS/rest/services/North_West_Block_Groups_V3/FeatureServer/0
-# Type: Feature Layer
-# Geometry Type: esriGeometryPolygon
-# Min. Scale: 18489298
-# Max. Scale: 2256
-# Default Visibility: true
-# Max Record Count: 2000
-# Supported query Formats: JSON
-# Use Standardized Queries: True
-# Extent:
-#   XMin: -13889634.2777885
-#   YMin: 5011571.30170265
-#   XMax: -11581646.8758166
-#   YMax: 6275276.54303364
-#   Spatial Reference: 102100 (3857)
-# Fields:
-#   FID (type: esriFieldTypeOID, alias: FID, SQL Type: sqlTypeInteger, length: 0, nullable: false, editable: false)
-#   GEOID (type: esriFieldTypeString, alias: GEOID, SQL Type: sqlTypeNVarchar, length: 80, nullable: true, editable: true)
-#   POP (type: esriFieldTypeDouble, alias: POP, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   WHITE (type: esriFieldTypeDouble, alias: WHITE, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   BLACK (type: esriFieldTypeDouble, alias: BLACK, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   NATAM (type: esriFieldTypeDouble, alias: NATAM, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   ASIAN (type: esriFieldTypeDouble, alias: ASIAN, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   ISLANDER (type: esriFieldTypeDouble, alias: ISLANDER, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   OTHER (type: esriFieldTypeDouble, alias: OTHER, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   MULTI (type: esriFieldTypeDouble, alias: MULTI, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   LATINX (type: esriFieldTypeDouble, alias: LATINX, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_BLK (type: esriFieldTypeDouble, alias: F_BLK, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_IND (type: esriFieldTypeDouble, alias: F_IND, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_ASN (type: esriFieldTypeDouble, alias: F_ASN, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_ISL (type: esriFieldTypeDouble, alias: F_ISL, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_OTH (type: esriFieldTypeDouble, alias: F_OTH, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_MLT (type: esriFieldTypeDouble, alias: F_MLT, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_LAT (type: esriFieldTypeDouble, alias: F_LAT, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_POC (type: esriFieldTypeDouble, alias: F_POC, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QPOC (type: esriFieldTypeDouble, alias: QPOC, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   LOWINC (type: esriFieldTypeDouble, alias: LOWINC, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QPOV (type: esriFieldTypeDouble, alias: QPOV, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_LEP (type: esriFieldTypeDouble, alias: F_LEP, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QLEP (type: esriFieldTypeDouble, alias: QLEP, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   FDIS (type: esriFieldTypeDouble, alias: FDIS, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QDIS (type: esriFieldTypeDouble, alias: QDIS, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   FCHILD (type: esriFieldTypeDouble, alias: FCHILD, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   FELDER (type: esriFieldTypeDouble, alias: FELDER, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QCHILD (type: esriFieldTypeDouble, alias: QCHILD, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QELDER (type: esriFieldTypeDouble, alias: QELDER, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_SNAP (type: esriFieldTypeDouble, alias: F_SNAP, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QSNAP (type: esriFieldTypeDouble, alias: QSNAP, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_COV (type: esriFieldTypeDouble, alias: F_COV, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QCOV (type: esriFieldTypeDouble, alias: QCOV, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   F_WEB (type: esriFieldTypeDouble, alias: F_WEB, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   QWEB (type: esriFieldTypeDouble, alias: QWEB, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   FLAGS (type: esriFieldTypeDouble, alias: FLAGS, SQL Type: sqlTypeFloat, nullable: true, editable: true)
-#   Shape__Area (type: esriFieldTypeDouble, alias: Shape__Area, SQL Type: sqlTypeFloat, nullable: true, editable: false)
-#   Shape__Length (type: esriFieldTypeDouble, alias: Shape__Length, SQL Type: sqlTypeFloat, nullable: true, editable: false)
+# Block groups:
+# NW = WA, OR, ID, WY, MT
+# SW = CO, OK, TX, NM, AZ, UT
+# W = CA, NV
+# SE = AR, LA, MS, AL, GA, FL, SC, NC, TN
+# NE = ME, NH, VT, MA, CT, RI
+# MW = OH, IN, IL, MO, MI, WI, MN, KS, IA, NE, SD, ND, KY
+# HI = HI
+# MA = VA, WV, PA, MD, DE, NJ, NY
+# AK = AK
+nwbg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/ArcGIS/rest/services/North_West_Block_Groups_V3/FeatureServer/0/query?'
+swbg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/South_West_Block_Groups_V3/FeatureServer/0/query?'
+wbg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/West_Block_Groups_V3/FeatureServer/0/query?'
+sebg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/South_East_Block_Groups_V3/FeatureServer/0/query?'
+nebg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/North_East_Block_Groups_V3/FeatureServer/0/query?'
+mwbg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/Mid_West_Block_Groups_V3/FeatureServer/0/query?'
+hibg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/Hawaii_Block_Groups_V3/FeatureServer/0/query?'
+mabg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/Mid_Atlantic_Block_Groups_V3/FeatureServer/0/query?'
+akbg_url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/Alaska_Block_Groups_V3/FeatureServer/0/query?'
 
-def get_block_groups (lon=-122.33, lat=47.61, bLog=False): # default is Seattle
+# Wetlands inventory data layers:
+wet_url_base = r'https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0/query?'
+# Critical habitat data layers (polygons and lines):
+hab_poly_url_base = r'https://services.arcgis.com/QVENGdaPbd4LUkLV/arcgis/rest/services/USFWS_Critical_Habitat/FeatureServer/0/query?'
+hab_line_url_base = r'https://services.arcgis.com/QVENGdaPbd4LUkLV/arcgis/rest/services/USFWS_Critical_Habitat/FeatureServer/1/query?'
+
+metro_areas = {
+  'Seattle':      {'lon':-122.33,  'lat':47.610, 'url_base': nwbg_url_base},
+  'Tucson':       {'lon':-110.974, 'lat':32.254, 'url_base': swbg_url_base},
+  'Dallas':       {'lon': -96.797, 'lat':32.777, 'url_base': swbg_url_base},
+  'Houston':      {'lon': -95.367, 'lat':29.760, 'url_base': swbg_url_base},
+  'Denver':       {'lon':-104.990, 'lat':39.739, 'url_base': swbg_url_base},
+  'Phoenix':      {'lon':-112.074, 'lat':33.448, 'url_base': swbg_url_base},
+  'Los Angeles':  {'lon':-118.243, 'lat':34.055, 'url_base': wbg_url_base},
+  'Las Vegas':    {'lon':-115.139, 'lat':36.172, 'url_base': wbg_url_base},
+  'Chicago':      {'lon': -87.630, 'lat':41.878, 'url_base': mwbg_url_base},
+  'Minneapolis':  {'lon': -93.265, 'lat':44.978, 'url_base': mwbg_url_base},
+  'St Louis':     {'lon': -90.199, 'lat':38.627, 'url_base': mwbg_url_base},
+  'New York':     {'lon': -74.006, 'lat':40.173, 'url_base': mabg_url_base},
+  'Boston':       {'lon': -71.059, 'lat':42.360, 'url_base': nebg_url_base},
+  'Philadelphia': {'lon': -75.165, 'lat':39.953, 'url_base': mabg_url_base},
+  'Miami':        {'lon': -80.192, 'lat':25.762, 'url_base': sebg_url_base},
+  'Charlotte':    {'lon': -80.843, 'lat':35.227, 'url_base': sebg_url_base},
+  'Honolulu':     {'lon':-157.858, 'lat':21.310, 'url_base': hibg_url_base},
+  'Anchorage':    {'lon':-149.900, 'lat':61.218, 'url_base': akbg_url_base}
+}
+
+def get_block_groups (area, bLog=False):
   if bLog:
-    print ('Entered block groups function, requesting data...')
-  #url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/ArcGIS/rest/services/North_West_Block_Groups_V3/FeatureServer/0/query?'
-  # Denver
-  lat = 39.739
-  lon = -104.990
-  # Dallas
-# lat = 32.777
-# lon = -96.797
-# # Houston
-# lat = 29.7604
-# lon = -95.3698
-# # Phoenix
-# lat = 33.4484
-# lon = -112.0740
-  url_base = r'https://services7.arcgis.com/F8VN7MYN9lP1oiiV/arcgis/rest/services/South_West_Block_Groups_V3/FeatureServer/0/query?'
+    print ('Entered block groups function, requesting data for {:s} ...'.format (area))
+  if area in metro_areas:
+    lat = metro_areas[area]['lat']
+    lon = metro_areas[area]['lon']
+    url_base = metro_areas[area]['url_base']
+  else:
+    print ('ERROR: {:s} is not defined for reporting. Choose from:'.format (area))
+    for key in metro_areas:
+      print ('  ', key)
+    quit()
+    return None
+
   params = {
     'geometry': '{:.3f}, {:.3f}'.format (lon, lat),  
     'geometryType': 'esriGeometryPoint',
@@ -194,12 +183,12 @@ def show_plot (gdf, title):
   plt.show()
   plt.close()
 
-def overlay_plot (gdf_bg, gdf_st, gdf_qu):
+def overlay_plot (gdf_bg, gdf_st, gdf_qu, area):
   f, ax = plt.subplots()
-  plt.title('SolarTrace Centroids in the Block Group Footprint')
+  plt.title('i2x Centroids in the {:s} Block Group Footprint'.format (area))
   gdf_bg.plot(ax=ax)
   gdf_st.plot(ax=ax, color='red')
-  gdf_qu.plot(ax=ax, color='yellow') # there are none for Denver
+  gdf_qu.plot(ax=ax, color='yellow')
   plt.ylabel('Latitude [deg]')
   plt.xlabel('Longitude [deg]')
   plt.show()
@@ -219,21 +208,29 @@ def plot_der_results (df):
   plt.close()
 
 if __name__ == '__main__':
+  area = 'Denver'
+  if len(sys.argv) > 1:
+    area = str(sys.argv[1])
+
   #test()
-  if False: # build and save GeoDataFrames
+  if True: # build and save Block Group dataframes
+    gdf_bg = get_block_groups (area, bLog=True)
+    gdf_bg.to_file ('gdf_bg.shp')
+  else: # read from disk
+    gdf_bg = gpd.read_file ('gdf_bg.shp')
+    print ('\n\nLoaded Block Group GeoDataFrame: crs={:s}, items={:d}\n'.format (str(gdf_bg.crs), len(gdf_bg)))
+
+  if False: # build and save the i2x SolarTRACE and Queued Up GeoDataFrames
     gdf_qu = get_qu (bLog=True)
     gdf_st = get_st (bLog=True)
-    gdf_bg = get_block_groups (bLog=True)
     gdf_qu.to_file ('gdf_qu.shp')
     gdf_st.to_file ('gdf_st.shp')
-    gdf_bg.to_file ('gdf_bg.shp')
-  else: # read the local GeoDataFrames
+  else: # read from disk
     gdf_qu = gpd.read_file ('gdf_qu.shp')
-    print ('\n\nLoaded QU GeoDataFrame: crs={:s}\n'.format (str(gdf_qu.crs)), gdf_qu)
+    print ('\n\nLoaded QU GeoDataFrame: crs={:s}, items={:d}\n'.format (str(gdf_qu.crs), len(gdf_qu)))
     gdf_st = gpd.read_file ('gdf_st.shp')
-    print ('\n\nLoaded ST GeoDataFrame: crs={:s}\n'.format (str(gdf_st.crs)), gdf_st)
-    gdf_bg = gpd.read_file ('gdf_bg.shp')
-    print ('\n\nLoaded Block Group GeoDataFrame: crs={:s}\n'.format (str(gdf_bg.crs)), gdf_bg)
+    print ('\n\nLoaded ST GeoDataFrame: crs={:s}, items={:d}\n'.format (str(gdf_st.crs), len(gdf_st)))
+
   if False:
     show_plot (gdf_bg, 'Block Group Coverage')
     show_plot (gdf_st, 'SolarTRACE Coverage')
@@ -242,7 +239,7 @@ if __name__ == '__main__':
   gdf_st = gdf_st.clip (gdf_bg)
   gdf_qu = gdf_qu.clip (gdf_bg)
   print ('{:d} block groups include {:d} SolarTRACE and {:d} Queued Up Centroids'.format (len(gdf_bg), len(gdf_st), len(gdf_qu)))
-  #overlay_plot (gdf_bg, gdf_st, gdf_qu)
+  overlay_plot (gdf_bg, gdf_st, gdf_qu, area)
 
   d_der = {}
   der_fields = ['Tot10kW', 'Tot50kW', 'Wt10kW', 'Wt50kW', 'Wt.1.10kW', 'Wt.1.50kW']
@@ -281,6 +278,9 @@ if __name__ == '__main__':
 
   print ('Minimum white population = {:.2f}%, Maximum low-income population = {:.2f}%'.format (100.0*min_p_white, 100.0*max_p_lowinc))
   print ('{:d} block groups have SolarTRACE Data'.format (len(d_der)))
+  if len(d_der) < 1:
+    print ('No DER data to analyze.')
+    quit()
 # for key, row in d_der.items():
 #   print ('  ', key, row)
   print ('{:d} block groups with Queued Up Data'.format (len(d_bes)))
@@ -296,11 +296,5 @@ if __name__ == '__main__':
   #   1) find the ST centroids within this block group
   #   2) sum the contained ST columns, i.e., Tot10kW, Wt10kW, Wt.1.10kW, Tot50kW, Wt50kW, Wt.1.50kW
   #   3) scatter plot the ST quantities vs proportion of WHITE population, and/or proportion of LOWINC population
-  #   4) where correlation is evident, calculate rho
-
-  # For a QU report, loop through each block group and build a dataframe for analysis
-  #   1) find all QU centroids within 25 miles
-  #   2) sum the contained QU size and count columns, i.e., MW_RE_WI, etc.
-  #   3) scatter plot the QU quantities
   #   4) where correlation is evident, calculate rho
 
