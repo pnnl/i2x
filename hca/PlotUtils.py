@@ -31,7 +31,26 @@ def get_pout_primary(droop, f, pref, f0=60):
     else:
         return pref - (1/droop) * (f - f0)/f0
     
+def lower(x):
+    if isinstance(x, str):
+        return x.lower()
+    else:
+        return x
+    
+def upper(x):
+    if isinstance(x, str):
+        return x.upper()
+    else:
+        return x
 
+def str_in(s, v):
+    """check whether s is in v.
+    consider s.lower() and s.upper()
+    """
+    for k in [s, lower(s), upper(s)]:
+        if k in v:
+            return True, k
+    return False, s
 class ColorList:
     def __init__(self):
         self.cidx = 0
@@ -105,19 +124,50 @@ def vmaxmin_plot(hcaobj:HCA, filenamebase):
     hcaobj.plot(highlight_nodes=list(vmaxlocs.keys()) + list(vminlocs.keys()), pdf_name=f"{filenamebase}.pdf", on_canvas=True)
 
 
-def thermal_plot(hcaobj:HCA, filenamebase):
-    branches = []
-    for v in hcaobj.metrics.get_thermal_branches().values():
-        branches.extend(v)
-    hcaobj.plot(highlight_edges=branches, pdf_name=f"{filenamebase}.pdf", on_canvas=True)
+def thermal_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
+    # branches = []
+    # for v in hcaobj.metrics.get_thermal_branches().values():
+    #     branches.extend(v)
+    branches = {}
+    for k, v in hcaobj.metrics.get_thermal_branches().items():
+        for br in v:
+            branches[br] = f"Thermal violation: {hcaobj.metrics.violation['thermal']['emerg'][f'{k}.{br}']:0.3f} %"
+    # hcaobj.plot(highlight_edges=branches, pdf_name=f"{filenamebase}.pdf", on_canvas=True)
+    feeder_plotter = PlotlyFeeder()
+    feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
+                        extra_node_text=hc_text(hcaobj, typ), 
+                        highlight_edges=branches,
+                        include_plotlyjs='cdn', **kwargs)
 
 
-def dict2str(d, n):
+def hc_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
+    feeder_plotter = PlotlyFeeder()
+    feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
+                        extra_node_text=hc_text(hcaobj, typ),
+                        extra_edge_text=upgrade_text(hcaobj),
+                        include_plotlyjs='cdn', **kwargs)
+
+def hc_text(hcaobj:HCA, typ):
+    out = {}
+    for n in hcaobj.visited_buses:
+        out[n] = dict2str(hcaobj.get_hc(typ, n)[0], f"HC ({typ})", newline="<br>")
+    return out
+
+def upgrade_text(hcaobj:HCA):
+    out = {}
+    for typ, vals in hcaobj.upgrades.items():
+        for br, v in vals.items():
+            out[br] = dict2str(v, f"Upgrades", newline="<br>")
+    return out
+
+def dict2str(d, n, newline='\n'):
     ftmp = StringIO()
     def strprint(s):
         print(s, file=ftmp)
     h.print_config(d, printf=strprint, title=n)
     s = ftmp.getvalue()
+    if newline != '\n':
+        s = s.replace("\n", "<br>")
     ftmp.close()
     return s
 
@@ -130,7 +180,8 @@ class PlotlyFeeder:
         'capacitor':  {'color':'blue',   'tag':'CAP', 'size':12, "symbol": "circle"},
         'storage':    {'color':'green',  'tag':'BAT', 'size':14, "symbol": "pentagon"},
         "bus":        {'color': 'black', 'tag':"BUS", 'size':5, "symbol": "circle"},
-        "load":       {'color': 'brown', 'tag':"LD", 'size': 7, "symbol": "triangle-down"}
+        "load":       {'color': 'brown', 'tag':"LD", 'size': 7, "symbol": "triangle-down"},
+        "highlight":  {'color': 'yellow', 'tag': "HIL", 'size': 16, "symbol": "star"}
         }
 
         self.edgeTypes = {
@@ -142,7 +193,8 @@ class PlotlyFeeder:
         'nwp':         {'color':'magenta','tag':'NWP'},
         'recloser':    {'color':'lime',   'tag':'REC'},
         'reactor':     {'color':'green',  'tag':'RCT'},
-        'fuse':        {'color':'magenta','tag':'FUS'}
+        'fuse':        {'color':'magenta','tag':'FUS'},
+        "highlight":   {'color': 'yellow', 'tag': "HIL"}
         }
 
         self.node_x = {}
@@ -151,12 +203,12 @@ class PlotlyFeeder:
         self.node_size = {}
         self.plotnodes = {}
 
-        edge_x = {}
-        edge_y = {}
-        edge_txt = {}
+        self.edge_x = {}
+        self.edge_y = {}
+        self.edge_txt = {}
         # see https://stackoverflow.com/questions/46037897/line-hover-text-in-plotly
-        midnode_x = {}
-        midnode_y = {}
+        self.midnode_x = {}
+        self.midnode_y = {}
 
     def get_node_mnemonic(self, nclass):
         return self.nodeTypes[nclass]['tag']
@@ -164,29 +216,21 @@ class PlotlyFeeder:
     def get_node_symbol(self, nclass):
         return self.nodeTypes[nclass]["symbol"]
 
-    def get_node_size(self, nclass, highlight=False):
-        if highlight:
-            return 35
+    def get_node_size(self, nclass):
         if nclass in self.nodeTypes:
             return self.nodeTypes[nclass]['size']
         return 5
 
-    def get_node_color(self, nclass, highlight=False):
+    def get_node_color(self, nclass):
         if nclass in self.nodeTypes:
-            if highlight:
-                return "yellow"
-            else:
-                return self.nodeTypes[nclass]['color']
-        return "yellow" if highlight else 'black'
+            return self.nodeTypes[nclass]['color']
+        return 'black'
     
     def get_edge_mnemonic(self, eclass):
         return self.edgeTypes[eclass]['tag']
 
-    def get_edge_color(self, eclass, highlight=False):
-        if highlight:
-            return "yellow"
-        else:
-            return self.edgeTypes[eclass]['color']
+    def get_edge_color(self, eclass):
+        return self.edgeTypes[eclass]['color']
     
     def clear_node_data(self):
         self.node_x = {}
@@ -195,7 +239,7 @@ class PlotlyFeeder:
         self.node_size = {}
         self.plotnodes = {}
 
-    def collect_node_data(self, G:nx.Graph):
+    def collect_node_data(self, G:nx.Graph, highlight_nodes=dict(), extra_text=dict()):
         self.clear_node_data()
         for n, d in G.nodes(data=True):
             try:
@@ -203,7 +247,17 @@ class PlotlyFeeder:
             except KeyError:
                 continue
             if "x" in ndata:
-                nclass = d["nclass"]
+                highlight_test, highlight_key = str_in(n, highlight_nodes.keys())
+                if highlight_test:
+                    nclass = "highlight"
+                    text_extra = "<br>" + highlight_nodes[highlight_key]
+                else:
+                    nclass = d["nclass"]
+                    extra_test, extra_key = str_in(n, extra_text.keys())
+                    if extra_test:
+                        text_extra = "<br>" + extra_text[extra_key]
+                    else:
+                        text_extra = ""
                 if not nclass in self.node_x:
                     self.node_x[nclass] = []
                     self.node_y[nclass] = []
@@ -212,7 +266,7 @@ class PlotlyFeeder:
                 self.plotnodes[n] = (float(ndata["x"]) / 1000.0, float(ndata["y"]) / 1000.0)
                 self.node_x[nclass].append(float(ndata["x"]) / 1000.0)
                 self.node_y[nclass].append(float(ndata["y"]) / 1000.0)
-                self.node_txt[nclass].append(dict2str(d, n).replace("\n", "<br>"))
+                self.node_txt[nclass].append(dict2str(d, n).replace("\n", "<br>") + text_extra)
                 self.node_size[nclass].append(self.get_node_size(nclass))
 
     def clear_edge_data(self):
@@ -222,13 +276,23 @@ class PlotlyFeeder:
         self.midnode_x = {}
         self.midnode_y = {}
     
-    def collect_edge_data(self, G:nx.Graph):
+    def collect_edge_data(self, G:nx.Graph, highlight_edges=dict(), extra_text=dict()):
         self.clear_edge_data()
         for u,v,d in G.edges(data=True):
             if not ((u in self.plotnodes) and (v in self.plotnodes)):
                 # only plot edges where both ends have coordinates
                 continue
-            eclass = d["eclass"]
+            highlight_test, highlight_key = str_in(d["ename"], highlight_edges.keys())
+            if highlight_test:
+                eclass = "highlight"
+                text_extra = "<br>" + highlight_edges[highlight_key]
+            else:
+                eclass = d["eclass"]
+                extra_test, extra_key = str_in(d["ename"], extra_text.keys())
+                if extra_test:
+                    text_extra = "<br>" + extra_text[extra_key]
+                else:
+                    text_extra = ""
             if not eclass in self.edge_x:
                 self.edge_x[eclass] = []
                 self.edge_y[eclass] = []
@@ -239,7 +303,7 @@ class PlotlyFeeder:
             self.edge_y[eclass] += [self.plotnodes[u][1], self.plotnodes[v][1], None]
             self.midnode_x[eclass].append((self.plotnodes[u][0] + self.plotnodes[v][0])/2)
             self.midnode_y[eclass].append((self.plotnodes[u][1] + self.plotnodes[v][1])/2)
-            self.edge_txt[eclass].append(dict2str(d, d["ename"]).replace("\n", "<br>"))
+            self.edge_txt[eclass].append(dict2str(d, d["ename"]).replace("\n", "<br>") + text_extra)
 
     
     def make_plot(self, filename, **kwargs):
@@ -283,7 +347,10 @@ class PlotlyFeeder:
 
         fig.write_html(filename, **kwargs)
 
-    def plot(self, G, filename, **kwargs):
-        self.collect_node_data(G)
-        self.collect_edge_data(G)
+    def plot(self, G, filename, 
+             highlight_nodes=dict(), highlight_edges=dict(), 
+             extra_node_text=dict(), extra_edge_text=dict(),
+             **kwargs):
+        self.collect_node_data(G, highlight_nodes=highlight_nodes, extra_text=extra_node_text)
+        self.collect_edge_data(G, highlight_edges=highlight_edges, extra_text=extra_edge_text)
         self.make_plot(filename, **kwargs)
