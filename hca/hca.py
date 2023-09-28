@@ -14,7 +14,12 @@ import pandas as pd
 import copy
 import hashlib
 import pickle
+import upgrade_costs as upcst
 
+### Cost objects
+conductor_cost = upcst.ConductorCosts()
+xfrm_cost = upcst.TransformerCosts()
+reg_cost = upcst.RegulatorCosts()
 
 SQRT3 = math.sqrt(3.0)
 
@@ -937,6 +942,49 @@ class HCA:
     """
     return self.get_data("hc", typ, bus, cnt=cnt)
   
+  def remove_hca_resource(self, typ, bus=None, cnt=None):
+    """utility function for remove a resource added via hca_round.
+    The main purpose is to make sure the graph gets updated as necessary.
+    If bus and cnt are none it is assumed that the current count and active bus 
+    last visited bus is intended
+    """
+
+    if cnt is None:
+      cnt = self.cnt
+    if bus is None:
+      if self.active_bus is None:
+        bus = self.visited_buses[-1]
+      else:
+        bus = self.active_bus
+
+    # get the key used for the resource
+    key = self.resource_key(typ, bus, cnt)
+
+    self.remove_der(key, typ, bus)
+
+    self.parse_graph() #update graph dictionaries
+
+  def undo_hca_round(self, typ, bus, cnt):
+    """undo an hca round"""
+    ### remove the resource
+    self.remove_hca_resource(typ, bus, cnt)
+    
+    ### remove the total statistics
+    self.data["Stotal"].pop(cnt)
+
+    ### remove results from self.data
+    for k in ["Sij", "hc", "eval"]:
+      self.data[k][typ][bus].pop(cnt)
+      # check if the bus has no data left (common):
+      if not self.data[k][typ][bus]:
+        self.data[k][typ].pop(bus)
+
+    ### remove from visited buses list
+    # verify that the bus is really at the cnt index
+    if self.visited_buses[cnt-1] == bus:
+      self.visited_buses.pop(cnt-1)
+
+
   def hca_round(self, typ, bus=None, Sij=None, allow_violations=False, hciter=True):
     """perform a single round of hca"""
     
@@ -1208,6 +1256,8 @@ class HCA:
     out = upgrade_line(self.dss, self.upgrade_change_lines, name, factor)
     self.logger.info(f"Upgraded line {name} from {out['old']} A to {out['new']} A")
     out["length"] = brdata["edata"]["length"] # add the original length
+    out["length_unit"] = brdata["edata"]["units"] # add units for later cost calculation
+    out["cost"] = conductor_cost.get_cost("oh", out["length"], unit=out["length_unit"])
     self.update_upgrades("line", name, out)
 
   def upgrade_xfrm(self, name):

@@ -7,11 +7,13 @@ by altering the input data
 
 import pandas as pd
 import numpy as np
+import os
 
 
 class TransformerCosts:
     def __init__(self):
-        df = pd.read_csv("transformer_costs.csv", skiprows=1)
+        this_dir = os.path.split(__file__)[0]
+        df = pd.read_csv(os.path.join(this_dir,"transformer_costs.csv"), skiprows=1)
         
         ## take the average cost for each phase/kVA combination
         self.df = df.groupby(["phases", "rated_kVA"])["total_cost"].aggregate(np.average)
@@ -42,10 +44,30 @@ class ConductorCosts:
         self.costs = {"oh" : (165 + 227)/2, #$/ft average of urban and rural OH line
                     "ug" : 268}
 
-    def get_cost(self, typ, ft):
+    def get_cost(self, typ, length, unit="ft"):
+        """
+        typ is 'oh' (Overhead line) or 'ug' (Underground Cable)
+        """
         if typ not in ["oh", "ug"]:
             raise KeyError("ConductorCosts::get_cost: conductor typ must be 'oh' or 'ug'")
-        return ft*self.costs[typ]
+        if unit != "ft":
+            length *= self.units2ft(unit)
+        return length*self.costs[typ]
+    
+    def units2ft(self, u:str) -> float:
+        """return a converstion factor from unit u to ft so that
+        x[u] * factor = x[ft]
+        """
+        if u.lower() in ["km", "kilometer"]:
+            return 3280.84
+        if u.lower() in ["m", "meter"]:
+            return 3.28084
+        if u.lower() in ["yd", "yrd", "yard"]:
+            return 3.0
+        if u.lower() in ["mi", "mile", "miles"]:
+            return 5280.0
+        if u.lower() in ["foot", "feet"]:
+            return 1.0
 
 class RegulatorCosts:
     def __init__(self):
