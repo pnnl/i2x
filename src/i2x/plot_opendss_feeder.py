@@ -86,11 +86,7 @@ import sys
 import csv
 import pkg_resources
 import numpy as np
-
-feederChoices = {
-  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
-  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'}
-  }
+from .der_choices import feederChoices
 
 lblDeltaY = 0.0 # 0.35
 

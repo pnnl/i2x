@@ -6,9 +6,18 @@
 # TODO: consider migration to a JSON file for customization
 
 feederChoices = {
-  'ieee9500':{'path':'models/ieee9500/', 'base':'Master-bal-initial-config.dss', 'network':'Network.json'},
-  'ieee_lvn':{'path':'models/ieee_lvn/', 'base':'SecPar.dss', 'network':'Network.json'},
-  'radial':{'path':'models/radial/', 'base':'HCABase.dss', 'network':'Network.json'}
+  'ieee9500':{'path':'models/ieee9500/', 
+              'base':'Master-bal-initial-config.dss', 
+              'network':'Network.json',
+              'extra_source_buses':['hvmv69sub1_hsb', 'hvmv69sub2_hsb', 'hvmv69sub3_hsb']},
+  'ieee_lvn':{'path':'models/ieee_lvn/', 
+              'base':'SecPar.dss', 
+              'network':'Network.json',
+              'extra_source_buses':[]},
+  'radial':{'path':'models/radial/', 
+            'base':'HCABase.dss', 
+            'network':'Network.json',
+            'extra_source_buses':[]}
   }
 
 solarChoices = {
