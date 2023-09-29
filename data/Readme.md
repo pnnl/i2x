@@ -1,8 +1,19 @@
-# How to run
-#### Run script directly from cmd:
-python script.py (considering requirements are installed)
+# Procedures
 
-# improvements to be applied:
+- ***pip install -r requirements.txt***
+- ***python script.py*** generates post-processed CSV files from SolarTRACE and Queued Up data from NREL and LBNL, respectively. 
+    - The source data is updated annually. The i2X post-processing may then be triggered with webhooks, or run manually.
+    - This step involves many network accesses, and it may take an hour to run. If there has not been an update to the source data, the last archived data in this repository (*../hubdata/output)* could be used.
+- ***python make\_i2x\_gdfs.py*** uses CSV files from the previous step to make local GeoDataFrames, and save them in ESRI format
+- ***python report.py*** creates a sample SolarTRACE report for Denver block group demographics
+    - Invoke ***python report.py /?*** to show other cities that may be chosen at the present time
+- ***python bes\_report.py*** creates a sample Queued Up report for wetland and critical habitat data
+    - Invoke ***python bes\_report.py /?*** to show how other longitude, latitude, and box size options may be chosen
+
+At the present time, both kinds of reports are affected by limits on the GIS query return, i.e., either 1000 or 2000 rows depending on the data source.
+
+# Suggested Improvements
+
 1. In the initial_processing.py file,
  for the solar_trace data, years and sizes variables are hardcoded. These must be improved by reading all the years and sizes that are available from the original input file.
 The current vesrion (filename: "pnnl_utility_timelines_summary.xlsx" as of 9-6-23) of the input file for SolarTRACE has the following columns:

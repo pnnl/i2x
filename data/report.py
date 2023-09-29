@@ -152,7 +152,7 @@ def plot_der_results (df):
 
 def usage ():
   print ('usage: python report.py [area]')
-  print ('  area is one of', list(metro_areas.keys()))
+  print ('  area is one of', sorted(list(metro_areas.keys())))
   print ('  A precondition is that gdf_qu.shp and gdf_st.shp exist,')
   print ('     run "python make_i2x_gdfs.py" if necessary')
 

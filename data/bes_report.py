@@ -131,7 +131,7 @@ def usage ():
 if __name__ == '__main__':
   lon = -104.990
   lat = 39.739
-  box_side = 3.0 # degrees, which is about 60 miles
+  box_side = 3.0 # 1 degree is about 60 miles
 
   if len(sys.argv) > 1:
     if sys.argv[1] in ['-h', '/h', '--h', '/?']:
