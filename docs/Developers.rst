@@ -7,13 +7,14 @@ Familiarity with ``git`` and Python is expected.  Experience with OpenDSS is als
 2. ``cd i2x``
 3. ``pip install -e .`` to install i2x from your local copy of the code.
 
-The steps for deployment to PyPi are:
+The steps for deployment to PyPi are (Starting in the `src/i2x/` directory of the repository):
 
-1. ``rm -rf dist``
-2. ``python -m build``
-3. ``twine check dist/*`` should not show any errors
-4. ``twine upload -r testpypi dist/*`` requires project credentials for i2x on test.pypi.org
-5. ``pip install -i https://test.pypi.org/simple/ i2x==0.0.8`` for local testing of the deployable package, example version 0.0.8
+0. Make sure that the version number in `version.py` is new
+1. ``rm -rf dist``: Removes the wheel folder (if exists)
+2. ``python -m build``: Builds the wheel (note: this can take a while)
+3. ``twine check dist/*`` should not show any errors (This of the wheel)
+4. ``twine upload -r testpypi dist/*`` requires project credentials for i2x on test.pypi.org (Note: this will reject if version already exists)
+5. ``pip install -i https://test.pypi.org/simple/ i2x==0.0.8`` for local testing of the deployable package, example version 0.0.8 (Note: some might want to this in a separate test environment)
 6. ``twine upload dist/*`` final deployment; requires project credentials for i2x on pypi.org
 
 To run the documentation locally:

@@ -15,17 +15,7 @@ import json
 import os
 import csv
 import pkg_resources
-
-feederChoices = {
-  'ieee9500':{'path':'models/ieee9500/', 
-              'base':'Master-bal-initial-config.dss', 
-              'network':'Network.json',
-              'extra_source_buses':['hvmv69sub1_hsb', 'hvmv69sub2_hsb', 'hvmv69sub3_hsb']},
-  'ieee_lvn':{'path':'models/ieee_lvn/', 
-              'base':'SecPar.dss', 
-              'network':'Network.json',
-              'extra_source_buses':[]}
-  }
+from .der_choices import feederChoices
 
 kvbases = [0.208, 0.418, 0.48, 4.16, 12.47, 13.2, 13.8, 34.5, 69.0, 115.0, 138.0, 230.0]
 def select_kvbase (val):
