@@ -53,9 +53,6 @@ def dss_bus_phases (tok):
     bus, phs = parse_bus_phases (tok[5:])
   return bus, phs
 
-def dss_transformer_xhl (tok):
-  return float (dss_parm(tok))
-
 def adjust_nominal_kv (kv, nphs, bDelta):
   if (nphs == 1) and not bDelta:
     kv *= math.sqrt(3.0)
