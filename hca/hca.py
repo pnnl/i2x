@@ -1300,7 +1300,8 @@ class HCA:
   
 
 class HCAMetrics:
-  def __init__(self, lims:dict, comp=None, tol=None, logger=None):
+  def __init__(self, limits:dict, comp=None, tolerances=None, 
+               include=dict(), exclude=dict(), logger=None):
     self.tests = {
       "voltage": {
       "vmin": self._vmin,
@@ -1314,8 +1315,19 @@ class HCAMetrics:
         "pq": self._island_pq
       } 
     }
-    if tol is None:
-      tol = {k: 1e-3 for k in self.tests.keys()}
+
+    ## select which metrics to use
+    if (len(include)) > 0 and (len(exclude) > 0):
+      raise ValueError("HCAMetrics: one can specify metrics to include OR metrics to exclude but not both!")
+    elif len(include) > 0:
+      # only include metrics specified in include dictionary
+      out = {}
+      self.add_test(include, out)
+      self.tests = out
+    elif len(exclude) > 0:
+      self.exclude_test(exclude)
+    if tolerances is None:
+      tolerances = {k: 1e-3 for k in self.tests.keys()}
 
     if logger is not None:
       self.logger = logger
@@ -1323,13 +1335,56 @@ class HCAMetrics:
       self.logger = None
     self.base = None
     self.comp = comp
-    self.load_lims(lims)
+    self.load_lims(limits)
     self.eval = {}
     self.violation = {}
     self.violation_count = 0
-    self.tol=tol
+    self.tol=tolerances
     self.last_violation_list = []
   
+  def print_metrics(self):
+    if self.logger is None:
+      printf = print
+    else:
+      printf = self.logger.info
+      
+    print_config(self.tests, printf=printf, title="HCA Metrics")
+
+  def exclude_test(self, exclude:Union[dict,list,str], testdict=None):
+    """Exclude tests in exclude, keeping all others in self.tests"""
+    if testdict is None:
+      testdict = self.tests # entry point
+    if isinstance(exclude, str):
+      testdict.pop(exclude)
+    elif isinstance(exclude, list):
+      for k in exclude:
+        self.exclude_test(k, testdict=testdict)
+    else:
+      for k, v in exclude.items():
+        if len(v) == 0:
+          # exclude whole category
+          self.exclude_test(k, testdict=testdict)
+        else:
+          # recurse
+          self.exclude_test(v, testdict=testdict[k])
+
+  def add_test(self, include:Union[dict,list,str], out, testdict=None):
+    """Only keep keys in the include list in self.tests"""
+    
+    if testdict is None:
+      testdict = self.tests
+    if isinstance(include, list):
+      for k in include:
+        self.add_test(k, out=out, testdict=testdict)
+    elif isinstance(include, dict):
+      for k, v in include.items():
+        if k not in out:
+          out[k] = {}
+          self.add_test(v, out=out[k], testdict=testdict[k])
+    elif isinstance(include, str):
+      out[include] = testdict[include]
+      
+
   def set_base(self, res:dict):
     self.base = HCAMetrics(self.lims, self.comp, self.tol, logger=self.logger)
     self.base.load_res(res, worst_case=True)
