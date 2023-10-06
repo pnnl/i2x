@@ -140,6 +140,27 @@ def thermal_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
                         include_plotlyjs='cdn', **kwargs)
 
 
+def island_plots(hcaobj:HCA, filenamebase, plot_feeder=False, **kwargs):
+    """Plot the aggregate flow in/out of all components"""
+    fig = make_subplots(2, 1, shared_xaxes=True, subplot_titles=("Net P Flow [kW] (pos->exporting)", "Net Q Flow [kVAr] (pos->exporting"))
+    colors = ColorList()
+    for comp, vals in hcaobj.lastres["compflows"].items():
+        p = vals["p"].sum(axis=1)
+        q = vals["q"].sum(axis=1)
+        x = list(range(len(p)))
+        add_trace(fig, x, p, f"comp {comp}: P", colors=colors, row=1)
+        add_trace(fig, x, q, f"comp {comp}: Q", colors=colors, row=2)
+        colors.step()
+    fig.update_yaxes(title_text="P [kW]", row=1, col=1)
+    fig.update_yaxes(title_text="Q [kVAr]", row=2, col=1)
+    fig.write_html(f"{filenamebase}.html", **kwargs)
+    if plot_feeder:
+        feeder_plotter = PlotlyFeeder()
+        feeder_plotter.plot(hcaobj.G, f"{filenamebase}_feeder.html",
+                            comp_plot=True, **kwargs)
+#TODO island/recloser plots. show aggregate flow for all components
+# possibly an option to show components and aggregate for a single component
+
 def hc_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
     feeder_plotter = PlotlyFeeder()
     feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
@@ -210,27 +231,49 @@ class PlotlyFeeder:
         self.midnode_x = {}
         self.midnode_y = {}
 
+        self.colors = ColorList()
+
     def get_node_mnemonic(self, nclass):
-        return self.nodeTypes[nclass]['tag']
+        if nclass in self.nodeTypes:
+            return self.nodeTypes[nclass]['tag']
+        else:
+            return nclass
     
     def get_node_symbol(self, nclass):
-        return self.nodeTypes[nclass]["symbol"]
-
-    def get_node_size(self, nclass):
         if nclass in self.nodeTypes:
-            return self.nodeTypes[nclass]['size']
+            return self.nodeTypes[nclass]["symbol"]
+        else:
+            return "circle"
+
+    def get_node_size(self, nclass, altclass=None):
+        if altclass is None:
+            if nclass in self.nodeTypes:
+                return self.nodeTypes[nclass]['size']
+        else:
+            if altclass in self.nodeTypes:
+                return self.nodeTypes[altclass]['size']
         return 5
 
     def get_node_color(self, nclass):
         if nclass in self.nodeTypes:
             return self.nodeTypes[nclass]['color']
+        elif "comp" in nclass:
+            self.colors.setidx(int(nclass.split("comp")[1]))
+            return self.colors()
         return 'black'
     
     def get_edge_mnemonic(self, eclass):
-        return self.edgeTypes[eclass]['tag']
+        if eclass in self.edgeTypes:
+            return self.edgeTypes[eclass]['tag']
+        else:
+            return eclass
 
     def get_edge_color(self, eclass):
-        return self.edgeTypes[eclass]['color']
+        if eclass in self.edgeTypes:
+            return self.edgeTypes[eclass]['color']
+        elif "comp" in eclass:
+            self.colors.setidx(int(eclass.split("comp")[1]))
+            return self.colors()
     
     def clear_node_data(self):
         self.node_x = {}
@@ -239,7 +282,7 @@ class PlotlyFeeder:
         self.node_size = {}
         self.plotnodes = {}
 
-    def collect_node_data(self, G:nx.Graph, highlight_nodes=dict(), extra_text=dict()):
+    def collect_node_data(self, G:nx.Graph, comp_plot=False, highlight_nodes=dict(), extra_text=dict()):
         self.clear_node_data()
         for n, d in G.nodes(data=True):
             try:
@@ -248,11 +291,16 @@ class PlotlyFeeder:
                 continue
             if "x" in ndata:
                 highlight_test, highlight_key = str_in(n, highlight_nodes.keys())
+                altclass = None
                 if highlight_test:
                     nclass = "highlight"
                     text_extra = "<br>" + highlight_nodes[highlight_key]
                 else:
-                    nclass = d["nclass"]
+                    if comp_plot:
+                        nclass = f'comp{d["comp"]}'
+                        altclass = d["nclass"]
+                    else:
+                        nclass = d["nclass"]
                     extra_test, extra_key = str_in(n, extra_text.keys())
                     if extra_test:
                         text_extra = "<br>" + extra_text[extra_key]
@@ -267,7 +315,7 @@ class PlotlyFeeder:
                 self.node_x[nclass].append(float(ndata["x"]) / 1000.0)
                 self.node_y[nclass].append(float(ndata["y"]) / 1000.0)
                 self.node_txt[nclass].append(dict2str(d, n).replace("\n", "<br>") + text_extra)
-                self.node_size[nclass].append(self.get_node_size(nclass))
+                self.node_size[nclass].append(self.get_node_size(nclass, altclass=altclass))
 
     def clear_edge_data(self):
         self.edge_x = {}
@@ -276,7 +324,7 @@ class PlotlyFeeder:
         self.midnode_x = {}
         self.midnode_y = {}
     
-    def collect_edge_data(self, G:nx.Graph, highlight_edges=dict(), extra_text=dict()):
+    def collect_edge_data(self, G:nx.Graph, comp_plot=False, highlight_edges=dict(), extra_text=dict()):
         self.clear_edge_data()
         for u,v,d in G.edges(data=True):
             if not ((u in self.plotnodes) and (v in self.plotnodes)):
@@ -287,7 +335,10 @@ class PlotlyFeeder:
                 eclass = "highlight"
                 text_extra = "<br>" + highlight_edges[highlight_key]
             else:
-                eclass = d["eclass"]
+                if comp_plot and (G.nodes[u]["comp"] == G.nodes[v]["comp"]):
+                    eclass = f'comp{G.nodes[u]["comp"]}'
+                else:
+                    eclass = d["eclass"]
                 extra_test, extra_key = str_in(d["ename"], extra_text.keys())
                 if extra_test:
                     text_extra = "<br>" + extra_text[extra_key]
@@ -347,10 +398,10 @@ class PlotlyFeeder:
 
         fig.write_html(filename, **kwargs)
 
-    def plot(self, G, filename, 
+    def plot(self, G, filename, comp_plot=False,
              highlight_nodes=dict(), highlight_edges=dict(), 
              extra_node_text=dict(), extra_edge_text=dict(),
              **kwargs):
-        self.collect_node_data(G, highlight_nodes=highlight_nodes, extra_text=extra_node_text)
-        self.collect_edge_data(G, highlight_edges=highlight_edges, extra_text=extra_edge_text)
+        self.collect_node_data(G, comp_plot=comp_plot, highlight_nodes=highlight_nodes, extra_text=extra_node_text)
+        self.collect_edge_data(G, comp_plot=comp_plot, highlight_edges=highlight_edges, extra_text=extra_edge_text)
         self.make_plot(filename, **kwargs)

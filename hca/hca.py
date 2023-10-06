@@ -318,9 +318,7 @@ class HCA:
     ###  lines: 
     self.upgrades = {"line": {}, "transformer": {}}
     
-    self.metrics = HCAMetrics(inputs["metrics"]["limits"], 
-                              tol=inputs["metrics"]["tolerances"],
-                              logger=self.logger)
+    self.metrics = HCAMetrics(**inputs["metrics"], logger=self.logger)
 
   def logger_init(self, logger_heading):
     self.logger = Logger(self.inputs["hca_log"]["logname"], 
