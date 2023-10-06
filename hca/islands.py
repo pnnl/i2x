@@ -56,7 +56,7 @@ def get_nondir_tree(G: nx.classes.DiGraph) -> nx.classes.Graph:
     H.remove_edges_from(open_switches)
     return H
 
-def get_islands(G: nx.classes.graph.Graph) -> Tuple[list, list]:
+def get_islands(G: nx.classes.graph.Graph, get_output=True) -> Tuple[list, list]:
     """
     Get the components of graph G that can be islanded via reclosers.
     Returns a list of components. A subgraph can then be created with
@@ -81,7 +81,9 @@ def get_islands(G: nx.classes.graph.Graph) -> Tuple[list, list]:
 
     comps = sorted(nx.connected_components(H), key=len, reverse=True)
     add_comp_num(G, comps) # add component numbers to original graph
-    return comps, reclosers, comp2recloser(comps, reclosers, G)
+    
+    if get_output:
+        return comps, reclosers, comp2recloser(comps, reclosers, G)
 
 def add_branch_weights(G: nx.classes.graph.Graph):
     """
@@ -103,6 +105,37 @@ def add_comp_num(G: nx.classes.graph.Graph, comps:list):
 
 def get_sources(G):
     return [n for n, d in G.nodes(data=True) if d["nclass"] == "source"]
+
+def get_hv_source(G, force_set=False):
+    d = {s:G.nodes[s]["ndata"]["nomkv"] for s in get_sources(G)}
+    maxkv = max(d.values())
+    out = {k for k, v in d.items() if abs(v - maxkv) < 1e-3}
+    if force_set:
+        return out
+    else:
+        return out.pop() if len(out) == 1 else out
+    
+def get_lowest_deg_source(G, force_set=False):
+    d = {s:G.degree(s) for s in get_sources(G)}
+    mindeg = min(d.values())
+    out = {k for k,v in d.items() if v == mindeg}
+    if force_set:
+        return out
+    else:
+        return out.pop() if len(out) == 1 else out
+
+def get_single_source(G):
+    """return the highest voltage lowest degree source (should be 1 normally)
+    If for some reason there are 2 of these, simply pick the first item in the list
+    """
+    out_hv = get_hv_source(G, force_set=True)
+    out_deg = get_lowest_deg_source(G, force_set=True)
+    out = out_hv.intersection(out_deg)
+    if len(out) >= 1:
+        # return either the only entry or a random one if more than one result
+        return out.pop()
+    else:
+        raise ValueError("get_single_source: not intersection between hv source and low degree source.")
 
 def get_nearest_source(G: nx.classes.Graph, bus):
     """Return the nearest source bus in G to bus, as well as the path to it"""
@@ -215,7 +248,12 @@ def island_flows(compid:int, comp2rec:dict, recdict:dict):
     df = {"p": {}, "q": {}}
     for e in comp2rec[compid]:
         name = e[2]["ename"]
-        direction = e[2]["direction"]
+        direction = e[2]["direction"] 
+        if recdict[name]["bus"] == e[0]:
+            direction = e[2]["direction"]
+        else:
+            # monitoring second termial, flip sign
+            direction = -1 * e[2]["direction"] 
         df["p"][name] = direction * recdict[name]["p"]
         df["q"][name] = direction * recdict[name]["q"]
     df = {k: pd.DataFrame(v) for k, v in df.items()}

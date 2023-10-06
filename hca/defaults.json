@@ -17,6 +17,9 @@
     "disable_all": false,
     "disable_list": []
 },
+"monitors":{
+    "volt_monitor_method": "bfs"
+},
 "hca_log":{
     "logname": "hcalog",
     "loglevel": "info",

@@ -42,12 +42,12 @@ def print_opendss_interface(doc_fp):
   for key, val in interfaces.items():
     print_class_doc (key, val, doc_fp)
 
-def dss_line (dss, line, debug_output):
+def dss_line (dss, line, debug_output, printf=print):
   if debug_output:
-    print ('dss: ', line)
+    printf ('dss: ' + line)
   dss.text (line)
 
-def initialize_opendss(choice, debug_output=True, **kwargs):
+def initialize_opendss(choice, debug_output=True, printf=print, **kwargs):
   """
   Load and compile the open dss feeder model
   """
@@ -56,13 +56,13 @@ def initialize_opendss(choice, debug_output=True, **kwargs):
   fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
 
   if debug_output:
-    print ('default cache:', pkg.get_default_cache())
-    print ('HCA feeder model path:', fdr_path)
-    print ('OpenDSS path:', dss.dll_file_path)
-    print ('     version:', dss.dssinterface.version)
+    printf ('default cache: ' + pkg.get_default_cache())
+    printf ('HCA feeder model path: ' + fdr_path)
+    printf ('OpenDSS path: ' + dss.dll_file_path)
+    printf ('     version: ' + dss.dssinterface.version)
     pkg.resource_listdir (__name__, 'models/{:s}'.format(choice))
 
-  dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output)
+  dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output, printf=printf)
   os.chdir(pwd)
   return dss
 
@@ -81,7 +81,7 @@ def get_event_log (dss):
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
                 change_lines=None, debug_output=True, dss=None, output=True,
-                demandinterval=False, allow_forms=1, **kwargs):
+                demandinterval=False, allow_forms=1, printf=print, **kwargs):
 
   # dss = py_dss_interface.DSS()
   # fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
@@ -94,65 +94,91 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   # dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output)
 
   if dss is None:
-    dss = initialize_opendss(choice, debug_output=debug_output, **kwargs)
+    dss = initialize_opendss(choice, debug_output=debug_output, printf=printf, **kwargs)
 
   if change_lines is not None:
     for line in change_lines:
-      dss_line (dss, line, debug_output)
+      dss_line (dss, line, debug_output, printf=printf)
 
-  dss_line (dss, 'batchedit PVSystem..* irradiance=1 daily={:s} %cutin=0.1 %cutout=0.1 varfollowinverter=true'.format (pvcurve), debug_output) #kvarmax=?
-  dss_line (dss, 'batchedit load..* daily={:s} duty={:s} yearly={:s}'.format (loadcurve, loadcurve, loadcurve), debug_output)
+  dss_line (dss, 'batchedit PVSystem..* irradiance=1 daily={:s} %cutin=0.1 %cutout=0.1 varfollowinverter=true'.format (pvcurve), debug_output, printf=printf) #kvarmax=?
+  dss_line (dss, 'batchedit load..* daily={:s} duty={:s} yearly={:s}'.format (loadcurve, loadcurve, loadcurve), debug_output, printf=printf)
   if invmode == 'CONSTANT_PF':
-    dss_line (dss, 'batchedit pvsystem..* pf={:.4f}'.format(invpf), debug_output)
+    dss_line (dss, 'batchedit pvsystem..* pf={:.4f}'.format(invpf), debug_output, printf=printf)
   elif invmode == 'VOLT_WATT':
-    dss_line (dss, 'batchedit pvsystem..* pf={:.4f}'.format(invpf), debug_output)
-    dss_line (dss, 'new InvControl.vw mode=VOLTWATT voltage_curvex_ref=rated voltwatt_curve=voltwatt1547b deltaP_factor=0.02 EventLog=No', debug_output)
+    dss_line (dss, 'batchedit pvsystem..* pf={:.4f}'.format(invpf), debug_output, printf=printf)
+    dss_line (dss, 'new InvControl.vw mode=VOLTWATT voltage_curvex_ref=rated voltwatt_curve=voltwatt1547b deltaP_factor=0.02 EventLog=No', debug_output, printf=printf)
   elif invmode == 'VOLT_VAR_CATA':
-    dss_line (dss, 'new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547a deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No', debug_output)
+    dss_line (dss, 'new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547a deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
   elif invmode == 'VOLT_VAR_CATB':
-    dss_line (dss, 'new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547b deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No', debug_output)
+    dss_line (dss, 'new InvControl.pv1 mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547b deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
   elif invmode == 'VOLT_VAR_AVR':
-    dss_line (dss, 'New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5 EventLog=No', debug_output)
+    dss_line (dss, 'New ExpControl.pv1 deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5 EventLog=No', debug_output, printf=printf)
   elif invmode == 'VOLT_VAR_VOLT_WATT':
-    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar1547b voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No', debug_output)
+    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar1547b voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
   elif invmode == 'VOLT_VAR_14H':
-    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt14h deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No', debug_output)
-  dss_line (dss, 'set loadmult={:.6f}'.format(loadmult), debug_output)
-  dss_line (dss, 'set controlmode={:s}'.format(ctrlmode), debug_output)
-  dss_line (dss, 'set maxcontroliter=1000', debug_output)
-  dss_line (dss, 'set maxiter=30', debug_output)
-  pvnames = dss.pvsystems.names
-  ## add pq and vi monitors to all pv systems
-  for pvname in pvnames: # don't need to log all these
-    if f"{pvname}_pq" not in dss.monitors.names:
-      dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
-    if f"{pvname}_vi" not in dss.monitors.names:
-      dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
+    dss_line (dss, 'new InvControl.vv_vw combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt14h deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
+  dss_line (dss, 'set loadmult={:.6f}'.format(loadmult), debug_output, printf=printf)
+  dss_line (dss, 'set controlmode={:s}'.format(ctrlmode), debug_output, printf=printf)
+  dss_line (dss, 'set maxcontroliter=1000', debug_output, printf=printf)
+  dss_line (dss, 'set maxiter=30', debug_output, printf=printf)
   
+  ### collect all existing monitors by monitored element and mode
+  existing_monitors = []
+  idx = dss.monitors.first()
+  while idx > 0:
+    existing_monitors.append((dss.monitors.element, dss.monitors.mode))
+    idx = dss.monitors.next()
+  ### check if reclosers are monitored
+  idx = dss.reclosers.first()
+  while idx > 0:
+    elem = dss.reclosers.monitored_obj
+    if (elem, 65) not in existing_monitors:
+      ## add pq monitor
+      dss_line (dss, f'new monitor.{elem.split(".")[1]}_rec_pq element={elem} terminal={dss.reclosers.monitored_term} mode=65 ppolar=no', debug_output, printf=printf)
+      ## add vi monitor (this may be duplicate due to all the voltage monitors)
+      dss_line (dss, f'new monitor.{elem.split(".")[1]}_rec_vi element={elem} terminal={dss.reclosers.monitored_term} mode=96', debug_output, printf=printf)
+    idx = dss.reclosers.next()
+
+  pvnames = dss.pvsystems.names
+  if dss.pvsystems.count > 0:
+    ## add pq and vi monitors to all pv systems
+    for pvname in pvnames: # don't need to log all these
+      if f"{pvname}_pq" not in dss.monitors.names:
+        dss.text ('new monitor.{:s}_pq element=pvsystem.{:s} terminal=1 mode=65 ppolar=no'.format (pvname, pvname))
+      if f"{pvname}_vi" not in dss.monitors.names:
+        dss.text ('new monitor.{:s}_vi element=pvsystem.{:s} terminal=1 mode=96'.format (pvname, pvname))
+  
+  if dss.generators.count > 0:
+    ## add pq monitors to all generators
+    for genname in dss.generators.names:
+      if f"{genname}_gen_pq" not in dss.monitors.names:
+        dss_line (dss, 'new monitor.{:s}_gen_pq element=generator.{:s} terminal=1 mode=65 ppolar=no'.format (genname, genname), debug_output, printf=printf)
+
   if demandinterval:
     ## add voltage and thermal reporting
-    dss_line(dss, 'set overloadreport=true', debug_output) #activate the overload (thermal) report
-    dss_line(dss, 'set voltexceptionreport=true', debug_output) #voltage violation
-    dss_line(dss, 'set DemandInterval=TRUE', debug_output)
-    dss_line(dss, 'set DIVerbose=TRUE', debug_output)
+    dss_line(dss, 'set overloadreport=true', debug_output, printf=printf) #activate the overload (thermal) report
+    dss_line(dss, 'set voltexceptionreport=true', debug_output, printf=printf) #voltage violation
+    dss_line(dss, 'set DemandInterval=TRUE', debug_output, printf=printf)
+    dss_line(dss, 'set DIVerbose=TRUE', debug_output, printf=printf)
   
-    dss_line(dss, f'set DataPath="{os.getcwd()}"', debug_output)
+    dss_line(dss, f'set DataPath="{os.getcwd()}"', debug_output, printf=printf)
 
   dss.dssinterface.allow_forms = allow_forms
-  dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output)
+  dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output, printf=printf)
   if demandinterval:
-    dss_line(dss, 'closedi', debug_output)
+    dss_line(dss, 'closedi', debug_output, printf=printf)
   if output:
-    return opendss_output(dss, solnmode, pvnames, debug_output=debug_output, **kwargs)
+    return opendss_output(dss, solnmode, pvnames, debug_output=debug_output, printf=printf, **kwargs)
   
-def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
+def opendss_output(dss, solnmode, pvnames, debug_output=True, printf=print, **kwargs):
   if debug_output:
-    print ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems.count, dss.generators.count))
+    printf ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems.count, dss.generators.count))
 
   # initialize the outputs that are only filled in DUTY, DAILY, or other time series mode
   kWh_PV = 0.0
   kvarh_PV = 0.0
   pvdict = {}
+  gendict = {}
   recdict = {}
   voltdict = {}
   kWh_Net = 0.0
@@ -167,14 +193,14 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
   # these outputs apply to SNAPSHOT and time series modes
   converged = bool(dss.solution.converged)
   if debug_output:
-    print ('Converged = ', converged)
+    printf (f'Converged = {converged}')
   num_cap_switches = 0
   num_tap_changes = 0
   num_relay_trips = 0
   for row in get_event_log (dss):
     if ('Action=RESETTING' not in row) and ('Action=**RESET**' not in row) and ('Action=**ARMED**' not in row):
       if solnmode != 'DUTY' and debug_output:
-        print (row)
+        printf (row)
     if 'Element=Relay' in row:
       if 'Action=OPENED' in row:
         num_relay_trips += 1
@@ -185,9 +211,9 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
       if 'CHANGED' in row and 'TAP' in row:
         num_tap_changes += abs(int(row.split()[6]))
   if debug_output:
-    print ('{:4d} capacitor bank switching operations'.format (num_cap_switches))
-    print ('{:4d} regulator tap changes'.format (num_tap_changes))
-    print ('{:4d} relay trip operations'.format (num_relay_trips))
+    printf ('{:4d} capacitor bank switching operations'.format (num_cap_switches))
+    printf ('{:4d} regulator tap changes'.format (num_tap_changes))
+    printf ('{:4d} relay trip operations'.format (num_relay_trips))
   if not converged:
     return {'converged': converged,
             'num_cap_switches': num_cap_switches,
@@ -201,7 +227,7 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
   nnode = len(node_names)
   nvpu = len(node_vpus)
   if debug_output:
-    print ('{:d} node names and {:d} vpu'.format (nnode, nvpu))
+    printf ('{:d} node names and {:d} vpu'.format (nnode, nvpu))
   vminpu = 100.0
   vmaxpu = 0.0
   node_vmin = ''
@@ -221,8 +247,8 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
     if v > 1.05:
       num_high_voltage += 1
   if debug_output:
-    print ('{:4d} final node voltages below 0.95 pu,  lowest is {:.4f} pu at {:s} '.format (num_low_voltage, vminpu, node_vmin))
-    print ('{:4d} final node voltages above 1.05 pu, highest is {:.4f} pu at {:s}'.format (num_high_voltage, vmaxpu, node_vmax))
+    printf ('{:4d} final node voltages below 0.95 pu,  lowest is {:.4f} pu at {:s} '.format (num_low_voltage, vminpu, node_vmin))
+    printf ('{:4d} final node voltages above 1.05 pu, highest is {:.4f} pu at {:s}'.format (num_high_voltage, vmaxpu, node_vmax))
 
   if solnmode != 'SNAPSHOT':
     # for name in pvnames:
@@ -253,6 +279,11 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
         # voltage monitor 
         key = name[:-8] #this is the bus name
         get_vi_monitor(dss, key, elem, name, voltdict)
+      elif name.endswith('_gen_pq'):
+        # generator pq monitor
+        # key = name[0:-7]
+        key = elem.split(".")[1]
+        get_pq_monitor(dss, key, elem, name, gendict, dh=dh)
       elif name.endswith('_pq'):
         # PV system pq monitor
         key = name[0:-3]
@@ -288,19 +319,20 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, **kwargs):
         if names[i] == 'Overload kWh Emerg':
           kWh_OverE = vals[i]
     if debug_output:
-      print ('Srce  kWh = {:10.2f}'.format (kWh_Net))
-      print ('Load  kWh = {:10.2f}'.format (kWh_Load))
-      print ('Loss  kWh = {:10.2f}'.format (kWh_Loss))
-      print ('Gen   kWh = {:10.2f}'.format (kWh_Gen))
-      print ('PV    kWh = {:10.2f}'.format (kWh_PV))
-      print ('PV  kvarh = {:10.2f}'.format (kvarh_PV))
-      print ('EEN   kWh = {:10.2f}'.format (kWh_EEN))
-      print ('UE    kWh = {:10.2f}'.format (kWh_UE))
+      printf ('Srce  kWh = {:10.2f}'.format (kWh_Net))
+      printf ('Load  kWh = {:10.2f}'.format (kWh_Load))
+      printf ('Loss  kWh = {:10.2f}'.format (kWh_Loss))
+      printf ('Gen   kWh = {:10.2f}'.format (kWh_Gen))
+      printf ('PV    kWh = {:10.2f}'.format (kWh_PV))
+      printf ('PV  kvarh = {:10.2f}'.format (kvarh_PV))
+      printf ('EEN   kWh = {:10.2f}'.format (kWh_EEN))
+      printf ('UE    kWh = {:10.2f}'.format (kWh_UE))
   #  print ('OverN kWh = {:10.2f}'.format (kWh_OverN))
   #  print ('OverE kWh = {:10.2f}'.format (kWh_OverE))
 
   return {'converged': converged,
           'pvdict': pvdict,
+          'gendict': gendict,
           'recdict': recdict,
           'voltdict': voltdict,
           'num_cap_switches': num_cap_switches,

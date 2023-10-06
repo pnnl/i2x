@@ -15,13 +15,14 @@ import hca as h
 import islands as isl
 from hca_utils import Logger
 
-def main(logname, logmode="w"):
+def main(logname, logmode="w", loglevel="info"):
     ### load config (note: just changes to defaults)
     inputs = h.load_config("hca9500node_testconfig.json")
     inputs["invmode"] = "CONSTANT_PF"
     
     inputs["hca_log"]["logname"] = logname
     inputs["hca_log"]["logtofilemode"] = logmode
+    inputs["hca_log"]["loglevel"] = loglevel
 
     # disable line regulators but not substation regulators
     inputs["reg_control"]["disable_list"] = [f"vreg{i}_{j}" for i in [1,2,3] for j in ["a", "b", "c"]]
@@ -29,7 +30,12 @@ def main(logname, logmode="w"):
     # logger_heading = f"********* Run with {invmode} ****************"
     logger_heading = "*******************VOLTDICT TEST *******************"
     hca = h.HCA(inputs, logger_heading=logger_heading) # instantiate hca instance
-    return [s.split("monitor.")[1].split(" ")[0].split("_")[0] for s in hca.change_lines_noprint]
+    out = []
+    for s in hca.change_lines_noprint:
+        if "_volt_vi" in s:
+            out.append(s.split("monitor.")[1].split("_volt_vi")[0])
+    return out
+    # return [s.split("monitor.")[1].split(" ")[0].split("_")[0] for s in hca.change_lines_noprint]
 
 if __name__ == "__main__":
     
@@ -40,7 +46,7 @@ if __name__ == "__main__":
             break
         i += 1
     
-    vdict1 = main(logname, logmode="w")
+    vdict1 = main(logname, logmode="w", loglevel="debug")
     vdict2 = main(logname, logmode="a")
 
     

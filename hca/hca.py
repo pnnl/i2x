@@ -14,6 +14,7 @@ import pandas as pd
 import copy
 import hashlib
 import pickle
+from typing import Union
 import upgrade_costs as upcst
 
 ### Cost objects
@@ -264,10 +265,14 @@ def next_xfrm_kva(kva, nphase, skip=0) -> float:
   
 
 class HCA:
-  def __init__(self, inputs, logger_heading=None, reload=False, reload_filemode="a"):
+  def __init__(self, inputs:Union[str,dict], logger_heading=None, reload=False, reload_filemode="a"):
     if reload:
       self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading)
       return
+    
+    if isinstance(inputs, str):
+      # convert to dictionary
+      inputs = load_config(inputs)
     self.inputs = inputs
     self.change_lines = []
     self.change_lines_noprint = []
@@ -292,11 +297,11 @@ class HCA:
     self.print_parsed_graph()
 
     ## initialize dss model
-    self.dss = i2x.initialize_opendss(**self.inputs)
+    self.dss = i2x.initialize_opendss(printf=self.logger.debug, **self.inputs)
     self.update_basekv()
 
     ## create a set of voltage monitors throughout the feeder
-    self.voltage_monitor()
+    self.voltage_monitor(self.inputs["monitors"]["volt_monitor_method"])
 
     ## initialize structure for HCA analysis
     self.visited_buses = []
@@ -484,26 +489,38 @@ class HCA:
     self.pv_voltage_base_list()
     self.comps, self.reclosers, self.comp2rec = isl.get_islands(self.G)
 
-  def voltage_monitor(self):
+  def voltage_monitor(self, method):
     """Add voltage monitors throughout the system"""
 
-    depth = 1
-    while True:
-      n = list(nx.descendants_at_distance(self.G, "sourcebus", depth))
-      n.sort() # for reproducibility
-      if not n:
-          break
-      n = [i for i in n if self.G.nodes[i]["ndata"]["shunts"]]
-      if not n:
-          depth += 1
-          continue
-      
-      
-      # ns = np.random.choice(n, 1)[0] 
-      ns = n[self.random_state.randint(0, len(n))] 
-      elem = self.G.nodes[ns]["ndata"]["shunts"][0] # select the first shunt
-      self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal=1 mode=96") # add a voltage monitor
-      depth += 1 
+    def get_elem_and_term(dss:py_dss_interface.DSSDLL, bus):
+      dss.circuit.set_active_bus(bus)
+      for elem in dss.bus.all_pde_active_bus:
+        # loop over the connected elements to this bus to
+        dss.circuit.set_active_element(elem)
+        # get the number of the terminal that is connected to bus
+        term = [s.split(".")[0] for s in dss.cktelement.bus_names].index(bus) + 1
+        return elem, term
+    if method == 'bfs':
+      ## place a monitor at each level of a breadth firs search from source
+      depth = 1
+      H = isl.get_nondir_tree(self.G)
+      source = isl.get_single_source(H)
+      while True:
+        n = list(nx.descendants_at_distance(H, source, depth))
+        n.sort() # for reproducibility
+        self.logger.debug(f"voltage_monitor: depth {depth}\n\t buses: {n}")
+        if not n:
+            break
+        
+        ns = n[self.random_state.randint(0, len(n))]
+        elem, term = get_elem_and_term(self.dss, ns)
+        # elem = self.G.nodes[ns]["ndata"]["shunts"][0] # select the first shunt
+        self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal={term} mode=96") # add a voltage monitor
+        depth += 1
+    elif method == 'all':
+      for ns in self.G.nodes():
+        elem, term = get_elem_and_term(self.dss, ns)
+        self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal={term} mode=96") # add a voltage monitor
 
   def parse_graph(self, summarize=False):
     """ parse the various categories of objects in the graph """
@@ -800,7 +817,7 @@ class HCA:
   def rundss(self):
     pwd = os.getcwd()
     self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint + self.upgrade_change_lines, 
-                                         "dss": self.dss, "demandinterval": True}, 
+                                         "dss": self.dss, "demandinterval": True, "printf": self.logger.debug}, 
                                          **self.inputs} )  
     if self.lastres["converged"]:
       self.lastres["compflows"] = isl.all_island_flows(self.comp2rec, self.lastres["recdict"])
@@ -829,7 +846,7 @@ class HCA:
     if err:
       self.lastres["converged"] = False
     ### Totals (just use to keep finer grain track of EEN and UE for now)
-    dtypes = {float: ["LoadEEN", "LoadUE"]}
+    dtypes = {(float, int): ["LoadEEN", "LoadUE"]}
     df, cols, err = self._load_di(path, "DI_Totals_1.CSV", dtypes=dtypes)
     cols = ["LoadEEN", "LoadUE", "kWh", "kvarh", "MaxkW", "MaxkVA"]
     self.lastres["di_totals"] = df.set_index("Time").loc[:, cols]
@@ -846,7 +863,7 @@ class HCA:
     df.columns = cols
     
     err = False
-    if dtypes is not None:
+    if (not df.empty) and (dtypes is not None):
       ## check dtype. Prolems can happen this can happen if there are INFs or NANs
       for typ, typcols in dtypes.items():
         dfcols = df.select_dtypes(typ)
@@ -1590,6 +1607,10 @@ def load_config(configin):
     merge_configs(inputs, config)
   return inputs
 
+def show_defaults():
+  inputs = load_config('defaults.json')
+  print_config(inputs)
+
 def main(inputs):
   ### create hca object
   hca = HCA(inputs)
@@ -1630,8 +1651,7 @@ if __name__ == "__main__":
     sys.exit(0)
 
   if args.show_defaults:
-    inputs = load_config('defaults.json')
-    print_config(inputs)
+    show_defaults()
     sys.exit(0)
   
   inputs = load_config(args.config)
