@@ -25,7 +25,8 @@
     "loglevel": "info",
     "format": "{message}",
     "logtofile": false,
-    "logtofilemode": "w"
+    "logtofilemode": "w",
+    "logpath": ""
 },
 "remove_large_der": [],
 "explicit_storage": {},
@@ -43,7 +44,8 @@
             "vdiff": 3.0
         },
         "thermal": {
-            "emerg": 0
+            "emerg": 0,
+            "norm_hrs": 3
         },
         "island":{
             "pq": [0.3, 0.05]

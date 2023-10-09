@@ -7,6 +7,7 @@ from hca import HCA
 import hca as h
 from io import StringIO
 import networkx as nx
+import i2x.api as i2x
 
 def get_sequence(vabc):
 
@@ -80,21 +81,49 @@ def add_trace(fig, x, y, name, total_sec=True, colors=None, row=1, col=1, **kwar
     fig.add_trace(go.Scatter(x=x, y=y, mode="lines", name=name, line_color=colors(), **kwargs), 
                 row=row, col=col)
 
-def vdiff_plot(hcaobj:HCA, filenamebase):
+
+def inverter_control_plot(choice):
+    row = i2x.inverterChoices[choice]
+    fig = make_subplots(2,1, shared_xaxes=True, subplot_titles=("reactive power", "active power"))
+    colors = ColorList()
+    add_trace(fig, row["v"], row["q"], "Q", colors=colors, row=1, col=1)
+    colors.step()
+    add_trace(fig, row["v"], row["p"], "P", colors=colors, row=2, col=1)
+    fig.update_xaxes(title_text="V [p.u.]", row=2)
+    fig.update_yaxes(title_text="Q [p.u.]", row=1)
+    fig.update_yaxes(title_text="P [p.u.]", row=2)
+    fig.show()
+
+
+def vdiff_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
+    """plot voltage difference issue on feeder.
+    IMPORTANT: anything passed to **kwargs goes to the write_html plotly call
+    for BOTH the time plots as well as the feeder plot.
+    """
     vdiff_locations = hcaobj.metrics.get_vdiff_locations()
+    if len(vdiff_locations["v"]) == 0:
+        print("No locations violating the voltage difference metric. Exiting.")
+        return
     fig = make_subplots(2, 1, shared_xaxes=True, subplot_titles=("node voltage", "node voltage diff"))
     colors = ColorList()
+    highlight_nodes={}
     for node in vdiff_locations["v"].keys():
         x2 = list(range(len(vdiff_locations["vdiff"][node])))
         x1 = list(range(len(vdiff_locations["v"][node])))
         add_trace(fig, x1, vdiff_locations["v"][node], f"{node}_v", colors=colors, row=1)
         add_trace(fig, x2, vdiff_locations["vdiff"][node], f"{node}_dv", colors=colors, row=2)
         colors.step()
+        highlight_nodes[node] = f"<br>max vdiff: {np.max(np.abs(vdiff_locations['vdiff'][node])):0.2f} %"
     fig.add_hline(y=hcaobj.metrics.lims["voltage"]["vdiff"], row=2, line_dash="dash")
     fig.update_yaxes(title_text="V [p.u.]", row=1, col=1)
     fig.update_yaxes(title_text="dV [%]", row=2, col=1)
-    fig.write_html(f"{filenamebase}.html")
-    hcaobj.plot(highlight_nodes=list(vdiff_locations["v"].keys()), pdf_name=f"{filenamebase}.pdf", on_canvas=True)
+    fig.write_html(f"{filenamebase}.html", **kwargs)
+    # hcaobj.plot(highlight_nodes=list(vdiff_locations["v"].keys()), pdf_name=f"{filenamebase}.pdf", on_canvas=True)
+    feeder_plotter = PlotlyFeeder()
+    feeder_plotter.plot(hcaobj.G, f"{filenamebase}_feeder.html",
+                        highlight_nodes=highlight_nodes,
+                        extra_node_text=hc_text(hcaobj, typ), 
+                        extra_edge_text=upgrade_text(hcaobj), **kwargs)
 
 def vmaxmin_plot(hcaobj:HCA, filenamebase):
     vmaxlocs = hcaobj.metrics.get_volt_max_buses()
@@ -168,10 +197,18 @@ def hc_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
                         extra_edge_text=upgrade_text(hcaobj),
                         include_plotlyjs='cdn', **kwargs)
 
+def upgrade_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
+    feeder_plotter = PlotlyFeeder()
+    feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
+                        extra_node_text=hc_text(hcaobj, typ),
+                        highlight_edges=upgrade_text(hcaobj),
+                        **kwargs)
+
 def hc_text(hcaobj:HCA, typ):
     out = {}
     for n in hcaobj.visited_buses:
-        out[n] = dict2str(hcaobj.get_hc(typ, n)[0], f"HC ({typ})", newline="<br>")
+        hc, cnt = hcaobj.get_hc(typ, n)
+        out[n] = dict2str(hc, f"HC | {typ} | round {cnt}", newline="<br>")
     return out
 
 def upgrade_text(hcaobj:HCA):
@@ -295,6 +332,9 @@ class PlotlyFeeder:
                 if highlight_test:
                     nclass = "highlight"
                     text_extra = "<br>" + highlight_nodes[highlight_key]
+                    extra_test, extra_key = str_in(n, extra_text.keys())
+                    if extra_test:
+                        text_extra += "<br>"+ extra_text[extra_key]
                 else:
                     if comp_plot:
                         nclass = f'comp{d["comp"]}'
@@ -334,6 +374,9 @@ class PlotlyFeeder:
             if highlight_test:
                 eclass = "highlight"
                 text_extra = "<br>" + highlight_edges[highlight_key]
+                extra_test, extra_key = str_in(d["ename"], extra_text.keys())
+                if extra_test:
+                    text_extra += "<br>" + extra_text[extra_key]
             else:
                 if comp_plot and (G.nodes[u]["comp"] == G.nodes[v]["comp"]):
                     eclass = f'comp{G.nodes[u]["comp"]}'

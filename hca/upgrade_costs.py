@@ -66,7 +66,7 @@ class ConductorCosts:
             return 3.0
         if u.lower() in ["mi", "mile", "miles"]:
             return 5280.0
-        if u.lower() in ["foot", "feet"]:
+        if u.lower() in ["foot", "feet", "ft"]:
             return 1.0
 
 class RegulatorCosts:

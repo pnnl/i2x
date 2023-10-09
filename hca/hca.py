@@ -265,7 +265,8 @@ def next_xfrm_kva(kva, nphase, skip=0) -> float:
   
 
 class HCA:
-  def __init__(self, inputs:Union[str,dict], logger_heading=None, reload=False, reload_filemode="a"):
+  def __init__(self, inputs:Union[str,dict], logger_heading=None, 
+               reload=False, reload_filemode="a", print_config=False):
     if reload:
       self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading)
       return
@@ -282,7 +283,8 @@ class HCA:
     
     self.logger_init(logger_heading)
     
-    self.print_config()
+    if print_config:
+      self.print_config()
 
     ## establish a random seed for reproducibility
     # generate a 32bit seed based on the choice of feeder
@@ -326,7 +328,8 @@ class HCA:
                          format=self.inputs["hca_log"]["format"])
     
     if self.inputs["hca_log"]["logtofile"]:
-      self.logger.set_logfile(mode=self.inputs["hca_log"]["logtofilemode"])
+      self.logger.set_logfile(mode=self.inputs["hca_log"]["logtofilemode"],
+                              path=self.inputs["hca_log"]["logpath"])
 
     if logger_heading is not None:
       self.logger.info(logger_heading)
@@ -370,9 +373,7 @@ class HCA:
       self.inputs["hca_log"]["logtofilemode"] = filemode
     self.logger_init(reload_heading)
 
-    self.metrics = HCAMetrics(self.inputs["metrics"]["limits"], 
-                              tol=self.inputs["metrics"]["tolerances"],
-                              logger=self.logger)
+    self.metrics = HCAMetrics(**self.inputs["metrics"], logger=self.logger)
     self.metrics.set_base(tmp["metrics_baseres"])
 
     self.reset_dss(clear_changes=False)
@@ -419,11 +420,12 @@ class HCA:
       self.upgrades[typ][name] = {}
     self.upgrades[typ][name][cnt] = copy.deepcopy(vals)
   
-  def set_active_bus(self, bus):
+  def set_active_bus(self, bus, recalculate=False):
     self.logger.info(f"Setting bus {bus} as active bus")
     self.active_bus = bus
     self.active_bus_kv = self.G.nodes[bus]["ndata"]["nomkv"]
-    self.visited_buses.append(self.active_bus)
+    if not recalculate:
+      self.visited_buses.append(self.active_bus)
 
   def unset_active_bus(self):
     self.active_bus = None
@@ -464,11 +466,11 @@ class HCA:
     self.change_lines = []
 
   def replay_resource_addition(self, typ, bus, cnt):
-          key = self.resource_key(typ, bus, cnt)
-          self.new_capacity(typ, key, bus=bus, **self.data["Sij"][typ][bus][cnt])
+    key = self.resource_key(typ, bus, cnt)
+    self.new_capacity(typ, key, bus=bus, **self.data["Sij"][typ][bus][cnt])
 
-  def resource_key(self, typ, bus, cnt):
-    return f"{typ}_{bus}_cnt{cnt}"
+  def resource_key(self, typ, bus, cnt, recalculate=False):
+    return f"{typ}_{bus}_cnt{cnt}{'_recalc' if recalculate else ''}"
   
   def update_basekv(self):
     for i,n in enumerate(self.dss.circuit.buses_names):
@@ -612,8 +614,22 @@ class HCA:
     self.parse_graph()
     self.pv_voltage_base_list()
 
-  def remove_der(self, key, typ, bus):
-    row = {"type": typ, "bus": bus}
+  def remove_der(self, key, typ, bus, kva, kw, kwh=0):
+    if kw==0:
+      # this could be the case where there is no hc, but we still want to remove the last bit added
+      # during the hc_bisection. To do this, get the Sij stored at this bus:
+      # option 1: something exists -> set kw, kva to return to this value
+      # option 2: nothing exists -> set kw, kva to zero out
+      typmap = {"solar": "pv", "storage": "bat", "generator": "der"}
+      graph_keys = {"solar": "pv", "storage": "bat", "generator": "gen"}
+      Sij, cnt = self.get_data("Sij", typmap[typ], bus)
+      if Sij is None:
+        Sij = {"kw": 0, "kva": 0}
+      
+      kw = self.G.nodes[bus]["ndata"][f"{graph_keys[typ]}kw"] - Sij["kw"]
+      kva = self.G.nodes[bus]["ndata"][f"{graph_keys[typ]}kva"] - Sij["kva"]
+      
+    row = {"type": typ, "bus": bus, "kva": kva, "kw": kw, "kwh": kwh}
     self.remove_large_der(key, row=row)
 
   def remove_large_der (self, key, row=None):
@@ -627,16 +643,17 @@ class HCA:
         return 
     if row['type'] == 'solar':
       self.change_lines.append('edit pvsystem.{:s} enabled=no'.format(key))
-      self.G.nodes[row["bus"]]["ndata"]["pvkva"] = 0
-      self.G.nodes[row["bus"]]["ndata"]["pvkw"] = 0
+      self.G.nodes[row["bus"]]["ndata"]["pvkva"] -= row["kva"]
+      self.G.nodes[row["bus"]]["ndata"]["pvkw"] -= row["kw"]
     elif row['type'] == 'storage':
       self.change_lines.append('edit storage.{:s} enabled=no'.format(key))
-      self.G.nodes[row["bus"]]["ndata"]["batkva"] = 0
-      self.G.nodes[row["bus"]]["ndata"]["batkw"] = 0
+      self.G.nodes[row["bus"]]["ndata"]["batkva"] -= row["kva"]
+      self.G.nodes[row["bus"]]["ndata"]["batkw"] -= row["kw"]
+      self.G.nodes[row["bus"]]["ndata"]["batkwh"] -= row["kwh"]
     elif row['type'] == 'generator':
       self.change_lines.append('edit generator.{:s} enabled=no'.format(key))
-      self.G.nodes[row["bus"]]["ndata"]["genkva"] = 0
-      self.G.nodes[row["bus"]]["ndata"]["genkw"] = 0
+      self.G.nodes[row["bus"]]["ndata"]["genkva"] -= row["kva"]
+      self.G.nodes[row["bus"]]["ndata"]["genkw"] -= row["kw"]
     else:
       return
     
@@ -695,8 +712,8 @@ class HCA:
     self.pvbases[key] = 1000.0 * kv / SQRT3
     if not self.existing_resource_check(f"pvsystem.{key}", bus, "pvkva", kva):
       self.G.nodes[bus]["nclass"] = 'solar' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
-      self.G.nodes[bus]["ndata"]["pvkva"] = kva
-      self.G.nodes[bus]["ndata"]["pvkw"] = kw
+      self.G.nodes[bus]["ndata"]["pvkva"] += kva
+      self.G.nodes[bus]["ndata"]["pvkw"] += kw
       self.G.nodes[bus]["ndata"]["nomkv"] = kv
       self.G.nodes[bus]["ndata"]["shunts"].insert(0, f"pvsystem.{key}") #prepend to shunt list (make sure this is the first element found)
 
@@ -707,9 +724,9 @@ class HCA:
     self.change_lines.append('new storage.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f} kwhrated={:.3f} kwhstored={:.3f}'.format(key, bus, kv, kva, kw, kwh, 0.5*kwh))
     if not self.existing_resource_check(f"storage.{key}", bus, "batkva", kva):
       self.G.nodes[bus]["nclass"] = 'storage' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
-      self.G.nodes[bus]["ndata"]["batkva"] = kva
-      self.G.nodes[bus]["ndata"]["batkw"] = kw
-      self.G.nodes[bus]["ndata"]["batkwh"] = kwh
+      self.G.nodes[bus]["ndata"]["batkva"] += kva
+      self.G.nodes[bus]["ndata"]["batkw"] += kw
+      self.G.nodes[bus]["ndata"]["batkwh"] += kwh
       self.G.nodes[bus]["ndata"]["nomkv"] = kv
       self.G.nodes[bus]["ndata"]["shunts"].insert(0, f"storage.{key}") #prepend to shunt list (make sure this is the first element found)
 
@@ -719,8 +736,8 @@ class HCA:
     self.change_lines.append('new generator.{:s} bus1={:s} kv={:.3f} kva={:.3f} kw={:.3f}'.format(key, bus, kv, kva, kw))
     if not self.existing_resource_check(f"generator.{key}", bus, "genkva", kva):
       self.G.nodes[bus]["nclass"] = 'generator' # TODO: can we put multiple elements at one bus, if so, won't this overwrite?
-      self.G.nodes[bus]["ndata"]["genkva"] = kva
-      self.G.nodes[bus]["ndata"]["genkw"] = kw
+      self.G.nodes[bus]["ndata"]["genkva"] += kva
+      self.G.nodes[bus]["ndata"]["genkw"] += kw
       self.G.nodes[bus]["ndata"]["nomkv"] = kv
       self.G.nodes[bus]["ndata"]["shunts"].insert(0, f"generator.{key}") #prepend to shunt list (make sure this is the first element found)
 
@@ -832,7 +849,14 @@ class HCA:
     df, cols, err = self._load_di(path, "DI_Overloads_1.CSV", dtypes=dtypes)
     cols.remove("Hour")
     cols.remove("Element")
-    self.lastres["di_overloads"] = df.groupby("Element").agg('max').loc[:, cols]
+    ### aggregate all columns based on max except for "%Normal" where we count the number of violoations
+    ### for %Normal we then multiply by dt to get the violation time over normal.
+    agg_map = {c: "max" for c in cols}
+    agg_map["hrs_above_normal"] = "sum"
+    cols.append("hrs_above_normal")
+    df["hrs_above_normal"] = df["%Normal"] > 100
+    self.lastres["di_overloads"] = df.groupby("Element").agg(agg_map).loc[:, cols]
+    self.lastres["di_overloads"]["hrs_above_normal"] *= self.inputs["stepsize"]/3600 # convert count to hrs
     self.lastres["di_overloads"].index = self.lastres["di_overloads"].index.str.strip(' "') # remove spaces and quotes
     if err:
       self.lastres["converged"] = False
@@ -925,7 +949,7 @@ class HCA:
     elif typ == "der":
       self._redispatch_large_generator(key, **kwargs)
 
-  def get_data(self, key, typ, bus, cnt=None):
+  def get_data(self, key, typ, bus=None, cnt=None):
     """Retrieve the hosting capacity, Sij, or eval stored for the given bus for the given type.
     If no iteration counter is given the process works itself backwards from the
     current count until a viable index is found.
@@ -935,20 +959,28 @@ class HCA:
     if typ not in ["pv", "bat", "der"]:
       raise ValueError("Currently Only differentiating on pv, bat, der")
     
-    if cnt is not None:
-      try:
-        return self.data[key][typ][bus][cnt], cnt
-      except KeyError:
-        return None, cnt
+    if bus is None:
+      ## iterate over all buses in this key/type
+      out = {}
+      for b in self.data[key][typ].keys():
+        data, cntout = self.get_data(key,typ,b,cnt=cnt)
+        out[b] = {**data, "cnt": cntout}
+      return pd.DataFrame.from_dict(out, orient="index")
     else:
-      cnt = self.cnt
-      while cnt >= 0:
-        data, cnt =  self.get_data(key, typ, bus, cnt)
-        if data is None:
-          cnt -= 1
-        else:
-          return data, cnt
-      return None, cnt #if we're here then no data was found, cnt should be -1
+      if cnt is not None:
+        try:
+          return self.data[key][typ][bus][cnt], cnt
+        except KeyError:
+          return None, cnt
+      else:
+        cnt = self.cnt
+        while cnt >= 0:
+          data, cnt =  self.get_data(key, typ, bus, cnt)
+          if data is None:
+            cnt -= 1
+          else:
+            return data, cnt
+        return None, cnt #if we're here then no data was found, cnt should be -1
     
   def get_hc(self, typ, bus, cnt=None):
     """Retrieve the hosting capacity stored for the given bus for the given type
@@ -957,7 +989,7 @@ class HCA:
     """
     return self.get_data("hc", typ, bus, cnt=cnt)
   
-  def remove_hca_resource(self, typ, bus=None, cnt=None):
+  def remove_hca_resource(self, typ, bus=None, cnt=None, recalculate=False):
     """utility function for remove a resource added via hca_round.
     The main purpose is to make sure the graph gets updated as necessary.
     If bus and cnt are none it is assumed that the current count and active bus 
@@ -973,9 +1005,10 @@ class HCA:
         bus = self.active_bus
 
     # get the key used for the resource
-    key = self.resource_key(typ, bus, cnt)
+    key = self.resource_key(typ, bus, cnt, recalculate=recalculate)
+    Sij = self.get_data("Sij", typ, bus, cnt)
 
-    self.remove_der(key, typ, bus)
+    self.remove_der(key, typ, bus, **Sij)
 
     self.parse_graph() #update graph dictionaries
 
@@ -1000,7 +1033,7 @@ class HCA:
       self.visited_buses.pop(cnt-1)
 
 
-  def hca_round(self, typ, bus=None, Sij=None, allow_violations=False, hciter=True):
+  def hca_round(self, typ, bus=None, Sij=None, allow_violations=False, hciter=True, recalculate=False):
     """perform a single round of hca"""
     
     # if allow_violations is false iter must be true
@@ -1020,8 +1053,9 @@ class HCA:
      
     # first iteration of this round
     #### increment the count
-    self.cnt +=1
-    self.logger.info(f"\n========= HCA Round {self.cnt} ({typ})=================")
+    if not recalculate:
+      self.cnt +=1
+    self.logger.info(f"\n========= HCA Round {self.cnt} ({typ}){' recalculating' if recalculate else ''}=================")
   
     #### Step 1: select a bus. Viable options (for now) are:
     # * graph_dirs["bus3phase"]: 3phase buses with nothing on them
@@ -1032,7 +1066,7 @@ class HCA:
       
       self.set_active_bus(self.sample_buslist(buslist))
     else:
-      self.set_active_bus(bus)
+      self.set_active_bus(bus, recalculate=recalculate)
 
     #### Step 2: Select new capacity, 
     ## there are two options:
@@ -1048,7 +1082,7 @@ class HCA:
         ## Option 1: check if bus already has resource of this type
         self.logger.debug(f"\tFound resource {keyexist}, at bus {bus}")
         hc, hc_cnt = self.get_hc(typ, self.active_bus)
-        if hc is not None:
+        if (hc is not None) and (hc["kw"] > 0):
           # use the hc value
           self.logger.debug(f"\tLast hc info from round {hc_cnt}: {hc}")
           Sij = hc
@@ -1061,10 +1095,10 @@ class HCA:
       # self.alter_capacity(typ, key, **Sij)
     # else:
     #   ## Option 2: first time resource at this node
-    key = self.resource_key(typ, self.active_bus, self.cnt) #f"{typ}-init-cnt{self.cnt}"
+    key = self.resource_key(typ, self.active_bus, self.cnt, recalculate=recalculate) #f"{typ}-init-cnt{self.cnt}"
     self.logger.info(f"Creating new {typ} resource {key} with S = {Sij}")
     self.new_capacity(typ, key, **Sij)
-    
+    Sijin = copy.deepcopy(Sij)
     ### update graph structure and log changes
     self.parse_graph()
     for ln in self.change_lines:
@@ -1086,11 +1120,15 @@ class HCA:
     if self.lastres["converged"] and (self.metrics.violation_count == 0):
       # no violations
       self.logger.info(f"No violations with capacity {Sij}.")
-      self.update_data("Sij", typ, Sij)  # save installed capacity
+      if not recalculate:
+        self.update_data("Sij", typ, Sij)  # save installed capacity
       if hciter:
         self.logger.info("Iterating to find HC.")
-        Sijlim = self.hc_bisection(typ, key, Sij, None) # find limit via bisection search
-        hc = {k: Sijlim[k] - Sij[k] for k in ["kw", "kva"]}
+        Sijlim = self.hc_bisection(typ, key, Sijin, Sij, None) # find limit via bisection search
+        if recalculate:
+          hc = {k: Sijlim[k] for k in ["kw", "kva"]}
+        else:
+          hc = {k: Sijlim[k] - Sij[k] for k in ["kw", "kva"]}
         self.update_data("hc", typ, hc)
       self.update_data("eval", typ, self.metrics.eval)
     else:
@@ -1104,27 +1142,35 @@ class HCA:
         self.update_data("eval", typ, self.metrics.eval)
       if hciter:
         self.logger.info("Iterating to find Limit.")
-        Sijlim = self.hc_bisection(typ, key, None, Sij)
+        Sijlim = self.hc_bisection(typ, key, Sijin, None, Sij)
         if Sijlim["kw"] == 0: 
           # no capacity at this bus (not just no *additional*, none at all)
           # remove the object from the graph
           self.logger.info(f"\tNo capacity at bus {self.active_bus}. Disabling resource {key}.")
           # self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
           # self.reset_dss() # reset state to last good solution
-        hc = {k: 0 for k in ["kw", "kva"]}
+        if recalculate:
+          hc = Sijlim
+        else:
+          hc = {k: 0 for k in ["kw", "kva"]}
         self.update_data("hc", typ, hc)
         if not allow_violations:
           Sij = copy.deepcopy(Sijlim)
-          self.update_data("Sij", typ, Sij) # update with intalled capacity
+          if not recalculate:
+            self.update_data("Sij", typ, Sij) # update with intalled capacity
           self.update_data("eval", typ, self.metrics.eval)
       # mark bus as exauhsted
-      self.exauhsted_buses[typ].append(self.active_bus)
+      if not recalculate:
+        self.exauhsted_buses[typ].append(self.active_bus)
 
     ### Step 5: final run with the actual capacity
     self.logger.info(f"*******Results for bus {self.active_bus} ({typ})\nSij = {Sij}\nhc = {hc}")
-    self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
+    if hciter:
+      self.remove_der(key, typmap[typ], self.active_bus, **Sijlim) # dss command doesn't really matter, but this removes it from graph as well
+    else:
+      self.remove_der(key, typmap[typ], self.active_bus, **Sijin) # dss command doesn't really matter, but this removes it from graph as well
     self.reset_dss() # reset state to last good solution
-    if Sij["kw"] > 0:
+    if (Sij["kw"] > 0) and (not recalculate):
       self.new_capacity(typ, key, **Sij)
     ### update graph structure and log changes
     self.parse_graph()
@@ -1139,16 +1185,20 @@ class HCA:
       # recalculate metrics
       self.metrics.load_res(self.lastres)
       self.metrics.calc_metrics()
+    elif recalculate:
+      # if we are just recalculating at a bus, make sure to update results
+      self.metrics.load_res(self.lastres)
+      self.metrics.calc_metrics()
 
     ### cleanup
     self.unset_active_bus()
     self.collect_stats()
 
-  def hc_bisection(self, typ, key, Sij1=None, Sij2=None, kwtol=5, kwmin=30):
+  def hc_bisection(self, typ, key, Sijin, Sij1=None, Sij2=None, kwtol=5, kwmin=30):
     
     typmap = {"pv": "solar", "bat": "storage", "der": "generator"}
     #prep for new run
-    self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
+    self.remove_der(key, typmap[typ], self.active_bus, **Sijin) # dss command doesn't really matter, but this removes it from graph as well
     self.reset_dss()
 
     if (Sij1 is None) and (Sij2 is None):
@@ -1188,7 +1238,7 @@ class HCA:
       self.logger.info(f"\tNo violations with capacity {Sijnew}. Iterating to find HC")
       if Sij2 is None:
         # still uknown upper bound
-        return self.hc_bisection(typ, key, Sijnew, None, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, Sijnew, None, kwtol, kwmin)
       elif Sij2["kw"] - Sijnew["kw"] < kwtol:
         # End criterion: no violations and search band within tolerance
         if Sijnew ["kw"] < kwmin:
@@ -1197,7 +1247,7 @@ class HCA:
         return Sijnew
       else:
         # recurse and increase
-        return self.hc_bisection(typ, key, Sijnew, Sij2, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, Sijnew, Sij2, kwtol, kwmin)
     else:
       self.logger.info(f"\tViolations with capacity {Sijnew}. Iterating to find Limit.")
       if self.lastres["converged"]:
@@ -1208,10 +1258,10 @@ class HCA:
         return {k: 0 for k in Sijnew.keys()}
       elif Sij1 is None:
         # still unkonwn lower bound
-        return self.hc_bisection(typ, key, None, Sijnew, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, None, Sijnew, kwtol, kwmin)
       else:
         # recurse and decrease
-        return self.hc_bisection(typ, key, Sij1, Sijnew, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, Sij1, Sijnew, kwtol, kwmin)
   
   def runbase(self, verbose=0):
     """runs an initial version of the feeder to establish a baseline.
@@ -1307,7 +1357,8 @@ class HCAMetrics:
       "vdiff": self._vdiff
       },
       "thermal": {
-      "emerg": self._thermal
+      "emerg": self._thermal,
+      "norm_hrs": self._norm_hrs,
       },
       "island": {
         "pq": self._island_pq
@@ -1516,6 +1567,24 @@ class HCAMetrics:
       test2, margin2 = self._test(ov2, 100, -1, self.tol["thermal"])
       return pd.concat([test1, test2]), pd.concat([margin1[~test1], margin2[~test2]])
 
+  def _norm_hrs(self,val):
+    if self.base is None:
+      ## test 2: no branch is overloaded for more time than limit thermal->norm_hrs
+      ov2 = self.res["di_overloads"].loc[:, "hrs_above_normal"]
+      if ov2.empty:
+        return True, 0
+      else:
+        return self._test(ov2, val, -1, self.tol["thermal"])
+    else:
+      mask = self.res["di_overloads"].index.isin(self.base.res["di_overloads"].index)
+      ## test 1: any of the overloaded branches in base solution are not *more* overloaded
+      ov1 = self.base.res["di_overloads"]["hrs_above_normal"].subtract(self.res["di_overloads"].loc[:, "hrs_above_normal"]).dropna()
+      test1, margin1 = self._test(ov1, 0, 1, self.tol["thermal"])
+      ## test 2: no new overloaded branch should be overloaded more than allowed hrs
+      ov2 = self.res["di_overloads"].loc[~mask, "hrs_above_normal"]
+      test2, margin2 = self._test(ov2, val, -1, self.tol["thermal"])
+      return pd.concat([test1, test2]), pd.concat([margin1[~test1], margin2[~test2]])
+  
   def _all_comps(self, func, *args):
     """Loop through all components, return first error"""
     for i in self.res["compflows"].keys():

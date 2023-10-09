@@ -1,5 +1,5 @@
 import logging
-import sys
+import sys, os
 import json
 
 def load_config(filepath):
@@ -64,9 +64,11 @@ class Logger(logging.Logger):
         for h in self.logger.handlers:
             h.setLevel(level)
 
-    def set_logfile(self, file=None, mode="w"):
+    def set_logfile(self, file=None, path=None, mode="w"):
         if file is None:
             file = self.name + ".log"
+        if path is not None:
+            file = os.path.join(path, file)
         file_handler = logging.FileHandler(file, mode=mode)
         file_handler.setFormatter(self.formatter)
         self.logger.addHandler(file_handler)
