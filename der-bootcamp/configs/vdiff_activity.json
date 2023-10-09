@@ -1,0 +1,11 @@
+{
+"choice": "radial",
+"allow_forms": 0,
+"res_pv_frac": 0,
+"hca_log": {
+    "logname": "vdiff_activity",
+    "logtofile": true,
+    "logtofilemode": "a",
+    "logpath": "./vdiff_activity_files/"
+}
+}

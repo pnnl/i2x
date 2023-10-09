@@ -1,0 +1,9 @@
+{
+"choice": "radial",
+"allow_forms": 0,
+"res_pv_frac": 0,
+"hca_log": {
+    "logname": "cluster_activity",
+    "logtofile": true
+}
+}
