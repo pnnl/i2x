@@ -23,6 +23,7 @@ xfrm_cost = upcst.TransformerCosts()
 reg_cost = upcst.RegulatorCosts()
 
 SQRT3 = math.sqrt(3.0)
+pd_version = [int(s) for s in pd.__version__.split(".")]
 
 def print_config(config:dict, tabs="", printf=print, title="Configuration"):
     """print a configuration dictionary"""
@@ -192,13 +193,21 @@ def calc_di_voltage_stats(di_voltexception:pd.DataFrame, vmin=0.95, vmax=1.05, w
   if worst_case:
     vlimmin = vlimmin.apply(lambda x: min(vmin, x))
     vlimmax = vlimmax.apply(lambda x: max(vmax, x))
-      
-  return pd.concat([
-            pd.concat([vlimmin, vlimmax]).rename("limits"),
-            pd.concat([
+  if (pd_version[0]) > 1 and (pd_version[1]) > 0:
+    # use pd.DataFrame.map
+    integral = pd.concat([
+                di_voltexception.loc[:, ["MinVoltage", "MinLVVoltage"]].map(lambda x: max(0, vmin - x)).transpose().dot(np.diff(np.insert(di_voltexception.index, 0, [0]))),
+                di_voltexception.loc[:, ["MaxVoltage", "MaxLVVoltage"]].map(lambda x: max(0, x-vmax)).transpose().dot(np.diff(np.insert(di_voltexception.index, 0, [0])))
+            ]).rename("integral")
+  else:
+    # use pd.DataFrame.applymap
+    integral = pd.concat([
                 di_voltexception.loc[:, ["MinVoltage", "MinLVVoltage"]].applymap(lambda x: max(0, vmin - x)).transpose().dot(np.diff(np.insert(di_voltexception.index, 0, [0]))),
                 di_voltexception.loc[:, ["MaxVoltage", "MaxLVVoltage"]].applymap(lambda x: max(0, x-vmax)).transpose().dot(np.diff(np.insert(di_voltexception.index, 0, [0])))
-            ]).rename("integral")
+            ]).rename("integral")  
+  return pd.concat([
+            pd.concat([vlimmin, vlimmax]).rename("limits"),
+            integral
           ], axis= 1)
 
 def upgrade_line(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, factor:float=2):
