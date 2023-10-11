@@ -294,8 +294,9 @@ class HCA:
       self.print_config()
 
     ## establish a random seed for reproducibility
-    # generate a 32bit seed based on the choice of feeder
-    seed = int.from_bytes(hashlib.sha256(f'{inputs["choice"]}'.encode()).digest()[:4], 'little')
+    # generate a 32bit seed based specified seed OR the choice of feeder
+    s = inputs["seed"] if inputs["seed"] else inputs["choice"]
+    seed = int.from_bytes(hashlib.sha256(f'{s}'.encode()).digest()[:4], 'little')
     # random.seed(hash(inputs["choice"]))
     self.random_state = np.random.RandomState(seed)
 
