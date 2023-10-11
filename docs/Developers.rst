@@ -7,15 +7,15 @@ Familiarity with ``git`` and Python is expected.  Experience with OpenDSS is als
 2. ``cd i2x``
 3. ``pip install -e .`` to install i2x from your local copy of the code.
 
-The steps for deployment to PyPi are (Starting in the `src/i2x/` directory of the repository):
+The steps for deployment to PyPi are (Starting in the parent directory of `src`, where ``setup.py`` is located):
 
-0. Make sure that the version number in `version.py` is new
-1. ``rm -rf dist``: Removes the wheel folder (if exists)
-2. ``python -m build``: Builds the wheel (note: this can take a while)
-3. ``twine check dist/*`` should not show any errors (This of the wheel)
-4. ``twine upload -r testpypi dist/*`` requires project credentials for i2x on test.pypi.org (Note: this will reject if version already exists)
+0. Make sure that the version number in ``version.py`` is new
+1. ``rm -rf dist``: Removes the wheel folder (if exists. use ``rd /s /q dist`` in windows cmd.exe)
+2. ``python -m build``: Builds the wheel (note: this can take a while. ``build`` may need to be installed ``conda install build`` or ``pip install build``)
+3. ``twine check dist/*`` should not show any errors (This of the wheel. ``twine`` may need to be installed ``conda install twine`` or ``pip install twine``)
+4. ``twine upload -r testpypi dist/*`` requires project credentials for i2x on test.pypi.org (Note: this will reject if version already exists, also note that testpypi is a separate register to pypi)
 5. ``pip install -i https://test.pypi.org/simple/ i2x==0.0.8`` for local testing of the deployable package, example version 0.0.8 (Note: some might want to this in a separate test environment)
-6. ``twine upload dist/*`` final deployment; requires project credentials for i2x on pypi.org
+6. ``twine upload dist/*`` final deployment; requires project credentials for i2x on pypi.org (if 2-Factor-Authentication is enabled an `API token <https://pypi.org/help/#apitoken>`_ needs to be used.)
 
 To run the documentation locally:
 
