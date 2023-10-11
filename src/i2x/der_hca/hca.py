@@ -1,21 +1,19 @@
 import i2x.api as i2x
-import random
+from importlib import resources
 import math
 import networkx as nx
-import argparse
 import json
-import sys
-import islands as isl
+import i2x.der_hca.islands as isl
 import numpy as np
 import py_dss_interface
-from hca_utils import Logger, merge_configs
+from .hca_utils import Logger, merge_configs
 import os
 import pandas as pd
 import copy
 import hashlib
 import pickle
 from typing import Union
-import upgrade_costs as upcst
+import i2x.der_hca.upgrade_costs as upcst
 
 ### Cost objects
 conductor_cost = upcst.ConductorCosts()
@@ -1728,9 +1726,10 @@ def print_options():
 
 def load_config(configin):
   ### get defaults
-  defaultsconfig = os.path.join(os.path.dirname(os.path.realpath(__file__)), "defaults.json")
-  with open(defaultsconfig) as f:
-    inputs = json.load(f)
+  # defaultsconfig = os.path.join(os.path.dirname(os.path.realpath(__file__)), "defaults.json")
+  with resources.files("i2x.der_hca") as path:
+    with open(os.path.join(path,"defaults.json")) as f:
+      inputs = json.load(f)
   
   if os.path.basename(configin) != 'defaults.json':
     with open(configin) as f:
@@ -1741,57 +1740,3 @@ def load_config(configin):
 def show_defaults():
   inputs = load_config('defaults.json')
   print_config(inputs)
-
-def main(inputs):
-  ### create hca object
-  hca = HCA(inputs)
-  
-  ###########################################################################
-  ##### Initialization
-  ###########################################################################
-  ### deterministic changes
-  hca.deterministic_changes()
-  hca.logger.info(f"\nFeeder description following deterministic changes:")
-  hca.print_parsed_graph()
-
-
-  ### rooftop solar
-  hca.append_rooftop_pv()
-  hca.logger.info(f"\nFeeder description following intialization changes:")
-  hca.print_parsed_graph()
-
-  hca.logger.info('\nIslanding Considerations:\n')
-  hca.logger.info(f'{len(hca.comps)} components found based on recloser positions')
-  for i, c in enumerate(hca.comps):
-    hca.show_component(i, printvals=True, printheader=i==0, plot=False)
-
-  hca.rundss()
-  hca.summary_outputs()
-  return hca
-   
-if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="i2X Hosting Capacity Analysis")
-  parser.add_argument("config", nargs='?', help="configuration file", default="defaults.json")
-  parser.add_argument("--show-options", help="Show options and exit", action='store_true')
-  parser.add_argument("--print-inputs", help="print passed inputs", action="store_true")
-  parser.add_argument("--show-defaults", help="show default configuration and exit", action='store_true')
-  args = parser.parse_args()
-
-  if args.show_options:
-    print_options()
-    sys.exit(0)
-
-  if args.show_defaults:
-    show_defaults()
-    sys.exit(0)
-  
-  inputs = load_config(args.config)
-  
-  if args.print_inputs:
-    print("Provided/Default Inputs:\n===============")
-    for k,v in inputs.items():
-      print(f"{k}: {v}")
-  
-  hca = main(inputs)
-
-

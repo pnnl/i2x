@@ -1,8 +1,6 @@
 import sys
 import os
-if os.path.abspath("..") not in sys.path:
-    sys.path.append(os.path.abspath(".."))
-import hca as h
+from i2x.der_hca import hca as h
 
 def main(title, include=None, exclude=None):
     ### load config (note: just changes to defaults)

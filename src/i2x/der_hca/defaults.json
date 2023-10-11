@@ -1,0 +1,62 @@
+{
+"choice":  "ieee9500",
+"loadcurve":  "DEFAULT",
+"loadmult": 1.0,
+"pvcurve" : "pcloud",
+"invmode" : "CONSTANT_PF",
+"invpf" : 1.0,
+"solnmode" : "DAILY",
+"ctrlmode" : "STATIC",
+"debug_output" : false,
+"res_pv_frac": 0.2,
+"stepsize": 300,
+"numsteps": 288,
+"remove_all_pv": false,
+"allow_forms": 0,
+"reg_control": {
+    "disable_all": false,
+    "disable_list": []
+},
+"monitors":{
+    "volt_monitor_method": "bfs"
+},
+"hca_log":{
+    "logname": "hcalog",
+    "loglevel": "info",
+    "format": "{message}",
+    "logtofile": false,
+    "logtofilemode": "w",
+    "logpath": ""
+},
+"remove_large_der": [],
+"explicit_storage": {},
+"explicit_pv": {},
+"redisp_pv":{},
+"explicit_gen": {},
+"redisp_gen": {},
+"metrics":{
+    "include": {},
+    "exclude": {},
+    "limits":{
+        "voltage": {
+            "vmin": 0.95,
+            "vmax": 1.05,
+            "vdiff": 3.0
+        },
+        "thermal": {
+            "emerg": 0,
+            "norm_hrs": 3
+        },
+        "island":{
+            "pq": [0.3, 0.05]
+        }
+    },
+    "tolerances":{
+        "voltage_mag": 1e-3,
+        "voltage_integral": 1e-2,
+        "voltage_diff": 1e-2,
+        "thermal": 1e-2,
+        "island": 1e-2
+    }
+}
+}
