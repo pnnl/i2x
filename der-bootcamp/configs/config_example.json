@@ -4,7 +4,12 @@
     "print_hca_iter": false,
     "format": "{message}"
 },
-"remove_all_pv": false,
+"remove_all_pv": true,
+"res_pv_frac": 0.05,
+"seed": 12345,
+"reg_control":{
+    "disable_list":["vreg1_a", "vreg1_b", "vreg1_c", "vreg2_a", "vreg2_b", "vreg2_c", "vreg3_a", "vreg3_b", "vreg3_c"]
+},
 "remove_large_der": ["pvfarm1", "battery1", "battery2", "diesel590", "diesel620", "lngengine1800", "lngengine100", "microturb-2", "microturb-3"],
 "explicit_storage":{
         "bat1new": {

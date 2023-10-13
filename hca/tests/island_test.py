@@ -88,7 +88,7 @@ def main():
                 hca.upgrade_line(name)
             elif typ.lower() == "transformer":
                 hca.upgrade_xfrm(name)
-    h.print_config(hca.upgrades, title="Upgrades", printf=hca.logger.info)
+    h.print_config(hca.data["upgrades"], title="Upgrades", printf=hca.logger.info)
 
     hca.hca_round("pv", bus=bus, Sij=Sijnew, allow_violations=True, hciter=True)
 

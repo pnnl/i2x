@@ -1,6 +1,9 @@
 # Demand interval output from open dss
 */DI_yr_0/*
+
+## activity generated files
 vdiff_activity_files/*
+cluster_activity_files/*
 
 # jupyter stuff
 .ipynb_checkpoints/*

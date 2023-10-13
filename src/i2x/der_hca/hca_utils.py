@@ -28,6 +28,7 @@ def merge_config_constant(defaults, user):
 class Logger(logging.Logger):
     def __init__(self, name, level=logging.INFO, format=None):
         self.name = name
+        self.level = level
         self.logger = logging.getLogger(name)
         ## remove any handlers
         if self.logger.hasHandlers():
@@ -64,6 +65,19 @@ class Logger(logging.Logger):
         for h in self.logger.handlers:
             h.setLevel(level)
 
+    def getlevel(self):
+        """return the logging level as a string"""
+        if self.level == logging.DEBUG:
+            return "DEBUG"
+        elif self.level == logging.INFO:
+            return "INFO"
+        elif self.level == logging.WARNING:
+            return "WARNING"
+        elif self.level == logging.ERROR:
+            return "ERROR"
+        elif self.level == logging.CRITICAL:
+            return "CRITICAL"
+        
     def set_logfile(self, file=None, path=None, mode="w"):
         if file is None:
             file = self.name + ".log"

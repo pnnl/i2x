@@ -326,7 +326,7 @@ class HCA:
 
     ## upgrades are keys by object typ -> object name -> cnt (step through HCA process) -> object specifics
     ###  lines: 
-    self.upgrades = {"line": {}, "transformer": {}}
+    self.data["upgrades"] = {"line": {}, "transformer": {}}
     
     self.metrics = HCAMetrics(**inputs["metrics"], logger=self.logger)
 
@@ -424,9 +424,9 @@ class HCA:
     if typ not in ["line", "transformer"]:
       raise ValueError("Upgrade type must be in ['line', 'transformer']")
     
-    if name not in self.upgrades[typ]:
-      self.upgrades[typ][name] = {}
-    self.upgrades[typ][name][cnt] = copy.deepcopy(vals)
+    if name not in self.data["upgrades"][typ]:
+      self.data["upgrades"][typ][name] = {}
+    self.data["upgrades"][typ][name][cnt] = copy.deepcopy(vals)
   
   def set_active_bus(self, bus, recalculate=False):
     self.logger.info(f"Setting bus {bus} as active bus")
@@ -907,34 +907,44 @@ class HCA:
             err = True
     return df, cols, err
   
-  def sample_capacity(self, typ):
+  def sample_capacity(self, typ, kwcap=None):
     """sample unit capacity based on typ"""
-    if typ == "pv":
-      return self._sample_pv()
-    elif typ == "bat":
-      return self._sample_bat()
-    elif typ == 'der':
-      return self._sample_der()
-    else:
-      raise ValueError("Can only handle pv, bat, and der (gen) currently")
+    while True:
+      if typ == "pv":
+        out = self._sample_pv(kwcap=kwcap)
+      elif typ == "bat":
+        out = self._sample_bat(kwcap=kwcap)
+      elif typ == 'der':
+        out = self._sample_der(kwcap=kwcap)
+      else:
+        raise ValueError("Can only handle pv, bat, and der (gen) currently")
+      if (kwcap is None) or (out["kw"] <= kwcap):
+        break
+    return out
 
-  def _sample_pv(self):
+  def _sample_pv(self, kwcap=None):
     """return a PV system with capacity between 50 kW and 1000 kW and pf 0.8"""
-    kw = float(self.random_state.randint(50, 1001))
+    if (kwcap is not None) and (kwcap < 50):
+      kw = kwcap
+    else:
+      kw = float(self.random_state.randint(50, 1001))
     kva = kw/0.8
     return {"kw": kw, "kva": kva}
   
-  def _sample_bat(self):
+  def _sample_bat(self, kwcap=None):
     """return a 2 or 4 hour battery with capacity between 50 kW and 1000 kW and kVA"""
-    kw = float(self.random_state.randint(50, 1001))
+    if (kwcap is not None) and (kwcap < 50):
+      kw = kwcap
+    else:
+      kw = float(self.random_state.randint(50, 1001))
     kva = kw
     kwh = [2,4][self.random_state.randint(0,2)]
     # kwh = random.choice([2,4])*kw
     return {"kw": kw, "kva": kva, "kwh": kwh}
 
-  def _sample_der(self):
+  def _sample_der(self, kwcap=None):
     """TODO: for now just same as PV"""
-    return self._sample_pv()
+    return self._sample_pv(kwcap=kwcap)
 
   def new_capacity(self, typ, key, bus=None, **kwargs):
     """create new capacity during hca round"""
@@ -962,9 +972,9 @@ class HCA:
     If no iteration counter is given the process works itself backwards from the
     current count until a viable index is found.
     """
-    if key not in ["Sij", "hc", "eval"]:
+    if key not in ["Sij", "hc", "eval", "upgrades"]:
       raise ValueError("key must be Sij, hc, or eval")
-    if typ not in ["pv", "bat", "der"]:
+    if typ not in ["pv", "bat", "der", "line", "transformer"]:
       raise ValueError("Currently Only differentiating on pv, bat, der")
     
     if bus is None:
@@ -990,12 +1000,12 @@ class HCA:
             return data, cnt
         return None, cnt #if we're here then no data was found, cnt should be -1
     
-  def get_hc(self, typ, bus, cnt=None):
+  def get_hc(self, typ, bus=None, cnt=None):
     """Retrieve the hosting capacity stored for the given bus for the given type
     if no iteration counter is given the process works itself backwards from the
     current count until a viable index is found.
     """
-    return self.get_data("hc", typ, bus, cnt=cnt)
+    return self.get_data("hc", typ, bus=bus, cnt=cnt)
   
   def remove_hca_resource(self, typ, bus=None, cnt=None, recalculate=False):
     """utility function for remove a resource added via hca_round.
@@ -1014,7 +1024,7 @@ class HCA:
 
     # get the key used for the resource
     key = self.resource_key(typ, bus, cnt, recalculate=recalculate)
-    Sij = self.get_data("Sij", typ, bus, cnt)
+    Sij, cnt = self.get_data("Sij", typ, bus, cnt)
 
     self.remove_der(key, typ, bus, **Sij)
 
@@ -1040,8 +1050,15 @@ class HCA:
     if self.visited_buses[cnt-1] == bus:
       self.visited_buses.pop(cnt-1)
 
+    ### reset open dss
+    ### Removes the resource addition as long as it was still
+    ### in change lines, i.e. save_state was not called.
+    self.reset_dss()
 
-  def hca_round(self, typ, bus=None, Sij=None, allow_violations=False, hciter=True, recalculate=False):
+
+  def hca_round(self, typ, bus=None, Sij=None, 
+                allow_violations=False, hciter=True, recalculate=False,
+                set_sij_to_hc=False):
     """perform a single round of hca"""
     
     # if allow_violations is false iter must be true
@@ -1083,28 +1100,30 @@ class HCA:
     if Sij is not None:
       self.logger.info(f"Specified capacity: {Sij}")
     else:
-      Sij = self.sample_capacity(typ)
+      hc, hc_cnt = self.get_hc(typ, self.active_bus)
+      if (hc is not None) and (hc["kw"] > 0):
+        kwcap = hc["kw"]
+      else:
+        kwcap = None
+      Sij = self.sample_capacity(typ, kwcap=kwcap)
       self.logger.debug(f"\tsampled {Sij}")
-      keyexist = self.get_classkey_from_node(nclass[typ], self.active_bus)
-      if keyexist is not None: 
-        ## Option 1: check if bus already has resource of this type
-        self.logger.debug(f"\tFound resource {keyexist}, at bus {bus}")
-        hc, hc_cnt = self.get_hc(typ, self.active_bus)
-        if (hc is not None) and (hc["kw"] > 0):
-          # use the hc value
-          self.logger.debug(f"\tLast hc info from round {hc_cnt}: {hc}")
-          Sij = hc
-        else:
-          self.logger.debug(f"\tNo hc available, using sampled value")
-          # for k in Sij.keys():
-          #   Sij[k] += self.graph_dirs[graphdir[typ]][key][k]
-          # self.logger.debug(f"\tNew sampled capacity: {Sij}")
+      if set_sij_to_hc:
+        keyexist = self.get_classkey_from_node(nclass[typ], self.active_bus)
+        if keyexist is not None: 
+          ## Option 1: check if bus already has resource of this type
+          self.logger.debug(f"\tFound resource {keyexist}, at bus {bus}")
+          hc, hc_cnt = self.get_hc(typ, self.active_bus)
+          if (hc is not None) and (hc["kw"] > 0):
+            # use the hc value
+            self.logger.debug(f"\tLast hc info from round {hc_cnt}: {hc}")
+            Sij = hc
+          else:
+            self.logger.debug(f"\tNo hc available, using sampled value")
 
-      # self.alter_capacity(typ, key, **Sij)
-    # else:
-    #   ## Option 2: first time resource at this node
+    ### Create resource     
     key = self.resource_key(typ, self.active_bus, self.cnt, recalculate=recalculate) #f"{typ}-init-cnt{self.cnt}"
-    self.logger.info(f"Creating new {typ} resource {key} with S = {Sij}")
+    if (not recalculate) or (self.logger.getlevel() == "DEBUG"):
+      self.logger.info(f"Creating new {typ} resource {key} with S = {Sij}")
     self.new_capacity(typ, key, **Sij)
     Sijin = copy.deepcopy(Sij)
     ### update graph structure and log changes
@@ -1127,7 +1146,8 @@ class HCA:
       self.logger.warn(f"hca_round: DSS appears to have not converged")
     if self.lastres["converged"] and (self.metrics.violation_count == 0):
       # no violations
-      self.logger.info(f"No violations with capacity {Sij}.")
+      if (not recalculate) or (self.logger.getlevel() == "DEBUG"):
+        self.logger.info(f"No violations with capacity {Sij}.")
       if not recalculate:
         self.update_data("Sij", typ, Sij)  # save installed capacity
       if hciter:
@@ -1141,9 +1161,11 @@ class HCA:
       self.update_data("eval", typ, self.metrics.eval)
     else:
       # violations: decrease capacity to find limit (or non-convergence)
-      self.logger.info(f"Violations with capacity {Sij} (allow_violations is {allow_violations}).")
+      if (not recalculate) or (self.logger.getlevel() == "DEBUG"):
+        self.logger.info(f"Violations with capacity {Sij} (allow_violations is {allow_violations}).")
       if self.lastres["converged"]:
-        self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
+        if (not recalculate) or (self.logger.getlevel() == "DEBUG"):
+          self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
         self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
       if allow_violations:
         self.update_data("Sij", typ, Sij)
@@ -1172,7 +1194,11 @@ class HCA:
         self.exauhsted_buses[typ].append(self.active_bus)
 
     ### Step 5: final run with the actual capacity
-    self.logger.info(f"*******Results for bus {self.active_bus} ({typ})\nSij = {Sij}\nhc = {hc}")
+    self.logger.info(f"*******Results for bus {self.active_bus} ({typ})")
+    if not recalculate:
+      # when recalculating the selected capacity is not relevant, so don't report
+      self.logger.info(f"Sij = {Sij}")
+    self.logger.info(f"hc = {hc}")
     if hciter:
       self.remove_der(key, typmap[typ], self.active_bus, **Sijlim) # dss command doesn't really matter, but this removes it from graph as well
     else:
@@ -1183,7 +1209,7 @@ class HCA:
     ### update graph structure and log changes
     self.parse_graph()
     for ln in self.change_lines:
-      self.logger.info (f' {ln}')
+      self.logger.debug (f' {ln}')
     self.rundss()
     if not self.lastres["converged"]: #don't allow non-convergence here
       raise ValueError("Open DSS Run did not converge")
@@ -1243,7 +1269,8 @@ class HCA:
     else:
       self.logger.warn(f"hc_bisection: DSS appears to have not converged")
     if self.lastres["converged"] and (self.metrics.violation_count == 0):
-      self.logger.info(f"\tNo violations with capacity {Sijnew}. Iterating to find HC")
+      if self.inputs["hca_log"]["print_hca_iter"]:
+        self.logger.info(f"\tNo violations with capacity {Sijnew}. Iterating to find HC")
       if Sij2 is None:
         # still uknown upper bound
         return self.hc_bisection(typ, key, Sijnew, Sijnew, None, kwtol, kwmin)
@@ -1257,10 +1284,12 @@ class HCA:
         # recurse and increase
         return self.hc_bisection(typ, key, Sijnew, Sijnew, Sij2, kwtol, kwmin)
     else:
-      self.logger.info(f"\tViolations with capacity {Sijnew}. Iterating to find Limit.")
+      if self.inputs["hca_log"]["print_hca_iter"]:
+        self.logger.info(f"\tViolations with capacity {Sijnew}. Iterating to find Limit.")
       if self.lastres["converged"]:
-        self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
-        self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
+        if self.inputs["hca_log"]["print_hca_iter"]:
+          self.logger.info(f"\t{','.join(self.metrics.get_violation_list())}")
+          self.logger.debug(f"\t\tviolations: {self.metrics.violation}")
       if Sijnew["kw"] < kwmin:
         # End criterion: upperbound is below minimum threshold set to 0 and exit
         return {k: 0 for k in Sijnew.keys()}

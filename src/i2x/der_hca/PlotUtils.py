@@ -193,14 +193,16 @@ def upgrade_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
 
 def hc_text(hcaobj:HCA, typ):
     out = {}
-    for n in hcaobj.visited_buses:
-        hc, cnt = hcaobj.get_hc(typ, n)
+    # for n in hcaobj.visited_buses:
+    for n, hc in hcaobj.get_data("hc", typ).to_dict("index").items():
+        # hc, cnt = hcaobj.get_hc(typ, n)
+        cnt = hc.pop("cnt")
         out[n] = dict2str(hc, f"HC | {typ} | round {cnt}", newline="<br>")
     return out
 
 def upgrade_text(hcaobj:HCA):
     out = {}
-    for typ, vals in hcaobj.upgrades.items():
+    for typ, vals in hcaobj.data["upgrades"].items():
         for br, v in vals.items():
             out[br] = dict2str(v, f"Upgrades", newline="<br>")
     return out

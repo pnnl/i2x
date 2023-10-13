@@ -24,6 +24,7 @@
 "hca_log":{
     "logname": "hcalog",
     "loglevel": "info",
+    "print_hca_iter": true,
     "format": "{message}",
     "logtofile": false,
     "logtofilemode": "w",

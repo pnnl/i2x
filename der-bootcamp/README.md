@@ -26,14 +26,10 @@ It is _not_ recommended to add miniconda to your PATH.
 5. We'll need a few other packages for running the [jupyter notebooks](https://jupyter.org/) with the exercises. Run the command `conda install jupyter notebook nbformat chardet cchardet`
     * When asked to proceed, entry `y` and click `Enter` 
 ### Step 3: Run the excersizes
-1. (TEMPORARY SOLUTION) Download i2x repository by:
-    * Going to https://github.com/pnnl/i2x/tree/develop
-    * Click on the "<> Code" button and select "Download ZIP"
-    * Extract the downloaded ZIP file
-    * The folder we'll be working in is called `der-bootcamp`. You can keep it where it is or move it elsewhere if you'd like.
+1. Download the [der-bootcamp.zip](./der-bootcamp.zip) file and unpack it.
 2. Start either the "Anaconda Prompt (miniconda3)" or "Anaconda Powershell Prompt (miniconda3)", based on terminal preference.
 3. Activate the der-bootcamp environment: `conda activate der-bootcamp`
-4. Navigate to the location of the der-bootcamp folder using the `cd` command.
+4. Navigate to the location of the unpacked der-bootcamp folder using the `cd` command.
 5. Start the jupyter notebook via `jupyter notebook`
 
 The last step will open a web browser tab showing the file tree of the der-bootcamp folder.
@@ -41,3 +37,12 @@ All activities and materials are in this folder.
 The activities are jupyter notebooks and end with `.ipynb`.
 
 To start an activity simply click on the jupyter notebook in the file tree.
+
+Try out the [getting_started](./getting_started.ipynb) notebook to see that everything is running properly.
+
+## Current status of .zip file to download
+This table links to the most recent zip file with the bootcamp materials, along with latest update and status note.
+
+| zip file link| last updated | status |
+|:------------ | : -----------| :----- |
+|[der-bootcamp.zip](./der-bootcamp.zip) | Oct. 13, 2023 | In development, not final|

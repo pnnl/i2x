@@ -4,6 +4,9 @@
 "res_pv_frac": 0,
 "hca_log": {
     "logname": "cluster_activity",
-    "logtofile": true
+    "print_hca_iter": false,
+    "logtofile": true,
+    "logtofilemode": "a",
+    "logpath": "./cluster_activity_files/"
 }
 }

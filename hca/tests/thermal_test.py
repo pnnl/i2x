@@ -95,7 +95,7 @@ def main(use_pickle=False):
                 hca.upgrade_line(name)
             elif typ.lower() == "transformer":
                 hca.upgrade_xfrm(name)
-    h.print_config(hca.upgrades, title="Upgrades", printf=hca.logger.info)
+    h.print_config(hca.data["upgrades"], title="Upgrades", printf=hca.logger.info)
 
     hca.undo_hca_round("pv", bus, hca.cnt)
     hca.cnt -= 1
