@@ -8,7 +8,7 @@ To make sure and avoid any conflicts, it is **strongly** recommended that a dedi
 ### Step 1: Environment Manager
 We recommend using [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) as an environment manager.
 If Miniconda (or Anaconda) is not already installed on your machine:
-1. Go to https://py-dss-interface.readthedocs.io/en/latest/ 
+1. Go to https://docs.conda.io/projects/miniconda/en/latest/
 2. Select the latest version
 3. Run the installer
 
