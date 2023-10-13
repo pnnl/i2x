@@ -44,5 +44,7 @@ Try out the [getting_started](./getting_started.ipynb) notebook to see that ever
 This table links to the most recent zip file with the bootcamp materials, along with latest update and status note.
 
 | zip file link| last updated | status |
-|:------------ | : -----------| :----- |
+|:------------ | :---------- | :----- |
 |[der-bootcamp.zip](./der-bootcamp.zip) | Oct. 13, 2023 | In development, not final|
+
+
