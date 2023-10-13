@@ -10,17 +10,21 @@ We recommend using [Miniconda](https://docs.conda.io/projects/miniconda/en/lates
 If Miniconda (or Anaconda) is not already installed on your machine:
 1. Go to https://docs.conda.io/projects/miniconda/en/latest/
 2. Select the latest version
-3. Run the installer
+3. Run the installer (sticking with the default options is just fine.)
 
 It is _not_ recommended to add miniconda to your PATH.
 
 ### Step 2: Setup the environment
 1. Start either the "Anaconda Prompt (miniconda3)" or "Anaconda Powershell Prompt (miniconda3)", based on terminal preference.
+    *Click on the Windows-Start menu and search for one of these
 2. create a new environment via `conda create --name der-bootcamp python=3.10`
+    * When asked to proceed, entry `y` and click `Enter`
 3. Activate the new environment: `conda activate der-bootcamp`
+    * After this you should see `(der-bootcamp)` at the start of the command line. 
 4. Install the i2x package via [pip](https://pypi.org/project/pip/) `pip install i2x`
+    * _Note_: This might take a couple minutes. When it's done the `(der-bootcamp) >` at the start of the line will reappear.
 5. We'll need a few other packages for running the [jupyter notebooks](https://jupyter.org/) with the exercises. Run the command `conda install jupyter notebook nbformat chardet cchardet`
-
+    * When asked to proceed, entry `y` and click `Enter` 
 ### Step 3: Run the excersizes
 1. (TEMPORARY SOLUTION) Download i2x repository by:
     * Going to https://github.com/pnnl/i2x/tree/develop
