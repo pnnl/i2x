@@ -1,0 +1,50 @@
+
+Loaded Feeder Model radial
+   2 Large DER (>=100 kVA) described by dict_keys(['bus', 'kv', 'kva', 'kw', 'kwh', 'phases', 'type'])
+   1 Generators           described by dict_keys(['bus', 'kv', 'kva', 'kw', 'phases'])
+   0 PV DER               
+   1 Batteries            described by dict_keys(['bus', 'kv', 'kva', 'kw', 'kwh', 'phases'])
+   0 Rooftop Candidates (2ph & < 1kV) 
+  53 Available 3-phase Buses described by dict_keys(['kv'])
+  76 All 3-phase Buses    described by dict_keys(['kv'])
+
+Existing DER:
+ battery {'bus': 'bus_11022', 'kv': 12.47, 'kva': 1000.0, 'kw': 1000.0, 'kwh': 1000.0, 'phases': 3, 'type': 'storage'}
+ solarfarm {'bus': 'bus_11031', 'kv': 12.47, 'kva': 1000.0, 'kw': 1000.0, 'phases': 3, 'type': 'generator'}
+Base voltage for bus bus_hv is 115.00000000000001 kv, but graph has 115.0 kv. Updating
+Making some deterministic changes
+
+Adding PV to 0% of the residential rooftops that don't already have PV
+Added 0.00 kW PV on 0 residential rooftops
+
+========= HCA Round 1 (pv)=================
+Setting bus bus_12 as active bus
+Creating new pv resource pv_bus_12_cnt1 with S = {'kw': 185.0, 'kva': 231.25}
+No violations with capacity {'kw': 185.0, 'kva': 231.25}.
+Iterating to find HC.
+	No violations with capacity {'kw': 370.0, 'kva': 462.5}. Iterating to find HC
+	No violations with capacity {'kw': 740.0, 'kva': 925.0}. Iterating to find HC
+	No violations with capacity {'kw': 1480.0, 'kva': 1850.0}. Iterating to find HC
+	No violations with capacity {'kw': 2960.0, 'kva': 3700.0}. Iterating to find HC
+	Violations with capacity {'kw': 5920.0, 'kva': 7400.0}. Iterating to find Limit.
+	island_pq
+	Violations with capacity {'kw': 4440.0, 'kva': 5550.0}. Iterating to find Limit.
+	island_pq
+	Violations with capacity {'kw': 3700.0, 'kva': 4625.0}. Iterating to find Limit.
+	island_pq
+	Violations with capacity {'kw': 3330.0, 'kva': 4162.5}. Iterating to find Limit.
+	island_pq
+	Violations with capacity {'kw': 3145.0, 'kva': 3931.25}. Iterating to find Limit.
+	island_pq
+	Violations with capacity {'kw': 3052.5, 'kva': 3815.625}. Iterating to find Limit.
+	island_pq
+	No violations with capacity {'kw': 3006.25, 'kva': 3757.8125}. Iterating to find HC
+	Violations with capacity {'kw': 3029.375, 'kva': 3786.71875}. Iterating to find Limit.
+	island_pq
+	No violations with capacity {'kw': 3017.8125, 'kva': 3772.265625}. Iterating to find HC
+	No violations with capacity {'kw': 3023.59375, 'kva': 3779.4921875}. Iterating to find HC
+	No violations with capacity {'kw': 3026.484375, 'kva': 3783.10546875}. Iterating to find HC
+*******Results for bus bus_12 (pv)
+Sij = {'kw': 185.0, 'kva': 231.25}
+hc = {'kw': 2841.484375, 'kva': 3551.85546875}
+ new pvsystem.pv_bus_12_cnt1 bus1=bus_12 kv=12.470 kva=231.250 pmpp=185.000 irrad=1
