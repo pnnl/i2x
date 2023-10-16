@@ -389,7 +389,7 @@ class PlotlyFeeder:
             self.edge_txt[eclass].append(dict2str(d, d["ename"]).replace("\n", "<br>") + text_extra)
 
     
-    def make_plot(self, filename, **kwargs):
+    def make_plot(self, filename, title=None, **kwargs):
         node_traces = {}
         for nclass in self.node_x.keys():
             node_traces[nclass] = go.Scatter(
@@ -427,7 +427,8 @@ class PlotlyFeeder:
         for eclass, etrace in edge_traces.items():
             fig.add_trace(etrace)
             fig.add_trace(midnode_traces[eclass])
-
+        if title is not None:
+            fig.update_layout(title=title)
         fig.write_html(filename, **kwargs)
 
     def plot(self, G, filename, comp_plot=False,

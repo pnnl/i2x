@@ -1,3 +1,4 @@
+from __future__ import annotations
 import i2x.api as i2x
 from importlib import resources
 import math
@@ -982,7 +983,8 @@ class HCA:
       out = {}
       for b in self.data[key][typ].keys():
         data, cntout = self.get_data(key,typ,b,cnt=cnt)
-        out[b] = {**data, "cnt": cntout}
+        if data is not None:
+          out[b] = {**data, "cnt": cntout}
       return pd.DataFrame.from_dict(out, orient="index")
     else:
       if cnt is not None:
@@ -1349,6 +1351,21 @@ class HCA:
   def clear_upgrades(self):
     """Empty the upgrade changle lines list"""
     self.upgrade_change_lines = []
+
+  def copy_upgrades(self, obj:HCA):
+    """copy upgrade data from another HCA object.
+    The upgrades are placed on the **current** object cnt
+    IMPORTANT: this will not work if an object has been upgraded twice!
+    """
+    ## copy the actual dss commands
+    self.upgrade_change_lines.extend(obj.upgrade_change_lines.copy())
+
+    ## copy the upgrade data, altering all cnt keys to self.cnt
+    for typ, vals in obj.data["upgrades"].items():
+      ## iteration of typ (line, transformer, ...)
+      for obj, data in vals.items():
+        for cnt, upgrade in data.items():
+          self.data["upgrades"][typ].update({obj: {self.cnt: copy.deepcopy(upgrade)}})
 
   def upgrade_line(self, name, factor=2):
     try:
