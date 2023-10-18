@@ -112,7 +112,8 @@ def vdiff_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
                         extra_node_text=hc_text(hcaobj, typ), 
                         extra_edge_text=upgrade_text(hcaobj), **kwargs)
 
-def vmaxmin_plot(hcaobj:HCA, filenamebase):
+def vmaxmin_plot(hcaobj:HCA, filenamebase, plot_feeder=False, 
+                 title=None, typ="pv", **kwargs):
     vmaxlocs = hcaobj.metrics.get_volt_max_buses()
     vminlocs = hcaobj.metrics.get_volt_min_buses()
 
@@ -120,10 +121,12 @@ def vmaxmin_plot(hcaobj:HCA, filenamebase):
     
     fig = make_subplots(2, 1, shared_xaxes=True, subplot_titles=("vmax violations", "vmin violations"))
     colors = ColorList()
+    highlight_nodes={}
     for node, v in vmaxlocs.items():
         x = list(range(len(v)))
         add_trace(fig, x, v, f"{node}_vmax", colors=colors, row=1)
         colors.step()
+        highlight_nodes[node] = f"<br>vmax: {np.max(v):0.4f} p.u."
     for i in ["MaxVoltage", "MaxLVVoltage"]:
         fig.add_hline(y=lims[i], line_dash="dash", row=1, annotation_text=i)
 
@@ -131,13 +134,26 @@ def vmaxmin_plot(hcaobj:HCA, filenamebase):
         x = list(range(len(v)))
         add_trace(fig, x, v, f"{node}_vmin", colors=colors, row=2)
         colors.step()
+        if node in highlight_nodes:
+            highlight_nodes[node] += f"<br>vmin: {np.min(v):0.4f} p.u."
+        else:
+            highlight_nodes[node] = f"<br>vmin: {np.min(v):0.4f} p.u."
     for i in ["MinVoltage", "MinLVVoltage"]:
         fig.add_hline(y=lims[i], line_dash="dash", row=2, annotation_text=i)
     
     for i in [1,2]:
         fig.update_yaxes(title_text="V [p.u.]", row=i, col=1)
-    fig.write_html(f"{filenamebase}.html")
-    hcaobj.plot(highlight_nodes=list(vmaxlocs.keys()) + list(vminlocs.keys()), pdf_name=f"{filenamebase}.pdf", on_canvas=True)
+    if title is not None:
+        fig.update_layout(title=title)
+    fig.write_html(f"{filenamebase}.html", **kwargs)
+    if plot_feeder:
+        feeder_plotter = PlotlyFeeder()
+        feeder_plotter.plot(hcaobj.G, f"{filenamebase}_feeder.html",
+                        extra_node_text=hc_text(hcaobj, typ), 
+                        highlight_nodes=highlight_nodes,
+                        extra_edge_text=upgrade_text(hcaobj),
+                        **kwargs)
+    # hcaobj.plot(highlight_nodes=list(vmaxlocs.keys()) + list(vminlocs.keys()), pdf_name=f"{filenamebase}.pdf", on_canvas=True)
 
 
 def thermal_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
@@ -145,20 +161,26 @@ def thermal_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
     # for v in hcaobj.metrics.get_thermal_branches().values():
     #     branches.extend(v)
     branches = {}
-    for k, v in hcaobj.metrics.get_thermal_branches().items():
+    for k, v in hcaobj.metrics.get_thermal_branches(key="emerg").items():
         for br in v:
-            branches[br] = f"Thermal violation: {hcaobj.metrics.violation['thermal']['emerg'][f'{k}.{br}']:0.3f} %"
+            branches[br] = f"<br>Thermal violation: {-hcaobj.metrics.violation['thermal']['emerg'][f'{k}.{br}']:0.3f} % above emerg."
+    for k, v in hcaobj.metrics.get_thermal_branches(key="norm_hrs").items():
+        for br in v:
+            s = f"<br>Thermal violation: {-hcaobj.metrics.violation['thermal']['norm_hrs'][f'{k}.{br}']:0.1f} hrs beyond allowed norm."
+            if br not in branches:
+                branches[br] = s
+            else:
+                branches[br] += s
     ## plot feeder
     feeder_plotter = PlotlyFeeder()
     feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
                         extra_node_text=hc_text(hcaobj, typ), 
-                        highlight_edges=branches,
-                        include_plotlyjs='cdn', **kwargs)
+                        highlight_edges=branches, **kwargs)
 
 
-def island_plots(hcaobj:HCA, filenamebase, plot_feeder=False, **kwargs):
+def island_plots(hcaobj:HCA, filenamebase, plot_feeder=False, title=None, **kwargs):
     """Plot the aggregate flow in/out of all components"""
-    fig = make_subplots(2, 1, shared_xaxes=True, subplot_titles=("Net P Flow [kW] (pos->exporting)", "Net Q Flow [kVAr] (pos->exporting"))
+    fig = make_subplots(2, 1, shared_xaxes=True, subplot_titles=("Net P Flow [kW] (pos->exporting)", "Net Q Flow [kVAr] (pos->exporting)"))
     colors = ColorList()
     for comp, vals in hcaobj.lastres["compflows"].items():
         p = vals["p"].sum(axis=1)
@@ -169,6 +191,8 @@ def island_plots(hcaobj:HCA, filenamebase, plot_feeder=False, **kwargs):
         colors.step()
     fig.update_yaxes(title_text="P [kW]", row=1, col=1)
     fig.update_yaxes(title_text="Q [kVAr]", row=2, col=1)
+    if title is not None:
+        fig.update_layout(title=title)
     fig.write_html(f"{filenamebase}.html", **kwargs)
     if plot_feeder:
         feeder_plotter = PlotlyFeeder()

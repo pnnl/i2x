@@ -2,11 +2,12 @@
 "choice": "radial",
 "allow_forms": 0,
 "res_pv_frac": 0,
+"pvcurve":"pclear",
 "hca_log": {
-    "logname": "vdiff_activity",
+    "logname": "island_activity",
     "print_hca_iter": false,
     "logtofile": true,
     "logtofilemode": "a",
-    "logpath": "./vdiff_activity_files/"
+    "logpath": "./island_activity_files/"
 }
 }

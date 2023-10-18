@@ -4,6 +4,7 @@
 ## activity generated files
 vdiff_activity_files/*
 cluster_activity_files/*
+island_activity_files/*
 
 # jupyter stuff
 .ipynb_checkpoints/*

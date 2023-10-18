@@ -11,6 +11,7 @@ from .hca_utils import Logger, merge_configs
 import os
 import pandas as pd
 import copy
+import shutil
 import hashlib
 import pickle
 from typing import Union
@@ -227,6 +228,48 @@ def upgrade_xfrm(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, facto
     change_lines.append(f"edit transformer.{xfrm} kvas=({', '.join(str(round(s*factor)) for s in kvas)})")
     return {"old": kvas, "new": [round(s*factor) for s in kvas]}
 
+def change_xfrm_tap(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, tapchange:int):
+  """
+  Change the tap settings of the transformer.
+  Note: this assumes taps on winding 1 for now.
+  """
+  for xfrm in get_parallel_xfrm(dss, name):
+    activate_xfrm_byname(dss, xfrm) #activate the transformer
+    dss.transformers.wdg = 1 # activate winding 1
+    ntaps = dss.transformers.num_taps/2 #dividing by 2 to because we're splitting by up/down
+    tap = dss.transformers.tap
+    if tapchange < 0:
+      pu_range = 1.0 - dss.transformers.min_tap
+    else:
+      pu_range = dss.transformers.max_tap - 1.0 
+    change_lines.append(f"edit transformer.{xfrm} wdg={dss.transformers.wdg} tap={tap + pu_range*tapchange/ntaps}")
+    return {"old": tap, "new": tap + pu_range*tapchange/ntaps}
+  
+def change_regulator_vreg(dss:py_dss_interface.DSSDLL, change_lines:list, name:str, vregchange:int,
+                          printf=print):
+  for xfrm in get_parallel_xfrm(dss, name):
+    activate_xfrm_byname(dss, xfrm) #activate the transformer
+    err = get_regcontrol(dss, xfrm) # activate the control
+    if err <= 0:
+        raise ValueError(f"Didn't find a controller for {xfrm}")
+    # activate transformer winding controlled by the regulator
+    dss.transformers.wdg = dss.regcontrols.winding
+    vbase = (1000*dss.transformers.kv)
+    pt = dss.regcontrols.pt_ratio
+    vreg_min = np.floor(0.95*vbase/pt)
+    vreg_max = np.ceil(1.05*vbase/pt)
+    vreg = dss.regcontrols.forward_vreg
+    vreg_pu = vreg*pt/vbase
+    vreg_new = vreg + vregchange
+    if vreg_new < vreg_min:
+      printf(f"new vreg < vreg min {vreg_min}: setting to minimum.")
+      vreg_new = vreg_min
+    elif vreg_new > vreg_max:
+      printf(f"new vreg > vreg max {vreg_max}: setting to maximum.")
+      vreg_new = vreg_max
+    change_lines.append(f"edit regcontrol.{dss.regcontrols.name} vreg={vreg_new} revvreg={vreg_new}")
+  return {"old": vreg, "old_pu": vreg_pu, "new": vreg_new, "new_pu": vreg_new*pt/vbase}
+
 def get_xfrm_kvas(dss:py_dss_interface.DSSDLL, name:str):
   # loop over any potential parallel transformers
   for xfrm in get_parallel_xfrm(dss, name):
@@ -327,7 +370,7 @@ class HCA:
 
     ## upgrades are keys by object typ -> object name -> cnt (step through HCA process) -> object specifics
     ###  lines: 
-    self.data["upgrades"] = {"line": {}, "transformer": {}}
+    self.data["upgrades"] = {} #{"line": {}, "transformer": {}}
     
     self.metrics = HCAMetrics(**inputs["metrics"], logger=self.logger)
 
@@ -422,9 +465,12 @@ class HCA:
     
     if cnt is None:
       cnt = self.cnt
-    if typ not in ["line", "transformer"]:
+    if typ not in ["line", "transformer", "transformer_tap", "regulator_vreg"]:
       raise ValueError("Upgrade type must be in ['line', 'transformer']")
     
+    if typ not in self.data["upgrades"]:
+      self.data["upgrades"][typ] = {}
+    name = name.lower()
     if name not in self.data["upgrades"][typ]:
       self.data["upgrades"][typ][name] = {}
     self.data["upgrades"][typ][name][cnt] = copy.deepcopy(vals)
@@ -463,11 +509,25 @@ class HCA:
     filearg = ''
     dirarg = ''
     if filename is not None:
-      filearg = 'file='.format(filename)
+      filearg = 'file={:s}'.format(filename)
     if dirname is not None:
-      dirarg = 'dir='.format(dirname)
+      dirarg = 'dir={:s}'.format(dirname)
     self.dss.text('save circuit {:s} {:s}'.format (filearg, dirarg))
 #    self.dss.text('save pvsystem {:s} {:s}'.format (filearg, dirarg))
+
+  def verify_inverter_mode(self, verbose=False):
+    """Verify that there is an inverter control object created
+    Done by saving the circuit and checking that that InvControl.dss file exists
+    """
+    dirname = "tmp_dss_save"
+    self.save_circuit(dirname=dirname)
+    out = os.path.isfile(os.path.join(dirname, "InvControl.dss"))
+    if out and verbose:
+      with open(os.path.join(dirname, "InvControl.dss")) as f:
+        self.logger.info("\nInverter Mode Test:")
+        self.logger.info(f.read())
+    shutil.rmtree(dirname) # remove temporary directory
+    return out
 
   def clear_changelines(self):
     """clear change lines. Call between successive calls to rundss"""
@@ -975,8 +1035,8 @@ class HCA:
     """
     if key not in ["Sij", "hc", "eval", "upgrades"]:
       raise ValueError("key must be Sij, hc, or eval")
-    if typ not in ["pv", "bat", "der", "line", "transformer"]:
-      raise ValueError("Currently Only differentiating on pv, bat, der")
+    if typ not in ["pv", "bat", "der", "line", "transformer", "transformer_tap", "regulator_vreg"]:
+      raise ValueError("Currently Only differentiating on pv, bat, der, line, transformer, transformer_tap, regulator_vreg")
     
     if bus is None:
       ## iterate over all buses in this key/type
@@ -1015,7 +1075,7 @@ class HCA:
     If bus and cnt are none it is assumed that the current count and active bus 
     last visited bus is intended
     """
-
+    typmap = {"pv": "solar", "bat": "storage", "der": "generator"}
     if cnt is None:
       cnt = self.cnt
     if bus is None:
@@ -1028,7 +1088,7 @@ class HCA:
     key = self.resource_key(typ, bus, cnt, recalculate=recalculate)
     Sij, cnt = self.get_data("Sij", typ, bus, cnt)
 
-    self.remove_der(key, typ, bus, **Sij)
+    self.remove_der(key, typmap[typ], bus, **Sij)
 
     self.parse_graph() #update graph dictionaries
 
@@ -1371,7 +1431,11 @@ class HCA:
     try:
       brf, brt, brdata = isl.get_branch_elem(self.G, ["eclass", "ename"], ["line", name.lower()])[0]
     except IndexError:
-      raise IndexError(f"Unable to find line {name} in graph.")
+      try:
+        # just search by name
+        brf, brt, brdata = isl.get_branch_elem(self.G, ["ename"], [name.lower()])[0]
+      except IndexError:
+        raise IndexError(f"Unable to find line {name} in graph.")
     out = upgrade_line(self.dss, self.upgrade_change_lines, name, factor)
     self.logger.info(f"Upgraded line {name} from {out['old']} A to {out['new']} A")
     out["length"] = brdata["edata"]["length"] # add the original length
@@ -1400,7 +1464,19 @@ class HCA:
     self.logger.info(f"Upgraded xfrm {name} from {out['old']} kVA to {out['new']} kVA")
     self.update_upgrades("transformer", name, out)
   
-
+  def change_xfrm_tap(self, name:str, tapchange:int):
+    out = change_xfrm_tap(self.dss, self.upgrade_change_lines, name, tapchange)
+    self.logger.info(f"Changed xfrm {name} tap from {out['old']:0.4f} p.u. to {out['new']:0.4f} p.u.")
+    out["cost"] = reg_cost.get_cost("settings") # cost is similar to regulator settings change
+    self.update_upgrades("transformer_tap", name, out)
+  
+  def change_regulator_vreg(self, xfrmname:str, vregchange:int):
+    out = change_regulator_vreg(self.dss, self.upgrade_change_lines, 
+                                xfrmname, vregchange,
+                                printf=self.logger.info)
+    self.logger.info(f"Changed regulator {xfrmname} regulated voltage from {out['old_pu']:0.4f} p.u. to {out['new_pu']:0.4f} p.u.")
+    out["cost"] = reg_cost.get_cost("settings")
+    self.update_upgrades("regulator_vreg", xfrmname, out)
 class HCAMetrics:
   def __init__(self, limits:dict, comp=None, tolerances=None, 
                include=dict(), exclude=dict(), logger=None):
@@ -1548,12 +1624,16 @@ class HCAMetrics:
   def get_volt_min_buses(self, threshold=None):
     return self.get_volt_buses("Min", threshold=threshold)
 
-  def get_thermal_branches(self):
+  def get_thermal_branches(self, key=None):
     out = {}
-    for typ, name in self.violation["thermal"]["emerg"].index.str.split("."):
-      if typ not in out:
-        out[typ] = []
-      out[typ].append(name)
+    if key is None:
+      for k in self.violation["thermal"].keys():
+        out.update(**self.get_thermal_branches(key=k))
+    else:
+      for typ, name in self.violation["thermal"][key].index.str.split("."):
+        if typ not in out:
+          out[typ] = []
+        out[typ].append(name)
     return out
   
   # def _test(self, test:bool, margin, description:str) -> tuple[bool, str]:
@@ -1720,6 +1800,9 @@ class HCAMetrics:
     test = pd.concat([dirtest, fractest], axis=1)
     margin = pd.concat([dirmargin, fracmargin], axis=1)
 
+    #test passes if for each component  at least 1 test is true [.any(axis=1)]
+    # and this holds for all components [.any(axis=1).all()]
+    return test.any(axis=1).all(), margin
     if np.all(test["p_dir"]):
       # screen 1 passes : p never reverses direction
       return True, margin
