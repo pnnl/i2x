@@ -27,8 +27,10 @@ It is _not_ recommended to add miniconda to your PATH.
     * When asked to proceed, entry `y` and click `Enter` 
 ### Step 3: Run the excersizes
 1. Download the [der-bootcamp.zip](./der-bootcamp.zip) file and unpack it.
-    * To download click the link above and then clike on the download arrow on the right side of the screen:
+    * To download click the link above and then click on the download arrow on the right side of the screen:
     ![](./figs/download_zip_file_1.png)
+    * Alternatively, in the left _Files_ panel _right-click_ on _der-bootcamp>der-bootcamp.zip_ and select _Save as.._:
+    ![](./figs/download_zip_file_2.png) 
 2. Start either the "Anaconda Prompt (miniconda3)" or "Anaconda Powershell Prompt (miniconda3)", based on terminal preference.
 3. Activate the der-bootcamp environment: `conda activate der-bootcamp`
 4. Navigate to the location of the unpacked der-bootcamp folder using the `cd` command.
