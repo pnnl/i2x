@@ -161,16 +161,24 @@ def thermal_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
     # for v in hcaobj.metrics.get_thermal_branches().values():
     #     branches.extend(v)
     branches = {}
-    for k, v in hcaobj.metrics.get_thermal_branches(key="emerg").items():
-        for br in v:
-            branches[br] = f"<br>Thermal violation: {-hcaobj.metrics.violation['thermal']['emerg'][f'{k}.{br}']:0.3f} % above emerg."
-    for k, v in hcaobj.metrics.get_thermal_branches(key="norm_hrs").items():
-        for br in v:
-            s = f"<br>Thermal violation: {-hcaobj.metrics.violation['thermal']['norm_hrs'][f'{k}.{br}']:0.1f} hrs beyond allowed norm."
-            if br not in branches:
-                branches[br] = s
-            else:
-                branches[br] += s
+    try:
+        for k, v in hcaobj.metrics.get_thermal_branches(key="emerg").items():
+            for br in v:
+                branches[br] = f"<br>Thermal violation: {-hcaobj.metrics.violation['thermal']['emerg'][f'{k}.{br}']:0.3f} % above emerg."
+    except KeyError:
+        ## no emergency violations
+        pass
+    try:
+        for k, v in hcaobj.metrics.get_thermal_branches(key="norm_hrs").items():
+            for br in v:
+                s = f"<br>Thermal violation: {-hcaobj.metrics.violation['thermal']['norm_hrs'][f'{k}.{br}']:0.1f} hrs beyond allowed norm."
+                if br not in branches:
+                    branches[br] = s
+                else:
+                    branches[br] += s
+    except KeyError:
+        ## no normal limit violations
+        pass
     ## plot feeder
     feeder_plotter = PlotlyFeeder()
     feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
