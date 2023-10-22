@@ -1219,6 +1219,7 @@ class HCA:
           hc = {k: Sijlim[k] for k in ["kw", "kva"]}
         else:
           hc = {k: Sijlim[k] - Sij[k] for k in ["kw", "kva"]}
+        hc["violations"] = self.metrics.last_violation_list
         self.update_data("hc", typ, hc)
       self.update_data("eval", typ, self.metrics.eval)
     else:
@@ -1232,6 +1233,7 @@ class HCA:
       if allow_violations:
         self.update_data("Sij", typ, Sij)
         self.update_data("eval", typ, self.metrics.eval)
+        hc_violations = self.metrics.get_violation_list()
       if hciter:
         self.logger.info("Iterating to find Limit.")
         Sijlim = self.hc_bisection(typ, key, Sijin, None, Sij)
@@ -1242,9 +1244,13 @@ class HCA:
           # self.remove_der(key, typmap[typ], self.active_bus) # dss command doesn't really matter, but this removes it from graph as well
           # self.reset_dss() # reset state to last good solution
         if recalculate:
-          hc = Sijlim
+          hc = copy.deepcopy(Sijlim)
         else:
           hc = {k: 0 for k in ["kw", "kva"]}
+        if allow_violations:
+          hc["violations"] = hc_violations
+        else:
+          hc["violations"] = self.metrics.last_violation_list
         self.update_data("hc", typ, hc)
         if not allow_violations:
           Sij = copy.deepcopy(Sijlim)
@@ -1422,6 +1428,8 @@ class HCA:
 
     ## copy the upgrade data, altering all cnt keys to self.cnt
     for typ, vals in obj.data["upgrades"].items():
+      if typ not in self.data["upgrades"]:
+        self.data["upgrades"][typ] = {}
       ## iteration of typ (line, transformer, ...)
       for obj, data in vals.items():
         for cnt, upgrade in data.items():
