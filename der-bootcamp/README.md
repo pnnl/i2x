@@ -1,6 +1,26 @@
 # DER Bootcamp
 This folder contains materials for the the DER Bootcamp on October 23rd, 2023 taking place as part of GridTech Connect in Newport Rhode Island.
 
+## Current status
+### i2x package version
+The latest version of the `i2x` package is **1.1.4**.
+
+If you have already installed the `i2x` package, please check which version you have by opening the anaconda prompt, activating the `der-boodcamp` environment (see [Step 2](#step-2-setup-the-environment) below) and entering:
+```
+>pip show i2x
+```
+If your version older, please upgrade by entering the following command at the terminal:
+```
+>pip install i2x --upgrade
+``` 
+
+### Bootcamp Materials
+The most recent zip file with the bootcamp materials, date of last update, and status notes are listed below:
+
+| zip file link| last updated | status |
+|:------------ | :---------- | :----- |
+|[der-bootcamp.zip](./der-bootcamp.zip) | Oct. 21, 2023 | Final Version for Bootcamp on Oct. 23rc, 2023|
+
 ## Installation/Setup Instructions
 > **Note:** Due to some of the software tools we'll be using, chiefly OpenDSS via the [py-dss-interface](https://py-dss-interface.readthedocs.io/en/latest/) only the Windows operating system is full supported.
  
@@ -56,13 +76,6 @@ To move through a jupyter notebook simply run each cell.
 This can be done either by:
 * Clicking the _Run_ button at the top of the page, or
 * Press _Shift+Enter_ on the keyboard.
-
-## Current status of .zip file to download
-This table links to the most recent zip file with the bootcamp materials, along with latest update and status note.
-
-| zip file link| last updated | status |
-|:------------ | :---------- | :----- |
-|[der-bootcamp.zip](./der-bootcamp.zip) | Oct. 18, 2023 | In development, good for environment testing, not final|
 
 ## Dealing with Proxy Issues
 ### Conda
