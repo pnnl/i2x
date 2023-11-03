@@ -14,7 +14,7 @@ resources (IBR).
 | Automation of faults | [Slides](FaultTests.pdf) and [Intro Video](https://youtu.be/AfuLv0IZJmg) | [EMTP Video](https://www.youtube.com/watch?v=11uVw5h7a2E) | [PSCAD Video](https://www.youtube.com/watch?v=COSS0iXmNU4) |
 | Automation of IEEE P2800.2 type tests | [Slides](PlantTests.pdf) and [Intro Video](https://youtu.be/nfA5zHqVcfE) and [SCR Test Video](https://youtu.be/c95BJ9WOk04) | [EMTP Video](https://www.youtube.com/watch?v=JkydWvTYPA4)<br>[EMTP SCR Video](https://www.youtube.com/watch?v=opXhY4kdFko) | [PSCAD Video](https://www.youtube.com/watch?v=9WVdVTPErD8)<br>[PSCAD SCR Video](https://www.youtube.com/watch?v=ExsLqhpGrH0) |
 | Automation of system study | [Slides](SystemStudy.pdf) and [Intro Video](https://youtu.be/99ZjOcmDR3o) | [EMTP Video](https://www.youtube.com/watch?v=XFMGE3gxGdA) | [PSCAD Video](https://www.youtube.com/watch?v=9ci4Qkclt1c) |
-| Automation of waveform evaluations | TBD | TBD | TBD |
+| Automation of waveform evaluations | [Intro Video](https://www.youtube.com/watch?v=uXAE_mLj-T4) | | |
 | System-Level Session (9/14/2023) | [Slides](EMT_Bootcamp_Sep_14.pdf) and [PDH Request Form](PDH_Hours.xlsx) | [EMTP Slides](EMTP/EMT_Bootcamp_Sep_14_EMTP_Session.pdf) | |
 
 ## Obtaining the Sample Models and Scripts
