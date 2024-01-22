@@ -103,8 +103,7 @@ def plot_max_hotspot(Transformer,max_hotspot_table):
             r'Method used: %s' % (method_text[method], ),
             r'Initial Load: %s [1]' % (max_hotspot_table['Initial Load'], ),
             r'Average WCP: %s [%%]' % (Transformer.WCP),
-            #r'Time Interval: %s [min]' % (time_interval, ),
-            r'Time Interval: %s [sec]' % (time_interval, ),
+            r'Time Interval: %s [min]' % (time_interval, ),
         ],
         [
             r'Rated $T_{hotspot}: %s$ [$^{\circ}$C]' % (T_hsr, ),
@@ -131,8 +130,7 @@ def plot_results(Transformer,LoadConditions):
     fig.subplots_adjust(hspace=0)
 
     solution = Transformer.solution
-    #time_sol = solution['Time [Minutes]']
-    time_sol = solution['Time [seconds]']
+    time_sol = solution['Time [Minutes]']
     
     T_ambient_profile = LoadConditions.T_ambient_profile
     Load_profile = LoadConditions.Load_profile
@@ -140,26 +138,26 @@ def plot_results(Transformer,LoadConditions):
     T_hsr = Transformer.T_hsr+Transformer.T_ambr
     T_tor = Transformer.T_tor+Transformer.T_ambr
 
-    #time_hours = time_sol/60
+    time_hours = time_sol/60
 
     T_amb_for_plot = T_ambient_profile(time_sol)
     
-    axs[0].plot(time_sol,T_ambient_profile(time_sol),label='Amb')
+    axs[0].plot(time_hours,T_ambient_profile(time_sol),label='Amb')
     
     col_names = solution.columns.values
     
     if 'Bottom Liquid [C]' in solution.columns:       
-        axs[0].plot(time_sol,solution['Winding [C]'],label='Winding',lw=0.5)
-        axs[0].plot(time_sol,solution['Duct Liquid [C]'],label='Top-of-Duct Liquid',ls='-.',lw=0.5)
-        axs[0].plot(time_sol,solution['Winding Liquid [C]'],label='Winding Liquid',ls=':',lw=0.5)
-        axs[0].plot(time_sol,solution['Hot Spot [C]'],label='Hot Spot',ls='--',lw=0.5)
-        axs[0].plot(time_sol,solution['Average [C]'],label='Average',lw=0.5)
-        axs[0].plot(time_sol,solution['Top Liquid [C]'],label='Top',lw=0.5)
-        axs[0].plot(time_sol,solution['Bottom Liquid [C]'],label='Bottom',lw=0.5)
+        axs[0].plot(time_hours,solution['Winding [C]'],label='Winding',lw=0.5)
+        axs[0].plot(time_hours,solution['Duct Liquid [C]'],label='Top-of-Duct Liquid',ls='-.',lw=0.5)
+        axs[0].plot(time_hours,solution['Winding Liquid [C]'],label='Winding Liquid',ls=':',lw=0.5)
+        axs[0].plot(time_hours,solution['Hot Spot [C]'],label='Hot Spot',ls='--',lw=0.5)
+        axs[0].plot(time_hours,solution['Average [C]'],label='Average',lw=0.5)
+        axs[0].plot(time_hours,solution['Top Liquid [C]'],label='Top',lw=0.5)
+        axs[0].plot(time_hours,solution['Bottom Liquid [C]'],label='Bottom',lw=0.5)
         axs[0].set_ylim([0,np.round(np.nanmax(np.max(solution['Hot Spot [C]']))+40)])
     else:
-        axs[0].plot(time_sol,solution['Top Liquid [C]'],label='Top',lw=0.5)
-        axs[0].plot(time_sol,solution['Hot Spot [C]'],label='Hot Spot',ls='--',lw=0.5)
+        axs[0].plot(time_hours,solution['Top Liquid [C]'],label='Top',lw=0.5)
+        axs[0].plot(time_hours,solution['Hot Spot [C]'],label='Hot Spot',ls='--',lw=0.5)
         axs[0].set_ylim([0,np.round(np.nanmax(np.max(solution['Hot Spot [C]']))+40)])
 
         
@@ -167,11 +165,11 @@ def plot_results(Transformer,LoadConditions):
     y2 = np.round(np.nanmax(solution['Hot Spot [C]'])+40)
 
     if y1 < T_hsr < y2:
-        axs[0].axhline(T_hsr,0,max(time_sol),color='k',ls='--',alpha=0.5,lw=0.5)
+        axs[0].axhline(T_hsr,0,max(time_hours),color='k',ls='--',alpha=0.5,lw=0.5)
         axs[0].text(0,T_hsr+1,'HS',fontsize=7)
 
     if y1 < T_tor < y2:
-        axs[0].axhline(T_tor,0,max(time_sol),color='k',ls='--',alpha=0.5,lw=0.5)
+        axs[0].axhline(T_tor,0,max(time_hours),color='k',ls='--',alpha=0.5,lw=0.5)
         axs[0].text(0,T_tor+1,'TO',fontsize=7)
 
     axs[0].legend(loc=2,ncol=4)
@@ -184,7 +182,7 @@ def plot_results(Transformer,LoadConditions):
     axs[0].yaxis.set_minor_locator(AutoMinorLocator(5))
 
     plot_load = Load_profile(time_sol)
-    axs[1].plot(time_sol,plot_load-0.035,label='Load',color='gold')
+    axs[1].plot(time_hours,plot_load-0.035,label='Load',color='gold')
 
     axs[1].set_ylim([-0.07,round(max(plot_load)+0.85,1)])
     axs[1].set_ylabel('Variables')
@@ -197,8 +195,7 @@ def plot_results(Transformer,LoadConditions):
 
     axs[1].legend(loc=2,ncol=4)
     axs[0].set_title('Transformer Temperatures vs Load Model')
-    #axs[1].set_xlabel('Time [minutes]')
-    axs[1].set_xlabel('Time [seconds]')
+    axs[1].set_xlabel('Time [Hours]')
 
     cooling_system_variations = Transformer.cooling_system
 
@@ -230,8 +227,8 @@ def plot_results(Transformer,LoadConditions):
         ],
     ]
 
-    axs[0].set_xlim([0,max(time_sol)])
-    axs[1].set_xlim([0,max(time_sol)])
+    axs[0].set_xlim([0,max(time_hours)])
+    axs[1].set_xlim([0,max(time_hours)])
 
     table_height = np.shape(textstr)[0]*0.17
     

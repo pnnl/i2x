@@ -1,16 +1,5 @@
-# IEEE C57.91 Edit
+# IEEE C57.91-202X
 
-This code was modified to investigate inadvertent export events at the seconds timescale. The original, IEEE C57.91 Thermal Models repository that was modified for this work is found here: [link](https://opensource.ieee.org/inslife/ieee-c57.91-thermal-models).
-
-Time scale modifications have been made to the following under
-`transformer_thermal_models`:  
-- `ageing.py`
-- `data_classes.py`
-- `plotting.py`
-
-In addition, `Thermal_Modeling_UI_Example_Voila_EDIT.ipynb` was created based on the original `Thermal_Modeling_UI_Example.Voila.ipynb` to be the main notebook to explore these effects. 
-
-## IEEE C57.91-202X
 This code was developed to implement the hotspot in windings model for powers transformers as described in _IEEE C57.91 Guide for Loading Mineral-Oil-Immersed Transformers and Step-Voltage Regulators_.
 
 The code is based in Python and additional package requirements are listed in `requirements.txt`

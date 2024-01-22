@@ -13,16 +13,16 @@ import numpy as np
 from .data_classes import Transformer, LoadConditions
 from .constants import ageing_A, ageing_B
 
-def estimate_loss_of_life(T_hs_input,time_input,T_reference=110,B=15000.,A=9.8E-18,nominal_insulation_life=180000*60 ,TUK=True):    #Original nominal_insulation_life = 180000 hrs, converted to minutes
+def estimate_loss_of_life(T_hs_input,time_input,T_reference=110,B=15000.,A=9.8E-18,nominal_insulation_life=180000,TUK=True):    
     # Section 5
     
     # Convert from Celcius to Kelvin
     T_hs_input = T_hs_input + 273.15
     T_reference = T_reference + 273.15
     
-    #time_input = time_input / 60. # convert minutes to hours ----Removed to keep in minutes
+    time_input = time_input / 60. # convert minutes to hours
     
-    # Modified to determine equivalent aging in  -- No longer
+    # Modified to determine equivalent aging in hours
     # Time interval of accelerated aging determined by temperature profile being above rated temperature.
     
     per_unit_life = A*np.exp(B/T_hs_input)
@@ -53,7 +53,7 @@ def solve_estimated_loss_of_life(Transformer,LoadConditions):
     if Transformer.solution is not None:
         per_unit_life, V, F_eqa, loss_of_life = estimate_loss_of_life(
             Transformer.solution['Hot Spot [C]'].values,
-            Transformer.solution['Time [seconds]'].values, #changed from minutes to seconds
+            Transformer.solution['Time [Minutes]'].values,
             T_reference=Transformer.T_hsr+Transformer.T_ambr,
             TUK=Transformer.TUK,
             A=A,

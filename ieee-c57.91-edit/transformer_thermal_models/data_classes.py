@@ -72,8 +72,7 @@ class Transformer():
         self.T_bor = 25 # temperature of bottom liquid at rated load [C]
         self.T_k = 234.5 # temperature correction for lossess of winding [C]
         self.H_hs = 1.0 # relative height of hotspot in windings [0-1]
-        #self.tau_w = 5.0 # winding time constant [min]
-        self.tau_w = 300 # winding time constant [sec]
+        self.tau_w = 5.0 # winding time constant [min]
         self.cooling_system = 'ONAN' # type of cooling system
         self.winding_material = 'Copper' # type of winding conductor
         self.liquid_type = 'mineral oil' # type of liquid
@@ -161,15 +160,12 @@ class LoadConditions():
         if 'Time' in df.columns:
             time = pd.to_datetime(df['Time'])
             self.initial_datetime = time[0]
-            #time = (time-time[0]).apply(lambda x: x.total_seconds()/60.0).values
-            time = (time-time[0]).apply(lambda x: x.total_seconds()).values
+            time = (time-time[0]).apply(lambda x: x.total_seconds()/60.0).values
         elif 'Minutes' in df.columns:
             time = df['Minutes'].values
-            time *= 60 #conversion to seconds
         elif 'Hours' in df.columns:
             time = df['Hours'].values
-            #time *= 60
-            time *= 3600 #conversion to seconds
+            time *= 60
         else:
             raise "'Time' or 'Minutes' or 'Hours' not found in CSV"
 
@@ -202,13 +198,11 @@ def export_data(Transformer, LoadConditions):
     load = LoadConditions.load
     T_ambient = LoadConditions.T_ambient
     overexcited = LoadConditions.overexcited
-    #time_sol  = solution['Time [Minutes]']
-    time_sol  = solution['Time [seconds]']
+    time_sol  = solution['Time [Minutes]']
     initial_dt = LoadConditions.initial_datetime
 
     new_output_table = pd.DataFrame()
-    #new_output_table['Time [Minutes]'] = np.transpose(time)   
-    new_output_table['Time [seconds]'] = np.transpose(time)   
+    new_output_table['Time [Minutes]'] = np.transpose(time)   
     new_output_table['Load [1]'] = np.transpose(load)
     new_output_table['Ambient [C]'] = np.transpose(T_ambient)
     if overexcited is not None:
@@ -216,8 +210,7 @@ def export_data(Transformer, LoadConditions):
         
     #print(solution.columns.values)
     col_names = list(solution.columns.values)
-    #col_names.remove('Time [Minutes]')
-    col_names.remove('Time [seconds]')
+    col_names.remove('Time [Minutes]')
     for col in col_names:
         data = solution[col]
         new_output_table[col] = (interp1d(time_sol,data,fill_value='extrapolate'))(time)
@@ -225,12 +218,9 @@ def export_data(Transformer, LoadConditions):
     new_output_table = new_output_table.interpolate()
     
     if initial_dt is not None:
-        #datetimes = [datetime.timedelta(minutes=m)+initial_dt for m in new_output_table['Time [Minutes]']]
-        datetimes = [datetime.timedelta(seconds=s)+initial_dt for s in new_output_table['Time [seconds]']]
-        new_output_table['Time [seconds]'] = datetimes
-        new_output_table.rename(columns={'Time [seconds]':'Time [Datetime]'},inplace=True)
-        #new_output_table['Time [Minutes]'] = datetimes
-        #new_output_table.rename(columns={'Time [Minutes]':'Time [Datetime]'},inplace=True)
+        datetimes = [datetime.timedelta(minutes=m)+initial_dt for m in new_output_table['Time [Minutes]']]
+        new_output_table['Time [Minutes]'] = datetimes
+        new_output_table.rename(columns={'Time [Minutes]':'Time [Datetime]'},inplace=True)
     
     csv = new_output_table.to_csv(index=False,lineterminator='\r\n')
         
