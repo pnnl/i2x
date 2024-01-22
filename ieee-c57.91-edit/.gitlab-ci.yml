@@ -1,0 +1,13 @@
+stages:
+  - test
+
+test:
+  stage: test
+  image: python:3.9.0
+  script:
+  - python -V
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - python setup.py test
+  - pip install pytest
+  - python -m pytest transformer_thermal_models

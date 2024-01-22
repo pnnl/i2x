@@ -1,0 +1,16 @@
+AUTHORS.md
+LICENSE.md
+README.md
+setup.py
+transformer_thermal_models/__init__.py
+transformer_thermal_models/ageing.py
+transformer_thermal_models/constants.py
+transformer_thermal_models/data_classes.py
+transformer_thermal_models/methods.py
+transformer_thermal_models/plotting.py
+transformer_thermal_models/test_transformer_thermal_models.py
+transformer_thermal_models.egg-info/PKG-INFO
+transformer_thermal_models.egg-info/SOURCES.txt
+transformer_thermal_models.egg-info/dependency_links.txt
+transformer_thermal_models.egg-info/requires.txt
+transformer_thermal_models.egg-info/top_level.txt
