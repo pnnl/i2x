@@ -209,16 +209,24 @@ def island_plots(hcaobj:HCA, filenamebase, plot_feeder=False, title=None, **kwar
 
 #TODO possibly an option to show components and aggregate for a single component
 
-def hc_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
+def hc_plot(hcaobj:HCA, filenamebase=None, typ="pv", **kwargs):
     feeder_plotter = PlotlyFeeder()
-    feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
+    if filenamebase is not None:
+        filename = f"{filenamebase}.html"
+    else:
+        filename = None
+    feeder_plotter.plot(hcaobj.G, filename,
                         extra_node_text=hc_text(hcaobj, typ),
                         extra_edge_text=upgrade_text(hcaobj),
                         include_plotlyjs='cdn', **kwargs)
 
-def upgrade_plot(hcaobj:HCA, filenamebase, typ="pv", **kwargs):
+def upgrade_plot(hcaobj:HCA, filenamebase=None, typ="pv", **kwargs):
     feeder_plotter = PlotlyFeeder()
-    feeder_plotter.plot(hcaobj.G, f"{filenamebase}.html",
+    if filenamebase is not None:
+        filename = f"{filenamebase}.html"
+    else:
+        filename = None
+    return feeder_plotter.plot(hcaobj.G, filename,
                         extra_node_text=hc_text(hcaobj, typ),
                         highlight_edges=upgrade_text(hcaobj),
                         **kwargs)
@@ -421,7 +429,7 @@ class PlotlyFeeder:
             self.edge_txt[eclass].append(dict2str(d, d["ename"]).replace("\n", "<br>") + text_extra)
 
     
-    def make_plot(self, filename, title=None, **kwargs):
+    def make_plot(self, filename=None, title=None, **kwargs):
         node_traces = {}
         for nclass in self.node_x.keys():
             node_traces[nclass] = go.Scatter(
@@ -461,12 +469,14 @@ class PlotlyFeeder:
             fig.add_trace(midnode_traces[eclass])
         if title is not None:
             fig.update_layout(title=title)
-        fig.write_html(filename, **kwargs)
+        if filename is not None:
+            fig.write_html(filename, **kwargs)
+        return fig
 
-    def plot(self, G, filename, comp_plot=False,
+    def plot(self, G, filename=None, comp_plot=False,
              highlight_nodes=dict(), highlight_edges=dict(), 
              extra_node_text=dict(), extra_edge_text=dict(),
              **kwargs):
         self.collect_node_data(G, comp_plot=comp_plot, highlight_nodes=highlight_nodes, extra_text=extra_node_text)
         self.collect_edge_data(G, comp_plot=comp_plot, highlight_edges=highlight_edges, extra_text=extra_edge_text)
-        self.make_plot(filename, **kwargs)
+        return self.make_plot(filename, **kwargs)
