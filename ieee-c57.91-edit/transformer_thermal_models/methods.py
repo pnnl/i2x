@@ -358,7 +358,9 @@ def ieee_c57_91_main_clause_7(Transformer,LoadConditions):
 
     #Explicit Runge-Kutta methods (‘RK23’, ‘RK45’, ‘DOP853’) should be used for non-stiff problems and implicit methods (‘Radau’, ‘BDF’) for stiff problems [9]. Among Runge-Kutta methods, ‘DOP853’ is recommended for solving with high precision (low values of rtol and atol).
     #If not sure, first try to run ‘RK45’. If it makes unusually many iterations, diverges, or fails, your problem is likely to be stiff and you should use ‘Radau’ or ‘BDF’. ‘LSODA’ can also be a good universal choice, but it might be somewhat less convenient to work with as it wraps old Fortran code.
-    time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0])*6)
+    # time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0])*6)
+    # Converting back to seconds in num argument to make sure we have 6 samples per second.
+    time_sol = np.linspace(time[0],time[-1],int((time[-1]-time[0])*60)*6)
 
     output = solve_ivp(differential_equations, (time[0], time[-1]), [T_w, T_tdo, T_wo, T_hs, T_ao, T_to, T_bo], args=args, method='RK45', t_eval=time_sol, dense_output=True)
 
@@ -444,7 +446,9 @@ def ieee_c57_91_alt_clause_7(Transformer,LoadConditions):
 
     #Explicit Runge-Kutta methods (‘RK23’, ‘RK45’, ‘DOP853’) should be used for non-stiff problems and implicit methods (‘Radau’, ‘BDF’) for stiff problems [9]. Among Runge-Kutta methods, ‘DOP853’ is recommended for solving with high precision (low values of rtol and atol).
     #If not sure, first try to run ‘RK45’. If it makes unusually many iterations, diverges, or fails, your problem is likely to be stiff and you should use ‘Radau’ or ‘BDF’. ‘LSODA’ can also be a good universal choice, but it might be somewhat less convenient to work with as it wraps old Fortran code.
-    time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0])*6)
+    # time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0])*6)
+    # Converting back to seconds in num argument to make sure we have 6 samples per second.
+    time_sol = np.linspace(time[0],time[-1],int((time[-1]-time[0])*60)*6)
 
     output = solve_ivp(clause_7_alternative, (time[0], time[-1]), [in_T_to, in_T_hs], args=args, method='RK45', t_eval=time_sol, dense_output=True)
 
@@ -504,7 +508,9 @@ def ieee_c57_91_old_clause_7_analytical(Transformer,LoadConditions):
     Load_profile = interp1d(time, load, kind='linear', fill_value='extrapolate')
     T_ambient_profile = interp1d(time, T_ambient, fill_value='extrapolate')
     
-    time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0]))
+    # time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0]))
+    # Converting back to seconds in num argument since fractional minutes allowed
+    time_sol = np.linspace(time[0],time[-1],int((time[-1]-time[0])*60))
     
     # For the analytical solution to work, you need to loop over the time periods where steps in load occurs
     
