@@ -124,6 +124,7 @@ class LoadConditions():
         'T_ambient',
         'load',
         'overexcited',
+        'plot',
     ]
     
     def __init__(self):
@@ -146,7 +147,7 @@ class LoadConditions():
         # Required to interpolate/extrapolate input data for the differential solver to get data for an arbitrary time
         self.Load_profile = interp1d(self.time, self.load, kind='previous', fill_value='extrapolate')
         self.T_ambient_profile = interp1d(self.time, self.T_ambient, kind='linear', fill_value='extrapolate')
-
+        self.plot_mask = interp1d(self.time, self.plot, kind="previous", fill_value="extrapolate")
         if self.overexcited is not None:
             self.Overexcited_profile = interp1d(self.time, self.overexcited, kind='nearest', fill_value='extrapolate')
         else:
@@ -183,7 +184,11 @@ class LoadConditions():
             overexcited = df['Overexcited'].values
         else:
             overexcited = None
-            
+        
+        if "Plot" in df.columns:
+            plot = df["Plot"].values
+        else:
+            plot = np.array([True for i in range(df.shape[0])])
         for p in self._load_conditions:
             exec("self.%s = %s" % (p, p))
             
