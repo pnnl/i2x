@@ -196,7 +196,7 @@ class LoadConditions():
             
         return self
     
-def export_data(Transformer, LoadConditions):
+def export_data(Transformer, LoadConditions, sec_res=False, output_pandas=False):
 
     solution = Transformer.solution
     time = LoadConditions.time
@@ -205,6 +205,11 @@ def export_data(Transformer, LoadConditions):
     overexcited = LoadConditions.overexcited
     time_sol  = solution['Time [Minutes]']
     initial_dt = LoadConditions.initial_datetime
+
+    if sec_res:
+        time = time_sol.loc[lambda x: np.abs(x*60 - round(x*60)) < 0.1].values
+        load = LoadConditions.Load_profile(time)
+        T_ambient = LoadConditions.T_ambient_profile(time)
 
     new_output_table = pd.DataFrame()
     new_output_table['Time [Minutes]'] = np.transpose(time)   
@@ -227,6 +232,9 @@ def export_data(Transformer, LoadConditions):
         new_output_table['Time [Minutes]'] = datetimes
         new_output_table.rename(columns={'Time [Minutes]':'Time [Datetime]'},inplace=True)
     
-    csv = new_output_table.to_csv(index=False,lineterminator='\r\n')
-        
-    return csv
+    if output_pandas:
+        return new_output_table
+    else:
+        csv = new_output_table.to_csv(index=False,lineterminator='\r\n')
+            
+        return csv
