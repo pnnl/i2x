@@ -196,7 +196,7 @@ class LoadConditions():
             
         return self
     
-def export_data(Transformer, LoadConditions, sec_res=False, output_pandas=False):
+def export_data(Transformer, LoadConditions, res="input", output_pandas=False):
 
     solution = Transformer.solution
     time = LoadConditions.time
@@ -206,8 +206,11 @@ def export_data(Transformer, LoadConditions, sec_res=False, output_pandas=False)
     time_sol  = solution['Time [Minutes]']
     initial_dt = LoadConditions.initial_datetime
 
-    if sec_res:
-        time = time_sol.loc[lambda x: np.abs(x*60 - round(x*60)) < 0.1].values
+    if res.lower != "input":
+        if res.lower() =="sec":
+            time = time_sol.loc[lambda x: np.abs(x*60 - round(x*60)) < 0.1].values
+        elif res.lower() == "all":
+            time = time_sol.values
         load = LoadConditions.Load_profile(time)
         T_ambient = LoadConditions.T_ambient_profile(time)
 

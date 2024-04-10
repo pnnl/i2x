@@ -61,7 +61,7 @@ def clause_7_alternative(t, delta_T, Load_profile, T_ambient_profile, T_tor, T_h
 
     return delta_T_to,delta_T_hs
 
-def ieee_c57_91_main_clause_7(Transformer,LoadConditions):
+def ieee_c57_91_main_clause_7(Transformer,LoadConditions, integration_method="RK45"):
     
     MVA_rated = Transformer.MVA_rated
     MVA_loss = Transformer.MVA_loss
@@ -361,8 +361,9 @@ def ieee_c57_91_main_clause_7(Transformer,LoadConditions):
     # time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0])*6)
     # Converting back to seconds in num argument to make sure we have 6 samples per second.
     time_sol = np.linspace(time[0],time[-1],int((time[-1]-time[0])*60)*6)
+    # time_sol = np.linspace(time[0],time[-1],int((time[-1]-time[0])*60))
 
-    output = solve_ivp(differential_equations, (time[0], time[-1]), [T_w, T_tdo, T_wo, T_hs, T_ao, T_to, T_bo], args=args, method='RK45', t_eval=time_sol, dense_output=True)
+    output = solve_ivp(differential_equations, (time[0], time[-1]), [T_w, T_tdo, T_wo, T_hs, T_ao, T_to, T_bo], args=args, method=integration_method, t_eval=time_sol, dense_output=True)
 
     solution = output.y
     time_sol = output.t
@@ -376,7 +377,7 @@ def ieee_c57_91_main_clause_7(Transformer,LoadConditions):
     return output_table
 
 
-def ieee_c57_91_alt_clause_7(Transformer,LoadConditions):
+def ieee_c57_91_alt_clause_7(Transformer,LoadConditions, integration_method="RK45"):
     # Clause 7 using differntial equations
     # Effectively Annex G with several restrictive assumptions made for simplification
     
@@ -449,8 +450,9 @@ def ieee_c57_91_alt_clause_7(Transformer,LoadConditions):
     # time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0])*6)
     # Converting back to seconds in num argument to make sure we have 6 samples per second.
     time_sol = np.linspace(time[0],time[-1],int((time[-1]-time[0])*60)*6)
+    # time_sol = np.linspace(time[0],time[-1],int((time[-1]-time[0])*60))
 
-    output = solve_ivp(clause_7_alternative, (time[0], time[-1]), [in_T_to, in_T_hs], args=args, method='RK45', t_eval=time_sol, dense_output=True)
+    output = solve_ivp(clause_7_alternative, (time[0], time[-1]), [in_T_to, in_T_hs], args=args, method=integration_method, t_eval=time_sol, dense_output=True)
 
     solution = output.y
     time_sol = output.t
@@ -464,7 +466,7 @@ def ieee_c57_91_alt_clause_7(Transformer,LoadConditions):
     return output_table
 
 
-def ieee_c57_91_old_clause_7_analytical(Transformer,LoadConditions):
+def ieee_c57_91_old_clause_7_analytical(Transformer,LoadConditions, integration_method=None):
     
     MVA_rated = Transformer.MVA_rated
     MVA_loss = Transformer.MVA_loss
@@ -505,8 +507,8 @@ def ieee_c57_91_old_clause_7_analytical(Transformer,LoadConditions):
     T_hs_i = adjust_initial_temp(T_hsr,load[0],T_ambient[0],T_ambr)
     T_to_i = adjust_initial_temp(T_tor,load[0],T_ambient[0],T_ambr)
     
-    Load_profile = interp1d(time, load, kind='linear', fill_value='extrapolate')
-    T_ambient_profile = interp1d(time, T_ambient, fill_value='extrapolate')
+    # Load_profile = interp1d(time, load, kind='linear', fill_value='extrapolate')
+    # T_ambient_profile = interp1d(time, T_ambient, fill_value='extrapolate')
     
     # time_sol = np.linspace(int(time[0]),int(time[-1]),int(time[-1]-time[0]))
     # Converting back to seconds in num argument since fractional minutes allowed
@@ -514,8 +516,8 @@ def ieee_c57_91_old_clause_7_analytical(Transformer,LoadConditions):
     
     # For the analytical solution to work, you need to loop over the time periods where steps in load occurs
     
-    load_sol = Load_profile(time_sol)
-    T_amb_sol = T_ambient_profile(time_sol)
+    load_sol = LoadConditions.Load_profile(time_sol)
+    T_amb_sol = LoadConditions.T_ambient_profile(time_sol)
     
     idx = np.where(np.diff(load_sol,prepend=load[0]) != 0)[0]
     idx = np.append(idx,len(load_sol))
@@ -555,12 +557,12 @@ AVAILABLE_METHODS = {
                     'old_clause_7_analytical':ieee_c57_91_old_clause_7_analytical, # old Clause 7
                   }
 
-def solve_temperatures(Transformer,LoadConditions,method):
+def solve_temperatures(Transformer,LoadConditions,method, integration_method="RK45"):
     
     selected_method = AVAILABLE_METHODS.get(method, None)
 
     if selected_method:
-        solution = selected_method(Transformer,LoadConditions)
+        solution = selected_method(Transformer,LoadConditions, integration_method=integration_method)
     else:
         assert False, method + '" method not supported.'
 
