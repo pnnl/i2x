@@ -1,0 +1,12 @@
+xfrmconfig = "../Example_Data/transformer_thermal_nameplate.json"
+loadconfig = ""
+
+pnom = [0.5, 0.75, 0.9, 1.0]
+pover = [1.25, 1.5, 1.75, 2.0, 2.25, 2.5]
+event_time = [2, 5, 10, 15, 20, 25, 30]
+
+results_path = "../scratch/analytical_results"
+integration_method = "RK45"
+output_res = "all"
+mk_data_method="direct"
+method = "old_clause_7_analytical"
