@@ -36,10 +36,13 @@ def main(h5path, key, savename):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", FutureWarning)
         fig, tab = xmdl.plotting.plot_results_plotly(xfrm,lc)
-    # from https://stackoverflow.com/questions/59868987/saving-multiple-plots-into-a-single-html
-    with open(savename,"w") as f:
-        f.write(fig.to_html(include_plotlyjs="cdn"))
-        f.write(tab.to_html(full_html=False, include_plotlyjs=False))
+    if savename:
+        # from https://stackoverflow.com/questions/59868987/saving-multiple-plots-into-a-single-html
+        with open(savename,"w") as f:
+            f.write(fig.to_html(include_plotlyjs="cdn"))
+            f.write(tab.to_html(full_html=False, include_plotlyjs=False))
+    else:
+        fig.show()
     print("complete.")
     
 
@@ -47,7 +50,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="transformer thermal modeling simulation")
     parser.add_argument("h5path", help="h5 solution")
     parser.add_argument("key", help="configuration key")
-    parser.add_argument("savename", help="save name for figure (html)")
+    parser.add_argument("--savename", help="save name for figure (html)", default="")
     args = parser.parse_args()
     
     main(args.h5path, args.key, args.savename)
