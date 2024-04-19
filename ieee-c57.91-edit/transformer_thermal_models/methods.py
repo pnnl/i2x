@@ -501,7 +501,11 @@ def ieee_c57_91_old_clause_7_analytical(Transformer,LoadConditions, integration_
     P_c = P_cr
 
     def adjust_initial_temp(T,L,T_A,T_AR):
-        return (T-T_AR)*L+T_A
+        ## adjusting to not consider T_AR.
+        # T is rise over ambient, the way this is set up at nominal load
+        # The result *does not* give T+T_AR but rather T
+        # return (T-T_AR)*L+T_A
+        return T*L + T_A
 
     # Initialize temperatures for model based on rated temperatures
     T_hs_i = adjust_initial_temp(T_hsr,load[0],T_ambient[0],T_ambr)
