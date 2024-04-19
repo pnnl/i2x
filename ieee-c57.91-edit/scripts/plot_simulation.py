@@ -2,10 +2,10 @@
 import transformer_thermal_models as xmdl
 from transformer_thermal_models import Transformer, LoadConditions
 import pandas as pd
-import argparse, warnings, os, io, json
-import tempfile
+import argparse, warnings, os, io, json, sys
+import tempfile, textwrap
 
-def main(h5path, key, savename):
+def main(h5path, key, savename, xlim=None):
     
     print("loading data...", end="")
     with pd.HDFStore(h5path, mode="r") as hdf:
@@ -36,11 +36,19 @@ def main(h5path, key, savename):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", FutureWarning)
         fig, tab = xmdl.plotting.plot_results_plotly(xfrm,lc)
+        fig.update_layout(title="<br>".join(textwrap.wrap(os.path.abspath(h5path),width=80)) + "<br>" + key)
+        if xlim is not None:
+            fig.update_xaxes(range=xlim)
     if savename:
-        # from https://stackoverflow.com/questions/59868987/saving-multiple-plots-into-a-single-html
-        with open(savename,"w") as f:
-            f.write(fig.to_html(include_plotlyjs="cdn"))
-            f.write(tab.to_html(full_html=False, include_plotlyjs=False))
+        ext = os.path.splitext(savename)[1]
+        if ext == "html":
+            # from https://stackoverflow.com/questions/59868987/saving-multiple-plots-into-a-single-html
+            with open(savename,"w") as f:
+                f.write(fig.to_html(include_plotlyjs="cdn"))
+                f.write(tab.to_html(full_html=False, include_plotlyjs=False))
+        else:
+            fig.update_layout(height=800, width=800)
+            fig.write_image(savename)
     else:
         fig.show()
     print("complete.")
@@ -50,7 +58,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="transformer thermal modeling simulation")
     parser.add_argument("h5path", help="h5 solution")
     parser.add_argument("key", help="configuration key")
-    parser.add_argument("--savename", help="save name for figure (html)", default="")
+    parser.add_argument("--savename", help="save name for figure (html, png, pdf, svg)", default="")
+    parser.add_argument("--xlim", nargs=2, help="x-axis limits for plot", default=None)
     args = parser.parse_args()
     
-    main(args.h5path, args.key, args.savename)
+    # print(args)
+    # sys.exit(0)
+    main(args.h5path, args.key, args.savename, args.xlim)
