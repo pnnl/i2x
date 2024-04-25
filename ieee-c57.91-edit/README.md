@@ -1,5 +1,31 @@
 # IEEE C57.91-202X
+## Installation
+After cloning the repository, navigate to this folder and in the command line run:
+```
+pip install .
+```
+## Changes to original repository
+This is a fork of the [IEEE C57.91 Thermal Models Repository](https://opensource.ieee.org/inslife/ieee-c57.91-thermal-models).
+Several modifications have been made with the main objective being the study of load changes at time intervals shorter than 1 minute.
+It turns out that the integration methods do not always like shorter changes, however, these are now possible.
+Additionally, the analytical method works just fine with shorter durations.
 
+The plotting capabilities have also been changed to allow for plotting with Plotly for interactive plots.
+Note that this is a new dependency that **is not** listed in the requirements of the package, so the user will need to install it separately.
+Plotly **is** a requirement of the `i2x` package so if that is installed (this parent repository) and then this thermal models repository is also installed in the same environment, there shouldn't be any issue.
+
+## Usage
+There is a jupyter notebook under `Notebooks/Thermal_Modeling_UI_Example_Voila.ipynb` that can be used as A GUI to run one off examples.
+
+The `scripts` folder contains programs to run multiple analyses, saved to an [h5](https://www.hdfgroup.org/solutions/hdf5/) file that can be opened with [pandas in python](https://pandas.pydata.org/docs/reference/api/pandas.read_hdf.html#pandas.read_hdf) for further analysis. Each of the programs have some help available from the command line by running:
+```
+>python <program-name>.py --help
+```
+
+## Instructions for additional modifications:
+After any changes to the model code the package needs to be reinstalled via `python -m pip install .` (assuming the current working directory is the ieee-c57.91.edit folder).
+
+# Original README
 This code was developed to implement the hotspot in windings model for powers transformers as described in _IEEE C57.91 Guide for Loading Mineral-Oil-Immersed Transformers and Step-Voltage Regulators_.
 
 The code is based in Python and additional package requirements are listed in `requirements.txt`
