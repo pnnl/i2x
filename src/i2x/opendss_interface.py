@@ -81,18 +81,11 @@ def get_event_log (dss):
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
                 change_lines=None, debug_output=True, dss=None, output=True,
-                demandinterval=False, allow_forms=1, printf=print, **kwargs):
+                demandinterval=False, allow_forms=1, printf=print,
+                solvetime=None, **kwargs):
 
-  # dss = py_dss_interface.DSS()
-  # fdr_path = pkg.resource_filename (__name__, 'models/{:s}'.format(choice))
-
-  # if debug_output:
-  #   print ('default cache:', pkg.get_default_cache())
-  #   print ('HCA feeder model path:', fdr_path)
-  #   pkg.resource_listdir (__name__, 'models/{:s}'.format(choice))
-
-  # dss_line (dss, 'compile "{:s}/HCABase.dss"'.format (fdr_path), debug_output)
-
+  """run open dss with optional changes and modifications"""
+  
   if dss is None:
     dss = initialize_opendss(choice, debug_output=debug_output, printf=printf, **kwargs)
 
@@ -165,7 +158,10 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
     dss_line(dss, f'set DataPath="{os.getcwd()}"', debug_output, printf=printf)
 
   dss.dssinterface.allow_forms = allow_forms
-  dss_line (dss, 'solve mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output, printf=printf)
+  dss_line (dss, 'set mode={:s} number={:d} stepsize={:d}s'.format(solnmode, numsteps, stepsize), debug_output, printf=printf)
+  if solvetime is not None:
+    dss_line (dss, 'set time=({:d}, {:d})'.format(*solvetime), debug_output, printf=printf)
+  dss_line (dss, 'solve', debug_output, printf=printf)
   if demandinterval:
     dss_line(dss, 'closedi', debug_output, printf=printf)
   if output:
@@ -257,7 +253,13 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, printf=print, **kw
     idx = dss.monitors.first()
     if idx > 0:
       hours = np.array(dss.monitors.dbl_hour)
-      dh = hours[1] - hours[0]
+      try:
+        dh = hours[1] - hours[0]
+      except IndexError:
+        # if only one solution. Get stepsize returns stepsize in seconds.
+        # int is used since returned value is string AND to verify that integer
+        # seconds timestep
+        dh = int(dss.text("get stepsize"))/3600
     ## loop over monitor elements
     while idx > 0:
       name = dss.monitors.name # name of monitor
@@ -375,7 +377,7 @@ def get_vi_monitor(dss:py_dss_interface.DSSDLL, key:str, elem:str, name:str, d:d
   d[key]['vmin'] = np.min(v)
   d[key]['vmax'] = np.max(v)
   d[key]['vmean'] = np.mean(v)
-  d[key]['vdiff'] = np.max(np.abs(np.diff(v)))
+  d[key]['vdiff'] = np.max(np.abs(np.diff(v))) if len(v) > 1 else 0
   d[key]['imin'] = np.min(amps)
   d[key]['imax'] = np.max(amps)
   d[key]['v'] = v

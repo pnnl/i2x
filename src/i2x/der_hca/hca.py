@@ -322,11 +322,12 @@ class HCA:
       self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading)
       return
     
-    if isinstance(inputs, str):
+    if isinstance(inputs, str) or isinstance(inputs, dict):
       # convert to dictionary
       inputs = load_config(inputs)
+
     self.inputs = inputs
-    self.change_lines = []
+    self.change_lines = inputs["change_lines"].copy()
     self.change_lines_noprint = []
     self.change_lines_history = []
     self.upgrade_change_lines = []
@@ -590,6 +591,11 @@ class HCA:
       for ns in self.G.nodes():
         elem, term = get_elem_and_term(self.dss, ns)
         self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal={term} mode=96") # add a voltage monitor
+    elif method == 'none':
+      # don't add any voltage monitors
+      pass
+    else:
+      raise ValueError(f"Voltage Monitor addition method {method} is not implemented, options are: 'bfs', 'all', 'none'.")
 
   def parse_graph(self, summarize=False):
     """ parse the various categories of objects in the graph """
@@ -898,10 +904,11 @@ class HCA:
     for ln in self.change_lines:
       self.logger.info (f' {ln}')    
 
-  def rundss(self):
+  def rundss(self,solvetime=None):
     pwd = os.getcwd()
     self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint + self.upgrade_change_lines, 
-                                         "dss": self.dss, "demandinterval": True, "printf": self.logger.debug}, 
+                                         "dss": self.dss, "solvetime":solvetime,
+                                         "demandinterval": True, "printf": self.logger.debug}, 
                                          **self.inputs} )  
     if self.lastres["converged"]:
       self.lastres["compflows"] = isl.all_island_flows(self.comp2rec, self.lastres["recdict"])
@@ -1869,7 +1876,9 @@ def load_config(configin):
     with open(os.path.join(path,"defaults.json")) as f:
       inputs = json.load(f)
   
-  if os.path.basename(configin) != 'defaults.json':
+  if isinstance(configin, dict):
+    merge_configs(inputs, configin.copy())
+  elif os.path.basename(configin) != 'defaults.json':
     with open(configin) as f:
       config = json.load(f)
     merge_configs(inputs, config)

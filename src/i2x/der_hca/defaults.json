@@ -13,6 +13,7 @@
 "numsteps": 288,
 "remove_all_pv": false,
 "allow_forms": 0,
+"change_lines": [],
 "seed": null,
 "reg_control": {
     "disable_all": false,
