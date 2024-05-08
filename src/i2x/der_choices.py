@@ -63,6 +63,6 @@ inverterChoices = {
                   'q':[0.44,0.44,0.00,0.00,-.44,-.44]}
   }
 
-solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY']#, 'YEARLY']
+solutionModeChoices = ['SNAPSHOT', 'DAILY', 'DUTY', 'YEARLY']
 controlModeChoices = ['OFF', 'STATIC'] #, 'TIME', 'EVENT']
 
