@@ -1,5 +1,5 @@
 import logging
-import sys, os
+import sys, os, time
 import json
 
 def load_config(filepath):
@@ -136,3 +136,19 @@ class Logger(logging.Logger):
             self.logger.removeHandler(h)
             h.close()
             
+class ProcessTime:
+    """Useful wrapper for timing events and printing."""
+    def __init__(self):
+        self.tstart = 0
+        self.tstop = 0
+    
+    def start(self):
+        self.tstart = time.time()
+    
+    def stop(self, print=False):
+        self.tstop = time.time()
+        if print:
+            return self.time_str()
+        
+    def time_str(self):
+        return f"{self.tstop - self.tstart:0.3f} sec"

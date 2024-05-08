@@ -11,10 +11,15 @@
 "res_pv_frac": 0.2,
 "stepsize": 300,
 "numsteps": 288,
+"start_time": [0,0],
+"end_time": [8760,0],
 "remove_all_pv": false,
 "allow_forms": 0,
-"change_lines": [],
+"change_lines_init": [],
 "seed": null,
+"hca_method": "time_series",
+"hca_control_mode": null,
+"hca_control_pf": null,
 "reg_control": {
     "disable_all": false,
     "disable_list": []

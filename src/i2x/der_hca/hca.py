@@ -7,7 +7,7 @@ import json
 import i2x.der_hca.islands as isl
 import numpy as np
 import py_dss_interface
-from .hca_utils import Logger, merge_configs
+from .hca_utils import Logger, merge_configs, ProcessTime
 import os
 import pandas as pd
 import copy
@@ -21,7 +21,8 @@ import i2x.der_hca.upgrade_costs as upcst
 conductor_cost = upcst.ConductorCosts()
 xfrm_cost = upcst.TransformerCosts()
 reg_cost = upcst.RegulatorCosts()
-
+hca_options = {"times_series": "Single HC value calculated via quasi-steady state time series solution",
+                "sequence": "Sequency of HC calculated over time"}
 SQRT3 = math.sqrt(3.0)
 pd_version = [int(s) for s in pd.__version__.split(".")]
 
@@ -313,7 +314,17 @@ def next_xfrm_kva(kva, nphase, skip=0) -> float:
   except IndexError:
     # no more ratings
     return -1
-  
+
+def timetuple2sec(t:list[int]) -> int:
+  """Convert time tuple/list with (hr, sec) into a seconds value"""
+  if len(t) != 2:
+    raise ValueError("Time tuple/list must have 2 elements")
+  return t[0]*3600 + t[1]
+
+def sec2timetuple(s:int) -> list[int]:
+  """convert an integer number of seconds into a list with (hr, sec)"""
+  hr, sec = divmod(s, 3600)
+  return [hr, sec]
 
 class HCA:
   def __init__(self, inputs:Union[str,dict], logger_heading=None, 
@@ -325,14 +336,20 @@ class HCA:
     if isinstance(inputs, str) or isinstance(inputs, dict):
       # convert to dictionary
       inputs = load_config(inputs)
-
-    self.inputs = inputs
-    self.change_lines = inputs["change_lines"].copy()
+    if inputs["hca_method"] not in hca_options:
+      raise ValueError(f"hca_method must be one of: {hca_options.keys()}")
+    self.inputs = copy.deepcopy(inputs)
+    self.method = inputs["hca_method"]
+    self.change_lines = inputs["change_lines_init"].copy()
     self.change_lines_noprint = []
     self.change_lines_history = []
     self.upgrade_change_lines = []
+    self.presolve_edits = []
     self.dss_reset = False
-    
+    self.solvetime = inputs["start_time"].copy() #start time for sequence mode in [hr, sec]
+    self.endtime = timetuple2sec(inputs["end_time"]) # end time for sequence mode in seconds
+    self.timer = ProcessTime()
+
     self.logger_init(logger_heading)
     
     if print_config:
@@ -392,7 +409,7 @@ class HCA:
     filename is a pickle file to save
     """
     out = {}
-    skip = ["logger", "random_state", "dss", "metrics", "lastres"]
+    skip = ["logger", "random_state", "dss", "metrics", "lastres", "timer"]
     for k, v in self.__dict__.items():
       if k in skip:
         continue
@@ -433,6 +450,7 @@ class HCA:
 
     self.random_state = np.random.RandomState()
     self.random_state.set_state(tmp["state"])
+    self.timer = ProcessTime()
 
   def print_config(self, level="info"):
     if level == "info":
@@ -534,6 +552,7 @@ class HCA:
     """clear change lines. Call between successive calls to rundss"""
     self.change_lines_noprint = []
     self.change_lines = []
+    self.presolve_edits = [] # Note that these DO NOT get saved!!!
 
   def replay_resource_addition(self, typ, bus, cnt):
     key = self.resource_key(typ, bus, cnt)
@@ -904,10 +923,34 @@ class HCA:
     for ln in self.change_lines:
       self.logger.info (f' {ln}')    
 
-  def rundss(self,solvetime=None):
+  def step_solvetime(self, stepcnt=True):
+    """increment the solution time by the stepsize (for sequence method)
+    time is a tuple with (hr, sec)
+    If stepcnt is True the internal counter self.cnt is incremented by 1
+    """
+    tmp = timetuple2sec(self.solvetime) ## convert to seconds
+    tmp += self.inputs["stepsize"]      ## increment
+    self.solvetime = sec2timetuple(tmp) ## convert back to time tuple
+    if stepcnt:
+      self.cnt += 1
+
+  def is_endtime(self):
+    """Returns True when the solvetime has reached/passed the endtime, 
+    otherwise returns False"""
+
+    if timetuple2sec(self.solvetime) < self.endtime:
+      return False
+    else:
+      return True
+
+  def rundss(self,solvetime:list[int]=None):
+    if solvetime is None:
+      if self.inputs["hca_method"] == "sequence":
+        ## for sequence method, make sure that the right time instance is simulated
+        solvetime = self.solvetime
     pwd = os.getcwd()
     self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint + self.upgrade_change_lines, 
-                                         "dss": self.dss, "solvetime":solvetime,
+                                         "dss": self.dss, "solvetime":solvetime, "presolve_edits": self.presolve_edits,
                                          "demandinterval": True, "printf": self.logger.debug}, 
                                          **self.inputs} )  
     if self.lastres["converged"]:
@@ -1021,6 +1064,18 @@ class HCA:
     kv = self.G.nodes[bus]["ndata"]["nomkv"]
     if typ == "pv":
       self._append_large_pv(key, bus, kv, **kwargs)
+      if self.method == "sequence":
+        ### for sequence method pv is used as a general representation of a generator
+        # make
+        self.presolve_edits.append(f"edit pvsystem.{key} daily=flat")
+        ## TODO: make it possible to have different controls for hca additions vs exisiting
+        # if self.inputs["hca_control_mode"] is not None:
+        #   if self.inputs["hca_control_mode"] == "CONSTANT_PF":
+        #     self.presolve_edits.append(f'edit pvsystem.{key} pf={self.inputs["hca_control_pf"]}')
+        #   else:
+        #     pass
+        #   #TODO
+
     elif typ == "bat":
       self._append_large_storage(key, bus, kv, **kwargs)
     elif typ == "der":
@@ -1069,12 +1124,19 @@ class HCA:
             return data, cnt
         return None, cnt #if we're here then no data was found, cnt should be -1
     
-  def get_hc(self, typ, bus=None, cnt=None):
+  def get_hc(self, typ, bus=None, cnt=None, latest=False):
     """Retrieve the hosting capacity stored for the given bus for the given type
     if no iteration counter is given the process works itself backwards from the
     current count until a viable index is found.
+
+    For the sequence method, a dataframe is returned of hosting capacity at all counts
+    i.e. time instances. using latest=True forces the other behavior.
     """
-    return self.get_data("hc", typ, bus=bus, cnt=cnt)
+    if (bus is not None) and (self.method == "sequence") and (not latest):
+      ## return a dataframe of all time indices for the bus
+      return pd.DataFrame.from_dict(self.data["hc"][typ][bus], orient="index")
+    else:
+      return self.get_data("hc", typ, bus=bus, cnt=cnt)
   
   def remove_hca_resource(self, typ, bus=None, cnt=None, recalculate=False):
     """utility function for remove a resource added via hca_round.
@@ -1127,9 +1189,10 @@ class HCA:
 
   def hca_round(self, typ, bus=None, Sij=None, 
                 allow_violations=False, hciter=True, recalculate=False,
-                set_sij_to_hc=False):
+                set_sij_to_hc=False, unset_active_bus=True):
     """perform a single round of hca"""
     
+    self.timer.start()
     # if allow_violations is false iter must be true
     if (not allow_violations) and (not hciter):
       raise ValueError(f"hca_round: allow_violatios is {allow_violations} and hciter is {hciter}. Combination with allow_violations=False and hciter=False is not possible!")
@@ -1149,7 +1212,7 @@ class HCA:
     #### increment the count
     if not recalculate:
       self.cnt +=1
-    self.logger.info(f"\n========= HCA Round {self.cnt} ({typ}){' recalculating' if recalculate else ''}=================")
+    self.logger.info(f"\n========= HCA Round {self.cnt} {f'dss time: {self.solvetime}' if self.method=='sequence' else ''} ({typ}){' recalculating' if recalculate else ''}=================")
   
     #### Step 1: select a bus. Viable options (for now) are:
     # * graph_dirs["bus3phase"]: 3phase buses with nothing on them
@@ -1169,7 +1232,7 @@ class HCA:
     if Sij is not None:
       self.logger.info(f"Specified capacity: {Sij}")
     else:
-      hc, hc_cnt = self.get_hc(typ, self.active_bus)
+      hc, hc_cnt = self.get_hc(typ, self.active_bus, latest=True)
       if (hc is not None) and (hc["kw"] > 0):
         kwcap = hc["kw"]
       else:
@@ -1181,7 +1244,7 @@ class HCA:
         if keyexist is not None: 
           ## Option 1: check if bus already has resource of this type
           self.logger.debug(f"\tFound resource {keyexist}, at bus {bus}")
-          hc, hc_cnt = self.get_hc(typ, self.active_bus)
+          hc, hc_cnt = self.get_hc(typ, self.active_bus, latest=True)
           if (hc is not None) and (hc["kw"] > 0):
             # use the hc value
             self.logger.debug(f"\tLast hc info from round {hc_cnt}: {hc}")
@@ -1269,7 +1332,7 @@ class HCA:
         self.exauhsted_buses[typ].append(self.active_bus)
 
     ### Step 5: final run with the actual capacity
-    self.logger.info(f"*******Results for bus {self.active_bus} ({typ})")
+    self.logger.info(f"*******Results for bus {self.active_bus} ({typ}) in {self.timer.stop(print=True)}")
     if not recalculate:
       # when recalculating the selected capacity is not relevant, so don't report
       self.logger.info(f"Sij = {Sij}")
@@ -1300,7 +1363,9 @@ class HCA:
       self.metrics.calc_metrics()
 
     ### cleanup
-    self.unset_active_bus()
+    if unset_active_bus:
+      ## allow keeping bus active (useful for first iteration of sequence mode)
+      self.unset_active_bus()
     self.collect_stats()
 
   def hc_bisection(self, typ, key, Sijin, Sij1=None, Sij2=None, kwtol=5, kwmin=30):
@@ -1375,32 +1440,35 @@ class HCA:
         # recurse and decrease
         return self.hc_bisection(typ, key, Sijnew, Sij1, Sijnew, kwtol, kwmin)
   
-  def runbase(self, verbose=0):
+  def runbase(self, verbose=0, skipadditions=False):
     """runs an initial version of the feeder to establish a baseline.
     Metrics, for example will be evaluated w.r.t to this baseline as opposed
     to just the hard limits
+    if skipadditions is true the deterministic changes and added rooftop pv
+    will not be considered (useful for sequence mode post the very first run)
     """
     ###########################################################################
     ##### Initialization
     ###########################################################################
-    ### deterministic changes
-    self.deterministic_changes()
-    if verbose > 1:
-      self.logger.info(f"\nFeeder description following deterministic changes:")
-      self.print_parsed_graph()
+    if not skipadditions:
+      ### deterministic changes
+      self.deterministic_changes()
+      if verbose > 1:
+        self.logger.info(f"\nFeeder description following deterministic changes:")
+        self.print_parsed_graph()
 
 
-    ### rooftop solar
-    self.append_rooftop_pv()
-    if verbose > 0:
-      self.logger.info(f"\nFeeder description following intialization changes:")
-      self.print_parsed_graph()
+      ### rooftop solar
+      self.append_rooftop_pv()
+      if verbose > 0:
+        self.logger.info(f"\nFeeder description following intialization changes:")
+        self.print_parsed_graph()
 
-    if verbose > 1:
-      self.logger.info('\nIslanding Considerations:\n')
-      self.logger.info(f'{len(self.comps)} components found based on recloser positions')
-      for i, c in enumerate(self.comps):
-        self.show_component(i, printvals=True, printheader=i==0, plot=False)
+      if verbose > 1:
+        self.logger.info('\nIslanding Considerations:\n')
+        self.logger.info(f'{len(self.comps)} components found based on recloser positions')
+        for i, c in enumerate(self.comps):
+          self.show_component(i, printvals=True, printheader=i==0, plot=False)
 
     self.rundss()
     if verbose > 1:
@@ -1415,7 +1483,7 @@ class HCA:
     i2x.plot_opendss_feeder(self.G, **kwargs)
 
   def commit_upgrades(self):
-    """ move upgrades form their own changle line list to the general change_lines.
+    """ move upgrades form their own change line list to the general change_lines.
     The general list gets saved when called save_dss_state
     """
     self.change_lines.extend(copy.deepcopy(self.upgrade_change_lines))
@@ -1584,8 +1652,16 @@ class HCAMetrics:
     self.base.load_res(res, worst_case=True)
 
   def load_lims(self, lims:dict):
-    self.lims = copy.deepcopy(lims)
-
+    """only copy limits for tests to be considered"""
+    # self.lims = copy.deepcopy(lims)
+    self.lims = {}
+    for metric_class, metrics in lims.items():
+      if metric_class in self.tests:
+        self.lims[metric_class] = {}
+        for metric, lim in metrics.items():
+          if metric in self.tests[metric_class]:
+            self.lims[metric_class][metric] = lim
+            
   def clear_res(self):
     self.eval = {}
     self.violation = {}
@@ -1867,6 +1943,10 @@ def print_options():
   print ('Inverter Choices:', i2x.inverterChoices.keys())
   print ('Solution Mode Choices:', i2x.solutionModeChoices)
   print ('Control Mode Choices:', i2x.controlModeChoices)
+  print ("hca methods:")
+  print ("Key                  Description")
+  for key, description in hca_options.items():
+    print(f"{key:20s} {description}")
 
 
 def load_config(configin):
