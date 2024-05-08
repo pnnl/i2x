@@ -1,0 +1,65 @@
+//Lowered Source Voltage
+Edit Vsource.source Pu=1.01
+//Define yearly loadshape
+New "LoadShape.LoadShape4" npts=8760 interval=1.0 mult=(File=LoadShape4.csv) Action=Normalize
+//Constant loading for steamgen1
+new loadshape.steamgen1 npts=2 interval=0 hour=[0.00,8760.00] mult=[750.0,750.0] qmult=[562.5, 562.5] useactual=yes
+edit Generator.SteamGen1 daily=steamgen1 model=1
+//Storage controller and loadshape
+New LoadShape.SC_loadshape interval=1 npts=24 mult = [0.1,0.1,0.1,0.1,0.1,0.1,-0.1,-0.15,-0.25,-0.3,-0.3,-0.3,-0.3,-0.3,-0.3,-0.3,0.15,0.15,0.15,0.15,0.1,0.1,0.1,0.1]
+New StorageController.SC1 element=Storage.Battery1  elementlist=[Battery1] terminal=1 modedis=loadshape daily=SC_loadshape %rateCharge=50 %reserve=20 eventlog=yes
+New StorageController.SC2 element=Storage.Battery2  elementlist=[Battery2] terminal=1 modedis=loadshape daily=SC_loadshape %rateCharge=50 %reserve=20 eventlog=yes
+//apply loadshape to all storage
+edit Storage.Battery1 state=discharging %stored=38
+edit Storage.Battery2 state=discharging %stored=38
+
+//storage monitors
+new monitor.bat1 element=Storage.Battery1  terminal=1 mode=7
+new monitor.bat2 element=Storage.Battery2  terminal=1 mode=7
+
+//Regulator Tap Settings adjustment
+edit RegControl.FEEDER_REG1A vreg=120 band=1 revvreg=120 revband=1 TapNum=0
+edit RegControl.FEEDER_REG1B vreg=120 band=1 revvreg=120 revband=1 TapNum=0
+edit RegControl.FEEDER_REG1C vreg=120 band=1 revvreg=120 revband=1 TapNum=0
+edit RegControl.FEEDER_REG2A vreg=120 band=1 revvreg=120 revband=1 TapNum=0
+edit RegControl.FEEDER_REG2B vreg=120 band=1 revvreg=120 revband=1 TapNum=0
+edit RegControl.FEEDER_REG2C vreg=120 band=1 revvreg=120 revband=1 TapNum=0
+edit RegControl.FEEDER_REG3A vreg=123 band=1 revvreg=123 revband=1 TapNum=0
+edit RegControl.FEEDER_REG3B vreg=123 band=1 revvreg=123 revband=1 TapNum=0
+edit RegControl.FEEDER_REG3C vreg=123 band=1 revvreg=123 revband=1 TapNum=0
+edit RegControl.VREG2_A vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG2_B vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG2_C vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG3_A vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG3_B vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG3_C vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG4_A vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG4_B vreg=120 band=1 revvreg=120 revband=1
+edit RegControl.VREG4_C vreg=120 band=1 revvreg=120 revband=1
+
+new monitor.feeder_reg1a element=Transformer.FEEDER_REG1A terminal=2 mode=2
+new monitor.feeder_reg2a element=Transformer.FEEDER_REG2A terminal=2 mode=2
+new monitor.feeder_reg3a element=Transformer.FEEDER_REG3A terminal=2 mode=2
+new monitor.vreg2a element=Transformer.VREG2_A terminal=2 mode=2
+new monitor.vreg3a element=Transformer.VREG3_A terminal=2 mode=2
+new monitor.vreg4a element=Transformer.VREG4_A terminal=2 mode=2
+
+//Service transformer adjustments to avoid overloading
+edit Transformer.T2001014B XfmrCode=CT50
+edit Transformer.T2001015B XfmrCode=CT50
+edit Transformer.T225571845B XfmrCode=CT25
+
+//Triplex adjuments to avoid overloading
+edit Line.TPX2001400C0 linecode=750_Triplex
+edit Line.TPX21396815C0 linecode=750_Triplex
+edit Line.TPX21399326C0 linecode=750_Triplex
+edit Line.TPX2221108404B0 linecode=750_Triplex
+edit Line.TPX2221108405C0 linecode=750_Triplex
+edit Line.TPX2221108407B0 linecode=750_Triplex
+edit Line.TPX2226061820B0 linecode=750_Triplex
+edit Line.TPX338899C0 linecode=750_Triplex
+edit Line.TPX338915C0 linecode=750_Triplex
+edit Line.TPX338924C0 linecode=750_Triplex
+edit Line.TPX338943C0 linecode=750_Triplex
+edit Line.TPX338968C0 linecode=750_Triplex
+edit Line.TPX338978C0 linecode=750_Triplex
