@@ -78,11 +78,25 @@ def get_event_log (dss):
   print ('================')
   return log
 
+def set_inv_control(dss, key, invmode, debug_output=True, printf=print):
+  if invmode == 'VOLT_WATT':
+    dss_line (dss, f'new InvControl.{key} mode=VOLTWATT voltage_curvex_ref=rated voltwatt_curve=voltwatt1547b deltaP_factor=0.02 EventLog=No', debug_output, printf=printf)
+  elif invmode == 'VOLT_VAR_CATA':
+    dss_line (dss, f'new InvControl.{key} mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547a deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
+  elif invmode == 'VOLT_VAR_CATB':
+    dss_line (dss, f'new InvControl.{key} mode=VOLTVAR voltage_curvex_ref=rated vvc_curve1=voltvar1547b deltaQ_factor=0.4 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
+  elif invmode == 'VOLT_VAR_AVR':
+    dss_line (dss, f'New ExpControl.{key} deltaQ_factor=0.3 vreg=1.0 slope=22 vregtau=300 Tresponse=5 EventLog=No', debug_output, printf=printf)
+  elif invmode == 'VOLT_VAR_VOLT_WATT':
+    dss_line (dss, f'new InvControl.{key} combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar1547b voltwatt_curve=voltwatt1547b deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
+  elif invmode == 'VOLT_VAR_14H':
+    dss_line (dss, f'new InvControl.{key} combimode=VV_VW voltage_curvex_ref=rated vvc_curve1=voltvar14h voltwatt_curve=voltwatt14h deltaQ_factor=0.4 deltaP_factor=0.02 RefReactivePower=VARMAX EventLog=No', debug_output, printf=printf)
+
 def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps, 
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
                 change_lines=None, debug_output=True, dss=None, output=True,
                 demandinterval=False, allow_forms=1, printf=print,
-                solvetime=None, **kwargs):
+                solvetime=None, presolve_edits=None, **kwargs):
 
   """run open dss with optional changes and modifications"""
   
@@ -147,6 +161,11 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
     for genname in dss.generators.names:
       if f"{genname}_gen_pq" not in dss.monitors.names:
         dss_line (dss, 'new monitor.{:s}_gen_pq element=generator.{:s} terminal=1 mode=65 ppolar=no'.format (genname, genname), debug_output, printf=printf)
+  
+  ## presolve edits: for example specific shape changes for individual resources
+  if presolve_edits is not None:
+    for line in presolve_edits:
+      dss_line (dss, line, debug_output, printf=printf)
 
   if demandinterval:
     ## add voltage and thermal reporting
@@ -166,7 +185,7 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
     dss_line(dss, 'closedi', debug_output, printf=printf)
   if output:
     return opendss_output(dss, solnmode, pvnames, debug_output=debug_output, printf=printf, **kwargs)
-  
+
 def opendss_output(dss, solnmode, pvnames, debug_output=True, printf=print, **kwargs):
   if debug_output:
     printf ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems.count, dss.generators.count))
@@ -427,3 +446,19 @@ def get_bus(dss:py_dss_interface.DSSDLL, elemname:str, terminal:int) -> str:
   # set the bus of the specified terminal active
   dss.circuit.set_active_bus(dss.cktelement.bus_names[terminal-1])
   return dss.bus.name
+
+def get_invcontrol_derlist(dss:py_dss_interface.DSSDLL, invcontrol:str) -> list[str]:
+  """Get the der list of for the specified invcontrol object"""
+  return dss.text(f"? invcontrol.{invcontrol}.derlist")[1:-1].replace(" ","").split(",")
+
+def remove_from_derlist(dss:py_dss_interface.DSSDLL, invcontrol:str, removelist:list[str]):
+  """Remove the elements in remove list from the inverter control object's derlist"""
+  
+  ### get the der list
+  derlist = get_invcontrol_derlist(dss, invcontrol)
+  
+  ### update the list to remove elements in removelist
+  newlist = set(derlist).difference(removelist)
+
+  ### reapply the list
+  dss.text(f"edit invcontrol.{invcontrol} derlist=[{','.join(newlist)}]")
