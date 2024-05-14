@@ -5,29 +5,22 @@ New "LoadShape.LoadShape4" npts=8760 interval=1.0 mult=(File=LoadShape4.csv) Act
 //Constant loading for steamgen1
 new loadshape.steamgen1 npts=2 interval=0 hour=[0.00,8760.00] mult=[750.0,750.0] qmult=[562.5, 562.5] useactual=yes
 edit Generator.SteamGen1 daily=steamgen1 model=1
-//Storage controller and loadshape
-New LoadShape.SC_loadshape interval=1 npts=24 mult = [0.1,0.1,0.1,0.1,0.1,0.1,-0.1,-0.15,-0.25,-0.3,-0.3,-0.3,-0.3,-0.3,-0.3,-0.3,0.15,0.15,0.15,0.15,0.1,0.1,0.1,0.1]
-New StorageController.SC1 element=Storage.Battery1  elementlist=[Battery1] terminal=1 modedis=loadshape daily=SC_loadshape %rateCharge=50 %reserve=20 eventlog=yes
-New StorageController.SC2 element=Storage.Battery2  elementlist=[Battery2] terminal=1 modedis=loadshape daily=SC_loadshape %rateCharge=50 %reserve=20 eventlog=yes
-//apply loadshape to all storage
-edit Storage.Battery1 state=discharging %stored=38
-edit Storage.Battery2 state=discharging %stored=38
+
+//Deactivate batteries (replace with load)
+edit Storage.Battery1 enabled=no
+edit Storage.Battery2 enabled=no
+
+//New load shape for each battery
+new loadshape.bat1 npts=8760 interval=1.0 mult=(file=batt_setting/hca9500node_Mon_battmeter1_1.csv col=3, header=yes) qmult=(file=batt_setting/hca9500node_Mon_battmeter1_1.csv col=4, header=yes) useactual=yes
+new loadshape.bat2 npts=8760 interval=1.0 mult=(file=batt_setting/hca9500node_Mon_battmeter2_1.csv col=3, header=yes) qmult=(file=batt_setting/hca9500node_Mon_battmeter2_1.csv col=4, header=yes) useactual=yes
+
+//create load
+new load.bat1 phases=3 bus1=m2001-ESS1 kW=250 pf=1.0 kV=0.480 mode=1 daily=bat1 yearly=bat1
+new load.bat2 phases=3 bus1=m2001-ESS2 kW=250 pf=1.0 kV=0.480 mode=1 daily=bat2 yearly=bat2
 
 //storage monitors
-new monitor.bat1 element=Storage.Battery1  terminal=1 mode=7
-new monitor.bat2 element=Storage.Battery2  terminal=1 mode=7
-
-//Capacitor monitors (TODO: Not Used Currently)
-new monitor.cap1a element=capacitor.capbank1a terminal=1 mode=6
-new monitor.cap1b element=capacitor.capbank1b terminal=1 mode=6
-new monitor.cap1c element=capacitor.capbank1c terminal=1 mode=6
-new monitor.cap2a element=capacitor.capbank2a terminal=1 mode=6
-new monitor.cap2b element=capacitor.capbank2b terminal=1 mode=6
-new monitor.cap2c element=capacitor.capbank2c terminal=1 mode=6
-new monitor.cap3a element=capacitor.capbank3a terminal=1 mode=6
-new monitor.cap3b element=capacitor.capbank3b terminal=1 mode=6
-new monitor.cap3c element=capacitor.capbank3c terminal=1 mode=6
-new monitor.cap4  element=capacitor.capbank4 terminal=1 mode=6
+new monitor.bat1 element=load.bat1  terminal=1 mode=65 ppolar=no
+new monitor.bat2 element=load.bat2  terminal=1 mode=65 ppolar=no
 
 //Regulator Tap Settings adjustment
 edit RegControl.FEEDER_REG1A vreg=120 band=1 revvreg=120 revband=1 TapNum=0
