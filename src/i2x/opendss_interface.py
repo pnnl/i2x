@@ -96,7 +96,8 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
                 loadcurve, invmode, invpf, solnmode, ctrlmode, 
                 change_lines=None, debug_output=True, dss=None, output=True,
                 demandinterval=False, allow_forms=1, printf=print,
-                solvetime=None, presolve_edits=None, **kwargs):
+                solvetime=None, presolve_edits=None, min_converged_vpu=0.0, 
+                **kwargs):
 
   """run open dss with optional changes and modifications"""
   
@@ -184,9 +185,11 @@ def run_opendss(choice, pvcurve, loadmult, stepsize, numsteps,
   if demandinterval:
     dss_line(dss, 'closedi', debug_output, printf=printf)
   if output:
-    return opendss_output(dss, solnmode, pvnames, debug_output=debug_output, printf=printf, **kwargs)
+    return opendss_output(dss, solnmode, pvnames, debug_output=debug_output, printf=printf, 
+                          min_converged_vpu=min_converged_vpu,**kwargs)
 
-def opendss_output(dss, solnmode, pvnames, debug_output=True, printf=print, **kwargs):
+def opendss_output(dss, solnmode, pvnames, debug_output=True, printf=print, 
+                   min_converged_vpu=0.0, **kwargs):
   if debug_output:
     printf ('{:d} PVSystems and {:d} generators'.format (dss.pvsystems.count, dss.generators.count))
 
@@ -207,7 +210,7 @@ def opendss_output(dss, solnmode, pvnames, debug_output=True, printf=print, **kw
   kWh_OverE = 0.0
 
   # these outputs apply to SNAPSHOT and time series modes
-  converged = bool(dss.solution.converged)
+  converged = bool(dss.solution.converged) and (np.array(dss.circuit.buses_vmag_pu).min() > min_converged_vpu)
   if debug_output:
     printf (f'Converged = {converged}')
   num_cap_switches = 0
