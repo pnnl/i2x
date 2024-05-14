@@ -93,7 +93,7 @@ if __name__ == "__main__":
     #######################
     config["numsteps"] = 1 # solving just one step at a time
     # point to different prep file: batteries replaced with load
-    config["change_lines_init"] = ["redirect hca_ts_IEEE9500prep_test.dss"]
+    config["change_lines_init"] = ["redirect IEEE9500prep_test_2.dss"]
     config["reg_control"] = {
         "disable_all": True, # disable all control, will be done via shape
         "regulator_shape": {
