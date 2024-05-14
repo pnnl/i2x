@@ -1133,7 +1133,7 @@ class HCA:
       if self.method == "sequence":
         ### for sequence method pv is used as a general representation of a generator
         # make
-        self.presolve_edits.append(f"edit pvsystem.{key} daily=flat")
+        self.presolve_edits.append(f"edit pvsystem.{key} daily=flat yearly=flat duty=flat")
         ## TODO: make it possible to have different controls for hca additions vs exisiting
         # if self.inputs["hca_control_mode"] is not None:
         #   if self.inputs["hca_control_mode"] == "CONSTANT_PF":
@@ -1255,7 +1255,8 @@ class HCA:
 
   def hca_round(self, typ, bus=None, Sij=None, 
                 allow_violations=False, hciter=True, recalculate=False,
-                set_sij_to_hc=False, unset_active_bus=True):
+                set_sij_to_hc=False, unset_active_bus=True,
+                bnd_strategy=None):
     """perform a single round of hca"""
     
     self.timer.start()
@@ -1350,7 +1351,8 @@ class HCA:
         self.update_data("Sij", typ, Sij)  # save installed capacity
       if hciter:
         self.logger.info("Iterating to find HC.")
-        Sijlim = self.hc_bisection(typ, key, Sijin, Sij, None) # find limit via bisection search
+        Sijlim = self.hc_bisection(typ, key, Sijin, Sij, None, 
+                                   bnd_strategy=bnd_strategy) # find limit via bisection search
         if recalculate:
           hc = {k: Sijlim[k] for k in ["kw", "kva"]}
         else:
@@ -1372,7 +1374,8 @@ class HCA:
         hc_violations = self.metrics.get_violation_list()
       if hciter:
         self.logger.info("Iterating to find Limit.")
-        Sijlim = self.hc_bisection(typ, key, Sijin, None, Sij)
+        Sijlim = self.hc_bisection(typ, key, Sijin, None, Sij,
+                                    bnd_strategy=bnd_strategy)
         if Sijlim["kw"] == 0: 
           # no capacity at this bus (not just no *additional*, none at all)
           # remove the object from the graph
@@ -1434,8 +1437,26 @@ class HCA:
       self.unset_active_bus()
     self.collect_stats()
 
-  def hc_bisection(self, typ, key, Sijin, Sij1=None, Sij2=None, kwtol=5, kwmin=30):
-    
+  def hc_bisection(self, typ, key, Sijin, Sij1=None, Sij2=None, kwtol=5, kwmin=30,
+                   bnd_strategy=None):
+    """
+    perform search for hc value, default is bisection (bnd_strategy=("mult", 2))
+    bnd_strategy is a tuple.
+      elem[0] = "mult" -> multiply/divide by a factor > 1
+                "add"  -> add/subtract factor > 0
+      elem[1] = factor to be multiplied or added
+    """
+    if bnd_strategy is None:
+      bnd_strategy = ("mult", 2)
+    if bnd_strategy[0] not in ["mult", "add"]:
+      raise ValueError(f"bnd_strategy elem[0] must be in ['mult', 'add'] but {bnd_strategy[0]} given")
+    if bnd_strategy[0] == "mult":
+      if bnd_strategy[1] <= 1:
+        raise ValueError(f"with bnd_strategy[0] = 'mult' bnd_strategy[1] must be > 1, {bnd_strategy[1]} given.")
+    elif bnd_strategy[0] == "add":
+        if bnd_strategy[1] <= 0:
+          raise ValueError(f"with bnd_strategy[0] = 'add' bnd_strategy[1] must be > 0, {bnd_strategy[1]} given.")
+        
     typmap = {"pv": "solar", "bat": "storage", "der": "generator"}
     #prep for new run
     self.remove_der(key, typmap[typ], self.active_bus, **Sijin) # dss command doesn't really matter, but this removes it from graph as well
@@ -1452,11 +1473,29 @@ class HCA:
         if k != "kw":
           Sijnew[k] = Sij1[k]*factor # apply to other properties proportionally 
     elif Sij2 is None:
-      # unknown upperbound, double lower bound
-      Sijnew = {k: 2*v for k, v in Sij1.items()}
+      # unknown upperbound
+      if bnd_strategy[0] == "mult":
+        # double (default) lower bound
+        Sijnew = {k: bnd_strategy[1]*v for k, v in Sij1.items()}
+      elif bnd_strategy[0] == "add":
+        # add a constant to kw, keep factor pf constant
+        Sijnew = {"kw": Sij1["kw"] + bnd_strategy[1]}
+        factor = Sijnew["kw"]/Sij1["kw"]
+        for k in Sij1.keys():
+          if k != "kw":
+            Sijnew[k] = Sij1[k]*factor # apply to other properties proportionally 
     elif Sij1 is None:
-      # unknown lower bound, half the upper bound
-      Sijnew = {k: 0.5*v for k, v in Sij2.items()}
+      # unknown lower bound
+      if bnd_strategy[0] == "mult":
+        # halve (default) the upper bound
+        Sijnew = {k: v/bnd_strategy[0] for k, v in Sij2.items()}
+      elif bnd_strategy[0] == "add":
+        # subtract a constant to kw, keep factor pf constant
+        Sijnew = {"kw": Sij2["kw"] - bnd_strategy[1]}
+        factor = Sijnew["kw"]/Sij2["kw"]
+        for k in Sij2.keys():
+          if k != "kw":
+            Sijnew[k] = Sij2[k]*factor # apply to other properties proportionally 
     
     self.new_capacity(typ, key, **Sijnew) #add the new capacity
 
@@ -1479,7 +1518,8 @@ class HCA:
         self.logger.info(f"\tNo violations with capacity {Sijnew}. Iterating to find HC")
       if Sij2 is None:
         # still uknown upper bound
-        return self.hc_bisection(typ, key, Sijnew, Sijnew, None, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, Sijnew, None,
+                                 kwtol=kwtol, kwmin=kwmin, bnd_strategy=bnd_strategy)
       elif Sij2["kw"] - Sijnew["kw"] < kwtol:
         # End criterion: no violations and search band within tolerance
         if Sijnew ["kw"] < kwmin:
@@ -1488,7 +1528,8 @@ class HCA:
         return Sijnew
       else:
         # recurse and increase
-        return self.hc_bisection(typ, key, Sijnew, Sijnew, Sij2, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, Sijnew, Sij2,
+                                 kwtol=kwtol, kwmin=kwmin, bnd_strategy=bnd_strategy)
     else:
       if self.inputs["hca_log"]["print_hca_iter"]:
         self.logger.info(f"\tViolations with capacity {Sijnew}. Iterating to find Limit.")
@@ -1501,10 +1542,12 @@ class HCA:
         return {k: 0 for k in Sijnew.keys()}
       elif Sij1 is None:
         # still unkonwn lower bound
-        return self.hc_bisection(typ, key, Sijnew, None, Sijnew, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, None, Sijnew, 
+                                 kwtol=kwtol, kwmin=kwmin, bnd_strategy=bnd_strategy)
       else:
         # recurse and decrease
-        return self.hc_bisection(typ, key, Sijnew, Sij1, Sijnew, kwtol, kwmin)
+        return self.hc_bisection(typ, key, Sijnew, Sij1, Sijnew, 
+                                 kwtol=kwtol, kwmin=kwmin, bnd_strategy=bnd_strategy)
   
   def runbase(self, verbose=0, skipadditions=False):
     """runs an initial version of the feeder to establish a baseline.
