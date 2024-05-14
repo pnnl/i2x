@@ -8,6 +8,7 @@
 "solnmode" : "DAILY",
 "ctrlmode" : "STATIC",
 "debug_output" : false,
+"min_converged_vpu": 0.0,
 "res_pv_frac": 0.2,
 "stepsize": 300,
 "numsteps": 288,
