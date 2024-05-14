@@ -1005,6 +1005,15 @@ class HCA:
     else:
       return True
 
+  def set_endtime(self, t:list[int]):
+    """set the endtime to t (hr, sec)"""
+
+    self.endtime = timetuple2sec(t)
+
+  def set_solvetime(self, t:list[int]):
+    """set the solvetime to t (hr, sec)"""
+    self.solvetime = t
+
   def rundss(self,solvetime:list[int]=None):
     if solvetime is None:
       if self.inputs["hca_method"] == "sequence":
