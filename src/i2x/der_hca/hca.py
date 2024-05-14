@@ -271,6 +271,18 @@ def change_regulator_vreg(dss:py_dss_interface.DSSDLL, change_lines:list, name:s
     change_lines.append(f"edit regcontrol.{dss.regcontrols.name} vreg={vreg_new} revvreg={vreg_new}")
   return {"old": vreg, "old_pu": vreg_pu, "new": vreg_new, "new_pu": vreg_new*pt/vbase}
 
+def read_regulator_shape(f:str) -> pd.DataFrame:
+    """read a regulator tap settings shape into a pandas series
+    indexed on (hr, sec)
+    NOTE: it is assumed that FIRST 4 columns are "hr", "sec", "wdg", and "tap_pu"
+    """
+    df = pd.read_csv(f) # read file with shape
+    # update columns based on specified input configuration
+    # 
+    df.columns = ["hr", "sec", "wdg", "tap_pu"] + list(df.columns)[4:]
+    df.set_index(["hr", "sec"], inplace=True)
+    return df.loc[:, ["wdg","tap_pu"]]
+
 def get_xfrm_kvas(dss:py_dss_interface.DSSDLL, name:str):
   # loop over any potential parallel transformers
   for xfrm in get_parallel_xfrm(dss, name):
@@ -326,9 +338,16 @@ def sec2timetuple(s:int) -> list[int]:
   hr, sec = divmod(s, 3600)
   return [hr, sec]
 
+def get_periodending(time_now:list[int], step:int) -> list[int]:
+  """return the end of the period.
+  Example, if time is [0,0] (hr, sec) and step is 1hr is function returns [1,0]
+  """
+  return sec2timetuple(timetuple2sec(time_now) + step)
+
 class HCA:
   def __init__(self, inputs:Union[str,dict], logger_heading=None, 
-               reload=False, reload_filemode="a", print_config=False):
+               reload=False, reload_filemode="a", print_config=False,
+               print_parsed_graph=False):
     if reload:
       self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading)
       return
@@ -366,7 +385,21 @@ class HCA:
     self.load_graph()
 
     self.logger.info('\nLoaded Feeder Model {:s}'.format(self.inputs["choice"]))
-    self.print_parsed_graph()
+    if print_parsed_graph:
+      self.print_parsed_graph()
+
+    ## get regulator shapes (if any). Used for sequence method
+    if self.inputs["reg_control"]["regulator_shape"]:
+      self.reg_shape = {}
+      for reg, f in self.inputs["reg_control"]["regulator_shape"].items():
+        self.reg_shape[reg] = read_regulator_shape(f)
+    else:
+      self.reg_shape = None
+
+    if self.inputs["storage_control"]["storage_shape"]:
+      self.storage_shape = self.inputs["storage_control"]["storage_shape"].copy()
+    else:
+      self.storage_shape = None
 
     ## initialize dss model
     self.dss = i2x.initialize_opendss(printf=self.logger.debug, **self.inputs)
@@ -774,6 +807,35 @@ class HCA:
       for r in reglist:
         self.change_lines.append(f"edit regcontrol.{r} enabled=no")
 
+  def apply_regulator_shape(self):
+    """if regulator shapes are present, these are used to determine the
+     initial tap setting of those regulators
+     The regulator shape is indexed on (hr,sec) and the current solution time
+     is used to pick out a value.
+     Since the regulator shape shows the HOUR ENDING. we index for one step in the future.
+    """
+    if self.reg_shape is None:
+      # no regulator shapes
+      return
+    for k, v in  self.reg_shape.items():
+      tmp = v.loc[tuple(get_periodending(self.solvetime, self.inputs["stepsize"]))]
+      cmd = f"edit transformer.{k} wdg={tmp.wdg} tap={tmp.tap_pu}"
+      self.presolve_edits.append(cmd)
+
+  def apply_storage_shape(self):
+    """if storage shapes were defined (for storage that is replaced by a load)
+    then these are added to presolve_edits here.
+    NOTE: shape should have been defined as a load shape (probably in change_lines 
+    passed in to the object on initialization)
+    """ 
+    if self.storage_shape is None:
+      # no storage shapes
+      return
+    for k, v in self.storage_shape.items():
+      # set the load shape. NOTE assumption is that this is a load model!!!
+      cmd = f"edit load.{k} daily={v} yearly={v}"
+      self.presolve_edits.append(cmd)
+
   def sample_buslist(self, buslist:list, seed=None):
     """
     Sample list of buses.
@@ -948,6 +1010,10 @@ class HCA:
       if self.inputs["hca_method"] == "sequence":
         ## for sequence method, make sure that the right time instance is simulated
         solvetime = self.solvetime
+    ## add commands to set regulators (does nothing if self.reg_shape is None)
+    self.apply_regulator_shape()
+    ## add commands to have storage (modeled as load) follow a shape different from other load
+    self.apply_storage_shape()
     pwd = os.getcwd()
     self.lastres = i2x.run_opendss(**{**{"change_lines": self.change_lines + self.change_lines_noprint + self.upgrade_change_lines, 
                                          "dss": self.dss, "solvetime":solvetime, "presolve_edits": self.presolve_edits,

@@ -22,7 +22,11 @@
 "hca_control_pf": null,
 "reg_control": {
     "disable_all": false,
-    "disable_list": []
+    "disable_list": [],
+    "regulator_shape": {}
+},
+"storage_control": {
+    "storage_shape":{}
 },
 "monitors":{
     "volt_monitor_method": "bfs"
