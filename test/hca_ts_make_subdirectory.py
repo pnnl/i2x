@@ -4,7 +4,7 @@ This file contains tests for the hosting capacity time series functionality
 
 from i2x.der_hca import hca
 import numpy as np
-import os, sys
+import os, sys, shutil
 
 def add_subdir(subdir, param):
     return os.path.join(subdir, param)
@@ -67,7 +67,8 @@ if __name__ == "__main__":
               "monitors":
                 {"volt_monitor_method": "none"},# don't add any additional voltage monitors
             } 
-    config["hca_log"] = {"print_hca_iter": True, "logtofile": True}
+    config["hca_log"] = {"print_hca_iter": True, "logtofile": True, 
+                         "logpath": "..", "logname": "hcalog_subdirtest"}
     # config["hca_log"] = {"loglevel": "debug"}
     # config["debug_output"] = True
     # config["end_time"] = [1,0]
@@ -120,7 +121,7 @@ if __name__ == "__main__":
         
         ## calculate HCA specifying bus location and initial capacity
         h.hca_round("pv", bus=bus, Sij=Sij, recalculate=True,
-                    bnd_strategy=("add", 500))#, set_sij_to_hc=True)
+                    bnd_strategy=("add", 100))#, set_sij_to_hc=True)
         h.step_solvetime()
 
     h.unset_active_bus()
@@ -137,8 +138,12 @@ if __name__ == "__main__":
         h.logger.info(f"Success! (max error ({err:0.4f}) is within 5 kW)")
     else:
         h.logger.info(f"Failed! max error is {err:0.4f} > 5 kW")
-    
+        
     os.chdir(cwd)
+    ## save the results
+    h.save("hcasubdir_test.pkl")
+    ## delete the temporary folder
+    shutil.rmtree(run_dir)
     ##TODO:
     ## hca_control_mode and hca_control_pf are intended to allow different
     ## inverter behavior for the HCA resource compared to others.
