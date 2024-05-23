@@ -347,9 +347,9 @@ def get_periodending(time_now:list[int], step:int) -> list[int]:
 class HCA:
   def __init__(self, inputs:Union[str,dict], logger_heading=None, 
                reload=False, reload_filemode="a", print_config=False,
-               print_parsed_graph=False):
+               print_parsed_graph=False, reload_start_dss=True):
     if reload:
-      self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading)
+      self.load(inputs, filemode=reload_filemode, reload_heading=logger_heading, start_dss=reload_start_dss)
       return
     
     if isinstance(inputs, str) or isinstance(inputs, dict):
@@ -457,7 +457,7 @@ class HCA:
     with open(filename, "wb") as f:
       pickle.dump(out, f)
   
-  def load(self, filename, filemode=None, reload_heading=None):
+  def load(self, filename, filemode=None, reload_heading=None, start_dss=True):
     """Load a saved state of the HCA.
     filename should be a pickle file
     """
@@ -479,7 +479,8 @@ class HCA:
     self.metrics = HCAMetrics(**self.inputs["metrics"], logger=self.logger)
     self.metrics.set_base(tmp["metrics_baseres"])
 
-    self.reset_dss(clear_changes=False)
+    if start_dss:
+      self.reset_dss(clear_changes=False)
 
     self.random_state = np.random.RandomState()
     self.random_state.set_state(tmp["state"])
