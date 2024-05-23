@@ -6,10 +6,6 @@ from i2x.der_hca import hca
 import numpy as np
 import os, sys, shutil
 
-def add_subdir(subdir, param):
-    return os.path.join(subdir, param)
-
-
 if __name__ == "__main__":
     config = {"choice": "ieee9500",
               "res_pv_frac": 0,
@@ -17,7 +13,7 @@ if __name__ == "__main__":
               "solnmode": "YEARLY",
               "min_converged_vpu": 0.5, #if voltages below 0.5 treat as not converged
               "hca_method": "sequence",
-              "change_lines_init": ["redirect hca_ts_IEEE9500prep.dss"],
+              "change_lines_init": ["redirect ../hca_ts_IEEE9500prep.dss"],
               "loadcurve": "loadshape4",
               "numsteps": 1, #only solve one snapshot at a time
               "start_time": [0,0],
@@ -26,24 +22,24 @@ if __name__ == "__main__":
               "reg_control": {
                     "disable_all": True, # disable all control, will be done via shape
                     "regulator_shape": { # regulator shape mapping
-                        "vreg2_a": "regulator_taps/hca9500node_Mon_vreg2_a_1wdg.csv",
-                        "vreg2_b": "regulator_taps/hca9500node_Mon_vreg2_b_1wdg.csv",
-                        "vreg2_c": "regulator_taps/hca9500node_Mon_vreg2_c_1wdg.csv",
-                        "vreg3_a": "regulator_taps/hca9500node_Mon_vreg3_a_1wdg.csv",
-                        "vreg3_b": "regulator_taps/hca9500node_Mon_vreg3_b_1wdg.csv",
-                        "vreg3_c": "regulator_taps/hca9500node_Mon_vreg3_c_1wdg.csv",
-                        "vreg4_a": "regulator_taps/hca9500node_Mon_vreg4_a_1wdg.csv",
-                        "vreg4_b": "regulator_taps/hca9500node_Mon_vreg4_b_1wdg.csv",
-                        "vreg4_c": "regulator_taps/hca9500node_Mon_vreg4_c_1wdg.csv",
-                        "feeder_reg1a": "regulator_taps/hca9500node_Mon_feeder_reg1a_1wdg.csv",
-                        "feeder_reg1b": "regulator_taps/hca9500node_Mon_feeder_reg1b_1wdg.csv",
-                        "feeder_reg1c": "regulator_taps/hca9500node_Mon_feeder_reg1c_1wdg.csv",
-                        "feeder_reg2a": "regulator_taps/hca9500node_Mon_feeder_reg2a_1wdg.csv",
-                        "feeder_reg2b": "regulator_taps/hca9500node_Mon_feeder_reg2b_1wdg.csv",
-                        "feeder_reg2c": "regulator_taps/hca9500node_Mon_feeder_reg2c_1wdg.csv",
-                        "feeder_reg3a": "regulator_taps/hca9500node_Mon_feeder_reg3a_1wdg.csv",
-                        "feeder_reg3b": "regulator_taps/hca9500node_Mon_feeder_reg3b_1wdg.csv",
-                        "feeder_reg3c": "regulator_taps/hca9500node_Mon_feeder_reg3c_1wdg.csv",
+                        "vreg2_a": "../regulator_taps/hca9500node_Mon_vreg2_a_1wdg.csv",
+                        "vreg2_b": "../regulator_taps/hca9500node_Mon_vreg2_b_1wdg.csv",
+                        "vreg2_c": "../regulator_taps/hca9500node_Mon_vreg2_c_1wdg.csv",
+                        "vreg3_a": "../regulator_taps/hca9500node_Mon_vreg3_a_1wdg.csv",
+                        "vreg3_b": "../regulator_taps/hca9500node_Mon_vreg3_b_1wdg.csv",
+                        "vreg3_c": "../regulator_taps/hca9500node_Mon_vreg3_c_1wdg.csv",
+                        "vreg4_a": "../regulator_taps/hca9500node_Mon_vreg4_a_1wdg.csv",
+                        "vreg4_b": "../regulator_taps/hca9500node_Mon_vreg4_b_1wdg.csv",
+                        "vreg4_c": "../regulator_taps/hca9500node_Mon_vreg4_c_1wdg.csv",
+                        "feeder_reg1a": "../regulator_taps/hca9500node_Mon_feeder_reg1a_1wdg.csv",
+                        "feeder_reg1b": "../regulator_taps/hca9500node_Mon_feeder_reg1b_1wdg.csv",
+                        "feeder_reg1c": "../regulator_taps/hca9500node_Mon_feeder_reg1c_1wdg.csv",
+                        "feeder_reg2a": "../regulator_taps/hca9500node_Mon_feeder_reg2a_1wdg.csv",
+                        "feeder_reg2b": "../regulator_taps/hca9500node_Mon_feeder_reg2b_1wdg.csv",
+                        "feeder_reg2c": "../regulator_taps/hca9500node_Mon_feeder_reg2c_1wdg.csv",
+                        "feeder_reg3a": "../regulator_taps/hca9500node_Mon_feeder_reg3a_1wdg.csv",
+                        "feeder_reg3b": "../regulator_taps/hca9500node_Mon_feeder_reg3b_1wdg.csv",
+                        "feeder_reg3c": "../regulator_taps/hca9500node_Mon_feeder_reg3c_1wdg.csv",
                     }
               },
               "storage_control": {
@@ -79,15 +75,6 @@ if __name__ == "__main__":
     if not os.path.exists(run_dir):
         os.mkdir(run_dir)
     os.chdir(run_dir)
-
-    ### prepend "up a step",i.e. .. to all paths in config
-    for i, l in enumerate(config["change_lines_init"]):
-        if "redirect" in l:
-            path = l.split(" ")[1]
-            config["change_lines_init"][i] = f"redirect {add_subdir('..', path)}"
-    
-    for k,v in config["reg_control"]["regulator_shape"].items():
-        config["reg_control"]["regulator_shape"][k] = add_subdir("..", v)
 
     h = hca.HCA(config, print_config=True)
     # h.runbase()
