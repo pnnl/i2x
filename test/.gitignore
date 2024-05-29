@@ -1,3 +1,4 @@
 # ignore demand interval outputs
 hca9500node/DI_yr_0/*
 hca_in_subdirectory*/*
+hca_parallel/*

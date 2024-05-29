@@ -97,7 +97,7 @@ if __name__ == "__main__":
         
         ## calculate HCA specifying bus location and initial capacity
         h.hca_round("pv", bus=bus, Sij=Sij, recalculate=True,
-                    bnd_strategy=("add", 500))#, set_sij_to_hc=True)
+                    bnd_strategy=("add", 100))#, set_sij_to_hc=True)
         h.step_solvetime()
 
     h.unset_active_bus()
