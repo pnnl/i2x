@@ -21,7 +21,7 @@ import i2x.der_hca.upgrade_costs as upcst
 conductor_cost = upcst.ConductorCosts()
 xfrm_cost = upcst.TransformerCosts()
 reg_cost = upcst.RegulatorCosts()
-hca_options = {"times_series": "Single HC value calculated via quasi-steady state time series solution",
+hca_options = {"time_series": "Single HC value calculated via quasi-steady state time series solution",
                 "sequence": "Sequency of HC calculated over time"}
 SQRT3 = math.sqrt(3.0)
 pd_version = [int(s) for s in pd.__version__.split(".")]

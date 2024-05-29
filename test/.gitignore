@@ -1,4 +1,11 @@
 # ignore demand interval outputs
 hca9500node/DI_yr_0/*
+
+## ignore output of subdirectory test
 hca_in_subdirectory*/*
+
+## ignore output of parallel test
 hca_parallel/*
+
+## ignore html feeder plots
+*.html
