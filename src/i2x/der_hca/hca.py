@@ -439,7 +439,8 @@ class HCA:
 
   def save(self, filename):
     """Save the HCA for later re-instantiation vie load
-    filename is a pickle file to save
+    filename is a pickle file to save, if it is None then the 
+    bytes representation of pickle.dumps is retured
     """
     out = {}
     skip = ["logger", "random_state", "dss", "metrics", "lastres", "timer"]
@@ -454,15 +455,28 @@ class HCA:
     out["lastres"] = {k: copy.deepcopy(v) for k, v in self.lastres.items() if k != "dss"}
     # out["G"] = json.dumps(self.G, default=nx.node_link_data)
 
-    with open(filename, "wb") as f:
-      pickle.dump(out, f)
+    if filename is None:
+      return pickle.dumps(out)
+    else:
+      with open(filename, "wb") as f:
+        pickle.dump(out, f)
   
   def load(self, filename, filemode=None, reload_heading=None, start_dss=True):
     """Load a saved state of the HCA.
-    filename should be a pickle file
+    filename should be:
+      - a pickle file or 
+      - the bytes representation from pickle.dumps or
+      - the dictionary from calling pickle.loads(...)
     """
-    with open(filename, "rb") as f:
-      tmp = pickle.load(f)
+    
+    if not isinstance(filename, str):
+      if isinstance(filename, dict):
+        tmp = copy.deepcopy(filename)
+      else:
+        tmp = pickle.loads(filename)
+    else:
+      with open(filename, "rb") as f:
+        tmp = pickle.load(f)
 
     skip = ["state"]    
     for k, v in tmp.items():
