@@ -1303,7 +1303,7 @@ class HCA:
     #### increment the count
     if not recalculate:
       self.cnt +=1
-    self.logger.info(f"\n========= HCA Round {self.cnt} {f'dss time: {self.solvetime}' if self.method=='sequence' else ''} ({typ}){' recalculating' if recalculate else ''}=================")
+    self.logger.info(f"\n========= HCA Round {self.cnt} {f'dss time: {self.solvetime}' if self.method=='sequence' else ''} ({typ}){' recalculating' if recalculate else ''}{f' bnd_strategy: {bnd_strategy}' if bnd_strategy is not None else ''}=================")
   
     #### Step 1: select a bus. Viable options (for now) are:
     # * graph_dirs["bus3phase"]: 3phase buses with nothing on them
@@ -1512,10 +1512,10 @@ class HCA:
       # unknown lower bound
       if bnd_strategy[0] == "mult":
         # halve (default) the upper bound
-        Sijnew = {k: v/bnd_strategy[0] for k, v in Sij2.items()}
+        Sijnew = {k: v/bnd_strategy[1] for k, v in Sij2.items()}
       elif bnd_strategy[0] == "add":
         # subtract a constant to kw, keep factor pf constant
-        Sijnew = {"kw": Sij2["kw"] - bnd_strategy[1]}
+        Sijnew = {"kw": max(Sij2["kw"] - bnd_strategy[1], 0)}
         factor = Sijnew["kw"]/Sij2["kw"]
         for k in Sij2.keys():
           if k != "kw":
@@ -1542,6 +1542,8 @@ class HCA:
         self.logger.info(f"\tNo violations with capacity {Sijnew}. Iterating to find HC")
       if Sij2 is None:
         # still uknown upper bound
+        if self.inputs["hca_log"]["print_hca_iter"]:
+          self.logger.info(f"\t\tBounding strategy is: {bnd_strategy}")
         return self.hc_bisection(typ, key, Sijnew, Sijnew, None,
                                  kwtol=kwtol, kwmin=kwmin, bnd_strategy=bnd_strategy)
       elif Sij2["kw"] - Sijnew["kw"] < kwtol:
@@ -1566,6 +1568,8 @@ class HCA:
         return {k: 0 for k in Sijnew.keys()}
       elif Sij1 is None:
         # still unkonwn lower bound
+        if self.inputs["hca_log"]["print_hca_iter"]:
+          self.logger.info(f"\t\tBounding strategy is: {bnd_strategy}")
         return self.hc_bisection(typ, key, Sijnew, None, Sijnew, 
                                  kwtol=kwtol, kwmin=kwmin, bnd_strategy=bnd_strategy)
       else:
