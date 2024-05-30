@@ -4,8 +4,14 @@ This file contains tests for the hosting capacity time series functionality
 
 from i2x.der_hca import hca
 import numpy as np
+import argparse
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="i2X Hosting Capacity Analysis")
+    parser.add_argument("--bus", help="bus to conduct HCA (default: %(default)s)", default="n1134475")
+    parser.add_argument("--start", type=int, help="starting hour (default: %(default)d)", default=0)
+    parser.add_argument("--end", type=int, help="ending hour (default: %(default)d)", default=10)
+    args = parser.parse_args()
     config = {"choice": "ieee9500",
               "res_pv_frac": 0,
               "pvcurve": "pclear",
@@ -15,8 +21,8 @@ if __name__ == "__main__":
               "change_lines_init": ["redirect hca_ts_IEEE9500prep.dss"],
               "loadcurve": "loadshape4",
               "numsteps": 1, #only solve one snapshot at a time
-              "start_time": [0,0],
-              "end_time": [10,0], #testing on just 5 iterations
+              "start_time": [args.start,0],
+              "end_time": [args.end,0], #testing on just 5 iterations
               "stepsize": 3600,  #1 hr
               "reg_control": {
                     "disable_all": True, # disable all control, will be done via shape
@@ -81,7 +87,7 @@ if __name__ == "__main__":
     ### Perform HCA 
     # recalculate=True means no resource will actually be added --> important for multiple time periods
     # unset_active_bus=False means active bus will be kept so can be used in subsequent periods
-    h.hca_round("pv", recalculate=True, unset_active_bus=False)
+    h.hca_round("pv", bus=args.bus, recalculate=True, unset_active_bus=False)
     bus = h.active_bus
     h.step_solvetime() # time step
     ### main loop ###
@@ -105,15 +111,16 @@ if __name__ == "__main__":
     h.logger.info(f"Sequence HCA for bus {bus}")
     h.logger.info(h.get_hc("pv", bus))
 
-    kw_res = np.array([5297.9062,5209.3060,4376.2749,4227.7636,
-                       5042.6609,5030.4652,5029.2370,5028.0092,
-                       5004.6859,4996.1330])
-    
-    err = np.linalg.norm(h.get_hc("pv", bus)["kw"].values - kw_res, np.inf)
-    if err < 5: # current kw tolerance is hard coded as 5 kw
-        h.logger.info(f"Success! (max error ({err:0.4f}) is within 5 kW)")
-    else:
-        h.logger.info(f"Failed! max error is {err:0.4f} > 5 kW")
+    if (bus == "n1134475") and (h.get_hc("pv", bus).shape[0] == 10):
+        kw_res = np.array([5297.9062,5209.3060,4376.2749,4227.7636,
+                        5042.6609,5030.4652,5029.2370,5028.0092,
+                        5004.6859,4996.1330])
+        
+        err = np.linalg.norm(h.get_hc("pv", bus)["kw"].values - kw_res, np.inf)
+        if err < 5: # current kw tolerance is hard coded as 5 kw
+            h.logger.info(f"Success! (max error ({err:0.4f}) is within 5 kW)")
+        else:
+            h.logger.info(f"Failed! max error is {err:0.4f} > 5 kW")
     
     ##TODO:
     ## hca_control_mode and hca_control_pf are intended to allow different
