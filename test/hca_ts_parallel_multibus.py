@@ -10,20 +10,24 @@ import argparse
 
 
 class ParallHCA():
-    def __init__(self):
+    def __init__(self, name:str):
         self.instances = []
-        self.logger = hca.Logger("hca_parallel", format="{message}")
-        self.logger.set_logfile(path="hca_parallel")
+        self.name = name
+        self.logger = hca.Logger(name, format="{message}")
+        self.logger.set_logfile(path=name)
 
     def update(self, h):
         tmp = pickle.loads(h)
         tmp["inputs"]["hca_log"]["logtofile"] = True
         tmp["inputs"]["hca_log"]["logtofilemode"] = "a"
         original_name = tmp["inputs"]["hca_log"]["logname"]
-        tmp["inputs"]["hca_log"]["logname"] = "hca_parallel"
-        tmp["inputs"]["hca_log"]["logpath"] = "hca_parallel"
+        tmp["inputs"]["hca_log"]["logname"] = self.name
+        tmp["inputs"]["hca_log"]["logpath"] = self.name
         self.instances.append(hca.HCA(tmp, logger_heading=f"Reloading {original_name}",
                                       reload=True, reload_start_dss=False))
+    def error(self, e):
+        self.logger.error("Process failed to complete")
+        sys.exit(1)
 
     def get_hca(self, bus) -> pd.DataFrame:
         return pd.concat([h.get_hc("pv", bus) for h in self.instances], axis=0).sort_index()
@@ -157,8 +161,9 @@ def parallel_hca(bus, num1, num2, logpath="..", savepath=".", return_full=False)
 
 if __name__ == "__main__":
     buses = ['regxfmr_hvmv11sub1_lsb', 'm1009705', 'm1047507', 'l2925506', 'm1027039']
-    nprocess = 16
-    hrs = 8760
+    # buses = ['m1027039']
+    nprocess = 8
+    hrs = 20
     hrs_per_process = np.round(hrs/nprocess)
     
     ## this is a SERIES (NOT PARALLEL) loop over the buses to calculate HCA on
@@ -169,7 +174,7 @@ if __name__ == "__main__":
             os.mkdir(dirname)
         
         ## create parallel HCA container
-        ph = ParallHCA()        
+        ph = ParallHCA(dirname)        
 
         ph.logger.info(f"Running parallel HCA at bus {bus}")
         ph.logger.info(f"\t{nprocess} parallel process for {hrs} ==> {hrs_per_process} per process")
@@ -181,7 +186,7 @@ if __name__ == "__main__":
         ## parallel loop to solve all hrs of HCA
         for p in range(nprocess):
             num1 = int(hrs_per_process*p)
-            num2 = min(int(hrs_per_process*(p+1)), hrs)
+            num2 = hrs if p == (nprocess-1) else min(int(hrs_per_process*(p+1)), hrs)
             if num1 >= hrs:
                 # edge case: no more hours to calcualte
                 continue
@@ -190,7 +195,7 @@ if __name__ == "__main__":
             ph.logger.info(f"Process {p} has inputs {args}")
             ph.logger.info(f"\targs\t{args}")
             ph.logger.info(f"\tkwargs\t{kwargs}")
-            pool.apply_async(parallel_hca, args=args, kwds=kwargs, callback=ph.update)
+            pool.apply_async(parallel_hca, args=args, kwds=kwargs, callback=ph.update, error_callback=ph.error)
         pool.close()
         pool.join()
 
