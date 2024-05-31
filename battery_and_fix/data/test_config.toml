@@ -1,0 +1,5 @@
+bes_kw  = 200 # battery size kW
+bes_kwh = 400 # battery capacity kWh
+hc = [1000, 700, 700, 1350.5, 1200.0] # hosting capacity [kW]: path or list of values
+f  = [500, 800.0, 1000.0, 850.0, 600.2] # profile [kW or pu]: path or list of values
+fscale = 1 # scalar for unitized f profiles (use 1 if profile is in kW)
