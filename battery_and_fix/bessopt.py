@@ -4,9 +4,16 @@ import pandas as pd
 import argparse, sys, os
 import tomli
 from i2x.der_hca.hca import print_config
+import copy
 
 def main(bes_kw:float, bes_kwh:float, f:np.ndarray, hc:np.ndarray,
-         savename="bessopt.xlsx", print_model=False, **kwargs):
+         print_model=False, solver="cbc", **kwargs):
+    """
+    returns:
+    df_fixed: data frame with input forecast an hosting capacity
+    df_vars: data frame with variables
+    """
+    
     model = pyo.ConcreteModel()
     
     hrs = list(range(len(hc)))
@@ -48,12 +55,13 @@ def main(bes_kw:float, bes_kwh:float, f:np.ndarray, hc:np.ndarray,
         """
         return sum(model.bess[h] for h in hrs if model.curt[h] > 0)
 
-    opt = pyo.SolverFactory("ipopt")
+    opt = pyo.SolverFactory(solver)
     
-    opt.solve(model)
+    opt.solve(model, tee=True)
     if print_model:
         model.pprint()
     
+    #### Collect variables
     ## form https://stackoverflow.com/questions/67491499/how-to-extract-indexed-variable-information-in-pyomo-model-and-build-pandas-data
     vars = []
     all_vars = model.component_map(ctype=pyo.Var)
@@ -68,12 +76,27 @@ def main(bes_kw:float, bes_kwh:float, f:np.ndarray, hc:np.ndarray,
     ## add output 
     df_vars = pd.concat([df_vars, output, curt], axis=1)
 
-    df_fixed = pd.DataFrame({"forecast": f, "HC": hc})
-    with pd.ExcelWriter(savename) as writer:
-        df_fixed.to_excel(writer, sheet_name="fixed")
-        df_vars.to_excel(writer, sheet_name="variables")
+    curt_no_bess = f -  np.vstack([f, hc]).min(axis=0)
+    output_no_bess = f - curt_no_bess
+    df_fixed = pd.DataFrame({"forecast": f, "HC": hc, 
+                             "output_no_bess": output_no_bess, "curtailment_no_bess": curt_no_bess })
+    
+    return df_fixed, df_vars
 
-       
+def no_fix_case(f:np.ndarray, hc:np.ndarray):
+    """
+    scenario where capacity is limited to the minimum HC
+    return the capacity and a data frame with all values
+    """
+
+    hc_min = np.floor(hc.min()) # minimum HC
+    cap_in = f.max()            # rating of input profile
+    fnew = f*(hc_min/cap_in)   # scale profile to have a max of hc_min --> no curtailment
+
+    curt = fnew - np.vstack([fnew, hc]).min(axis=0) # should be zero
+    output = fnew - curt # should be equal to fnew
+    return hc_min, pd.DataFrame({"forecast": fnew, "HC": hc, "curtailment": curt, "output": output})
+
 
 def load_data_profile(filepath:str, profile_col, sheet_name=None, index_col=0) -> np.ndarray:
     """
@@ -104,7 +127,7 @@ def profile_stats(x:np.ndarray, name=""):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Find profiles nearest to desired points")
+    parser = argparse.ArgumentParser(description="Solve for optimal BESS utilization given solar profile and hosting capacity results")
     parser.add_argument("configfile", help=".toml configuration")
     parser.add_argument("--print-hca-stats", help="print hca statistics and exit.", action="store_true")
     args = parser.parse_args()
@@ -116,6 +139,7 @@ if __name__ == "__main__":
     with open(args.configfile, mode='rb') as f:
         configuration = tomli.load(f)
     print_config(configuration, printtype=True)
+    input_config = copy.deepcopy(configuration)
     for k in ["hc", "f"]:
         if isinstance(configuration[k], str):
             configuration[k] = load_data_profile(configuration[k], configuration[f"{k}_col"], 
@@ -124,11 +148,21 @@ if __name__ == "__main__":
         else:
             configuration[k] = np.array(configuration[k])
     ## apply scaling
-    configuration["f"] *= configuration["fscale"]
+    configuration["f"] *= configuration.get("f_scale",1)   # scaling of solar profile
+    configuration["hc"] *= configuration.get("hc_scale",1) # scaling of hca result
     print_config(configuration, title="Post Convert Configuration", printtype=True)
     if args.print_hca_stats:
         profile_stats(configuration["hc"], name="HC ")
         profile_stats(configuration["f"], name="PV profile ")
         sys.exit(0)
-    
-    main(**configuration)
+
+    df_fixed, df_vars = main(**configuration)
+    with pd.ExcelWriter(configuration.get("savename", "bessopt.xlsx")) as writer:
+        df_fixed.to_excel(writer, sheet_name="fixed")
+        df_vars.to_excel(writer, sheet_name="variables")
+
+        if configuration.get("run_no_fix", False):
+            no_fix_cap , df_no_fix = no_fix_case(configuration["f"], configuration["hc"])
+            df_no_fix.to_excel(writer, sheet_name="no_fix")
+            input_config["no_fix_cap"] = no_fix_cap
+        pd.Series(input_config).to_excel(writer, sheet_name="configuration")
