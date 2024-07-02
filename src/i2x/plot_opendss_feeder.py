@@ -199,7 +199,8 @@ def load_builtin_graph (feeder_name):
   return load_opendss_graph (fname)
 
 def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, highlight_edges=[], highlight_nodes=[],
-                         ax = None, title=None, on_canvas=False, plot_comps=False, legend_loc='lower right'):
+                         ax = None, title=None, on_canvas=False, plot_comps=False, legend_loc='lower right',
+                         edge_width_weight = 1.0, node_size_weight = 1.0):
 
   highlight_edges = [s.lower() for s in highlight_edges]
   highlight_nodes = [s.lower() for s in highlight_nodes]
@@ -242,7 +243,7 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, hi
           nodeColors.append(compcolors[d["comp"]])
         else:
           nodeColors.append (get_node_color (nclass, highlight=highlight))
-        nodeSizes.append (get_node_size (nclass, highlight=highlight))
+        nodeSizes.append (node_size_weight * get_node_size (nclass, highlight=highlight))
 
   # only plot the edges that have XY coordinates at both ends
   plotEdges = []
@@ -256,7 +257,7 @@ def plot_opendss_feeder (G, plot_labels = False, pdf_name = None, fig = None, hi
         nph = data['edata']['phases']
         plotEdges.append ((n1, n2))
         highlight = data["ename"].lower() in highlight_edges
-        edgeWidths.append (get_edge_width(nph, data['eclass'], highlight=highlight))
+        edgeWidths.append (edge_width_weight * get_edge_width(nph, data['eclass'], highlight=highlight))
         edgeColors.append (get_edge_color(data['eclass'], highlight=highlight))
     if not bFound:
       print ('unable to plot', data['ename'])
