@@ -3,60 +3,126 @@
 * [Solar Profiles](#solar-profiles)
 * [Running the model](#running-the-model)
 * [Installation](#installation)
+
 ## Model
-The model assumes that there is a der (e.g. solar) generation profile, $f[t]$ and a hosting capacity profile $hc[t]$.
+### Parameters
+| Parameter | Description |
+| :----- | :---------  |
+| $f$ | Hourly Generation forecast |
+| $hc$ | Hourly hosting capacity |
+| $g_{\text{over}} = f - \min(f, hc)$| Over generation for each hour |
+| $c_{\text{energy}}$| Hourly energy price |
+| $r_{\text{kW}}$ | Battery Kilowatt rating|
+| $r_{\text{kWh}}$| Battery Kilowatt-hour rating |
 
-The curtailment, $c$ in general would be:
+### Variables
+| Variable | Domain | Description |
+| :-----  | :-----:| :---------  |
+| $b_{\text{charge}}$ | $[0, r_{\text{kW}}]$ | Battery charging |
+| $b_{\text{discharge}}$ | $[0, r_{\text{kW}}]$| Battery discharging |
+| $b_{\text{nogen, charge}}$ |  | Battery charging **not** from over generation|
+| $E$ | $[0, r_{kWh}]$ | Battery state of charge |
+| $c$ | $\geq 0$ | Curtailment |
+| $u$ | $\{0,1\}$ | 1 if battery discharging, 0 if charging |
+
+### Objective
+Objective is to maximize battery discharge while minimizing cost from charging the battery during _non-over-generation_ periods:
 $$
-c[t] = f[t] - \min(f[t], hc[t])
+\underset{b}{\text{maximize}} \sum_{t} c_{\text{energy}}\left(b_{\text{discharge}}[t] - b_{\text{nogen, charge}}\right)
 $$
 
-The objective of the model is to maximize charging (minimize negative injection) during hours where curtailment would occur, $c[t] > 0$:
+### Constraints
+#### Curtailment
+The curtailment is _at worst_ equal to the over generation:
 $$
-\underset{b}{\text{minimize}} \sum_{t\in T_c} b[t]
-$$
-where $b[t]$ is the battery charge/discharge (-/+) behavior in kW at time $t$, and $T_c = \{t: c[t] > 0\}$, the set of all times where curtailment _would_ happen.
-
-The following constraints apply:
-### Power and Energy limits
-The battery has specified charge/discharge rate limits:
-$$
--P_{\text{lim}} \leq b[t] \leq P_{\text{lim}}\quad \forall t\in T
+c[t] \leq g_{\text{over}}[t]
 $$
 
-The battery has a specified capacity:
+#### Output
+The total output which is the curtailment adjusted forecast plus battery behavior must be below the hosting capacity:
 $$
-0 \leq E[t] \leq E_{\text{max}} \quad \forall t \in T
+b_{\text{discharge}}[t] - b_{\text{charge}}[t] + f[t] - c[t] \leq hc[t]
 $$
-where $E[t]$ is the state of charge of the battery in kWh at time $t$.
 
-### State of Charge Dynamic
+#### Charging from over generation
+total bess charging minus charging from non-over-generation solar plus curtailment
+must be equal to the the total over generation. 
+
+$$
+b_{\text{charging}}[t] - b_{\text{nogen, charge}}[t] + c[t] = g_{\text{over}}
+$$
+
+Consider the following cases:
+* Case 1: no over-generation $g_{\text{over}} = 0$
+  * curtailment is 0 due to the curtailment constraint
+  * all charging is not from over generation ($b_{\text{nogen, charge}}=b_{\text{charging}}$)
+* Case 2: some over-generation $g_{\text{over}} > 0$
+  * curtailment is 0 (assumption)
+  * total charge is reduced by over generation to equal charging from not over-generation ($b_{\text{nogen, charge}}=b_{\text{charging}} - g_{\text{over}}$)
+* Case 3: some over-generation $g_{\text{over}} > 0$
+  * curtailment is not 0 (assumption)
+  * any remaining overhead is reduced from total charge to yield charge not from over-generation ($b_{\text{nogen, charge}}=b_{\text{charging}} - (g_{\text{over}} - c)$)
+
+#### Net Output
+The net output of battery and generation cannot go negative (i.e. only charging is not allowed):
+$$
+f[t] - b_{\text{charging}}[t] >= 0
+$$
+
+#### Charge/Discharge Selection
+Charge and discharge are indicated using variable $u$
+$$
+b_{\text{charging}}[t] \leq r_{\text{kW}}\cdot (1-u[t])
+$$
+
+$$
+b_{\text{discharge}}[t] \leq r_{\text{kW}}\cdot u[t]
+$$
+
+#### Battery State of Charge
 The state of charge changes from hour to hour according to (assumption is 1 hour intervals):
 $$
-E[t] = E[t-1] + b[t]
+E[t] = E[t-1] - b_{\text{discharge}}[t] + b_{\text{charge}}
 $$
 
-### No Grid Charging
-We do not let the battery charge from the grid by forcing the net output (forecast plus batter) to always be greater than or equal to zero.
+
+
+## Inadvertent Export
+The inadvertent export screen recommended by the BATRIES toolkit as follows:
 $$
-f[t] + b[t] \geq 0 \quad \forall t \in T
+\frac{R_{sc} \Delta P - X_{sc} \Delta Q}{V^2} \leq 0.03
+$$
+Where $R_{sc}$ and $X_{sc}$ are the Thevenin impedances at the bus of interest, and $\Delta P$ and $\Delta Q$ are the difference between nameplate and export limit, with
+$$
+\Delta P = (S_{r} - S_{HC})\times PF\\
+\Delta Q = (S_{r} - S_{HC})\times \sqrt{1 - PF^2}
+$$
+where $S_{r}$ is the rated MVA, $S_{HC}$ the hosting capacity/export limit and $PF$ the power factor.
+
+This can be solved $(S_{r} - S_{HC})$ to get the maximum size _beyond_ the export limit that the DER can be without leading to Rapid Voltage Change (RVC) issues:
+$$
+(S_{r} - S_{HC}) [kVA] = 0.03 \times \frac{(V[kV])^2}{R_{sc} [\Omega]\cdot PF - X_{sc}[\Omega]\cdot \sqrt{1 - PF^2}}\times 1000
+$$
+Under the assumption of $PF=1$ this becomes:
+$$
+\Delta P_{max} = ({P_r} - P_{HC}) [kW] = 30 \times \frac{(V[kV])^2}{R_{sc} [\Omega]\cdot PF}
 $$
 
-### Hosting Capacity Limit When Discharging
-When the default curtailment _would_ be zero, the battery output should not push the net output beyond the hosting capacity limit:
+There are two ways to think about this limit:
+1) the maximum rating is $\min(P_{HC}) + \Delta P_{max}$. This way the nameplate is _never_ above the maximum rating.
+2) consider a unitized solar shape and find the scalar that keeps it no more than $\Delta P_{max}$ above the hosting capacity for all hours:
 $$
-f[t] + b[t] \leq hc[t] \quad \forall t \in T\setminus T_c
+\begin{align*}
+&\text{Maximize} \quad&& c\\
+&\text{subject to}\quad&& c\cdot f_{pu}[t] - hc[t] \leq \Delta P_{max}\quad \forall t\in \end{align*}
 $$
-where $T\setminus T_c$ is the set of all hours where there is no curtailment.
-Note that for hours where there _is_ curtailment ($t\in T_c$) the battery output not going be positive (discharging) since that runs counter to the objective function.
-
 ## Solar Profiles
 The solar profiles are based on data from the NTP project that was created by NREL's ReVX tool.
 The profile is based on a location close to the Hoosick Substation.
 Any other profile could be use however.
 
 ## Running the model
-The main program in in [`bessopt.py`](./bessopt.py), help is accessible via
+The main program is in [`bessopt.py`](./bessopt.py), help is accessible via
 ```
 >python bessopt.py --help
 usage: bessopt.py [-h] [--print-hca-stats] configfile
@@ -74,8 +140,17 @@ options:
 if the `--print-hca-stats` flag is set the statistics of the profile and hosting capacity data will be displayed.
 This is useful for coming up with with possible battery sizes, or experimenting with different scaling of the solar projects.
 
+### Steps Overview
+1. Set up the configuration file to point to the correct data (have `f_scale=1`)
+2. Run `python bessopt.py <config file> --print-hca-stats` to get a sense of the statistics.
+3. Get the the short circuit impedance by running `python hca_zsc.py --bus <bus>` (in [test](../test/hca_zsc.py) and currently fixed to the 9500 node model, so for other models, some modification will be needed). Updated config with results.
+4. Calculate maximum capacity given RVC limits via `python bessopt.py <config file> --rvc-lim`
+5. Select capacity of DER and Battery
+6. Run the optimization
+
 ### Configuration Options
 The following configuration options are available
+#### System Data
 | Parameter | Req./Opt. [default]| Description |
 | :------- | :----------------|:------------|
 | `bes_kw`  | **required** | Battery max charge/discharge in kW |
@@ -86,13 +161,57 @@ The following configuration options are available
 | `hc_index_col`| optional [0] | index column in hc file|
 | `hc_sheet_name`| **required** (if Excel) | sheet name in Excel book with hc data|
 | `f`       | **required** | array of solar profile values OR path to csv/excel with data|
-| `f_scale`  | optional [1] | scaling factor for `f` array data|
+| `f_scale`  | **required** | scaling factor for `f` array data |
 | `f_col`  | **required** (if not array) | column name in profile file with profile data|
 | `f_index_col`| optional [0] | index column in profile file|
 | `f_sheet_name`| **required** (if Excel) | sheet name in Excel book with profile data|
-| `savename`| optional [`bessopt.xlsx] | Excel file to save the optimization results|
+
+#### Market Data
+| Parameter | Req./Opt. [default]| Description |
+| :------- | :----------------|:------------|
+| `energy_price`| **required** | Path to csv or Excel with price data (8760) |
+| `energy_price_col`| **required** | Name of column with values to use as the energy price |
+| `dvr_price_col` | **required**| column with demand value reduction prices (used for benefit calculation) |
+| `energy_price_index_col`| optional [0] | Index column when reading the data |
+| `energy_price_sheet_name`| **required** (if Excel) | sheet name in Excel book |
+| `dvr_adjust` | **required** | path to csv or Excel with adjustment factors (over 25 years) for the DVR price |
+| `dvr_adjust_col`| **required**| Name of column where the adjustment factors are located|
+| `dvr_adjust_index_col` | optional [0] | Index column for DVR data |
+| `dvr_adjust_sheet_name` | **required** (if Excel) | sheet name for DVR data in Excel book |
+
+#### CAPEX Data
+| Parameter | Req./Opt. [default]| Description |
+| :------- | :----------------|:------------|
+| `capex_years`| **required** (max 25) | Years over which costs and benefits are evaluated (anything other than 25 may require some adjustments) |
+| `der_dollar_per_kw`| **required** | Cost of DER in $/kW |
+| `der_om_dollar_per_kw_year`| **required** | DER O&M costs in $/kW-y |
+| `bess_dollar_per_kw_year`| **required**| Battery cost in $/kW |
+| `bess_om_dollar_per_kw_year`| **required** | Battery O&M Costs in $/kW-y|
+| `bess_inverter_fraction`| optional [0] (< 1) | Fraction to reduce Battery investment due to shared inverter with DER |
+| `degredation` | **required** | equipment performance degradation factor |
+| `escalation` | **required** | price escalation factor |
+| `discout_rate`| **required** | capital discount rate |
+
+#### Program Controls
+| Parameter | Req./Opt. [default]| Description |
+| :------- | :----------------|:------------|
+| `study_year`| optional [current year] | just used for creating time indices|
+| `savename`| optional [`bessopt.xlsx] | Excel file to save the optimization results to|
 | `run_no_fix`| optional [False] | If True a scenario with solar equal to the minimum HC without battery is performed |
-| 'solver' | optional [cbc] | Solver to pass to the pyomo model|
+| `copy_price_data`| optional [False] | If True the energy price and dvr scale data will be copied to output |
+| `solver` | optional [cbc] | Solver to pass to the pyomo model|
+| `plot`| optional | parameters from yearly results to plot, in addition "NPV" can be specified|
+| `plot_path`| optional [current directory] | Directory to store plot files |
+
+#### RVC Analysis
+| Parameter | Req./Opt. [default]| Description |
+| :------- | :----------------|:------------|
+|`rsc`| **required** (only for `--rvc-lim` option) | short circuit resistance [Ohm] |
+|`xsc`| **required** (only for `--rvc-lim` option) | short circuit reactance [Ohm] |
+|`kvbase_ll` | **required** (only for `--rvc-lim` option) | voltage base in kV |
+| `pf` | optional [1] | Power factor |
+| `rvc_limit` | optional [0.03] | the RVC limits |
+
 
 ### Outputs
 The output excel file is structured as follows:
