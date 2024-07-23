@@ -592,5 +592,8 @@ if __name__ == "__main__":
         if configuration["run_no_fix"]:
             scenarios.append("No FIX")
         for prop in props_to_plot:
-            plot_res(yearly_out, scenarios, prop, configuration.get("plot_path", args.plot_path))               
+            if prop == "NPV":
+                plot_npv(yearly_out, configuration.get("plot_path", args.plot_path))
+            else:
+                plot_res(yearly_out, scenarios, prop, configuration.get("plot_path", args.plot_path))               
         

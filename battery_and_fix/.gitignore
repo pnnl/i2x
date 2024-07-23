@@ -1,1 +1,7 @@
 bessopt.xlsx
+*.pkl
+*.log
+archive/*
+data/hca_*/*.xlsx
+*xlsm
+results/*
