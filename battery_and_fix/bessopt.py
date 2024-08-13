@@ -297,7 +297,7 @@ def annualized_cost(capex:float, om:float, discount:float, escalation:float, yea
     else:
         return c_ann + om*np.power(1+escalation, np.arange(years))
 
-def npv(rate:float, cash_flow:np.ndarray) -> float:
+def npv(rate:float, cash_flow:np.ndarray, ts=False) -> float:
     """Return the Net Present Value for the values in cash_flow:
         NPV = sum cash_flow[i]/(1 + rate)^i
     where i goes from 0 to the length of cash_flow - 1
@@ -309,8 +309,11 @@ def npv(rate:float, cash_flow:np.ndarray) -> float:
     Returns:
         float: Net Present Value
     """
-
-    return sum( v/np.power(1+rate, i) for i, v in enumerate(cash_flow))
+    
+    if not ts:
+        return sum( v/np.power(1+rate, i) for i, v in enumerate(cash_flow))
+    else:
+        return np.cumsum([v/np.power(1+rate, i) for i, v in enumerate(cash_flow)])
 
 def annual_benefit(val:Union[float, np.ndarray], degredation:float, escalation:float, years:int):
     
@@ -363,8 +366,61 @@ def plot_npv(data:Union[dict,str], save_path:str):
         fig.update_layout(showlegend=False, **PLOTLY_LAYOUT)
         save_plot(fig, os.path.join(save_path, t))
 
+def plot_deferred_upgrade(data:Union[dict, str], save_path:str, discount_rate=0.08):
     
+    scenarios = ["FIX+BESS", "FIX"]
+    if isinstance(data, str):
+        #### path to excel file, load the annual results into a dictionary
+        filename = data
+        data = {}
+        with pd.ExcelFile(filename) as book:
+            for k in scenarios:
+                data[k] = pd.read_excel(book, sheet_name=f"{k} Annual", index_col=0)
+
+    tmp = pd.concat([pd.Series(npv(discount_rate, data[k]["Curtailment Opportunity Cost [$]"].values, ts=True), name=k) for k in scenarios], axis=1)
+    fig = tmp.plot(labels={"index": "year", "value": "NPV [$]", "variable": "Scenario" },
+                   markers=True)
+
+    colors = [d["line"]["color"] for d in fig.data]
+    npv_vals = [npv(discount_rate, data[k]["Profit [$]"]) for k in scenarios]
+    for v, c in zip(npv_vals, colors):
+        fig.add_hline(y=v, line_color=c)
+    fig.update_layout(**PLOTLY_LAYOUT)
+
+    basename = os.path.join(save_path, "deferred_upgrade")
+
+    save_plot(fig, basename)
     
+def make_lgp(hc:pd.Series) -> pd.DataFrame:
+    
+    out = {}
+    ### Daily profile
+    tmp = hc.groupby(lambda x: x.hour).agg("min")
+    out["daily"] = pd.Series([tmp[idx.hour] for idx in hc.index], index=hc.index)
+
+    ### Block 
+    # jan-mar, apr-jun, jul-sep, oct-dec
+    # 01-05, 05-09, 09-13, 13-17, 17-21, 21-01,
+    out["block"] = pd.Series(0, index=hc.index) # initialize
+    for m in [(1,2,3), (4,5,6), (7,8,9), (10,11,12)]:
+        for h in [(1,2,3,4), (5,6,7,8), (9,10,11,12), (13,14,15,16), (17,18,19,20), (21,22,23,0)]:
+            tmp = hc.loc[lambda x: x.index.month.isin(m) & x.index.hour.isin(h)].min()
+            out["block"].loc[lambda x: x.index.month.isin(m) & x.index.hour.isin(h)] = tmp
+
+    ### 18-23 fixed
+    # per month, one value 12am to 6pm (h < 18), one value 6pm to 12am (h >= 18)
+    out["18-23-fixed"] = pd.Series(0, index=hc.index) # initialize
+    for m in range(1,13):
+        f1 = lambda x: (x.index.month == m) & (x.index.hour < 18)
+        f2 = lambda x: (x.index.month == m) & (x.index.hour >= 18)
+        tmp = hc.loc[lambda x: f1(x)].min()
+        out["18-23-fixed"].loc[lambda x: f1(x)] = tmp
+
+        tmp = hc.loc[lambda x: f2(x)].min()
+        out["18-23-fixed"].loc[lambda x: f2(x)] = tmp
+    
+    return pd.concat([hc, pd.DataFrame(out)], axis=1)
+
         
                     
 
@@ -376,6 +432,7 @@ if __name__ == "__main__":
     parser.add_argument("--print-hca-stats", help="print hca statistics and exit.", action="store_true")
     parser.add_argument("--rvc-lim", help="calculate limits based on rvc", action="store_true")
     parser.add_argument("--test-input", action="store_true")
+    parser.add_argument("--make-lgp", help="make limited generation profiles", action="store_true")
     args = parser.parse_args()
     # bes_kw  = 200
     # bes_kwh = 400
@@ -411,6 +468,11 @@ if __name__ == "__main__":
                            hc=configuration["hc"],
                            f=configuration["f"])
         sys.exit(0)
+    if args.make_lgp:
+        tidx = time_index(configuration.get("study_year", pd.to_datetime("now").year), n=configuration["hc"].shape[0])
+        lgp = make_lgp(pd.Series(configuration["hc"], index=tidx, name="hc"))
+        lgp.to_csv(configuration.get("lgp_savename", "lgp.csv"))
+        sys.exit(0)
     if args.test_input:
         print(args)
         print("properties to plot", set(args.plot + configuration.get("plot", [])))
@@ -423,6 +485,8 @@ if __name__ == "__main__":
         for prop in props_to_plot:
             if prop == "NPV":
                 plot_npv(configuration["savename"], configuration.get("plot_path", args.plot_path))
+            elif prop == "deferred upgrade":
+                plot_deferred_upgrade(configuration["savename"], configuration.get("plot_path", args.plot_path), configuration.get("discount_rate", 0.08))
             else:
                 plot_res(configuration["savename"], scenarios, prop, configuration.get("plot_path", args.plot_path))
         sys.exit(0)
@@ -593,7 +657,9 @@ if __name__ == "__main__":
             scenarios.append("No FIX")
         for prop in props_to_plot:
             if prop == "NPV":
-                plot_npv(yearly_out, configuration.get("plot_path", args.plot_path))
+                plot_npv(pd.Series(net_present_value), configuration.get("plot_path", args.plot_path))
+            elif prop == "deferred upgrade":
+                plot_deferred_upgrade(yearly_out, configuration.get("plot_path", args.plot_path), configuration.get("discount_rate", 0.08))
             else:
                 plot_res(yearly_out, scenarios, prop, configuration.get("plot_path", args.plot_path))               
         

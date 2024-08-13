@@ -140,6 +140,11 @@ options:
 if the `--print-hca-stats` flag is set the statistics of the profile and hosting capacity data will be displayed.
 This is useful for coming up with with possible battery sizes, or experimenting with different scaling of the solar projects.
 
+## Limited Generation Profiles
+The hosting capacity used so far is made up of a unique value per hour.
+This might be too optimistic of an assumption as far as data availability goes.
+Instead, we can generate the three different limited generation profiles from the hourly data as described in the [recent CA ruling](https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M527/K828/527828730.PDF) (see pg. 71-72) that describes 3 different profiles with 24 unique values for the year.
+
 ### Steps Overview
 1. Set up the configuration file to point to the correct data (have `f_scale=1`)
 2. Run `python bessopt.py <config file> --print-hca-stats` to get a sense of the statistics.
