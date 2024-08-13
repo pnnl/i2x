@@ -1,0 +1,45 @@
+savename='results\l2925506_alt_opt.xlsx'
+study_year = 2024 # just for setting time reference
+bes_kw  = 900 # battery size kW (close to difference between f_scale and min HC)
+bes_kwh = 1800 # battery capacity kWh (2Hr battery)
+hc = 'data\hca_l2925506\hca_result.csv' # hosting capacity [kW]: path or list of values
+hc_col = "kw" # hc capacity column
+hc_index_col = 0 # specify index column (optional)
+f  = 'data\ssii_solar_profiles.xlsx' # profile [kW or pu]: path or list of values
+f_col = 11210 # profile value column
+f_sheet_name = "profiles" # sheetname
+f_index_col = 0 # index column
+f_scale = 4395 # (9th percentile)scalar kW nameplate for unitized f profiles (use 1 if profile is in kW)
+energy_price = 'data\example_price_list.csv'
+energy_price_col = 'Total Value Stack ($Nominal/kWh)'
+energy_price_index_col = false
+dvr_price_col = 'DRV ($Nominal/kWh)'
+dvr_adjust = 'data\dvr_adjust.csv'
+dvr_adjust_col = "National Grid"
+dvr_adjust_index_col = 0
+
+#### CAPEX
+# PV: https://atb.nrel.gov/electricity/2023/utility-scale_pv
+# BESS: https://atb.nrel.gov/electricity/2023/utility-scale_battery_storage
+capex_years = 25 # years over which to evelauate costs (max 25)
+der_dollar_per_kw = 1289.507
+der_om_dollar_per_kw_year = 20.988
+bess_dollar_per_kw = 979.971
+bess_om_dollar_per_kw_year = 24.499
+bess_inverter_fraction = 0.054631
+
+degredation = 0.005
+escalation = 0.02
+discount_rate = 0.08
+
+run_no_fix = true
+copy_price_data = true
+solver = "cbc"
+
+rsc = 2.267424
+xsc = 3.536601
+kvbase_ll = 12.47
+rvc_limit = 0.03
+
+plot = ["Export [kWh]", "Revenue [$]", "Cost [$]", "Profit [$]", "Curtailment [kWh]", "Curtailment Opportunity Cost [$]", "NPV"]
+plot_path = 'results\l2925506_alt_plots'

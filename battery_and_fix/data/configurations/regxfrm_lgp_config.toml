@@ -1,15 +1,16 @@
-savename="m1027039_opt.xlsx"
+savename='results\regxfrm_lgp_opt.xlsx'
+lgp_savename="regxfrm_lgp.csv"
 study_year = 2024 # just for setting time reference
-bes_kw  = 620 # battery size kW (difference from f_scale to min HC + a bit)
-bes_kwh = 1240 # battery capacity kWh (2Hr Battery)
-hc = 'data\hca_m1027039\hca_result.csv' # hosting capacity [kW]: path or list of values
-hc_col = "kw" # hc capacity column
+bes_kw  = 440 # battery size kW (difference from f_scale to min HC + a bit)
+bes_kwh = 880 # battery capacity kWh (2Hr Battery)
+hc = 'regxfrm_lgp.csv' # hosting capacity [kW]: path or list of values
+hc_col = "daily" # hc capacity column
 hc_index_col = 0 # specify index column (optional)
 f  = 'data\ssii_solar_profiles.xlsx' # profile [kW or pu]: path or list of values
 f_col = 11210 # profile value column
 f_sheet_name = "profiles" # sheetname
 f_index_col = 0 # index column
-f_scale = 875 # 90th percentile scalar kW nameplate for unitized f profiles (use 1 if profile is in kW)
+f_scale = 23700 # 90th percentile scalar kW nameplate for unitized f profiles (use 1 if profile is in kW)
 energy_price = 'data\example_price_list.csv'
 energy_price_col = 'Total Value Stack ($Nominal/kWh)'
 energy_price_index_col = false
@@ -36,10 +37,10 @@ run_no_fix = true
 copy_price_data = true
 solver = "cbc"
 
-rsc = 4.874362
-xsc = 4.903622
+rsc = 0.1429
+xsc = 0.938667
 kvbase_ll = 12.47
 rvc_limit = 0.03
 
-plot = ["Export [kWh]", "Revenue [$]", "Cost [$]", "Profit [$]", "Curtailment [kWh]", "Curtailment Opportunity Cost [$]", "NPV"]
-plot_path = "m1027039_plots"
+plot = ["Export [kWh]", "Revenue [$]", "Cost [$]", "Profit [$]", "Curtailment [kWh]", "Curtailment Opportunity Cost [$]", "NPV", "deferred upgrade"]
+plot_path = 'results\regxfrm_lgp_plots'
