@@ -26,7 +26,7 @@ hca_options = {"time_series": "Single HC value calculated via quasi-steady state
 SQRT3 = math.sqrt(3.0)
 pd_version = [int(s) for s in pd.__version__.split(".")]
 
-def print_config(config:dict, tabs="", printf=print, title="Configuration"):
+def print_config(config:dict, tabs="", printf=print, title="Configuration", printtype=False):
     """print a configuration dictionary"""
     if not tabs:
       printf(f"\n===================================\n{title}:\n===================================")
@@ -36,10 +36,10 @@ def print_config(config:dict, tabs="", printf=print, title="Configuration"):
             print_config(v, tabs=tabs+"\t", printf=printf)
         else:
             if isinstance(v, (pd.DataFrame, pd.Series)):
-              printf(f"{tabs}{k}:")
+              printf(f"{tabs}{k}:{f'({type(v)})' if printtype else ''}")
               printf(v)
             else:
-              printf(f"{tabs}{k}:{v}")
+              printf(f"{tabs}{k}:{v}{f' ({type(v)})' if printtype else ''}")
 
 def print_column_keys (label, d):
   columns = ''
@@ -656,6 +656,10 @@ class HCA:
         depth += 1
     elif method == 'all':
       for ns in self.G.nodes():
+        elem, term = get_elem_and_term(self.dss, ns)
+        self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal={term} mode=96") # add a voltage monitor
+    elif method == 'explicit':
+      for ns in self.inputs["monitors"]["volt_monitor_list"]:
         elem, term = get_elem_and_term(self.dss, ns)
         self.change_lines_noprint.append(f"new monitor.{ns}_volt_vi element={elem} terminal={term} mode=96") # add a voltage monitor
     elif method == 'none':

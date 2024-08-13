@@ -30,7 +30,8 @@
     "storage_shape":{}
 },
 "monitors":{
-    "volt_monitor_method": "bfs"
+    "volt_monitor_method": "bfs",
+    "volt_monitor_list": []
 },
 "hca_log":{
     "logname": "hcalog",

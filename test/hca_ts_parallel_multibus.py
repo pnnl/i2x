@@ -160,10 +160,10 @@ def parallel_hca(bus, num1, num2, logpath="..", savepath=".", return_full=False)
 
 
 if __name__ == "__main__":
-    buses = ['regxfmr_hvmv11sub1_lsb', 'm1009705', 'm1047507', 'l2925506', 'm1027039']
-    # buses = ['m1027039']
+    # buses = ['regxfmr_hvmv11sub1_lsb', 'm1009705', 'm1047507', 'l2925506', 'm1027039']
+    buses = ['regxfmr_hvmv11sub1_lsb']
     nprocess = 8
-    hrs = 20
+    hrs = 8760
     hrs_per_process = np.round(hrs/nprocess)
     
     ## this is a SERIES (NOT PARALLEL) loop over the buses to calculate HCA on
