@@ -3,7 +3,7 @@ lgp_savename="regxfrm_lgp.csv"
 study_year = 2024 # just for setting time reference
 bes_kw  = 440 # battery size kW (difference from f_scale to min HC + a bit)
 bes_kwh = 880 # battery capacity kWh (2Hr Battery)
-hc = 'regxfrm_lgp.csv' # hosting capacity [kW]: path or list of values
+hc = 'data\configurations\regxfrm_lgp.csv' # hosting capacity [kW]: path or list of values
 hc_col = "daily" # hc capacity column
 hc_index_col = 0 # specify index column (optional)
 f  = 'data\ssii_solar_profiles.xlsx' # profile [kW or pu]: path or list of values
@@ -42,5 +42,11 @@ xsc = 0.938667
 kvbase_ll = 12.47
 rvc_limit = 0.03
 
-plot = ["Export [kWh]", "Revenue [$]", "Cost [$]", "Profit [$]", "Curtailment [kWh]", "Curtailment Opportunity Cost [$]", "NPV", "deferred upgrade"]
-plot_path = 'results\regxfrm_lgp_plots'
+# plot = ["Export [kWh]", "Revenue [$]", "Cost [$]", "Profit [$]", "Curtailment [kWh]", "Curtailment Opportunity Cost [$]", "NPV", "deferred upgrade"]
+# plot_path = 'results\regxfrm_lgp_plots'
+plot = ["NPV"]
+plot_path = 'results\regxfrm_lgp_plots\updated_npv'
+[scenario_map]
+"No FIX" = "Conventional"
+"FIX" = "Solar Only"
+"FIX+BESS" = "Solar+Storage"

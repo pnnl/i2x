@@ -352,19 +352,28 @@ def save_plot(fig, basename:str):
     for ext in ["png", "svg"]:
         fig.write_image(f"{basename}.{ext}")
 
-def plot_npv(data:Union[dict,str], save_path:str):
+def plot_npv(data:Union[dict,str], save_path:str, scenario_map:dict=dict()):
 
     if isinstance(data,str):
         data = pd.read_excel(data, sheet_name="NPV", index_col=0)
 
-    data1 = data.loc[lambda x: ~x.index.str.contains("Upgrade")]
-    data2 = data.loc[lambda x: x.index.str.contains("Upgrade")]
+    data1 = data.loc[lambda x: ~x.index.str.contains("Upgrade")].rename(scenario_map)
+    data2 = data.loc[lambda x: x.index.str.contains("Upgrade")].rename(scenario_map)
 
     for d, t in zip([data1,data2], ["npv", "upgrade_npv"]):
         fig = d.plot(kind="bar",
-                        labels={"index": "Scenario", "value": "NPV [$]"})
+                        labels={"index": "Scenario", "value": "NPV [$]"},
+                        text_auto="$.3s")
         fig.update_layout(showlegend=False, **PLOTLY_LAYOUT)
         save_plot(fig, os.path.join(save_path, t))
+
+    ### plot relative npv
+    tmp = data1/data1.loc[scenario_map.get("No FIX", "No FIX")]
+    fig = tmp.plot(kind="bar",
+                    labels={"index": "Scenario", "value": "NPV Ratio"},
+                    text_auto=".2f")
+    fig.update_layout(showlegend=False, **PLOTLY_LAYOUT)
+    save_plot(fig, os.path.join(save_path, "npv_ratio"))
 
 def plot_deferred_upgrade(data:Union[dict, str], save_path:str, discount_rate=0.08):
     
@@ -484,7 +493,7 @@ if __name__ == "__main__":
             scenarios.append("No FIX")
         for prop in props_to_plot:
             if prop == "NPV":
-                plot_npv(configuration["savename"], configuration.get("plot_path", args.plot_path))
+                plot_npv(configuration["savename"], configuration.get("plot_path", args.plot_path), scenario_map=configuration.get("scenario_map", dict()))
             elif prop == "deferred upgrade":
                 plot_deferred_upgrade(configuration["savename"], configuration.get("plot_path", args.plot_path), configuration.get("discount_rate", 0.08))
             else:

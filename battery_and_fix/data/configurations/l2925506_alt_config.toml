@@ -41,5 +41,11 @@ xsc = 3.536601
 kvbase_ll = 12.47
 rvc_limit = 0.03
 
-plot = ["Export [kWh]", "Revenue [$]", "Cost [$]", "Profit [$]", "Curtailment [kWh]", "Curtailment Opportunity Cost [$]", "NPV"]
-plot_path = 'results\l2925506_alt_plots'
+# plot = ["Export [kWh]", "Revenue [$]", "Cost [$]", "Profit [$]", "Curtailment [kWh]", "Curtailment Opportunity Cost [$]", "NPV"]
+# plot_path = 'results\l2925506_alt_plots'
+plot = ["NPV"]
+plot_path = 'results\l2925506_alt_plots\updated_npv'
+[scenario_map]
+"No FIX" = "Conventional"
+"FIX" = "Solar Only"
+"FIX+BESS" = "Solar+Storage"
